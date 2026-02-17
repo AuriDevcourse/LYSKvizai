@@ -1,0 +1,208 @@
+{
+  "id": "jonines-ir-rasas",
+  "title": "Joninės ir Rasos",
+  "description": "Klausimai apie Jonines, Rasos šventę ir vasaros papročius — laužai, paparčio žiedas, vainikai ir burtai.",
+  "emoji": "🌿",
+  "questions": [
+    {
+      "question": "Kada švenčiamos Joninės Lietuvoje?",
+      "options": [
+        "Birželio 21–22 naktį",
+        "Birželio 24–25 naktį",
+        "Birželio 22–23 naktį",
+        "Birželio 23–24 naktį"
+      ],
+      "correct": 3,
+      "explanation": "Joninės švenčiamos birželio 23-osios vakarą ir birželio 24-osios naktį. Tai trumpiausia metų naktis, siejama su vasaros saulėgrįža."
+    },
+    {
+      "question": "Koks pagoniškas (baltiškas) Joninių pavadinimas?",
+      "options": [
+        "Kupolės",
+        "Ladų šventė",
+        "Rasos šventė",
+        "Gabijos naktis"
+      ],
+      "correct": 2,
+      "explanation": "Rasos — tai senasis pagoniškas šventės pavadinimas, susijęs su ryto rasa ir gamtos jėgomis. Joninės — krikščioniškas pavadinimas, skirtas Šv. Jono Krikštytojo gimimui."
+    },
+    {
+      "question": "Su kokiu gamtos reiškiniu siejama Rasos šventė?",
+      "options": [
+        "Pavasario lygiadienio",
+        "Vasaros saulėgrįžos",
+        "Žiemos saulėgrįžos",
+        "Rudens lygiadienio"
+      ],
+      "correct": 1,
+      "explanation": "Rasos šventė siejama su vasaros saulėgrįža — ilgiausia metų diena ir trumpiausia naktis, kai saulė pasiekia aukščiausią tašką danguje."
+    },
+    {
+      "question": "Ką, pagal legendą, reikia rasti Joninių naktį, kad gautum stebuklingų galių?",
+      "options": [
+        "Paparčio žiedą",
+        "Pelėdžiūnės šaknį",
+        "Devyngalvės žolės lapą",
+        "Naktibaldes pumpurą"
+      ],
+      "correct": 0,
+      "explanation": "Pagal lietuvių legendą, Joninių naktį pražysta papartis. Kas randa jo žiedą, tam atsiveria visi žemės lobiai ir paslaptys. Iš tikrųjų paparčiai nežydi — tai mitologinis motyvas."
+    },
+    {
+      "question": "Kodėl paparčio žiedo ieškojimas yra legenda, o ne tikrovė?",
+      "options": [
+        "Papartis žydi tik vieną sekundę ir neįmanoma pastebėti",
+        "Paparčiai yra sporiniai augalai ir niekada nežydi",
+        "Paparčio žiedas pražysta tik po žeme ir yra nematomas",
+        "Papartis žydi tik kas šimtą metų per saulėgrįžą"
+      ],
+      "correct": 1,
+      "explanation": "Paparčiai — sporiniai augalai, kurie dauginasi sporomis, ne sėklomis, todėl jie niekada neturi žiedų. Tai daro legendą dar paslaptingesnę!"
+    },
+    {
+      "question": "Kam per Jonines kūrenami laužai?",
+      "options": [
+        "Kad nubaidytų blogąsias dvasias ir raganas",
+        "Kad saulė greičiau sugrįžtų ir dienos ilgėtų",
+        "Kad apsaugotų derlių nuo šalnų ir audrų",
+        "Kad pašauktų protėvių vėles į šventę"
+      ],
+      "correct": 0,
+      "explanation": "Joninių laužai turi apeiginę reikšmę — ugnis nubaidydavo piktąsias dvasias, raganas ir ligas. Kuo didesnis laužas, tuo didesnė apsauginė galia."
+    },
+    {
+      "question": "Ką merginos darydavo su vainikais per Jonines?",
+      "options": [
+        "Dėdavo po pagalve, kad sapnuotų būsimąjį",
+        "Kabindavo ant šventojo ąžuolo šakų",
+        "Leisdavo vandeniu, kad sužinotų savo likimą",
+        "Mesdavo per laužą, kad nulemtų santuokos metus"
+      ],
+      "correct": 2,
+      "explanation": "Merginos pindavo vainikus iš lauko gėlių ir žolynų, tada leisdavo juos vandeniu. Pagal tai, kur vainikas nuplaukdavo, spėdavo apie būsimą vyrą ir santuoką."
+    },
+    {
+      "question": "Iš kokių augalų dažniausiai pindavo Joninių vainikus?",
+      "options": [
+        "Liepų žiedų, mėtų ir čiobrelių",
+        "Bijūnų, jurginų ir alyvų šakelių",
+        "Dilgėlių, kiečių ir šermukšnių lapų",
+        "Lauko gėlių, rūtų ir žolynų"
+      ],
+      "correct": 3,
+      "explanation": "Joninių vainikai buvo pinami iš įvairių lauko gėlių, rūtų, ramunėlių, žolynų ir vaistinių augalų. Kiekvienas augalas turėjo savo simbolinę reikšmę."
+    },
+    {
+      "question": "Kam Joninių rytą naudojama rasa?",
+      "options": [
+        "Žolynams ir vaistažolėms mirkyti — tikėta, kad sustiprina jų galias",
+        "Veidui ir kūnui prausti — tikėta, kad ji gydo ir gražina",
+        "Gyvuliams šlakstyti — tikėta, kad apsaugos nuo ligų",
+        "Laužavietei šlakstyti — tikėta, kad pašventins ugnies vietą"
+      ],
+      "correct": 1,
+      "explanation": "Tikėta, kad Joninių ryto rasa turi ypatingų gydomųjų galių — prausiamasi ja dėl grožio, sveikatos ir jaunystės. Ypač merginos prausiasi rasa, tikėdamos tapti gražesnėmis."
+    },
+    {
+      "question": "Kas yra kupolės?",
+      "options": [
+        "Šventiniai augalai, renkami per Jonines",
+        "Apeiginis laužo kūrenimo būdas",
+        "Senovinės giesmės, giedamos per Rasos šventę",
+        "Mergaičių burtų apeiga prie vandens"
+      ],
+      "correct": 0,
+      "explanation": "Kupolės — tai per Jonines (Kupolines) renkami vaistažoliai ir lauko augalai. Tikėta, kad Joninių naktį surinktos žolelės turi stipriausias gydomąsias galias."
+    },
+    {
+      "question": "Kurią valandą Joninių naktį žolelės turėdavo didžiausią galią, pagal tikėjimus?",
+      "options": [
+        "Saulėlydžio metu, kai saulė liečia horizontą",
+        "Prieš patį saulėtekį, pirmųjų spindulių metu",
+        "Auštant, kai pasirodo pirmoji rasa",
+        "Lygiai vidurnaktį"
+      ],
+      "correct": 3,
+      "explanation": "Pagal senuosius tikėjimus, Joninių vidurnaktį žolelės, vanduo ir rasa turėdavo didžiausias magines galias. Todėl žoleles rinkdavo aplink vidurnaktį."
+    },
+    {
+      "question": "Kieno vardadieniai švenčiami per Jonines?",
+      "options": [
+        "Petrų ir Kotrynų",
+        "Antanų ir Biručių",
+        "Jurgio ir Onų",
+        "Jonų ir Janinų"
+      ],
+      "correct": 3,
+      "explanation": "Birželio 24-oji — Šv. Jono Krikštytojo diena, tad švenčiami visų Jonų ir Janinų vardadieniai. Tai vienas populiariausių vardadienių Lietuvoje."
+    },
+    {
+      "question": "Kokia tradicija susijusi su ugnimi ir drąsa per Jonines?",
+      "options": [
+        "Šokinėjimas per laužą",
+        "Ėjimas per žarijas basomis",
+        "Deglų nešimas aplink lauką",
+        "Degančio rato ritinimas nuo kalno"
+      ],
+      "correct": 0,
+      "explanation": "Šokinėjimas per laužą — viena populiariausių Joninių tradicijų. Tikėta, kad peršokęs ugnį apsisaugosi nuo ligų ir nelaimių. Šoka ir poros — tai simbolizuoja meilės tvirtumą."
+    },
+    {
+      "question": "Kokie burtai buvo populiarūs tarp merginų per Jonines?",
+      "options": [
+        "Žolynų deginimas lauže ir dūmų skaitymas",
+        "Rasos rinkimas ir lašinimas ant žvakės",
+        "Gėlių skynimas užmerktomis akimis ir spalvų aiškinimas",
+        "Vainiko leidimas vandeniu ir veidrodžio būrimas"
+      ],
+      "correct": 3,
+      "explanation": "Merginos leisdavo vainikus vandeniu (kur nuplauks — ten bus vyras), žiūrėdavo į veidrodį prie žvakės tikėdamos pamatyti būsimo vyro veidą, ir kitus meilės burtus."
+    },
+    {
+      "question": "Kas, pagal senuosius baltų tikėjimus, vyksta gamtoje Joninių naktį?",
+      "options": [
+        "Medžiai sujuda iš vietos ir keičiasi šaknimis",
+        "Gyvūnai supranta žmonių kalbą ir gali pranašauti",
+        "Upių ir ežerų vanduo tampa karčiu iki ryto",
+        "Gamta pilna magijos — augalai gydo, vanduo šventas, dvasios pasirodydavo"
+      ],
+      "correct": 3,
+      "explanation": "Senovės baltai tikėjo, kad Joninių naktis yra magiškas laikas: gamta atgyja ypatinga galia, augalai įgauna gydomųjų savybių, vanduo tampa šventas, o dvasios vaikšto tarp žmonių."
+    },
+    {
+      "question": "Kur vyksta didžiausia ir žinomiausia Joninių šventė Lietuvoje?",
+      "options": [
+        "Rumšiškėse, Lietuvos liaudies buities muziejuje",
+        "Palangoje, ant Birutės kalno",
+        "Kernavėje, prie piliakalnių",
+        "Anykščiuose, prie Šventosios upės"
+      ],
+      "correct": 2,
+      "explanation": "Kernavė — senovinė Lietuvos sostinė — kasmet sutraukia tūkstančius žmonių į Joninių (Rasos) šventę. Prie piliakalnių kūrenami laužai, giedamos dainos ir atliekamos senovinės apeigos."
+    },
+    {
+      "question": "Kuo ypatinga Kernavės Joninių šventė?",
+      "options": [
+        "Derinamos senovinės apeigos, muzika, amatai ir tūkstantinės minios",
+        "Ten vyksta didžiausias Lietuvoje vaistažolių turgus",
+        "Tai vienintelė vieta, kur atliekamos autentiškos žynių apeigos",
+        "Ten kasmet statomas didžiausias laužas Baltijos šalyse"
+      ],
+      "correct": 0,
+      "explanation": "Kernavės Rasos šventė — didžiausias Joninių renginys Lietuvoje, kuriame tūkstančiai žmonių dalyvauja senovinėse apeigose, klausosi muzikos, stebi amatininkus ir kuria bendrą laužą prie piliakalnių."
+    },
+    {
+      "question": "Kaip šiuolaikinėje Lietuvoje dažniausiai švenčiamos Joninės?",
+      "options": [
+        "Organizuojant miesto festivalius su koncertais aikštėse",
+        "Gamtoje su draugais — laužas, dainos, vainikai ir naktinė pramoga",
+        "Dalyvaujant organizuotose ekskursijose į piliakalnius",
+        "Rengiant šeimyninius susiėjimus su tradicine vakariene"
+      ],
+      "correct": 1,
+      "explanation": "Šiandien Joninės — tai populiari šventė gamtoje: žmonės renkasi prie ežerų, upių ar miškuose, kuria laužus, pina vainikus, dainuoja ir linksminasi trumpiausią metų naktį."
+    }
+  ],
+  "createdAt": "2026-02-17T00:00:00.000Z",
+  "updatedAt": "2026-02-17T00:00:00.000Z"
+}

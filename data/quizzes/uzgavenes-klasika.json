@@ -1,0 +1,346 @@
+{
+  "id": "uzgavenes-klasika",
+  "title": "Užgavėnių klasika",
+  "description": "30 klausimų apie lietuviškas Užgavėnes — tradicijos, personažai, maistas ir istorija.",
+  "emoji": "🎭",
+  "questions": [
+    {
+      "question": "Kas yra Morė Užgavėnių tradicijoje?",
+      "options": [
+        "Pavasario deivė",
+        "Žiemos simbolis – iškamša, kuri sudeginama",
+        "Senovės lietuvių karalienė",
+        "Blynų kepimo meistras"
+      ],
+      "correct": 1,
+      "explanation": "Morė – tai šiaudinė iškamša, simbolizuojanti žiemą. Jos sudeginimas reiškia žiemos pabaigą ir pavasario pradžią.",
+      "image": "https://erasmus1rasa.weebly.com/uploads/1/2/4/6/124667401/uzgavenes-kbs_orig.jpg"
+    },
+    {
+      "question": "Ką daro persirengėliai per Užgavėnes?",
+      "options": [
+        "Stato sniego pilis",
+        "Vaikšto po namus su kaukėmis, dainuoja ir prašo vaišių",
+        "Rengia sporto varžybas",
+        "Sodina medžius"
+      ],
+      "correct": 1,
+      "explanation": "Persirengėliai (dar vadinami kaukėmis) vaikšto po kaimą ar miestą su kaukėmis, dainuoja, šoka ir prašo vaišių – tai viena seniausių Užgavėnių tradicijų.",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9u0v6OYVV_EdsvKr0z5lzx8zofU_qnlOi5Q&s"
+    },
+    {
+      "question": "Ką simbolizuoja Lašininio ir Kanapinio kova?",
+      "options": [
+        "Kovą tarp dviejų kaimų",
+        "Žiemos ir pavasario, riebaus ir pasninko maisto kovą",
+        "Sporto varžybas",
+        "Politinę kovą"
+      ],
+      "correct": 1,
+      "explanation": "Lašininis simbolizuoja žiemą ir riebų maistą, o Kanapinis – pavasarį ir pasninką. Kanapinis visada laimi, nes ateina Gavėnia.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Traditional_carnival_-_la%C5%A1ininis.jpg/1280px-Traditional_carnival_-_la%C5%A1ininis.jpg"
+    },
+    {
+      "question": "Kas laimi Lašininio ir Kanapinio kovoje?",
+      "options": [
+        "Lašininis",
+        "Kanapinis",
+        "Morė",
+        "Nei vienas – būna lygiosios"
+      ],
+      "correct": 1,
+      "explanation": "Kanapinis visada laimi, nes po Užgavėnių prasideda Gavėnia – 40 dienų pasninko laikotarpis, kai valgomas lengvas maistas.",
+      "image": "https://romuva.lt/wp-content/uploads/2017/01/Uzgavenes_V.-Daraskeviciaus-nuotr..jpg"
+    },
+    {
+      "question": "Kokia Užgavėnių tradicija siejama su rogutėmis?",
+      "options": [
+        "Rogutėmis vežamas Kanapinis",
+        "Čiuožiama nuo kalno – kuo toliau nučiuoži, tuo ilgesni bus linai",
+        "Rogutėmis deginamas laužas",
+        "Rogutėmis vežamas maistas į bažnyčią"
+      ],
+      "correct": 1,
+      "explanation": "Pagal tradiciją, kuo toliau nučiuoži nuo kalno rogutėmis, tuo ilgesni bus linai – tai sena žemdirbystės magija.",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlL2lnYDEkBH_7Pamyr9Mg4GlLb8Xxh8B8iQ&s"
+    },
+    {
+      "question": "Kokias šaknis turi Užgavėnės?",
+      "options": [
+        "Graikų mitologijos",
+        "Pagoniškos (senovės baltų)",
+        "Romos imperijos",
+        "Viduramžių riterių"
+      ],
+      "correct": 1,
+      "explanation": "Užgavėnės turi senas pagoniškas šaknis – tai žiemos išvarymo ir pavasario pasitikimo šventė, vėliau susipynusi su krikščioniškomis tradicijomis.",
+      "image": "https://media.multikino.lt/thumbnails/50/rc/OEY5NjRB/eyJ0aHVtYm5haWwiOnsic2l6ZSI6WyIxMTA0IiwiMTAwMDAiXSwibW9kZSI6Imluc2V0In19/uploads/images/films_and_events/main-photo_a830f25f2b.jpg"
+    },
+    {
+      "question": "Su kokia krikščioniška tradicija susijusios Užgavėnės?",
+      "options": [
+        "Kalėdų vigilia",
+        "Gavėnios pradžia – paskutinė diena prieš pasninką",
+        "Velykų rytas",
+        "Sekminės"
+      ],
+      "correct": 1,
+      "explanation": "Užgavėnės – tai paskutinė diena prieš Gavėnią (40 dienų pasninko laikotarpį iki Velykų). Todėl ir valgoma riebiai – 'užsigaunama'."
+    },
+    {
+      "question": "Ką reiškia žodis 'Užgavėnės'?",
+      "options": [
+        "Ugnies šventė",
+        "Užbaigti gavėti (užbaigti valgyti riebiai prieš pasninką)",
+        "Užburta naktis",
+        "Gauti dovanų"
+      ],
+      "correct": 1,
+      "explanation": "'Užgavėnės' kilęs nuo žodžio 'užgavėti' – užbaigti gavėti, t.y. paskutinė diena, kai galima valgyti riebų maistą prieš Gavėnios pasninką."
+    },
+    {
+      "question": "Kada Užgavėnės pirmą kartą paminėtos rašytiniuose šaltiniuose Lietuvoje?",
+      "options": [
+        "X amžiuje",
+        "XVI amžiuje",
+        "XIX amžiuje",
+        "Tik XX amžiuje"
+      ],
+      "correct": 1,
+      "explanation": "Pirmieji rašytiniai Užgavėnių paminėjimai Lietuvoje siekia XVI amžių, nors pati tradicija daug senesnė."
+    },
+    {
+      "question": "Kokia pagoniška tradicija išlikusi Užgavėnėse iki šiol?",
+      "options": [
+        "Aukojimas dievams",
+        "Morės (žiemos simbolio) deginimas",
+        "Šokiai aplink ąžuolą",
+        "Gyvulių laiminimas"
+      ],
+      "correct": 1,
+      "explanation": "Morės deginimas – tai sena pagoniška žiemos išvarymo apeiga, išlikusi iki šių dienų kaip svarbiausia Užgavėnių tradicija."
+    },
+    {
+      "question": "Iš ko paprastai daromas Morės iškamša?",
+      "options": [
+        "Iš molio",
+        "Iš šiaudų ir senų drabužių",
+        "Iš medžio",
+        "Iš popieriaus"
+      ],
+      "correct": 1,
+      "explanation": "Morė daromas iš šiaudų, aprengta senais drabužiais. Kartais jai pridedama bjauri veido kaukė."
+    },
+    {
+      "question": "Kokius gyvūnus dažniausiai vaizduoja Užgavėnių kaukės?",
+      "options": [
+        "Liūtus ir tigrus",
+        "Ožkas, meškinas, gerves ir kitus namų ar miško gyvūnus",
+        "Dinozaurus",
+        "Žuvis ir vėžlius"
+      ],
+      "correct": 1,
+      "explanation": "Tradicinės Užgavėnių kaukės vaizduoja kaimo gyvūnus – ožkas, meškinas, arkliais, gerves, taip pat velnius, raganas ir kitus personažus."
+    },
+    {
+      "question": "Koks Lašininio bruožas?",
+      "options": [
+        "Jis liesas ir aukštas",
+        "Jis storas, riebiai apsirengęs, simbolizuoja sotų žiemos maistą",
+        "Jis visada dėvi karūną",
+        "Jis apsirengęs kaip kunigas"
+      ],
+      "correct": 1,
+      "explanation": "Lašininis – storas, turtingas personažas, simbolizuojantis žiemą ir riebų maistą (lašinius, mėsą, spurgas)."
+    },
+    {
+      "question": "Koks Kanapinio bruožas?",
+      "options": [
+        "Jis storas ir linksmas",
+        "Jis liesas, simbolizuoja pasninko maistą ir pavasarį",
+        "Jis dėvi raudoną skrybėlę",
+        "Jis yra moteriškas personažas"
+      ],
+      "correct": 1,
+      "explanation": "Kanapinis – liesas, kuklus personažas, simbolizuojantis Gavėnios pasninką ir pavasarį (kanapės, žirniai, daržovės)."
+    },
+    {
+      "question": "Ką simbolizuoja žiemos varymas per Užgavėnes?",
+      "options": [
+        "Norą greičiau sulaukti atostogų",
+        "Gamtos ciklo pasikeitimą – žiemos pabaigą ir pavasario pradžią",
+        "Darbų sezono pabaigą",
+        "Kelionę į kitą miestą"
+      ],
+      "correct": 1,
+      "explanation": "Žiemos varymas – tai ritualinis veiksmas, simbolizuojantis gamtos atsinaujinimą ir pavasario atėjimą."
+    },
+    {
+      "question": "Koks yra pagrindinis Užgavėnių patiekalas?",
+      "options": [
+        "Cepelinai",
+        "Blynai",
+        "Šaltibarščiai",
+        "Kibinai"
+      ],
+      "correct": 1,
+      "explanation": "Blynai – pagrindinis Užgavėnių valgis. Jie simbolizuoja saulę ir šilumą, apvalūs kaip saulės diskas."
+    },
+    {
+      "question": "Koks tradicinis Užgavėnių patiekalas gaminamas iš žirnių?",
+      "options": [
+        "Žirnių sriuba",
+        "Žirniai su spirgučiais (spirgais)",
+        "Žirnių pyragas",
+        "Žirnių ledai"
+      ],
+      "correct": 1,
+      "explanation": "Žirniai su spirgučiais (spirgais) – klasikinis Užgavėnių valgis. Spirgučiai – tai pakepinti lašinių gabaliukai."
+    },
+    {
+      "question": "Kodėl per Užgavėnes valgoma ypač riebiai?",
+      "options": [
+        "Nes maistas buvo pigus",
+        "Nes tai paskutinė diena prieš Gavėnios pasninką",
+        "Nes žiemą reikia daugiau kalorijų",
+        "Nes taip liepė karalius"
+      ],
+      "correct": 1,
+      "explanation": "Per Užgavėnes valgoma riebiai, nes kitą dieną (Pelenų trečiadienį) prasideda 40 dienų Gavėnios pasninkas."
+    },
+    {
+      "question": "Kokį saldų kepinį tradiciška valgyti per Užgavėnes?",
+      "options": [
+        "Šakotį",
+        "Spurgas (ponchikus)",
+        "Napoleoną",
+        "Meduolį"
+      ],
+      "correct": 1,
+      "explanation": "Spurgos – tradicinis Užgavėnių saldumynas, kepamos aliejuje ir dažnai įdarytos uogiene."
+    },
+    {
+      "question": "Kodėl blynai laikomi Užgavėnių simboliu?",
+      "options": [
+        "Nes juos lengva gaminti",
+        "Nes jų apvali forma primena saulę",
+        "Nes jie gaminami iš kanapių",
+        "Nes jie ateina iš Italijos"
+      ],
+      "correct": 1,
+      "explanation": "Apvalūs, auksiniai blynai simbolizuoja saulę – pavasario ir šilumos grįžimą po ilgos žiemos."
+    },
+    {
+      "question": "Kokią savaitės dieną švenčiamos Užgavėnės?",
+      "options": [
+        "Sekmadienį",
+        "Antradienį",
+        "Penktadienį",
+        "Šeštadienį"
+      ],
+      "correct": 1,
+      "explanation": "Užgavėnės visada švenčiamos antradienį – lygiai 47 dienos prieš Velykas. Angliškai tai 'Shrove Tuesday' arba 'Fat Tuesday'."
+    },
+    {
+      "question": "Kiek dienų trunka Gavėnia, prasidedanti po Užgavėnių?",
+      "options": [
+        "7 dienas",
+        "40 dienų",
+        "30 dienų",
+        "21 dieną"
+      ],
+      "correct": 1,
+      "explanation": "Gavėnia trunka 40 dienų – nuo Pelenų trečiadienio iki Velykų. Tai pasninko ir dvasinio pasiruošimo laikotarpis."
+    },
+    {
+      "question": "Kaip vadinasi diena po Užgavėnių?",
+      "options": [
+        "Juodasis pirmadienis",
+        "Pelenų trečiadienis",
+        "Gavėnios sekmadienis",
+        "Verbų diena"
+      ],
+      "correct": 1,
+      "explanation": "Po Užgavėnių (antradienio) ateina Pelenų trečiadienis – pirmoji Gavėnios diena, kai bažnyčiose barstomi pelenai."
+    },
+    {
+      "question": "Nuo ko priklauso Užgavėnių data?",
+      "options": [
+        "Nuo Naujųjų metų datos",
+        "Nuo Velykų datos (kuri kinta kasmet)",
+        "Nuo Joninių datos",
+        "Ji visada yra vasario 20 d."
+      ],
+      "correct": 1,
+      "explanation": "Užgavėnių data priklauso nuo Velykų – jos švenčiamos lygiai 47 dienos prieš Velykas, todėl kasmet būna skirtingu laiku."
+    },
+    {
+      "question": "Kuriame Lietuvos regione Užgavėnės švenčiamos ypač spalvingai su didelėmis eisenomis?",
+      "options": [
+        "Suvalkijoje",
+        "Žemaitijoje",
+        "Dzūkijoje",
+        "Vilniaus krašte"
+      ],
+      "correct": 1,
+      "explanation": "Žemaitija garsėja ypač spalvingomis Užgavėnėmis – čia rengiamos didelės persirengėlių eisenos, gaminamos tradicinės kaukės."
+    },
+    {
+      "question": "Kuriame muziejuje kasmet vyksta didžiausia Užgavėnių šventė Lietuvoje?",
+      "options": [
+        "Valdovų rūmuose",
+        "Lietuvos liaudies buities muziejuje Rumšiškėse",
+        "MO muziejuje",
+        "Klaipėdos jūrų muziejuje"
+      ],
+      "correct": 1,
+      "explanation": "Rumšiškių liaudies buities muziejus kasmet rengia didžiausią Užgavėnių šventę su persirengėliais, Morės deginimu ir tradiciniais valgiais."
+    },
+    {
+      "question": "Kokia tradicinė Užgavėnių pramoga susijusi su arkliais?",
+      "options": [
+        "Arklių lenktynės",
+        "Važiavimas rogėmis aplink kaimą",
+        "Arklių šokdinimas",
+        "Arklių pardavimas mugėje"
+      ],
+      "correct": 1,
+      "explanation": "Per Užgavėnes buvo tradicija važinėtis rogėmis su arkliais aplink kaimą – tai ir pramoga, ir ritualinis žiemos išvarymas."
+    },
+    {
+      "question": "Ką daro persirengėliai, jei šeimininkai neduoda vaišių?",
+      "options": [
+        "Ramiai išeina",
+        "Pokštauja – gali paslėpti daiktus ar iškrėsti pokštą",
+        "Skambina policijai",
+        "Dainuoja liūdną dainą"
+      ],
+      "correct": 1,
+      "explanation": "Jei šeimininkai nevaišina, persirengėliai gali iškrėsti pokštą – paslėpti vartus, užkimšti kaminą ar kitaip pajuokauti."
+    },
+    {
+      "question": "Kaip Užgavėnės dažniausiai švenčiamos šiuolaikinėse Lietuvos mokyklose?",
+      "options": [
+        "Nerenkamos – tai sena tradicija",
+        "Vaikai persirengę ateina į mokyklą, kepa blynus, degina Morę",
+        "Tik skaitoma apie tai vadovėlyje",
+        "Rengiamos tik universitetuose"
+      ],
+      "correct": 1,
+      "explanation": "Daugelyje Lietuvos mokyklų vaikai persirengę ateina į pamokas, kepa blynus, gamina kaukes ir degina Morę – tai gyva tradicija."
+    },
+    {
+      "question": "Koks šiuolaikinis Užgavėnių elementas populiarus Lietuvos miestuose?",
+      "options": [
+        "Fejerverkai",
+        "Gatvės eitynės su kaukėmis, muzika ir Morės deginimu centrinėse aikštėse",
+        "Automobilių lenktynės",
+        "Kalėdinės mugės"
+      ],
+      "correct": 1,
+      "explanation": "Šiandien daugelis Lietuvos miestų rengia Užgavėnių eitynes centrinėse gatvėse su kaukėmis, muzika, šokiais ir Morės deginimu."
+    }
+  ],
+  "createdAt": "2026-02-17T00:00:00.000Z",
+  "updatedAt": "2026-02-17T13:57:47.892Z"
+}
