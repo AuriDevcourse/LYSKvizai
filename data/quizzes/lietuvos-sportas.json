@@ -1,0 +1,338 @@
+{
+  "id": "lietuvos-sportas",
+  "title": "Lietuvos sportas",
+  "description": "30 klausim\u0173 apie Lietuvos sport\u0105 \u2014 krep\u0161in\u012f, lengv\u0105j\u0105 atletik\u0105, plaukim\u0105 ir kitas disciplinas.",
+  "emoji": "\ud83c\udfc0",
+  "questions": [
+    {
+      "question": "Kiek kart\u0173 Lietuvos vyr\u0173 krep\u0161inio rinktin\u0117 tapo Europos \u010dempione?",
+      "options": [
+        "1 kart\u0105",
+        "2 kartus",
+        "4 kartus",
+        "3 kartus"
+      ],
+      "correct": 3,
+      "explanation": "Lietuva Europos krep\u0161inio \u010dempionato auks\u0105 laim\u0117jo 3 kartus: 1937, 1939 ir 2003 metais."
+    },
+    {
+      "question": "Kuris lietuvis tapo NBA reguliariojo sezono naudingiausiu \u017eaid\u0117ju (MVP)?",
+      "options": [
+        "Jonas Valan\u010di\u016bnas",
+        "Domantas Sabonis",
+        "Arvydas Sabonis",
+        "\u017dydr\u016bnas Ilgauskas"
+      ],
+      "correct": 1,
+      "explanation": "Domantas Sabonis 2024 m. buvo i\u0161rinktas NBA reguliariojo sezono naudingiausiu \u017eaid\u0117ju (MVP), \u017eaisdamas u\u017e Sacramento Kings."
+    },
+    {
+      "question": "Koki\u0105 sporto \u0161ak\u0105 atstovauja Virgilijus Alekna?",
+      "options": [
+        "\u0160uol\u012f \u012f auk\u0161t\u012f",
+        "Rutulio st\u016bmim\u0105",
+        "Disko metim\u0105",
+        "Ieties metim\u0105"
+      ],
+      "correct": 2,
+      "explanation": "Virgilijus Alekna \u2014 legendinis disko metikas, dvigubas olimpinis \u010dempionas (2000 ir 2004 m.)."
+    },
+    {
+      "question": "Kuriame mieste 2011 m. vyko Europos krep\u0161inio \u010dempionatas, kurio \u0161eiminink\u0117 buvo Lietuva?",
+      "options": [
+        "Vilniuje",
+        "Kaune",
+        "Klaip\u0117doje",
+        "Panev\u0117\u017eyje"
+      ],
+      "correct": 0,
+      "explanation": "2011 m. EuroBasket finalinis etapas vyko Vilniuje, Siemens arenoje (dabar \u2014 Twinsbet arena)."
+    },
+    {
+      "question": "R\u016bta Meilutyt\u0117 2012 m. Londono olimpiadoje i\u0161kovojo aukso medal\u012f. Kokia plaukimo rungtyje?",
+      "options": [
+        "100 m laisvuoju stiliumi",
+        "200 m peteliške",
+        "50 m nugara",
+        "100 m kr\u016btine"
+      ],
+      "correct": 3,
+      "explanation": "R\u016bta Meilutyt\u0117 laim\u0117jo olimpin\u012f auks\u0105 100 m plaukimo kr\u016btine rungtyje, b\u016bdama vos 15 met\u0173."
+    },
+    {
+      "question": "Kuris Lietuvos krep\u0161ininkas ilgiausiai \u017eaid\u0117 NBA ir yra Klivlendo legend\u0173 s\u0105ra\u0161e?",
+      "options": [
+        "\u017dydr\u016bnas Ilgauskas",
+        "\u0160ar\u016bnas Mar\u010diulionis",
+        "Arvydas Sabonis",
+        "Linas Kleiza"
+      ],
+      "correct": 0,
+      "explanation": "\u017dydr\u016bnas Ilgauskas NBA \u017eaid\u0117 13 sezon\u0173 (1997\u20132010), did\u017ei\u0105j\u0105 dal\u012f karjeros praleido Cleveland Cavaliers komandoje, kur jo mar\u0161kin\u0117li\u0173 numeris 11 buvo i\u0161keltas."
+    },
+    {
+      "question": "Kas buvo pirmasis lietuvis, \u017eaid\u0119s NBA lygoje?",
+      "options": [
+        "Arvydas Sabonis",
+        "\u0160ar\u016bnas Mar\u010diulionis",
+        "\u017dydr\u016bnas Ilgauskas",
+        "Domantas Sabonis"
+      ],
+      "correct": 1,
+      "explanation": "\u0160ar\u016bnas Mar\u010diulionis 1989 m. tapo pirmuoju lietuviu (ir vienu pirm\u0173j\u0173 soviet\u0173 \u017eaid\u0117j\u0173), \u017eaidusiu NBA \u2014 jis atstovavo Golden State Warriors."
+    },
+    {
+      "question": "Kok\u012f olimpin\u012f medal\u012f Lietuvos krep\u0161inio rinktin\u0117 laim\u0117jo 1992 m. Barselonos olimpiadoje?",
+      "options": [
+        "Aukso",
+        "Sidabro",
+        "Bronzos",
+        "Nedalyvavo"
+      ],
+      "correct": 2,
+      "explanation": "1992 m. Barselonos olimpiadoje Lietuva laim\u0117jo bronzos medal\u012f \u2014 tai buvo pirmasis nepriklausomos Lietuvos pasirodymas olimpiadoje."
+    },
+    {
+      "question": "Kuris lietuvis dviratininkas yra laim\u0117j\u0119s Giro d'Italia etap\u0173?",
+      "options": [
+        "Ram\u016bnas Navardauskas",
+        "Ignatas Konovalovas",
+        "Gediminas Bagdonas",
+        "Evaldas \u0160i\u0161kevi\u010dius"
+      ],
+      "correct": 0,
+      "explanation": "Ram\u016bnas Navardauskas laim\u0117jo Giro d'Italia etap\u0105 2014 m. ir taip pat pasi\u017eym\u0117jo Tour de France lenktyn\u0117se."
+    },
+    {
+      "question": "Koks yra populiariausias sportas Lietuvoje?",
+      "options": [
+        "Futbolas",
+        "Ledo ritulys",
+        "Lengvoji atletika",
+        "Krep\u0161inis"
+      ],
+      "correct": 3,
+      "explanation": "Krep\u0161inis Lietuvoje da\u017enai vadinamas antr\u0105ja religija \u2014 tai populiariausias ir s\u0117kmingiausias sportas \u0161alyje."
+    },
+    {
+      "question": "Kuriais metais Arvydas Sabonis debiutavo NBA?",
+      "options": [
+        "1989",
+        "1992",
+        "1995",
+        "1998"
+      ],
+      "correct": 2,
+      "explanation": "Arvydas Sabonis NBA debiutavo 1995 m., \u017eaisdamas u\u017e Portland Trail Blazers, nors buvo draftuotas dar 1986 m."
+    },
+    {
+      "question": "Kas yra Mykolas Alekna?",
+      "options": [
+        "Krep\u0161ininkas, \u017eid\u017eiantis Eurolygoje",
+        "Disko metikas, Virgilijaus Aleknos s\u016bnus",
+        "Plaukikas, Europos \u010dempionas",
+        "Futbolininkas, \u017eaid\u017eiantis Bundesligoje"
+      ],
+      "correct": 1,
+      "explanation": "Mykolas Alekna \u2014 disko metikas, legendinio Virgilijaus Aleknos s\u016bnus. 2024 m. jis pagerino pasaulio rekord\u0105 disko metime (74,35 m) ir laim\u0117jo olimpin\u012f auks\u0105 Pary\u017eiuje."
+    },
+    {
+      "question": "Kokiame sporte Diana Zagainova atstovauja Lietuvai?",
+      "options": [
+        "Menin\u0117 gimnastika",
+        "Dailioji \u010diuo\u017eimas",
+        "Plaukimas",
+        "\u0160uoliai \u012f vanden\u012f"
+      ],
+      "correct": 1,
+      "explanation": "Diana Zagainova \u2014 talentinga Lietuvos dailiojo \u010diuo\u017eimo atstov\u0117, dalyvavusi \u017eiemos olimpin\u0117se \u017eidyn\u0117se."
+    },
+    {
+      "question": "Kuriame olimpiniame \u017eaidyne Lietuva pirm\u0105 kart\u0105 dalyvavo kaip nepriklausoma valstyb\u0117 (po nepriklausomyb\u0117s atk\u016brimo)?",
+      "options": [
+        "1988 m. Seulas",
+        "1992 m. Barselona",
+        "1996 m. Atlanta",
+        "2000 m. Sidn\u0117jus"
+      ],
+      "correct": 1,
+      "explanation": "1992 m. Barselonos olimpiadoje Lietuva pirm\u0105 kart\u0105 po nepriklausomyb\u0117s atk\u016brimo dalyvavo kaip savarankiška valstybė."
+    },
+    {
+      "question": "Kas yra \u017einomas kaip Lietuvos krep\u0161inio t\u0117vas?",
+      "options": [
+        "Vladas Garastas",
+        "Jonas Kazlauskas",
+        "Pranas Lubinas",
+        "Stepas Butautas"
+      ],
+      "correct": 2,
+      "explanation": "Pranas Lubinas laikomas Lietuvos krep\u0161inio t\u0117vu \u2014 jis 1922 m. pirmasis pristat\u0117 krep\u0161in\u012f Lietuvoje ir organizavo pirm\u0105sias var\u017eybas."
+    },
+    {
+      "question": "U\u017e kuri\u0105 NBA komand\u0105 \u017eaid\u017eia Jonas Valan\u010di\u016bnas (2024-2025 sezonas)?",
+      "options": [
+        "Toronto Raptors",
+        "Memphis Grizzlies",
+        "New Orleans Pelicans",
+        "Washington Wizards"
+      ],
+      "correct": 3,
+      "explanation": "Jonas Valan\u010di\u016bnas 2024\u20132025 sezonu \u017eaid\u0117 Washington Wizards komandoje."
+    },
+    {
+      "question": "Kuris treneris ved\u0117 Lietuvos krep\u0161inio rinktin\u0119 \u012f 2003 m. Europos \u010dempionato auks\u0105?",
+      "options": [
+        "Vladas Garastas",
+        "Jonas Kazlauskas",
+        "Antanas Sireika",
+        "K\u0119stutis Kemz\u016bra"
+      ],
+      "correct": 1,
+      "explanation": "Jonas Kazlauskas buvo vyriausiasis treneris, kai Lietuva 2003 m. Stokholme laim\u0117jo Europos krep\u0161inio \u010dempionat\u0105."
+    },
+    {
+      "question": "Kiek bronzos medali\u0173 Lietuvos krep\u0161inio rinktin\u0117 laim\u0117jo vasaros olimpin\u0117se \u017eaidyn\u0117se (iki 2024)?",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "correct": 2,
+      "explanation": "Lietuvos krep\u0161inio rinktin\u0117 olimpiadose laim\u0117jo bronz\u0105 3 kartus: 1992 m. Barselonoje, 1996 m. Atlantoje ir 2000 m. Sidn\u0117juje."
+    },
+    {
+      "question": "Kokiame sporte Lietuvai atstovavo Tomas Kauk\u0117nas?",
+      "options": [
+        "Biatlonas",
+        "\u0160audymas",
+        "Orientavimosi sportas",
+        "\u0160iuolaikin\u0117 penkiakovė"
+      ],
+      "correct": 3,
+      "explanation": "Tomas Kauk\u0117nas \u2014 Lietuvos \u0161iuolaikin\u0117s penkiakov\u0117s atstovas, dalyvav\u0119s olimpin\u0117se \u017eaidyn\u0117se."
+    },
+    {
+      "question": "Kas laim\u0117jo pirm\u0105j\u012f Lietuvos olimpin\u012f medal\u012f po nepriklausomyb\u0117s atk\u016brimo?",
+      "options": [
+        "Krepšinio rinktinė",
+        "R\u016bta Meilutyt\u0117",
+        "Virgilijus Alekna",
+        "Daina Gudzinevičiūtė"
+      ],
+      "correct": 0,
+      "explanation": "Pirm\u0105j\u012f nepriklausomos Lietuvos olimpin\u012f medal\u012f (bronz\u0105) laim\u0117jo krep\u0161inio rinktin\u0117 1992 m. Barselonoje."
+    },
+    {
+      "question": "Kokiame sporte Daina Gudzinevičiūtė laimėjo olimpinį auksą?",
+      "options": [
+        "Lengvoji atletika",
+        "Šaudymas (trap)",
+        "Plaukimas",
+        "Baidarės ir kanojos"
+      ],
+      "correct": 1,
+      "explanation": "Daina Gudzinevičiūtė 2000 m. Sidnėjaus olimpiadoje laimėjo auksą šaudymo trap rungtyje — tai buvo pirmasis Lietuvos individualus olimpinis auksas."
+    },
+    {
+      "question": "Kuris lietuvis futbolininkas žaidė Škotijos Hearts klube ir Lietuvos rinktinėje?",
+      "options": [
+        "Edgaras Jankauskas",
+        "Tomas Danilevičius",
+        "Deividas Česnauskis",
+        "Saulius Mikoliūnas"
+      ],
+      "correct": 3,
+      "explanation": "Saulius Mikoliūnas žaidė Hearts klube Edinburge ir ilgą laiką buvo svarbus Lietuvos futbolo rinktinės žaidėjas."
+    },
+    {
+      "question": "Koks Kauno krepšinio klubas yra daugiausia kartų laimėjęs Eurolygą?",
+      "options": [
+        "Kauno Žalgiris",
+        "Vilniaus Rytas",
+        "Kauno Žalgiris ir Rytas po lygiai",
+        "Nė vienas Lietuvos klubas nėra laimėjęs Eurolygos"
+      ],
+      "correct": 0,
+      "explanation": "Kauno Žalgiris 1999 m. laimėjo Eurolygą (tuomet — FIBA SuproLiga) — tai vienintelis Lietuvos klubas, pasiekęs šį titulą."
+    },
+    {
+      "question": "Kokiame sporte Lietuvai atstovauja Airinė Palšytė?",
+      "options": [
+        "Šuolis į tolį",
+        "100 m bėgimas",
+        "Šuolis į aukštį",
+        "Trišuolis"
+      ],
+      "correct": 2,
+      "explanation": "Airinė Palšytė — Lietuvos šuolininkė į aukštį, Europos čempionė (2017 m. Belgrade), peršokusi 2,01 m."
+    },
+    {
+      "question": "Kuris lietuvis laimėjo 2023 m. pasaulio jėgos trikovės čempionatą?",
+      "options": [
+        "Žydrūnas Savickas",
+        "Andrius Maželis",
+        "Sergej Fedosienko",
+        "Dmitrijus Inzarcevas"
+      ],
+      "correct": 2,
+      "explanation": "Sergej Fedosienko — Lietuvos jėgos trikovės atstovas, daugiakartinis pasaulio čempionas savo svorio kategorijoje."
+    },
+    {
+      "question": "Kiek aukso medalių Žydrūnas Savickas laimėjo World's Strongest Man varžybose?",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "correct": 3,
+      "explanation": "Žydrūnas Savickas laimėjo World's Strongest Man titulą 4 kartus (2009, 2010, 2012, 2014) ir yra laikomas vienu stipriausių žmonių istorijoje."
+    },
+    {
+      "question": "Kas buvo Lietuvos krepšinio rinktinės kapitonas 2003 m. Europos čempionate?",
+      "options": [
+        "Šarūnas Jasikevičius",
+        "Arvydas Sabonis",
+        "Eurelijus Žukauskas",
+        "Ramūnas Šiškauskas"
+      ],
+      "correct": 0,
+      "explanation": "Šarūnas Jasikevičius buvo rinktinės lyderis ir kapitonas 2003 m. EuroBasket turnyre, kur Lietuva laimėjo auksą."
+    },
+    {
+      "question": "Kuriame žiemos sporte Lietuvai olimpiadose atstovavo Ieva Januškevičiūtė?",
+      "options": [
+        "Kalnų slidinėjimas",
+        "Biatlonas",
+        "Dailioji čiuožimas",
+        "Slidinėjimas (trasų)"
+      ],
+      "correct": 0,
+      "explanation": "Ieva Januškevičiūtė — Lietuvos kalnų slidininkė, atstovavusi šaliai žiemos olimpinėse žaidynėse."
+    },
+    {
+      "question": "Kokia futbolo komanda daugiausia kartų laimėjo Lietuvos A lygą (iki 2024)?",
+      "options": [
+        "Vilniaus Žalgiris",
+        "Kauno FBK Kaunas",
+        "Sūduva",
+        "Vilniaus Žalgiris ir FBK Kaunas po lygiai"
+      ],
+      "correct": 0,
+      "explanation": "Vilniaus Žalgiris (anksčiau — VMFD Žalgiris) yra daugiausia kartų laimėjęs Lietuvos futbolo A lygą."
+    },
+    {
+      "question": "Kuris lietuvis tapo Dakaro ralio čempionu (motociklų klasėje)?",
+      "options": [
+        "Vaidotas Žala",
+        "Benediktas Vanagas",
+        "Balys Bardauskas",
+        "Nė vienas lietuvis nėra laimėjęs Dakaro ralio"
+      ],
+      "correct": 3,
+      "explanation": "Nors Vaidotas Žala ir Benediktas Vanagas sėkmingai dalyvavo Dakaro ralyje, nė vienas lietuvis kol kas nėra laimėjęs bendros įskaitos (nei motociklų, nei automobilių klasėje)."
+    }
+  ]
+}

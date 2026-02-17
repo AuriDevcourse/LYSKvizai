@@ -1,0 +1,338 @@
+{
+  "id": "lietuvos-izymybes",
+  "title": "Lietuvos įžymybės",
+  "description": "30 klausimų apie žymiausius lietuvius — menininkus, sportininkus, mokslininkus ir kultūros veikėjus.",
+  "emoji": "⭐",
+  "questions": [
+    {
+      "question": "Kuris lietuvių dailininkas ir kompozitorius kūrė paveikslus, įkveptas muzikos, ir yra laikomas Lietuvos simfoninės muzikos pradininku?",
+      "options": [
+        "Jonas Basanavičius",
+        "Mikalojus Konstantinas Čiurlionis",
+        "Vincas Kudirka",
+        "Antanas Žmuidzinavičius"
+      ],
+      "correct": 1,
+      "explanation": "M. K. Čiurlionis (1875–1911) – unikalus menininkas, sujungęs dailę ir muziką. Jo paveikslai „Sonatės“ ir simfoninės poemos yra Lietuvos kultūros simboliai."
+    },
+    {
+      "question": "Kas parašė pirmąjį grožinės literatūros kūrinį lietuvių kalba – poemą „Metai“?",
+      "options": [
+        "Kristijonas Donelaičis",
+        "Maironis",
+        "Antanas Baranauskas",
+        "Jonas Mačiulis"
+      ],
+      "correct": 0,
+      "explanation": "Kristijonas Donelaičis (1714–1780) parašė „Metus“ – pirmąjį grožinės literatūros kūrinį lietuvių kalba, pasakojantį apie keturis metų laikus."
+    },
+    {
+      "question": "Koks yra tikrasis poeto Maironio vardas?",
+      "options": [
+        "Vincas Kudirka",
+        "Antanas Smetona",
+        "Jonas Basanavičius",
+        "Jonas Mačiulis"
+      ],
+      "correct": 3,
+      "explanation": "Maironis – tai Jonas Mačiulis-Maironis (1862–1932), vadinamas lietuviu taųtos dainiumi. Jo eilėraščiai „Pavasario balsai“ tapo tautos himnu."
+    },
+    {
+      "question": "Kurią dainą atliko „The Roop“ 2021 m. Eurovizijos dainų konkurse?",
+      "options": [
+        "„On Fire“",
+        "„Discotheque“",
+        "„We Are The Winners“",
+        "„Eastern European Funk“"
+      ],
+      "correct": 1,
+      "explanation": "„The Roop“ su daina „Discotheque“ atstovavo Lietuvai 2021 m. Eurovizijoje Roterdame ir užėmė 8 vietą."
+    },
+    {
+      "question": "Jonas Mekas yra laikomas vienu svarbiausių kūrėjų kurioje meno srityje?",
+      "options": [
+        "Avangardiniame kine",
+        "Architektūroje",
+        "Skulptūroje",
+        "Operos muzikoje"
+      ],
+      "correct": 0,
+      "explanation": "Jonas Mekas (1922–2019) – lietuviu kilmės amerikietių kino menininkas, vadinamas „avangardinio kino krikštatėviu“. Jis įkūrė „Anthology Film Archives“ Niujorke."
+    },
+    {
+      "question": "Kuris lietuvis 1982 m. gavo Nobelio chemijos premiją?",
+      "options": [
+        "Jonas Kubiliūs",
+        "Marija Gimbutienė",
+        "Aaronas Klugas",
+        "Vytautas Landsbergis"
+      ],
+      "correct": 2,
+      "explanation": "Aaronas Klugas (Aaron Klug), gimęs 1926 m. Želvoje, Lietuvoje, 1982 m. gavo Nobelio chemijos premiją už kristalografinės elektroninės mikroskopijos plėtojimą."
+    },
+    {
+      "question": "Ką įkūrė Jurgis Mačiūnas (George Maciunas)?",
+      "options": [
+        "Bauhaus judėjimą",
+        "Pop artą",
+        "Dadaizmą",
+        "„Fluxus“ meno judėjimą"
+      ],
+      "correct": 3,
+      "explanation": "Jurgis Mačiūnas (1931–1978) – lietuvių kilmės menininkas, įkūręs tarptautinį avangardinio meno judėjimą „Fluxus“, suburęsį menininkus iš viso pasaulio."
+    },
+    {
+      "question": "Andrius Mamontovas yra žinomas kaip kokios lietuvių rok grupės lyderis?",
+      "options": [
+        "„Foje“",
+        "„Antis“",
+        "„Hiperbolė“",
+        "„Sel“"
+      ],
+      "correct": 0,
+      "explanation": "Andrius Mamontovas – legendinės lietuvių rok grupės „Foje“ įkūrėjas ir vokalistas. Grupė veikė 1984–1997 m. ir tapo viena įtakingiausių Lietuvos muzikos scenoje."
+    },
+    {
+      "question": "Kas sukūrė neoficialiai tautos himnu tapusią dainą „Trą, trą, trą, mes parvykštam namo“?",
+      "options": [
+        "Jurga Šeduikytė",
+        "Andrius Mamontovas",
+        "Donatas Montvydas",
+        "Marijonas Mikutavičius"
+      ],
+      "correct": 3,
+      "explanation": "Marijonas Mikutavičius sukūrė „Trą, trą, trą“ – 2007 m. Europos krepšinio čempionato himą, tapusį neoficialiu Lietuvos sporto himnu."
+    },
+    {
+      "question": "Kuri lietuvė dainininkė laimėjo „Eurovision“ dainų konkursą 2015 m. Lietuvos atrankoje su daina „This Time“?",
+      "options": [
+        "Ieva Zasimauskaitė",
+        "Monika Liu",
+        "Jurga Šeduikytė",
+        "Monika Linkytė"
+      ],
+      "correct": 3,
+      "explanation": "Monika Linkytė kartu su Vaidu Baumila atstovavo Lietuvai 2015 m. Eurovizijoje Vienoje su daina „This Time“."
+    },
+    {
+      "question": "Kas yra Arvydas Sabonis?",
+      "options": [
+        "Vienas geriausiu visų laikų Europos krepšininku",
+        "Olimpinis plaukikas",
+        "Garsusis lietuviu pianistas",
+        "Futbolo trenerių legenda"
+      ],
+      "correct": 0,
+      "explanation": "Arvydas Sabonis (g. 1964) – legendinis Lietuvos krepšininkas, žaidęs TSRS, Ispanijos ir NBA lygų komandose. Laikomas vienu geriausių Europos centru visų laikų."
+    },
+    {
+      "question": "Donatas Montvydas Lietuvoje taip pat žinomas kokiu sceniniu vardu?",
+      "options": [
+        "D.Mon",
+        "Donny Montell",
+        "MontyD",
+        "DonVydas"
+      ],
+      "correct": 1,
+      "explanation": "Donatas Montvydas, žinomas kaip Donny Montell, atstovavo Lietuvai Eurovizijoje 2012 ir 2016 m. Jo sceninis vardas tapo atpažįstamas visoje Europoje."
+    },
+    {
+      "question": "Kurį filmą sukurė režisierė Alantė Kavaitė, pelniusį apdovanojimą Berlyno kino festivalyje?",
+      "options": [
+        "„Vasara“",
+        "„Senėlių karas“",
+        "„Novembėr“",
+        "„Vasaros išgyvenimas“ (Summer Survivors)"
+      ],
+      "correct": 3,
+      "explanation": "Alantė Kavaitė – jauna lietuvių režisierė, kurios filmas „Vasaros išgyvenimas“ (2018) buvo atrinktas į Berlyno kino festivalio programą."
+    },
+    {
+      "question": "Matematiką Joną Kubilių labiausiai išgaršino darbai kurioje srityje?",
+      "options": [
+        "Geometrijoje",
+        "Tikimybių teorijoje ir skaičių teorijoje",
+        "Algebrinėje topologijoje",
+        "Diskrečiojoje matematikoje"
+      ],
+      "correct": 1,
+      "explanation": "Jonas Kubiliūs (1921–2011) – žymus lietuvių matematikas, tikimybių teorijos ir skaičių teorijos specialistė, Vilniaus universiteto rektorius."
+    },
+    {
+      "question": "Kuri Lietuvos krepšininke tapo WNBA žvaigžde ir žaidė „Chicago Sky“ komandoje?",
+      "options": [
+        "Sandra Valuzyte",
+        "Gintare Petronyte",
+        "Ausra Bimbaite",
+        "Jurgita Streimikyte-Virbickiene"
+      ],
+      "correct": 0,
+      "explanation": "Nors WNBA sulaukia vis daugiau lietuvių dėmesio, tarp žinomiausių Lietuvos krepšininkės JAV – kelios žaidė NCAA ir WNBA lygų komandose."
+    },
+    {
+      "question": "Kas įkūrė „Vinted“ – vieną sėkmingiausių Lietuvos technologijų įmonių?",
+      "options": [
+        "Vladas Lasas",
+        "Milda Mitkutė ir Justas Janauskas",
+        "Eimantas Balniūnas",
+        "Tomas Obačauskas"
+      ],
+      "correct": 1,
+      "explanation": "„Vinted“ įkūrė Milda Mitkutė ir Justas Janauskas 2008 m. Vilniuje. Tai pirmasis Lietuvos vienaragiė (unicorn) – įmonė, kurios vertė viršijo 1 mlrd. eurų."
+    },
+    {
+      "question": "Koks Lietuvos miestas yra gimtasis M. K. Čiurlionio?",
+      "options": [
+        "Kaunas",
+        "Vilnius",
+        "Varėna",
+        "Druskininkai"
+      ],
+      "correct": 2,
+      "explanation": "M. K. Čiurlionis gimė 1875 m. Varėnoje (Seinai, tuometinė Rusijos imperija). Nors daugiausia siejamas su Kaunu ir Druskinkais, jo gimtinė – Varėna."
+    },
+    {
+      "question": "Kas yra Šarūnas Marčiulionis Lietuvos sporto istorijoje?",
+      "options": [
+        "Pirmasis lietuvis, žaidęs NBA",
+        "Olimpinis čempionas dziudo",
+        "Europos futbolo čempionas",
+        "Olimpinis plaukimo čempionas"
+      ],
+      "correct": 0,
+      "explanation": "Šarūnas Marčiulionis (g. 1964) – pirmasis TSRS ir vienas pirmųjų europietių krepšininkų, sėkmingai žaidusių NBA. Jis priimtas į Krepšinio Šlovės muziejus."
+    },
+    {
+      "question": "Kuri dainininkė atstovavo Lietuvai 2022 m. Eurovizijoje su daina „Sentimentai“?",
+      "options": [
+        "Jurga Šeduikytė",
+        "Ieva Zasimauskaitė",
+        "Monika Liu",
+        "Aistė Smilgevičiūtė"
+      ],
+      "correct": 2,
+      "explanation": "Monika Liu su daina „Sentimentai“ atstovavo Lietuvai 2022 m. Eurovizijoje Turine. Tai buvo viena rečiausių lietuviškai atliktų dainų konkurse."
+    },
+    {
+      "question": "Rok grupė „Antis“ ir jos lyderis Algirdas Kauspedas buvo ypač įtakingi kuriuo laikotarpiu?",
+      "options": [
+        "7-ajame dešimtmetyje",
+        "Sąjūdžio ir Nepriklausomybės atkurimo laikais (1988–1991)",
+        "2000-ųjų pradžioje",
+        "Pirmosios Lietuvos Respublikos metu"
+      ],
+      "correct": 1,
+      "explanation": "„Antis“ su Algirdu Kauspedu buvo viena įtakingiausių Sąjūdžio laikotarpio grupių. Jų satyrinės dainos tapo laisvės ir pasipriešinimo simboliu."
+    },
+    {
+      "question": "Kuri archeologė ir mitologė išgarėjo pasaulyje „Deivu civilizacijos“ teorija?",
+      "options": [
+        "Birutė Galdikas",
+        "Marija Gimbutienė",
+        "Ona Šimaitė",
+        "Emilija Pliaterytė"
+      ],
+      "correct": 1,
+      "explanation": "Marija Gimbutienė (1921–1994) – lietuvių kilmės amerikietių archeologė, išgarėjusi „Senosios Europos“ ir deivu civilizacijos teorijomis."
+    },
+    {
+      "question": "Kas yra Ruta Meilutyte lietuvių sporto istorijoje?",
+      "options": [
+        "Lengvosios atletikos čempionė",
+        "Europos šachmatų čempionė",
+        "Olimpinė plaukimo čempionė",
+        "Pasaulio gimnastikos čempionė"
+      ],
+      "correct": 2,
+      "explanation": "Rūta Meilutytė (g. 1997) – 2012 m. Londono olimpinių žaidynių čempionė, laimėjusi auksą 100 m krūtine rungtyje. Ji buvo vos 15 metų!"
+    },
+    {
+      "question": "Lietuvių technologų įkurta „Nord Security“ (NordVPN) tapo antruoju Lietuvos „vienaragiu“. Kur įsikūrė bendrovė?",
+      "options": [
+        "Kaune",
+        "Klaipėdoje",
+        "Šiauliuose",
+        "Vilniuje"
+      ],
+      "correct": 3,
+      "explanation": "„Nord Security“, kuriai priklauso NordVPN, įsikūrė Vilniuje. Tai antrasis Lietuvos vienaragis po „Vinted“."
+    },
+    {
+      "question": "Kuri Jurga Šeduikytės daina tapo didžiuliu hitu Lietuvoje 2006–2007 m.?",
+      "options": [
+        "„Par duok man“",
+        "„Kol dar galiu kvėpuoti“",
+        "„Boso kojų mergaitė“",
+        "„Lietuva“"
+      ],
+      "correct": 0,
+      "explanation": "Jurga Šeduikytė su daina „Par duok man“ (iš „Vox Populi“ albumo) tapo viena populiariausių Lietuvos pop atlikėjų 2006–2007 m."
+    },
+    {
+      "question": "Kas buvo Vincas Kudirka?",
+      "options": [
+        "Lietuvių tautinio atgimimo veikėjas, parašęs „Tautišką giesmę“",
+        "Pirmasis Lietuvos prezidentas",
+        "Lietuvių operos įkūrėjas",
+        "Žymus lietuvių skulptorius"
+      ],
+      "correct": 0,
+      "explanation": "Vincas Kudirka (1858–1899) – gydytojas, rašytojas ir tautinio atgimimo veikėjas, parašęs Lietuvos himną „Tautišką giesmę“."
+    },
+    {
+      "question": "Kas yra Virgilijus Noreika Lietuvos kultūroje?",
+      "options": [
+        "Žymus kino režisierius",
+        "Garsusis lietuviu rašytojas",
+        "Vienas žymiausiu lietuvių operos dainininkų (tenoras)",
+        "Profesionalus krepšininkas"
+      ],
+      "correct": 2,
+      "explanation": "Virgilijus Noreika (1935–2018) – legendinis lietuvių operos tenoras, daugybę metų atlikęs pagrindines partijas Lietuvos nacionaliniame operos ir baleto teatre."
+    },
+    {
+      "question": "Kuris lietuvis užėmė pirmąją vietą „X Factor“ Jungtinėje Karalystėje?",
+      "options": [
+        "Donatas Montvydas",
+        "Saulius Prusiškis",
+        "Ieva Zasimauskaitė",
+        "Nė vienas lietuvis nelaimėjo „X Factor UK“"
+      ],
+      "correct": 3,
+      "explanation": "Nors kai kurie lietuviai dalyvavo „X Factor“ atrankose, nė vienas nelaimejo pagrindinio konkurso Jungtinej Karalystėje. Tačiau lietuviai sėkmingai pasirodė kituose tarptautiniuose konkursuose."
+    },
+    {
+      "question": "Kas išrado lazerio technologijas, už kurias buvo nominuotas Nobelio premijai, ir yra laikomas „lazeriu tėvu“ Lietuvoje?",
+      "options": [
+        "Algirdas Avizienis",
+        "Algirdas Piskarskas",
+        "Teodoras Grotusas",
+        "Jonas Kubilius"
+      ],
+      "correct": 1,
+      "explanation": "Algirdas Piskarskas – žymus lietuvių fizikas, parametrinės šviesos generatorių ir lazerių specialistė, prisidėjęs prie Lietuvos lazerinių technologijų proveržio."
+    },
+    {
+      "question": "Koks lietuvis tapo įžymiu YouTube turinio kurėju (vloger), žinomu visame pasaulyje?",
+      "options": [
+        "Lukas Podolskis",
+        "Rolandas Mackevičius",
+        "Vidas Bareikis",
+        "Nė vienas lietuvis nėra tapus globaliu YouTube fenomenu tokiu mastu kaip PewDiePie"
+      ],
+      "correct": 3,
+      "explanation": "Nors Lietuvoje yra populiarių YouTuberų (Vidas Bareikis, JPP ir kt.), kol kas nė vienas nėra pasėkęs tokio globalaus masto kaip didieji pasaulio vlogeriai. Tačiau lietuviai aktyviai kuria turini!"
+    },
+    {
+      "question": "Ieva Zasimauskaitė atstovavo Lietuvai 2018 m. Eurovizijoje. Kokia buvo jos daina?",
+      "options": [
+        "„I’m Alive“",
+        "„Love Is On My Side“",
+        "„When We’re Old“",
+        "„Forever Young“"
+      ],
+      "correct": 2,
+      "explanation": "Ieva Zasimauskaitė su daina „When We’re Old“ užėmė 12 vietą 2018 m. Eurovizijoje Lisabonoje. Daina tapo vienu žinomiausių lietuvių pasirodymu konkurse."
+    }
+  ]
+}
