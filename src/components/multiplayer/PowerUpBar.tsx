@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Snowflake, Shield, Zap } from "lucide-react";
+import { Snowflake, Shield, ChevronsUp } from "lucide-react";
 import type { PowerUpType } from "@/lib/multiplayer/types";
 
 interface PowerUpBarProps {
@@ -13,7 +13,7 @@ interface PowerUpBarProps {
 const POWER_UPS: { type: PowerUpType; label: string; icon: typeof Snowflake; color: string; desc: string }[] = [
   { type: "freeze", label: "Užšaldymas", icon: Snowflake, color: "bg-cyan-500 hover:bg-cyan-400", desc: "−3s laikmačiui" },
   { type: "shield", label: "Skydas", icon: Shield, color: "bg-emerald-500 hover:bg-emerald-400", desc: "Apsaugo seriją" },
-  { type: "double", label: "×2", icon: Zap, color: "bg-white text-[#46178f] hover:bg-white/90", desc: "Dvigubi taškai" },
+  { type: "double", label: "×2 Taškai", icon: ChevronsUp, color: "bg-[#d89e00] hover:bg-[#d89e00]/80", desc: "Dvigubi taškai" },
 ];
 
 export default function PowerUpBar({ usesLeft, onUse, disabled }: PowerUpBarProps) {
@@ -26,7 +26,7 @@ export default function PowerUpBar({ usesLeft, onUse, disabled }: PowerUpBarProp
   return (
     <div className="w-full">
       <p className="mb-2 text-center text-xs font-bold text-white/40">
-        Galios — {usesLeft} {usesLeft === 1 ? "naudojimas" : "naudojimai"} likę
+        Galios — {usesLeft} liko
       </p>
       <div className="flex items-stretch justify-center gap-2">
         {POWER_UPS.map((pu) => {

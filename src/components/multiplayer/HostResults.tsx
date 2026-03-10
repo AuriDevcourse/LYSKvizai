@@ -10,10 +10,10 @@ import EmojiReactions from "./EmojiReactions";
 import Avatar from "@/components/Avatar";
 
 const OPTION_STYLES = [
-  { border: "border-red-400", bg: "bg-red-500", barBg: "bg-red-400/25", iconBg: "bg-red-500", icon: Triangle },
-  { border: "border-blue-400", bg: "bg-blue-500", barBg: "bg-blue-400/25", iconBg: "bg-blue-500", icon: Diamond },
-  { border: "border-emerald-400", bg: "bg-emerald-500", barBg: "bg-emerald-400/25", iconBg: "bg-emerald-500", icon: Circle },
-  { border: "border-white", bg: "bg-white text-[#46178f]", barBg: "bg-amber-400/25", iconBg: "bg-white", icon: Square },
+  { border: "border-[#e21b3c]", bg: "bg-[#e21b3c]", barBg: "bg-[#e21b3c]/30", iconBg: "bg-[#e21b3c]", icon: Triangle },
+  { border: "border-[#1368ce]", bg: "bg-[#1368ce]", barBg: "bg-[#1368ce]/30", iconBg: "bg-[#1368ce]", icon: Diamond },
+  { border: "border-[#26890c]", bg: "bg-[#26890c]", barBg: "bg-[#26890c]/30", iconBg: "bg-[#26890c]", icon: Circle },
+  { border: "border-[#d89e00]", bg: "bg-[#d89e00]", barBg: "bg-[#d89e00]/30", iconBg: "bg-[#d89e00]", icon: Square },
 ];
 
 interface HostResultsProps {
@@ -36,18 +36,18 @@ export default function HostResults({
   const totalAnswers = results.answerDistribution.reduce((a, b) => a + b, 0);
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 animate-fade-in-up">
       <EmojiReactions reactions={reactions} />
 
       {/* Elimination announcement */}
       {results.eliminatedThisRound && results.eliminatedThisRound.length > 0 && (
-        <div className="flex items-center justify-center gap-3 rounded-xl border-2 border-red-400/30 bg-[#e21b3c]/20 px-5 py-4">
-          <Skull className="h-6 w-6 text-red-400" />
+        <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#e21b3c]/20 px-6 py-5">
+          <Skull className="h-7 w-7 text-[#e21b3c]" />
           <div className="text-center">
-            <p className="text-sm text-red-200/60">Pašalintas!</p>
+            <p className="text-sm font-bold text-white/60">Pašalintas!</p>
             {results.eliminatedThisRound.map((el) => (
-              <p key={el.playerId} className="inline-flex items-center gap-1.5 text-lg font-bold text-red-100">
-                <Avatar value={el.playerEmoji} size={24} /> {el.playerName}
+              <p key={el.playerId} className="inline-flex items-center gap-2 text-xl font-extrabold text-white">
+                <Avatar value={el.playerEmoji} size={28} /> {el.playerName}
               </p>
             ))}
           </div>
@@ -56,47 +56,51 @@ export default function HostResults({
 
       {/* Bluff reveal */}
       {results.bluffAnswer && (
-        <div className="rounded-xl border-2 border-purple-400/30 bg-purple-400/10 px-5 py-4">
-          <div className="flex items-center gap-2 text-sm font-bold text-purple-300">
-            <Zap className="h-4 w-4" />
+        <div className="rounded-2xl bg-purple-500/15 px-6 py-5">
+          <div className="flex items-center gap-2 text-sm font-extrabold text-purple-300">
+            <Zap className="h-5 w-5" />
             Apgaulė!
           </div>
-          <p className="mt-1 text-white">
-            Netikras atsakymas: <span className="font-bold text-purple-200">{results.bluffAnswer}</span>
+          <p className="mt-1 text-lg font-bold text-white">
+            Netikras atsakymas: <span className="text-purple-200">{results.bluffAnswer}</span>
           </p>
           {results.bluffVictims && results.bluffVictims.length > 0 && (
-            <p className="mt-1 text-sm text-purple-200/60">
-              Patikėjo: {results.bluffVictims.join(", ")} ({results.bluffVictims.length})
+            <p className="mt-1 text-sm font-bold text-purple-200/60">
+              Patikėjo: {results.bluffVictims.join(", ")}
             </p>
           )}
         </div>
       )}
 
-      {/* Correct answer */}
-      <div className="flex items-start gap-3 rounded-xl border-2 border-[#26890c]/30 bg-[#26890c]/20 px-5 py-4">
-        <CheckCircle className="mt-0.5 h-6 w-6 shrink-0 text-[#26890c]" />
-        <div>
-          <p className="text-sm text-emerald-200/60">Teisingas atsakymas</p>
-          <p className="mt-1 text-lg font-bold text-white">
-            {question?.options[results.correctAnswer]}
-          </p>
-          <p className="mt-2 text-sm text-emerald-200/50">{results.explanation}</p>
+      {/* Correct answer — big and bold */}
+      <div className="rounded-2xl bg-[#26890c] px-6 py-5">
+        <div className="flex items-center gap-3">
+          <CheckCircle className="h-8 w-8 shrink-0 text-white" />
+          <div>
+            <p className="text-sm font-bold text-white/70">Teisingas atsakymas</p>
+            <p className="text-2xl font-extrabold text-white">
+              {question?.options[results.correctAnswer]}
+            </p>
+          </div>
         </div>
+        {results.explanation && (
+          <p className="mt-3 text-base font-medium text-white/80">{results.explanation}</p>
+        )}
       </div>
 
       {/* Wager results */}
       {results.wagerResults && results.wagerResults.length > 0 && (
-        <div className="rounded-xl border-2 border-white/20 bg-white/5 px-5 py-4">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold text-[#d89e00]">
-            <Coins className="h-4 w-4" />
+        <div className="rounded-2xl glass px-6 py-5">
+          <div className="mb-3 flex items-center gap-2 font-extrabold text-[#d89e00]">
+            <Coins className="h-5 w-5" />
             Statymų rezultatai
           </div>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1.5">
             {results.wagerResults.map((wr) => (
-              <div key={wr.playerId} className="flex items-center justify-between text-sm">
-                <span className="text-white">{wr.playerName}</span>
-                <span className={`font-bold ${wr.won ? "text-emerald-300" : "text-white"}`}>
-                  {wr.won ? "+" : ""}{wr.netPoints} (statė {wr.wager})
+              <div key={wr.playerId} className="flex items-center justify-between text-base">
+                <span className="font-bold text-white">{wr.playerName}</span>
+                <span className={`font-extrabold ${wr.won ? "text-[#26890c]" : "text-[#e21b3c]"}`}>
+                  {wr.won ? "+" : ""}{wr.netPoints} tšk.
                 </span>
               </div>
             ))}
@@ -106,15 +110,15 @@ export default function HostResults({
 
       {/* Power-up effects */}
       {results.powerUpEffects && results.powerUpEffects.length > 0 && (
-        <div className="rounded-xl border-2 border-cyan-400/20 bg-cyan-400/5 px-5 py-4">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold text-cyan-300">
-            <Zap className="h-4 w-4" />
+        <div className="rounded-2xl glass px-6 py-5">
+          <div className="mb-3 flex items-center gap-2 font-extrabold text-cyan-300">
+            <Zap className="h-5 w-5" />
             Galių efektai
           </div>
           <div className="flex flex-col gap-1">
             {results.powerUpEffects.map((pe, i) => (
-              <p key={i} className="text-sm text-cyan-100">
-                {pe.playerName}: {pe.effect}
+              <p key={i} className="text-base font-bold text-white">
+                {pe.playerName}: <span className="text-white/70">{pe.effect}</span>
               </p>
             ))}
           </div>
@@ -124,11 +128,11 @@ export default function HostResults({
       <div className="grid gap-6 sm:grid-cols-2">
         {/* Answer distribution */}
         <div>
-          <div className="mb-3 flex items-center gap-2 text-sm uppercase tracking-wider text-white/50">
-            <BarChart3 className="h-4 w-4" />
-            <span>Atsakymų pasiskirstymas</span>
+          <div className="mb-4 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-white/60">
+            <BarChart3 className="h-5 w-5" />
+            Atsakymai
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2.5">
             {question?.options.map((option, i) => {
               const count = results.answerDistribution[i];
               const pct = totalAnswers > 0 ? (count / totalAnswers) * 100 : 0;
@@ -138,32 +142,34 @@ export default function HostResults({
               const Icon = style.icon;
 
               return (
-                <div key={i} className="flex items-center gap-2">
+                <div key={i} className="flex items-center gap-2.5">
                   <span
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${style.iconBg}`}
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${style.iconBg}`}
                   >
-                    <Icon className="h-4 w-4 text-white" fill="currentColor" />
+                    <Icon className="h-4.5 w-4.5 text-white" fill="currentColor" />
                   </span>
                   <div className="flex-1">
                     <div
-                      className={`relative overflow-hidden rounded-lg border-2 px-3 py-2 ${style.border} ${
-                        isCorrect ? "border-opacity-100 bg-white/5 ring-1 ring-white/20" :
-                        isBluff ? "border-purple-400 border-opacity-100 bg-purple-400/10" :
-                        "border-opacity-30 bg-white/[0.02]"
+                      className={`relative overflow-hidden rounded-xl border-2 px-4 py-3 ${
+                        isCorrect
+                          ? `${style.border} bg-white/10`
+                          : isBluff
+                            ? "border-purple-400 bg-purple-400/10"
+                            : `${style.border} border-opacity-30 bg-white/[0.03]`
                       }`}
                     >
                       <div
                         className={`absolute inset-y-0 left-0 ${style.barBg}`}
                         style={{ width: `${pct}%` }}
                       />
-                      <span className="relative flex items-center gap-1.5 text-sm text-white">
-                        {isCorrect && <CheckCircle className="h-3.5 w-3.5 shrink-0 text-[#26890c]" />}
-                        {isBluff && <Zap className="h-3.5 w-3.5 shrink-0 text-purple-400" />}
+                      <span className="relative flex items-center gap-2 text-base font-bold text-white">
+                        {isCorrect && <CheckCircle className="h-4 w-4 shrink-0 text-[#26890c]" />}
+                        {isBluff && <Zap className="h-4 w-4 shrink-0 text-purple-400" />}
                         {option}
                       </span>
                     </div>
                   </div>
-                  <span className="min-w-[3ch] text-right text-sm font-bold text-white/80">
+                  <span className="min-w-[3ch] text-right text-base font-extrabold text-white">
                     {count}
                   </span>
                 </div>
@@ -177,18 +183,18 @@ export default function HostResults({
           {/* Team scores */}
           {results.teamScores && results.teamScores.length > 0 && (
             <div className="mb-4">
-              <div className="mb-3 flex items-center gap-2 text-sm uppercase tracking-wider text-white/50">
-                <Users className="h-4 w-4" />
-                <span>Komandų taškai</span>
+              <div className="mb-3 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-white/60">
+                <Users className="h-5 w-5" />
+                Komandos
               </div>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1.5">
                 {results.teamScores.map((ts) => (
                   <div
                     key={ts.teamIndex}
-                    className="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2"
+                    className="flex items-center justify-between rounded-xl glass px-4 py-3"
                   >
-                    <span className="font-medium text-white">{ts.teamName}</span>
-                    <span className="font-bold text-white/80">{ts.score}</span>
+                    <span className="font-bold text-white">{ts.teamName}</span>
+                    <span className="font-extrabold text-white">{ts.score}</span>
                   </div>
                 ))}
               </div>
@@ -196,32 +202,32 @@ export default function HostResults({
           )}
 
           {/* Top 5 leaderboard */}
-          <div className="mb-3 flex items-center gap-2 text-sm uppercase tracking-wider text-white/50">
-            <Trophy className="h-4 w-4" />
-            <span>Lyderių lentelė</span>
+          <div className="mb-4 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-white/60">
+            <Trophy className="h-5 w-5" />
+            Lyderiai
           </div>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1.5">
             {results.leaderboard.slice(0, 5).map((entry) => (
               <div
                 key={entry.playerId}
-                className="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2.5"
+                className="flex items-center justify-between rounded-xl glass px-4 py-3"
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   {entry.rank <= 3 ? (
-                    <Award className={`h-5 w-5 ${
+                    <Award className={`h-6 w-6 ${
                       entry.rank === 1 ? "text-yellow-400" :
                       entry.rank === 2 ? "text-gray-300" :
                       "text-amber-700"
                     }`} />
                   ) : (
-                    <span className="flex h-5 w-5 items-center justify-center text-sm font-bold text-white">
+                    <span className="flex h-6 w-6 items-center justify-center text-sm font-extrabold text-white/50">
                       {entry.rank}
                     </span>
                   )}
-                  <Avatar value={entry.emoji} size={28} />
-                  <span className="text-white">{entry.name}</span>
+                  <Avatar value={entry.emoji} size={32} />
+                  <span className="text-base font-bold text-white">{entry.name}</span>
                 </div>
-                <span className="font-bold text-white/80">{entry.score}</span>
+                <span className="text-lg font-extrabold text-white">{entry.score}</span>
               </div>
             ))}
           </div>
@@ -231,12 +237,12 @@ export default function HostResults({
       {/* Next button */}
       <button
         onClick={onNext}
-        className="flex items-center justify-center gap-2 rounded-xl bg-white text-[#46178f] px-8 py-4 text-lg font-bold transition-colors hover:bg-white/90"
+        className="btn-primary flex items-center justify-center gap-2 w-full text-lg"
       >
         {isLast ? (
           <>
             <Trophy className="h-5 w-5" />
-            Rodyti rezultatus
+            Rezultatai
           </>
         ) : (
           <>

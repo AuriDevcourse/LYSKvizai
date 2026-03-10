@@ -448,7 +448,7 @@ export function joinRoom(
       currentAnswer: null,
       answerTime: null,
       connected: true,
-      powerUpUses: 2,
+      powerUpUses: 3,
       eliminated: false,
       teamIndex: null,
     };
