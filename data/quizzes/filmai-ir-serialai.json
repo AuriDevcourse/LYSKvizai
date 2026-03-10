@@ -1,0 +1,173 @@
+{
+  "id": "filmai-ir-serialai",
+  "title": "Filmai ir serialai",
+  "description": "15 klausimų apie filmus ir serialus",
+  "emoji": "🎬",
+  "questions": [
+    {
+      "question": "Kuris aktorius vaidina Geležinį Žmogų (Iron Man) Marvel filmuose?",
+      "options": [
+        "Chris Evans",
+        "Robert Downey Jr.",
+        "Chris Hemsworth",
+        "Mark Ruffalo"
+      ],
+      "correct": 1,
+      "explanation": "Robert Downey Jr. įkūnijo Tony Starką visuose Marvel Iron Man filmuose."
+    },
+    {
+      "question": "Kaip vadinasi Pixar animacinis filmas apie žuvytę, kuri ieško savo sūnaus?",
+      "options": [
+        "Žuvytė Dorė",
+        "Šamas",
+        "Ieškant Nemo",
+        "Luca"
+      ],
+      "correct": 2,
+      "explanation": "„Ieškant Nemo\u201C (2003) pasakoja apie klouninę žuvytę Marliną, ieškantį savo sūnaus Nemo."
+    },
+    {
+      "question": "Kuriame seriale vaikai kovoja su padarais iš „Apversto pasaulio“ (Upside Down)?",
+      "options": [
+        "Tamsioji materija",
+        "Stranger Things",
+        "Westworld",
+        "Lokis"
+      ],
+      "correct": 1,
+      "explanation": "„Stranger Things“ veiksmas vyksta Hokinse, kur vaikai susiduria su padarais iš Apversto pasaulio."
+    },
+    {
+      "question": "Kas režisavo filmą „Pradžia“ (Inception)?",
+      "options": [
+        "Christopheris Nolanas",
+        "Stevenas Spielbergas",
+        "Quentinas Tarantino",
+        "Jamesas Cameronas"
+      ],
+      "correct": 0,
+      "explanation": "Christopheris Nolanas režisavo „Pradžią“ (2010) su Leonardo DiCaprio pagrindiniame vaidmenyje."
+    },
+    {
+      "question": "Kuris filmas laimėjo geriausio filmo „Oskarą“ 2024 metais?",
+      "options": [
+        "Barbie",
+        "Killeriai pagal žiedų mėnulį",
+        "Oppenheimeris",
+        "Vargšai daiktai"
+      ],
+      "correct": 2,
+      "explanation": "„Oppenheimeris“ laimėjo geriausio filmo „Oskarą“ 2024 m. ceremonijoje."
+    },
+    {
+      "question": "Kaip vadinasi dirbtinio intelekto robotas filme „Didysis šešetas“ (Big Hero 6)?",
+      "options": [
+        "Volisas",
+        "Beimaksas",
+        "Optimus",
+        "Robis"
+      ],
+      "correct": 1,
+      "explanation": "Beimaksas yra pripučiamas sveikatos priežiūros robotas iš Disney filmo „Didysis šešetas“."
+    },
+    {
+      "question": "Kas pasakė garsiąją frazę „Aš esu tavo tėvas“ Žvaigždžių karuose?",
+      "options": [
+        "Obi-Wan Kenobi",
+        "Lukas Skywalkeris",
+        "Imperatorius Palpatinas",
+        "Dartas Veideris"
+      ],
+      "correct": 3,
+      "explanation": "Dartas Veideris ištarė šią frazę Lukui Skywalkeriui filme „Imperija smūgiuoja atgal“."
+    },
+    {
+      "question": "Kuris Disney filmas pasakoja apie dviejų seserų – Elzos ir Anos – istoriją?",
+      "options": [
+        "Rapuncelė",
+        "Vaiana",
+        "Ledo šalis",
+        "Pelenė"
+      ],
+      "correct": 2,
+      "explanation": "„Ledo šalis“ (Frozen, 2013) pasakoja apie seseris Elzą ir Aną iš Arendelio karalystės."
+    },
+    {
+      "question": "Kuris režisierius sukūrė filmą „Iškrypėlių aštuonetas“ ir „Pulp Fiction“?",
+      "options": [
+        "Martinas Scorsese",
+        "Davidas Fincheris",
+        "Ridlis Skotas",
+        "Quentinas Tarantino"
+      ],
+      "correct": 3,
+      "explanation": "Quentinas Tarantino režisavo abu šiuos filmus ir yra žinomas dėl savo unikalaus stiliaus."
+    },
+    {
+      "question": "Kaip vadinasi serialas apie septynių karalysčių kovą dėl Geležinio sosto?",
+      "options": [
+        "Vikingai",
+        "Sostų karai",
+        "Žiedų valdovas: Galios žiedai",
+        "Vedlys"
+      ],
+      "correct": 1,
+      "explanation": "„Sostų karai“ (Game of Thrones) yra HBO serialas pagal George'o R.R. Martino knygas."
+    },
+    {
+      "question": "Kuris aktorius vaidina Betmeną filme „Betmenas“ (2022)?",
+      "options": [
+        "Benas Affleckas",
+        "Christianas Bale'as",
+        "Robertas Pattinsonas",
+        "George'as Clooney"
+      ],
+      "correct": 2,
+      "explanation": "Robertas Pattinsonas suvaidino Betmeną Matto Reeveso režisuotame 2022 m. filme."
+    },
+    {
+      "question": "Kokį gyvūną Simba yra animaciniame filme „Liūtas karalius“?",
+      "options": [
+        "Leopardas",
+        "Gepardas",
+        "Tigras",
+        "Liūtas"
+      ],
+      "correct": 3,
+      "explanation": "Simba yra liūtas, kuris tampa Padidės žemių karaliumi Disney filme „Liūtas karalius“."
+    },
+    {
+      "question": "Kuris Netflix serialas pasakoja apie šachmatų geniję Beth Harmon?",
+      "options": [
+        "Karalienės gambitas",
+        "Ozark",
+        "Popieriaus namas",
+        "Bridžertonai"
+      ],
+      "correct": 0,
+      "explanation": "„Karalienės gambitas“ (The Queen's Gambit) — Netflix miniserialas apie šachmatų geniję Beth Harmon."
+    },
+    {
+      "question": "Kuris Steveno Spielbergo filmas pasakoja apie dinozaurų parką?",
+      "options": [
+        "E.T.",
+        "Gelbstint eilinį Rajaną",
+        "Jūros periodo parkas",
+        "Ateivių pasaulis"
+      ],
+      "correct": 2,
+      "explanation": "„Jūros periodo parkas“ (Jurassic Park, 1993) — Spielbergo filmas apie atgaivintus dinozaurus."
+    },
+    {
+      "question": "Kuris animacinis filmas pasakoja apie emocijas – Džiaugsmą, Liūdesį, Pyktį – gyvenančias mergaitės galvoje?",
+      "options": [
+        "Susijaukę",
+        "Šaunuolis Superis",
+        "Coco",
+        "Luca"
+      ],
+      "correct": 0,
+      "explanation": "Pixar filmas „Susijaukę“ (Inside Out, 2015) vaizduoja emocijas, gyvenančias mergaitės Railės galvoje."
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+{
+  "id": "geografija",
+  "title": "Geografija",
+  "description": "15 klausimų apie pasaulio geografiją",
+  "emoji": "🌍",
+  "questions": [
+    {
+      "question": "Kokia yra Australijos sostinė?",
+      "options": [
+        "Sidnėjus",
+        "Melburnas",
+        "Kanbera",
+        "Brisbeinas"
+      ],
+      "correct": 2,
+      "explanation": "Australijos sostinė yra Kanbera, nors Sidnėjus ir Melburnas yra didesni miestai."
+    },
+    {
+      "question": "Kuri upė yra ilgiausia pasaulyje?",
+      "options": [
+        "Nilas",
+        "Amazonė",
+        "Jangdzė",
+        "Misisipė"
+      ],
+      "correct": 0,
+      "explanation": "Nilas, tekantis per Afriką, yra ilgiausia pasaulio upė — apie 6 650 km."
+    },
+    {
+      "question": "Kuriame žemyne yra Sacharos dykuma?",
+      "options": [
+        "Azijoje",
+        "Pietų Amerikoje",
+        "Šiaurės Amerikoje",
+        "Afrikoje"
+      ],
+      "correct": 3,
+      "explanation": "Sachara yra didžiausia karštoji dykuma pasaulyje, esanti Šiaurės Afrikoje."
+    },
+    {
+      "question": "Kokia yra Brazilijos sostinė?",
+      "options": [
+        "San Paulas",
+        "Brazilija",
+        "Rio de Žaneiras",
+        "Salvadoras"
+      ],
+      "correct": 1,
+      "explanation": "Brazilijos sostinė yra Brazilija, specialiai suprojektuotas miestas, tapęs sostine 1960 m."
+    },
+    {
+      "question": "Kiek vandenynų yra Žemėje?",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "correct": 2,
+      "explanation": "Žemėje yra 5 vandenynai: Ramusis, Atlanto, Indijos, Šiaurės Ledynuotasis ir Pietų."
+    },
+    {
+      "question": "Kuri šalis yra didžiausia pagal plotą pasaulyje?",
+      "options": [
+        "Kanada",
+        "Kinija",
+        "JAV",
+        "Rusija"
+      ],
+      "correct": 3,
+      "explanation": "Rusija yra didžiausia pasaulio šalis pagal plotą — daugiau nei 17 mln. km²."
+    },
+    {
+      "question": "Kokia aukščiausia pasaulio viršūnė?",
+      "options": [
+        "K2",
+        "Everestas",
+        "Kilimandžaras",
+        "Monblanas"
+      ],
+      "correct": 1,
+      "explanation": "Everestas (8 849 m) yra aukščiausia viršūnė pasaulyje, esanti Himalajuose."
+    },
+    {
+      "question": "Kokia ilgiausia Lietuvos upė?",
+      "options": [
+        "Nevėžis",
+        "Neris",
+        "Nemunas",
+        "Šventoji"
+      ],
+      "correct": 2,
+      "explanation": "Nemunas yra ilgiausia Lietuvos upė — jo ilgis siekia apie 937 km."
+    },
+    {
+      "question": "Kurioje šalyje yra Tadž Mahalas?",
+      "options": [
+        "Pakistane",
+        "Bangladeše",
+        "Indijoje",
+        "Nepale"
+      ],
+      "correct": 2,
+      "explanation": "Tadž Mahalas yra Agroje, Indijoje — tai garsus mauzoliejus, pastatytas XVII amžiuje."
+    },
+    {
+      "question": "Kuri yra labiausiai gyvenama šalis pasaulyje?",
+      "options": [
+        "JAV",
+        "Indija",
+        "Indonezija",
+        "Kinija"
+      ],
+      "correct": 1,
+      "explanation": "Indija yra labiausiai gyvenama pasaulio šalis, aplenkusi Kiniją 2023 metais."
+    },
+    {
+      "question": "Koks ežeras yra didžiausias Lietuvoje?",
+      "options": [
+        "Platelių ežeras",
+        "Drūkšių ežeras",
+        "Tauragno ežeras",
+        "Galvės ežeras"
+      ],
+      "correct": 1,
+      "explanation": "Drūkšių ežeras yra didžiausias Lietuvos ežeras — jo plotas apie 44,8 km²."
+    },
+    {
+      "question": "Kuriame žemyne yra Andų kalnai?",
+      "options": [
+        "Šiaurės Amerikoje",
+        "Afrikoje",
+        "Pietų Amerikoje",
+        "Azijoje"
+      ],
+      "correct": 2,
+      "explanation": "Andai yra ilgiausia kalnų grandinė pasaulyje, driekiasi per Pietų Ameriką."
+    },
+    {
+      "question": "Kokia yra Turkijos sostinė?",
+      "options": [
+        "Stambulas",
+        "Izmiras",
+        "Ankara",
+        "Antalija"
+      ],
+      "correct": 2,
+      "explanation": "Turkijos sostinė yra Ankara, nors Stambulas yra didžiausias šalies miestas."
+    },
+    {
+      "question": "Kuri šalis yra mažiausia pasaulyje pagal plotą?",
+      "options": [
+        "Monakas",
+        "Vatikanas",
+        "San Marinas",
+        "Lichtenšteinas"
+      ],
+      "correct": 1,
+      "explanation": "Vatikanas yra mažiausia pasaulio valstybė — jo plotas tik apie 0,44 km²."
+    },
+    {
+      "question": "Kurioje šalyje yra Didysis barjerinis rifas?",
+      "options": [
+        "Indonezijoje",
+        "Filipinuose",
+        "Australijoje",
+        "Tailande"
+      ],
+      "correct": 2,
+      "explanation": "Didysis barjerinis rifas yra prie Australijos šiaurės rytų pakrantės — tai didžiausia koralų rifų sistema pasaulyje."
+    }
+  ]
+}

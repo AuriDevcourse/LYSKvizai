@@ -1,0 +1,98 @@
+{
+  "id": "pasaulio-zvaigzdes",
+  "title": "Pasaulio žvaigždės",
+  "description": "15 klausimų apie žymiausius žmones",
+  "emoji": "⭐",
+  "questions": [
+    {
+      "question": "Kokia dainininkė išleido albumą „Midnights“ 2022 metais?",
+      "options": ["Billie Eilish", "Ariana Grande", "Taylor Swift", "Dua Lipa"],
+      "correct": 2,
+      "explanation": "Taylor Swift išleido albumą „Midnights“ 2022 metų spalį."
+    },
+    {
+      "question": "Kuris futbolininkas turi daugiausiai „Ballon d'Or“ apdovanojimų?",
+      "options": ["Cristiano Ronaldo", "Neymar", "Kylian Mbappé", "Lionel Messi"],
+      "correct": 3,
+      "explanation": "Lionel Messi yra laimėjęs 8 „Ballon d'Or“ apdovanojimus – daugiau nei bet kas kitas."
+    },
+    {
+      "question": "Kas įkūrė kompaniją „Tesla“ ir „SpaceX“?",
+      "options": ["Elon Musk", "Jeff Bezos", "Bill Gates", "Mark Zuckerberg"],
+      "correct": 0,
+      "explanation": "Elon Musk yra „Tesla“ ir „SpaceX“ vadovas ir vienas iš įkūrėjų."
+    },
+    {
+      "question": "Kuris aktorius suvaidino Džeką filme „Titanikas“?",
+      "options": ["Brad Pitt", "Tom Cruise", "Johnny Depp", "Leonardo DiCaprio"],
+      "correct": 3,
+      "explanation": "Leonardo DiCaprio suvaidino Džeką Dousoną kultiniame filme „Titanikas“ (1997)."
+    },
+    {
+      "question": "Kokia dainininkė žinoma kaip „Queen Bey“?",
+      "options": ["Rihanna", "Beyoncé", "Lady Gaga", "Shakira"],
+      "correct": 1,
+      "explanation": "Beyoncé dažnai vadinama „Queen Bey“ – ji yra viena įtakingiausių atlikėjų pasaulyje."
+    },
+    {
+      "question": "Kas sukūrė socialinį tinklą „Facebook“?",
+      "options": ["Jack Dorsey", "Steve Jobs", "Mark Zuckerberg", "Larry Page"],
+      "correct": 2,
+      "explanation": "Mark Zuckerberg sukūrė „Facebook“ 2004 metais, būdamas Harvardo universiteto studentu."
+    },
+    {
+      "question": "Kuris mokslininkas sukūrė reliatyvumo teoriją?",
+      "options": ["Isaac Newton", "Nikola Tesla", "Albert Einstein", "Stephen Hawking"],
+      "correct": 2,
+      "explanation": "Albert Einstein paskelbė bendrąją reliatyvumo teoriją 1915 metais."
+    },
+    {
+      "question": "Kuris atlikėjas dainuoja hitą „Shape of You“?",
+      "options": ["Justin Bieber", "Ed Sheeran", "Shawn Mendes", "Harry Styles"],
+      "correct": 1,
+      "explanation": "Ed Sheeran išleido „Shape of You“ 2017 metais – tai viena populiariausių dainų pasaulyje."
+    },
+    {
+      "question": "Kas nutapė „Moną Lizą“?",
+      "options": ["Mikelandželas", "Rafaelis", "Vincentas van Gogas", "Leonardo da Vinčis"],
+      "correct": 3,
+      "explanation": "Leonardo da Vinčis nutapė „Moną Lizą“ maždaug 1503–1519 metais."
+    },
+    {
+      "question": "Kuris Portugalijos futbolininkas yra žinomas kaip CR7?",
+      "options": ["Luís Figo", "Cristiano Ronaldo", "Neymar", "Zinedine Zidane"],
+      "correct": 1,
+      "explanation": "Cristiano Ronaldo žinomas kaip CR7 – pagal savo inicialus ir marškinėlių numerį."
+    },
+    {
+      "question": "Kuri YouTuberė ir dainininkė išgarsėjo su daina „Bad Guy“?",
+      "options": ["Olivia Rodrigo", "Billie Eilish", "Doja Cat", "Charli XCX"],
+      "correct": 1,
+      "explanation": "Billie Eilish išleido hitą „Bad Guy“ 2019 metais ir laimėjo kelis „Grammy“ apdovanojimus."
+    },
+    {
+      "question": "Kuris krepšininkas žinomas pravarde „King James“?",
+      "options": ["Stephen Curry", "Kevin Durant", "LeBron James", "Kobe Bryant"],
+      "correct": 2,
+      "explanation": "LeBron James yra vadinamas „King James“ ir laikomas vienu geriausių krepšininkų istorijoje."
+    },
+    {
+      "question": "Kas yra populiariausias sekėjų skaičiumi „TikTok“ kūrėjas (2024 m.)?",
+      "options": ["Addison Rae", "Charli D'Amelio", "Khaby Lame", "Bella Poarch"],
+      "correct": 2,
+      "explanation": "Khaby Lame tapo populiariausiu „TikTok“ kūrėju pagal sekėjų skaičių."
+    },
+    {
+      "question": "Kuri aktorė suvaidino Hermioną Greinžer „Hario Poterio“ filmuose?",
+      "options": ["Emma Stone", "Emma Watson", "Natalie Portman", "Scarlett Johansson"],
+      "correct": 1,
+      "explanation": "Emma Watson suvaidino Hermioną Greinžer visuose aštuoniuose „Hario Poterio“ filmuose."
+    },
+    {
+      "question": "Kuris reperis žinomas kaip „Ye“ (anksčiau – Kanye West)?",
+      "options": ["Drake", "Kanye West", "Travis Scott", "Kendrick Lamar"],
+      "correct": 1,
+      "explanation": "Kanye West oficialiai pakeitė savo vardą į „Ye“ 2021 metais."
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+{
+  "id": "technologijos",
+  "title": "Technologijos",
+  "description": "15 klausimu apie technologijas",
+  "emoji": "\ud83d\udcbb",
+  "questions": [
+    {
+      "question": "Kuriais metais buvo i\u0161leistas pirmasis iPhone telefonas?",
+      "options": [
+        "2005 m.",
+        "2009 m.",
+        "2007 m.",
+        "2011 m."
+      ],
+      "correct": 2,
+      "explanation": "Pirmasis iPhone buvo pristatytas 2007 metais Steve'o Jobs'o."
+    },
+    {
+      "question": "Kas suk\u016br\u0117 socialin\u012f tinkl\u0105 Facebook?",
+      "options": [
+        "Elon Musk",
+        "Bill Gates",
+        "Jeff Bezos",
+        "Mark Zuckerberg"
+      ],
+      "correct": 3,
+      "explanation": "Mark Zuckerberg suk\u016br\u0117 Facebook 2004 metais, b\u016bdamas Harvardo universiteto studentu."
+    },
+    {
+      "question": "K\u0105 rei\u0161kia santrumpa HTML?",
+      "options": [
+        "Hyper Text Markup Language",
+        "High Tech Modern Language",
+        "Home Tool Markup Language",
+        "Hyper Transfer Mail Language"
+      ],
+      "correct": 0,
+      "explanation": "HTML rei\u0161kia \u201eHyper Text Markup Language\u201c \u2014 tai pagrindin\u0117 interneto puslapi\u0173 k\u016brimo kalba."
+    },
+    {
+      "question": "Kuriais metais buvo \u012fkurta Instagram platforma?",
+      "options": [
+        "2012 m.",
+        "2008 m.",
+        "2010 m.",
+        "2014 m."
+      ],
+      "correct": 2,
+      "explanation": "Instagram buvo paleista 2010 met\u0173 spal\u012f ir per pirm\u0105 dien\u0105 sulauk\u0117 25 000 vartotoj\u0173."
+    },
+    {
+      "question": "Kuris \u017eaidimas tapo populiariausiu pasaulyje pagal parduot\u0173 kopij\u0173 skai\u010di\u0173?",
+      "options": [
+        "Fortnite",
+        "Minecraft",
+        "Roblox",
+        "Grand Theft Auto V"
+      ],
+      "correct": 1,
+      "explanation": "Minecraft yra daugiausiai kopij\u0173 parduotas \u017eaidimas pasaulyje \u2014 daugiau nei 300 milijon\u0173."
+    },
+    {
+      "question": "Kuri kompanija suk\u016br\u0117 PlayStation \u017eaidim\u0173 konsol\u0119?",
+      "options": [
+        "Microsoft",
+        "Nintendo",
+        "Samsung",
+        "Sony"
+      ],
+      "correct": 3,
+      "explanation": "PlayStation konsol\u0119 suk\u016br\u0117 Japonijos kompanija Sony, pirmoji versija pasirod\u0117 1994 metais."
+    },
+    {
+      "question": "Kuriais metais buvo sukurta pirmoji interneto svetain\u0117?",
+      "options": [
+        "1995 m.",
+        "1991 m.",
+        "1985 m.",
+        "2000 m."
+      ],
+      "correct": 1,
+      "explanation": "Pirm\u0105j\u0105 interneto svetain\u0119 1991 metais suk\u016br\u0117 Tim Berners-Lee CERN laboratorijoje."
+    },
+    {
+      "question": "Kas yra TikTok program\u0117l\u0117s k\u016br\u0117ja kompanija?",
+      "options": [
+        "Alibaba",
+        "Tencent",
+        "Huawei",
+        "ByteDance"
+      ],
+      "correct": 3,
+      "explanation": "TikTok suk\u016br\u0117 Kinijos kompanija ByteDance, o tarptautin\u0117 versija paleista 2017 metais."
+    },
+    {
+      "question": "Kuri operacin\u0117 sistema yra populiaresn\u0117 pasaulyje \u2014 Android ar iOS?",
+      "options": [
+        "iOS turi daugiau vartotoj\u0173",
+        "Abi turi vienodai",
+        "Android turi daugiau vartotoj\u0173",
+        "Windows Phone turi daugiau"
+      ],
+      "correct": 2,
+      "explanation": "Android operacin\u0117 sistema u\u017eima apie 72% pasaulin\u0117s rinkos ir yra populiaresn\u0117 u\u017e iOS."
+    },
+    {
+      "question": "Kuriais metais buvo \u012fkurta Google?",
+      "options": [
+        "2001 m.",
+        "1998 m.",
+        "1995 m.",
+        "2003 m."
+      ],
+      "correct": 1,
+      "explanation": "Google \u012fk\u016br\u0117 Larry Page ir Sergey Brin 1998 metais, b\u016bdami Stanfordo universiteto studentais."
+    },
+    {
+      "question": "Kas yra Fortnite \u017eaidimo k\u016br\u0117jai?",
+      "options": [
+        "Mojang Studios",
+        "Valve",
+        "Epic Games",
+        "Activision"
+      ],
+      "correct": 2,
+      "explanation": "Fortnite suk\u016br\u0117 Epic Games kompanija, o \u017eaidimas tapo itin populiarus 2018 metais."
+    },
+    {
+      "question": "K\u0105 daro dirbtinis intelektas (AI)?",
+      "options": [
+        "Taiso sugedusius telefonus",
+        "Mokosi i\u0161 duomen\u0173 ir atlieka u\u017eduotis, kurias paprastai daro \u017emon\u0117s",
+        "Gamina elektros energij\u0105",
+        "Kuria naujus telefonus"
+      ],
+      "correct": 1,
+      "explanation": "Dirbtinis intelektas mokosi i\u0161 dideli\u0173 duomen\u0173 kieki\u0173 ir gali atlikti sud\u0117tingas u\u017eduotis."
+    },
+    {
+      "question": "Kas \u012fk\u016br\u0117 kompanij\u0105 Tesla ir SpaceX?",
+      "options": [
+        "Jeff Bezos",
+        "Bill Gates",
+        "Steve Jobs",
+        "Elon Musk"
+      ],
+      "correct": 3,
+      "explanation": "Elon Musk yra Tesla ir SpaceX kompanij\u0173 vadovas ir vienas i\u0161 \u012fk\u016br\u0117j\u0173."
+    },
+    {
+      "question": "Kuri programavimo kalba da\u017eniausiai naudojama kuriant interneto svetaines?",
+      "options": [
+        "Python",
+        "JavaScript",
+        "C++",
+        "Swift"
+      ],
+      "correct": 1,
+      "explanation": "JavaScript yra populiariausia programavimo kalba interneto svetain\u0117ms kurti ir veikia visose nar\u0161ykl\u0117se."
+    },
+    {
+      "question": "Koks robotas pirmasis nusileido ant Marso planetos ir atsiunte nuotrauk\u0173?",
+      "options": [
+        "Curiosity",
+        "Voyager",
+        "Hubble",
+        "Sojourner"
+      ],
+      "correct": 3,
+      "explanation": "Sojourner buvo pirmasis roveris, s\u0117kmingai nusileid\u0119s ant Marso 1997 metais ir atsiuntes nuotrauk\u0173."
+    }
+  ]
+}

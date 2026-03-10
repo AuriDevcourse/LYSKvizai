@@ -1,0 +1,173 @@
+{
+  "id": "pasaulio-istorija",
+  "title": "Pasaulio istorija",
+  "description": "15 klausimų apie pasaulio istoriją",
+  "emoji": "📜",
+  "questions": [
+    {
+      "question": "Kuriais metais buvo pastatyta Didžioji Cheopsо piramidė Egipte?",
+      "options": [
+        "Apie 1500 m. pr. Kr.",
+        "Apie 2560 m. pr. Kr.",
+        "Apie 3500 m. pr. Kr.",
+        "Apie 800 m. pr. Kr."
+      ],
+      "correct": 1,
+      "explanation": "Didžioji Cheopso piramidė buvo pastatyta apie 2560 m. pr. Kr. ir yra vienintelis išlikęs senovės pasaulio stebuklas."
+    },
+    {
+      "question": "Kas buvo pirmasis Romos imperatorius?",
+      "options": [
+        "Julijus Cezaris",
+        "Neronas",
+        "Augustas",
+        "Trajanas"
+      ],
+      "correct": 2,
+      "explanation": "Augustas (Oktavianas) tapo pirmuoju Romos imperatoriumi 27 m. pr. Kr."
+    },
+    {
+      "question": "Kuriame mieste vyko pirmosios Olimpinės žaidynės senovės Graikijoje?",
+      "options": [
+        "Atėnuose",
+        "Spartoje",
+        "Olimpijoje",
+        "Korinte"
+      ],
+      "correct": 2,
+      "explanation": "Pirmosios Olimpinės žaidynės vyko Olimpijoje 776 m. pr. Kr."
+    },
+    {
+      "question": "Kuriais metais Kristupas Kolumbas atrado Ameriką?",
+      "options": [
+        "1488 m.",
+        "1512 m.",
+        "1475 m.",
+        "1492 m."
+      ],
+      "correct": 3,
+      "explanation": "Kristupas Kolumbas pasiekė Ameriką 1492 m. spalio 12 d."
+    },
+    {
+      "question": "Kas išrado spausdinimo presą Europoje?",
+      "options": [
+        "Leonardas da Vinčis",
+        "Johanas Gutenbergas",
+        "Galilėjus Galilėjus",
+        "Nikolas Kopernikus"
+      ],
+      "correct": 1,
+      "explanation": "Johanas Gutenbergas apie 1440 m. išrado spausdinimo presą su judančiomis raidėmis."
+    },
+    {
+      "question": "Kuriais metais prasidėjo Pirmasis pasaulinis karas?",
+      "options": [
+        "1914 m.",
+        "1918 m.",
+        "1912 m.",
+        "1916 m."
+      ],
+      "correct": 0,
+      "explanation": "Pirmasis pasaulinis karas prasidėjo 1914 m. liepos 28 d."
+    },
+    {
+      "question": "Kas vadovavo nacistinei Vokietijai Antrojo pasaulinio karo metu?",
+      "options": [
+        "Oto fon Bismarkas",
+        "Vilhelmas II",
+        "Heinrichas Himleris",
+        "Adolfas Hitleris"
+      ],
+      "correct": 3,
+      "explanation": "Adolfas Hitleris buvo nacistinės Vokietijos fiureris nuo 1933 iki 1945 m."
+    },
+    {
+      "question": "Kuriais metais baigėsi Antrasis pasaulinis karas Europoje?",
+      "options": [
+        "1943 m.",
+        "1944 m.",
+        "1945 m.",
+        "1946 m."
+      ],
+      "correct": 2,
+      "explanation": "Antrasis pasaulinis karas Europoje baigėsi 1945 m. gegužės 8 d., Vokietijai kapituliavus."
+    },
+    {
+      "question": "Kas buvo pirmasis žmogus, išskridęs į kosmosą?",
+      "options": [
+        "Nilas Armstrongas",
+        "Jurijus Gagarinas",
+        "Džonas Glenas",
+        "Valentina Tereškova"
+      ],
+      "correct": 1,
+      "explanation": "Jurijus Gagarinas 1961 m. balandžio 12 d. tapo pirmuoju žmogumi kosmose."
+    },
+    {
+      "question": "Kuriais metais žmogus pirmą kartą išsilaipino Mėnulyje?",
+      "options": [
+        "1965 m.",
+        "1972 m.",
+        "1969 m.",
+        "1975 m."
+      ],
+      "correct": 2,
+      "explanation": "Nilas Armstrongas ir Bazas Oldrinas išsilaipino Mėnulyje 1969 m. liepos 20 d."
+    },
+    {
+      "question": "Kuriais metais griuvo Berlyno siena?",
+      "options": [
+        "1987 m.",
+        "1991 m.",
+        "1985 m.",
+        "1989 m."
+      ],
+      "correct": 3,
+      "explanation": "Berlyno siena griuvo 1989 m. lapkričio 9 d., simbolizuodama Šaltojo karo pabaigą."
+    },
+    {
+      "question": "Kas sukūrė pirmąjį telefono aparatą?",
+      "options": [
+        "Tomas Edisonas",
+        "Nikola Tesla",
+        "Aleksandras Grahamas Belas",
+        "Samuelis Morzė"
+      ],
+      "correct": 2,
+      "explanation": "Aleksandras Grahamas Belas 1876 m. užpatentavo pirmąjį praktinį telefoną."
+    },
+    {
+      "question": "Kuris viduramžių įvykis 1347–1353 m. nusinešė trečdalį Europos gyventojų?",
+      "options": [
+        "Šimtametis karas",
+        "Kryžiaus žygiai",
+        "Juodoji mirtis",
+        "Didysis badas"
+      ],
+      "correct": 2,
+      "explanation": "Juodoji mirtis (maro pandemija) 1347–1353 m. nusinešė apie trečdalį Europos gyventojų."
+    },
+    {
+      "question": "Kuriais metais įvyko Prancūzijos revoliucija?",
+      "options": [
+        "1776 m.",
+        "1815 m.",
+        "1789 m.",
+        "1804 m."
+      ],
+      "correct": 2,
+      "explanation": "Prancūzijos revoliucija prasidėjo 1789 m., kai buvo užimta Bastilija liepos 14 d."
+    },
+    {
+      "question": "Kas buvo Didžiosios Britanijos premjerė, pravardžiuojama „Geležine ledi“?",
+      "options": [
+        "Karalienė Viktorija",
+        "Margaretė Tečer",
+        "Teresa Mėjus",
+        "Indira Gandi"
+      ],
+      "correct": 1,
+      "explanation": "Margaretė Tečer buvo Britanijos premjerė 1979–1990 m. ir gavo „Geležinės ledi“ pravardę dėl savo ryžtingumo."
+    }
+  ]
+}
