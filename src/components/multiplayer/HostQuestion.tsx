@@ -168,7 +168,7 @@ export default function HostQuestion({
           return (
             <div
               key={i}
-              className={`answer-btn flex items-end gap-3 rounded-2xl px-5 pb-5 pt-4 sm:gap-4 sm:px-8 sm:pb-7 ${OPTION_BG[i]}`}
+              className={`answer-btn flex items-center gap-4 rounded-2xl px-5 py-4 sm:px-8 sm:py-5 ${OPTION_BG[i]}`}
             >
               <Icon className="h-7 w-7 shrink-0 text-white/90 sm:h-8 sm:w-8" fill="currentColor" />
               <span className="text-lg font-extrabold text-white sm:text-xl lg:text-2xl">

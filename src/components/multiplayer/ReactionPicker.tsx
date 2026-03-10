@@ -50,8 +50,8 @@ export default function ReactionPicker({ onReact }: ReactionPickerProps) {
   }, [text, onReact, spawnFloat]);
 
   return (
-    <>
-      {/* Floating items — fixed overlay above everything */}
+    <div className="w-full max-w-sm mx-auto overflow-hidden">
+      {/* Floating items — fixed overlay */}
       {floats.length > 0 && (
         <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
           {floats.map((f) =>
@@ -69,7 +69,7 @@ export default function ReactionPicker({ onReact }: ReactionPickerProps) {
                 className="absolute bottom-0 animate-float-up"
                 style={{ left: `${f.x}%`, transform: "translateX(-50%)" }}
               >
-                <div className="max-w-[200px] rounded-full bg-white/15 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm">
+                <div className="max-w-[180px] truncate rounded-full bg-white/15 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm">
                   {f.content}
                 </div>
               </div>
@@ -79,12 +79,12 @@ export default function ReactionPicker({ onReact }: ReactionPickerProps) {
       )}
 
       {/* Emoji buttons */}
-      <div className="flex items-center justify-center gap-2">
+      <div className="flex items-center justify-center gap-1.5 sm:gap-2">
         {REACTIONS.map((emoji) => (
           <button
             key={emoji}
             onClick={() => handleReact(emoji)}
-            className="rounded-xl bg-white/5 px-3 py-2 text-2xl transition-transform hover:scale-110 hover:bg-white/10 active:scale-95"
+            className="flex-shrink-0 rounded-xl bg-white/5 px-2.5 py-2 text-xl transition-transform hover:scale-110 hover:bg-white/10 active:scale-95 sm:px-3 sm:text-2xl"
           >
             {emoji}
           </button>
@@ -97,24 +97,24 @@ export default function ReactionPicker({ onReact }: ReactionPickerProps) {
           e.preventDefault();
           handleSubmitText();
         }}
-        className="flex items-center gap-2"
+        className="mt-3 flex items-center gap-2"
       >
         <input
           type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Parašyk komentarą..."
-          maxLength={60}
-          className="flex-1 rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/30 focus:outline-none"
+          placeholder="Komentaras..."
+          maxLength={40}
+          className="min-w-0 flex-1 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/30 focus:outline-none"
         />
         <button
           type="submit"
           disabled={!text.trim()}
-          className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-[#46178f] transition-colors hover:bg-white/90 disabled:opacity-30"
+          className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-white text-[#46178f] transition-colors hover:bg-white/90 disabled:opacity-30"
         >
           <Send className="h-4 w-4" />
         </button>
       </form>
-    </>
+    </div>
   );
 }

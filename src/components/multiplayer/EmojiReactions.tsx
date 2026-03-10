@@ -41,8 +41,8 @@ function FloatingItem({ content }: { content: string }) {
       className="absolute bottom-0 animate-float-up"
       style={{ left: `${left}%`, transform: "translateX(-50%)" }}
     >
-      <div className="max-w-[280px] rounded-full bg-white/15 px-4 py-2 backdrop-blur-sm">
-        <span className="truncate text-sm font-medium text-white">{content}</span>
+      <div className="max-w-[180px] truncate rounded-full bg-white/15 px-4 py-2 backdrop-blur-sm text-sm font-medium text-white">
+        {content}
       </div>
     </div>
   );

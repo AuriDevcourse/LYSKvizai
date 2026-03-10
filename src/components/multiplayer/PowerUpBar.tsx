@@ -10,10 +10,10 @@ interface PowerUpBarProps {
   disabled?: boolean;
 }
 
-const POWER_UPS: { type: PowerUpType; label: string; icon: typeof Snowflake; color: string; description: string }[] = [
-  { type: "freeze", label: "Užšaldymas", icon: Snowflake, color: "bg-cyan-500 hover:bg-cyan-400", description: "-3s kitiems" },
-  { type: "shield", label: "Skydas", icon: Shield, color: "bg-emerald-500 hover:bg-emerald-400", description: "Serija saugi" },
-  { type: "double", label: "Dvigubai", icon: Zap, color: "bg-white text-[#46178f] hover:bg-white/90", description: "2× taškai" },
+const POWER_UPS: { type: PowerUpType; label: string; icon: typeof Snowflake; color: string; desc: string }[] = [
+  { type: "freeze", label: "Užšaldymas", icon: Snowflake, color: "bg-cyan-500 hover:bg-cyan-400", desc: "−3s laikmačiui" },
+  { type: "shield", label: "Skydas", icon: Shield, color: "bg-emerald-500 hover:bg-emerald-400", desc: "Apsaugo seriją" },
+  { type: "double", label: "×2", icon: Zap, color: "bg-white text-[#46178f] hover:bg-white/90", desc: "Dvigubi taškai" },
 ];
 
 export default function PowerUpBar({ usesLeft, onUse, disabled }: PowerUpBarProps) {
@@ -21,29 +21,34 @@ export default function PowerUpBar({ usesLeft, onUse, disabled }: PowerUpBarProp
 
   if (usesLeft <= 0 && !usedThisRound) return null;
 
+  const isDisabled = disabled || usedThisRound || usesLeft <= 0;
+
   return (
-    <div className="flex items-center justify-center gap-2">
-      <span className="text-xs text-white/40">Galios ({usesLeft}):</span>
-      {POWER_UPS.map((pu) => {
-        const Icon = pu.icon;
-        const isDisabled = disabled || usedThisRound || usesLeft <= 0;
-        return (
-          <button
-            key={pu.type}
-            onClick={() => {
-              if (isDisabled) return;
-              setUsedThisRound(true);
-              onUse(pu.type);
-            }}
-            disabled={isDisabled}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-white transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed ${pu.color}`}
-            title={`${pu.label}: ${pu.description}`}
-          >
-            <Icon className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">{pu.label}</span>
-          </button>
-        );
-      })}
+    <div className="w-full">
+      <p className="mb-2 text-center text-xs font-bold text-white/40">
+        Galios — {usesLeft} {usesLeft === 1 ? "naudojimas" : "naudojimai"} likę
+      </p>
+      <div className="flex items-stretch justify-center gap-2">
+        {POWER_UPS.map((pu) => {
+          const Icon = pu.icon;
+          return (
+            <button
+              key={pu.type}
+              onClick={() => {
+                if (isDisabled) return;
+                setUsedThisRound(true);
+                onUse(pu.type);
+              }}
+              disabled={isDisabled}
+              className={`answer-btn flex flex-col items-center gap-1 rounded-xl px-4 py-2.5 text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed ${pu.color}`}
+            >
+              <Icon className="h-5 w-5" />
+              <span className="text-xs font-extrabold">{pu.label}</span>
+              <span className="text-[10px] font-medium text-white/70">{pu.desc}</span>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }

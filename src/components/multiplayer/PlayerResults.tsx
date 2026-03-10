@@ -31,7 +31,7 @@ export default function PlayerResults({ playerId, results, onReact }: PlayerResu
   const myPowerUp = results.powerUpEffects?.find((pe) => pe.playerId === playerId);
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-6">
+    <div className="flex flex-1 flex-col items-center justify-center gap-6 overflow-hidden w-full max-w-sm mx-auto px-4">
       {/* Eliminated announcement */}
       {wasEliminated && (
         <div className="flex items-center gap-3 rounded-xl border-2 border-red-400/30 bg-[#e21b3c]/20 px-6 py-4">
