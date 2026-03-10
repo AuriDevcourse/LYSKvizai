@@ -6,6 +6,7 @@ import type { PlayerInfo, GameMode } from "@/lib/multiplayer/types";
 import { useSound } from "@/hooks/useSound";
 import QRCodeComponent from "./QRCode";
 import RoomCodeDisplay from "./RoomCodeDisplay";
+import Avatar from "@/components/Avatar";
 
 interface HostLobbyProps {
   code: string;
@@ -86,7 +87,7 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
                   key={p.id}
                   className="flex items-center gap-2.5 rounded-lg bg-white/10 px-4 py-2"
                 >
-                  <span className="text-xl">{p.emoji}</span>
+                  <Avatar value={p.emoji} size={32} />
                   <span className="font-medium text-white">{p.name}</span>
                 </div>
               ))}

@@ -1,5 +1,6 @@
 import { Trophy, Crown, Award, Medal } from "lucide-react";
 import type { LeaderboardEntry } from "@/lib/multiplayer/types";
+import Avatar from "@/components/Avatar";
 
 interface LeaderboardProps {
   leaderboard: LeaderboardEntry[];
@@ -29,7 +30,7 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
               }`}
               style={{ minHeight: 80 }}
             >
-              <span className="text-2xl">{top3[1].emoji}</span>
+              <Avatar value={top3[1].emoji} size={36} />
               <p className="mt-1 text-sm font-extrabold text-white text-center">{top3[1].name}</p>
               <p className="text-sm font-bold text-white/60">{top3[1].score}</p>
             </div>
@@ -48,7 +49,7 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
               }`}
               style={{ minHeight: 100 }}
             >
-              <span className="text-3xl">{top3[0].emoji}</span>
+              <Avatar value={top3[0].emoji} size={48} />
               <p className="mt-1 text-base font-extrabold text-white text-center">{top3[0].name}</p>
               <p className="text-lg font-extrabold text-[#d89e00]">{top3[0].score}</p>
             </div>
@@ -67,7 +68,7 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
               }`}
               style={{ minHeight: 60 }}
             >
-              <span className="text-xl">{top3[2].emoji}</span>
+              <Avatar value={top3[2].emoji} size={36} />
               <p className="mt-1 text-sm font-extrabold text-white text-center">{top3[2].name}</p>
               <p className="text-sm font-bold text-white/60">{top3[2].score}</p>
             </div>
@@ -91,7 +92,7 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
                 <span className="min-w-[2ch] text-right text-sm font-extrabold text-white/50">
                   {entry.rank}.
                 </span>
-                <span className="text-lg">{entry.emoji}</span>
+                <Avatar value={entry.emoji} size={28} />
                 <span className="font-bold text-white">{entry.name}</span>
               </div>
               <span className="font-extrabold text-white">{entry.score}</span>

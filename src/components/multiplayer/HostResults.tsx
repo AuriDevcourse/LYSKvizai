@@ -7,6 +7,7 @@ import {
 import type { ResultsPayload, QuestionPayload, GameMode } from "@/lib/multiplayer/types";
 import type { EmojiReactionWithId } from "@/hooks/useRoom";
 import EmojiReactions from "./EmojiReactions";
+import Avatar from "@/components/Avatar";
 
 const OPTION_STYLES = [
   { border: "border-red-400", bg: "bg-red-500", barBg: "bg-red-400/25", iconBg: "bg-red-500", icon: Triangle },
@@ -45,8 +46,8 @@ export default function HostResults({
           <div className="text-center">
             <p className="text-sm text-red-200/60">Pašalintas!</p>
             {results.eliminatedThisRound.map((el) => (
-              <p key={el.playerId} className="text-lg font-bold text-red-100">
-                {el.playerEmoji} {el.playerName}
+              <p key={el.playerId} className="inline-flex items-center gap-1.5 text-lg font-bold text-red-100">
+                <Avatar value={el.playerEmoji} size={24} /> {el.playerName}
               </p>
             ))}
           </div>
@@ -217,7 +218,7 @@ export default function HostResults({
                       {entry.rank}
                     </span>
                   )}
-                  <span className="text-lg">{entry.emoji}</span>
+                  <Avatar value={entry.emoji} size={28} />
                   <span className="text-white">{entry.name}</span>
                 </div>
                 <span className="font-bold text-white/80">{entry.score}</span>

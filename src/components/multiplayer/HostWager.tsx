@@ -2,6 +2,7 @@
 
 import { Coins } from "lucide-react";
 import type { PlayerInfo } from "@/lib/multiplayer/types";
+import Avatar from "@/components/Avatar";
 
 interface HostWagerProps {
   players: PlayerInfo[];
@@ -20,7 +21,7 @@ export default function HostWager({ players, onAdvance }: HostWagerProps) {
       <div className="flex flex-col items-center gap-2">
         <div className="flex items-center gap-2">
           {activePlayers.map((p) => (
-            <span key={p.id} className="text-2xl">{p.emoji}</span>
+            <Avatar key={p.id} value={p.emoji} size={36} />
           ))}
         </div>
         <p className="text-sm text-white/50">{activePlayers.length} žaidėjai</p>

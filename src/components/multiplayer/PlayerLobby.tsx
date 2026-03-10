@@ -1,5 +1,6 @@
 import { Users, Loader2 } from "lucide-react";
 import type { PlayerInfo } from "@/lib/multiplayer/types";
+import Avatar from "@/components/Avatar";
 
 interface PlayerLobbyProps {
   code: string;
@@ -11,7 +12,7 @@ interface PlayerLobbyProps {
 export default function PlayerLobby({ code, players, playerName, playerEmoji }: PlayerLobbyProps) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-6">
-      <span className="text-5xl">{playerEmoji}</span>
+      <Avatar value={playerEmoji} size={64} />
 
       <h1 className="text-2xl font-bold text-white">Prisijungei!</h1>
 
@@ -42,7 +43,7 @@ export default function PlayerLobby({ code, players, playerName, playerEmoji }: 
                   : "bg-white/5 text-white/60"
               }`}
             >
-              <span className="text-base">{p.emoji}</span>
+              <Avatar value={p.emoji} size={24} />
               {p.name}
             </span>
           ))}
