@@ -21,7 +21,7 @@ function PlayPageInner() {
   const [mode, setMode] = useState<"menu" | "pick-quiz" | "pick-mode" | "join" | "creating">(
     codeFromUrl ? "join" : "menu"
   );
-  const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
+  const [selectedQuizIds, setSelectedQuizIds] = useState<string[]>([]);
   const [selectedGameMode, setSelectedGameMode] = useState<GameMode>("classic");
   const [gameModeOptions, setGameModeOptions] = useState<{ teamCount?: number; eliminationInterval?: number }>({});
   const [error, setError] = useState<string | null>(null);
@@ -38,12 +38,8 @@ function PlayPageInner() {
     return id;
   });
 
-  const handleSelectQuiz = (quizId: string) => {
-    setSelectedQuizId(quizId);
-  };
-
   const handleQuizNext = () => {
-    if (!selectedQuizId) return;
+    if (selectedQuizIds.length === 0) return;
     setMode("pick-mode");
   };
 
@@ -54,14 +50,14 @@ function PlayPageInner() {
   };
 
   const handleCreateRoom = async (gameMode: GameMode, options: { teamCount?: number; eliminationInterval?: number }) => {
-    if (!selectedQuizId) return;
+    if (selectedQuizIds.length === 0) return;
     setMode("creating");
     setError(null);
     try {
       const hostId = playerId;
       const result = await createRoom(
         hostId,
-        selectedQuizId,
+        selectedQuizIds,
         15,
         20,
         gameMode,
@@ -135,7 +131,8 @@ function PlayPageInner() {
 
       {mode === "pick-quiz" && (
         <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
-          <h1 className="text-2xl font-extrabold text-white">Pasirink kvizą</h1>
+          <h1 className="text-2xl font-extrabold text-white">Pasirink kvizus</h1>
+          <p className="text-sm font-bold text-white/50">Gali pasirinkti kelis — klausimai bus sumaišyti</p>
 
           {error && (
             <p className="w-full rounded-xl bg-[#e21b3c]/20 px-4 py-3 text-center text-sm font-bold text-white">
@@ -144,19 +141,19 @@ function PlayPageInner() {
           )}
 
           <div className="w-full">
-            <QuizPicker onSelect={handleSelectQuiz} selectedId={selectedQuizId ?? undefined} />
+            <QuizPicker onSelect={setSelectedQuizIds} selectedIds={selectedQuizIds} />
           </div>
 
           <button
             onClick={handleQuizNext}
-            disabled={!selectedQuizId}
+            disabled={selectedQuizIds.length === 0}
             className="btn-primary w-full text-center disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            Toliau →
+            Toliau →{selectedQuizIds.length > 1 ? ` (${selectedQuizIds.length} kvizai)` : ""}
           </button>
 
           <button
-            onClick={() => { setMode("menu"); setError(null); setSelectedQuizId(null); }}
+            onClick={() => { setMode("menu"); setError(null); setSelectedQuizIds([]); }}
             className="flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />

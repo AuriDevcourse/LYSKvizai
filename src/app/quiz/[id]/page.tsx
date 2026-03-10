@@ -1,6 +1,7 @@
 "use client";
 
 import { use, useState, useCallback, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Loader2, ArrowLeft } from "lucide-react";
 import type { Question } from "@/data/types";
@@ -12,8 +13,18 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
+function shuffleArray<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 export default function SinglePlayerQuiz({ params }: PageProps) {
   const { id } = use(params);
+  const searchParams = useSearchParams();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [quizTitle, setQuizTitle] = useState("");
   const [loading, setLoading] = useState(true);
@@ -25,18 +36,48 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
   const [finished, setFinished] = useState(false);
 
   useEffect(() => {
-    fetch(`/api/quizzes/${id}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Kvizas nerastas");
-        return res.json();
-      })
-      .then((quiz) => {
-        setQuestions(quiz.questions);
-        setQuizTitle(quiz.title);
-      })
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false));
-  }, [id]);
+    const isMix = id === "mix";
+    const idsParam = searchParams.get("ids");
+
+    if (isMix && idsParam) {
+      // Multi-quiz mode: fetch all quizzes and merge
+      const quizIds = idsParam.split(",").filter(Boolean);
+      Promise.all(
+        quizIds.map((qid) =>
+          fetch(`/api/quizzes/${qid}`).then((res) => {
+            if (!res.ok) return null;
+            return res.json();
+          })
+        )
+      )
+        .then((results) => {
+          const validQuizzes = results.filter(Boolean);
+          if (validQuizzes.length === 0) {
+            setError("Kvizai nerasti");
+            return;
+          }
+          const allQuestions: Question[] = validQuizzes.flatMap((q: { questions: Question[] }) => q.questions);
+          setQuestions(shuffleArray(allQuestions));
+          const titles = validQuizzes.map((q: { title: string }) => q.title);
+          setQuizTitle(`Mix: ${titles.join(" + ")}`);
+        })
+        .catch(() => setError("Klaida kraunant kvizus"))
+        .finally(() => setLoading(false));
+    } else {
+      // Single quiz mode
+      fetch(`/api/quizzes/${id}`)
+        .then((res) => {
+          if (!res.ok) throw new Error("Kvizas nerastas");
+          return res.json();
+        })
+        .then((quiz) => {
+          setQuestions(quiz.questions);
+          setQuizTitle(quiz.title);
+        })
+        .catch((e) => setError(e.message))
+        .finally(() => setLoading(false));
+    }
+  }, [id, searchParams]);
 
   const handleSelect = useCallback(
     (index: number) => {
@@ -58,6 +99,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
   }, [currentIndex, questions.length]);
 
   const handleRestart = useCallback(() => {
+    setQuestions((prev) => shuffleArray(prev));
     setCurrentIndex(0);
     setSelectedAnswer(null);
     setScore(0);

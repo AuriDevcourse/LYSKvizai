@@ -224,7 +224,7 @@ export interface PowerUpEffect {
 // --- Client → Server Actions (POST) ---
 
 export type ClientAction =
-  | { action: "create"; hostId: string; quizId: string; questionCount?: number; timerDuration?: number; gameMode?: GameMode; teamCount?: number; eliminationInterval?: number }
+  | { action: "create"; hostId: string; quizId?: string; quizIds?: string[]; questionCount?: number; timerDuration?: number; gameMode?: GameMode; teamCount?: number; eliminationInterval?: number }
   | { action: "join"; code: string; playerId: string; name: string; emoji: string }
   | { action: "start"; code: string; hostId: string }
   | { action: "answer"; code: string; playerId: string; answerIndex: number }

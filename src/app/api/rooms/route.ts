@@ -31,9 +31,11 @@ export async function POST(req: NextRequest) {
   switch (body.action) {
     case "create": {
       try {
+        // Support both quizId (legacy) and quizIds (array)
+        const quizIds: string[] = body.quizIds ?? (body.quizId ? [body.quizId] : []);
         const room = await createRoom(
           body.hostId,
-          body.quizId,
+          quizIds,
           body.questionCount,
           body.timerDuration,
           body.gameMode,

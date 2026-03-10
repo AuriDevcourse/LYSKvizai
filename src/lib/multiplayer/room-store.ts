@@ -17,6 +17,7 @@ import { generateRoomCode } from "./room-code";
 import { calculateScore } from "./scoring";
 import { broadcast, removeRoomConnections } from "./sse-manager";
 import { getQuiz } from "@/lib/quiz-store";
+import type { Question } from "@/data/types";
 
 // Persist on globalThis to survive HMR in development
 const g = globalThis as typeof globalThis & {
@@ -335,23 +336,32 @@ function rotateTeamAnswerers(room: Room): void {
 
 export async function createRoom(
   hostId: string,
-  quizId: string,
+  quizIds: string | string[],
   questionCount?: number,
   timerDuration?: number,
   gameMode?: GameMode,
   teamCount?: number,
   eliminationInterval?: number
 ): Promise<Room> {
-  // Load quiz from disk
-  const quiz = await getQuiz(quizId);
-  if (!quiz) throw new Error("Kvizas nerastas");
+  // Support both single ID and array of IDs
+  const ids = Array.isArray(quizIds) ? quizIds : [quizIds];
+  if (ids.length === 0) throw new Error("Nepasirinktas kvizas");
+
+  // Load all quizzes and merge questions
+  const allQuestions: Question[] = [];
+  for (const qid of ids) {
+    const quiz = await getQuiz(qid);
+    if (!quiz) throw new Error(`Kvizas "${qid}" nerastas`);
+    allQuestions.push(...quiz.questions);
+  }
+  if (allQuestions.length === 0) throw new Error("Kvizai neturi klausimų");
 
   let code: string;
   do {
     code = generateRoomCode();
   } while (rooms.has(code));
 
-  const questions = quiz.questions;
+  const questions = allQuestions;
 
   // Shuffle and pick questions
   const allIndices = shuffle(questions.map((_, i) => i));

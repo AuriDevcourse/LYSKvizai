@@ -18,17 +18,19 @@ export function useRoomActions() {
   const createRoom = useCallback(
     async (
       hostId: string,
-      quizId: string,
+      quizIds: string | string[],
       questionCount?: number,
       timerDuration?: number,
       gameMode?: GameMode,
       teamCount?: number,
       eliminationInterval?: number
     ) => {
+      // Support both single ID and array of IDs
+      const ids = Array.isArray(quizIds) ? quizIds : [quizIds];
       return postAction({
         action: "create",
         hostId,
-        quizId,
+        quizIds: ids,
         questionCount,
         timerDuration,
         gameMode,
