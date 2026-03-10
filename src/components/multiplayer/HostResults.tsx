@@ -12,7 +12,7 @@ const OPTION_STYLES = [
   { border: "border-red-400", bg: "bg-red-500", barBg: "bg-red-400/25", iconBg: "bg-red-500", icon: Triangle },
   { border: "border-blue-400", bg: "bg-blue-500", barBg: "bg-blue-400/25", iconBg: "bg-blue-500", icon: Diamond },
   { border: "border-emerald-400", bg: "bg-emerald-500", barBg: "bg-emerald-400/25", iconBg: "bg-emerald-500", icon: Circle },
-  { border: "border-amber-400", bg: "bg-amber-500", barBg: "bg-amber-400/25", iconBg: "bg-amber-500", icon: Square },
+  { border: "border-white", bg: "bg-white text-[#46178f]", barBg: "bg-amber-400/25", iconBg: "bg-white", icon: Square },
 ];
 
 interface HostResultsProps {
@@ -40,7 +40,7 @@ export default function HostResults({
 
       {/* Elimination announcement */}
       {results.eliminatedThisRound && results.eliminatedThisRound.length > 0 && (
-        <div className="flex items-center justify-center gap-3 rounded-xl border-2 border-red-400/30 bg-red-400/10 px-5 py-4">
+        <div className="flex items-center justify-center gap-3 rounded-xl border-2 border-red-400/30 bg-[#e21b3c]/20 px-5 py-4">
           <Skull className="h-6 w-6 text-red-400" />
           <div className="text-center">
             <p className="text-sm text-red-200/60">Pašalintas!</p>
@@ -60,7 +60,7 @@ export default function HostResults({
             <Zap className="h-4 w-4" />
             Apgaulė!
           </div>
-          <p className="mt-1 text-amber-100">
+          <p className="mt-1 text-white">
             Netikras atsakymas: <span className="font-bold text-purple-200">{results.bluffAnswer}</span>
           </p>
           {results.bluffVictims && results.bluffVictims.length > 0 && (
@@ -72,11 +72,11 @@ export default function HostResults({
       )}
 
       {/* Correct answer */}
-      <div className="flex items-start gap-3 rounded-xl border-2 border-emerald-400/30 bg-emerald-400/10 px-5 py-4">
-        <CheckCircle className="mt-0.5 h-6 w-6 shrink-0 text-emerald-400" />
+      <div className="flex items-start gap-3 rounded-xl border-2 border-[#26890c]/30 bg-[#26890c]/20 px-5 py-4">
+        <CheckCircle className="mt-0.5 h-6 w-6 shrink-0 text-[#26890c]" />
         <div>
           <p className="text-sm text-emerald-200/60">Teisingas atsakymas</p>
-          <p className="mt-1 text-lg font-bold text-emerald-100">
+          <p className="mt-1 text-lg font-bold text-white">
             {question?.options[results.correctAnswer]}
           </p>
           <p className="mt-2 text-sm text-emerald-200/50">{results.explanation}</p>
@@ -85,16 +85,16 @@ export default function HostResults({
 
       {/* Wager results */}
       {results.wagerResults && results.wagerResults.length > 0 && (
-        <div className="rounded-xl border-2 border-amber-400/20 bg-amber-400/5 px-5 py-4">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold text-amber-300">
+        <div className="rounded-xl border-2 border-white/20 bg-white/5 px-5 py-4">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold text-[#d89e00]">
             <Coins className="h-4 w-4" />
             Statymų rezultatai
           </div>
           <div className="flex flex-col gap-1">
             {results.wagerResults.map((wr) => (
               <div key={wr.playerId} className="flex items-center justify-between text-sm">
-                <span className="text-amber-100">{wr.playerName}</span>
-                <span className={`font-bold ${wr.won ? "text-emerald-300" : "text-red-300"}`}>
+                <span className="text-white">{wr.playerName}</span>
+                <span className={`font-bold ${wr.won ? "text-emerald-300" : "text-white"}`}>
                   {wr.won ? "+" : ""}{wr.netPoints} (statė {wr.wager})
                 </span>
               </div>
@@ -123,7 +123,7 @@ export default function HostResults({
       <div className="grid gap-6 sm:grid-cols-2">
         {/* Answer distribution */}
         <div>
-          <div className="mb-3 flex items-center gap-2 text-sm uppercase tracking-wider text-amber-200/50">
+          <div className="mb-3 flex items-center gap-2 text-sm uppercase tracking-wider text-white/50">
             <BarChart3 className="h-4 w-4" />
             <span>Atsakymų pasiskirstymas</span>
           </div>
@@ -155,14 +155,14 @@ export default function HostResults({
                         className={`absolute inset-y-0 left-0 ${style.barBg}`}
                         style={{ width: `${pct}%` }}
                       />
-                      <span className="relative flex items-center gap-1.5 text-sm text-amber-50">
-                        {isCorrect && <CheckCircle className="h-3.5 w-3.5 shrink-0 text-emerald-400" />}
+                      <span className="relative flex items-center gap-1.5 text-sm text-white">
+                        {isCorrect && <CheckCircle className="h-3.5 w-3.5 shrink-0 text-[#26890c]" />}
                         {isBluff && <Zap className="h-3.5 w-3.5 shrink-0 text-purple-400" />}
                         {option}
                       </span>
                     </div>
                   </div>
-                  <span className="min-w-[3ch] text-right text-sm font-bold text-amber-200">
+                  <span className="min-w-[3ch] text-right text-sm font-bold text-white/80">
                     {count}
                   </span>
                 </div>
@@ -176,7 +176,7 @@ export default function HostResults({
           {/* Team scores */}
           {results.teamScores && results.teamScores.length > 0 && (
             <div className="mb-4">
-              <div className="mb-3 flex items-center gap-2 text-sm uppercase tracking-wider text-amber-200/50">
+              <div className="mb-3 flex items-center gap-2 text-sm uppercase tracking-wider text-white/50">
                 <Users className="h-4 w-4" />
                 <span>Komandų taškai</span>
               </div>
@@ -186,8 +186,8 @@ export default function HostResults({
                     key={ts.teamIndex}
                     className="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2"
                   >
-                    <span className="font-medium text-amber-100">{ts.teamName}</span>
-                    <span className="font-bold text-amber-200">{ts.score}</span>
+                    <span className="font-medium text-white">{ts.teamName}</span>
+                    <span className="font-bold text-white/80">{ts.score}</span>
                   </div>
                 ))}
               </div>
@@ -195,7 +195,7 @@ export default function HostResults({
           )}
 
           {/* Top 5 leaderboard */}
-          <div className="mb-3 flex items-center gap-2 text-sm uppercase tracking-wider text-amber-200/50">
+          <div className="mb-3 flex items-center gap-2 text-sm uppercase tracking-wider text-white/50">
             <Trophy className="h-4 w-4" />
             <span>Lyderių lentelė</span>
           </div>
@@ -208,19 +208,19 @@ export default function HostResults({
                 <div className="flex items-center gap-2">
                   {entry.rank <= 3 ? (
                     <Award className={`h-5 w-5 ${
-                      entry.rank === 1 ? "text-amber-400" :
+                      entry.rank === 1 ? "text-yellow-400" :
                       entry.rank === 2 ? "text-gray-300" :
-                      "text-amber-600"
+                      "text-amber-700"
                     }`} />
                   ) : (
-                    <span className="flex h-5 w-5 items-center justify-center text-sm font-bold text-amber-400">
+                    <span className="flex h-5 w-5 items-center justify-center text-sm font-bold text-white">
                       {entry.rank}
                     </span>
                   )}
                   <span className="text-lg">{entry.emoji}</span>
-                  <span className="text-amber-50">{entry.name}</span>
+                  <span className="text-white">{entry.name}</span>
                 </div>
-                <span className="font-bold text-amber-200">{entry.score}</span>
+                <span className="font-bold text-white/80">{entry.score}</span>
               </div>
             ))}
           </div>
@@ -230,7 +230,7 @@ export default function HostResults({
       {/* Next button */}
       <button
         onClick={onNext}
-        className="flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-8 py-4 text-lg font-bold text-amber-950 transition-colors hover:bg-amber-400"
+        className="flex items-center justify-center gap-2 rounded-xl bg-white text-[#46178f] px-8 py-4 text-lg font-bold transition-colors hover:bg-white/90"
       >
         {isLast ? (
           <>

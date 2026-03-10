@@ -95,19 +95,13 @@ function PlayPageInner() {
   return (
     <main className="relative z-10 flex w-full max-w-xl flex-1 flex-col items-center justify-center px-5 py-8">
       {mode === "menu" && (
-        <div className="flex w-full flex-col items-center gap-6 animate-fade-in">
-          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-amber-400/10">
-            <Plus className="h-10 w-10 text-amber-400" />
-          </div>
-          <h1 className="text-2xl font-bold text-amber-50 sm:text-3xl">
+        <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
+          <h1 className="text-3xl font-extrabold text-white sm:text-4xl">
             Žaisti su draugais
           </h1>
-          <p className="text-center text-amber-200/50">
-            Sukurk kambarį arba prisijunk prie esamo
-          </p>
 
           {error && (
-            <p className="w-full rounded-lg bg-red-400/10 px-3 py-2 text-center text-sm text-red-300">
+            <p className="w-full rounded-xl bg-[#e21b3c]/20 px-4 py-3 text-center text-sm font-bold text-white">
               {error}
             </p>
           )}
@@ -115,14 +109,14 @@ function PlayPageInner() {
           <div className="flex w-full flex-col gap-3">
             <button
               onClick={() => setMode("pick-quiz")}
-              className="flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-6 py-4 text-lg font-bold text-amber-950 transition-colors hover:bg-amber-400"
+              className="btn-primary flex items-center justify-center gap-2 w-full"
             >
               <Plus className="h-5 w-5" />
               Sukurti žaidimą
             </button>
             <button
               onClick={() => setMode("join")}
-              className="flex items-center justify-center gap-2 rounded-xl border-2 border-amber-400/30 bg-amber-400/5 px-6 py-4 text-lg font-semibold text-amber-100 transition-colors hover:border-amber-400/50 hover:bg-amber-400/10"
+              className="btn-secondary flex items-center justify-center gap-2 w-full"
             >
               <LogIn className="h-5 w-5" />
               Prisijungti
@@ -131,23 +125,20 @@ function PlayPageInner() {
 
           <button
             onClick={() => router.push("/")}
-            className="mt-4 flex items-center gap-1.5 text-sm text-amber-200/40 hover:text-amber-200/60"
+            className="mt-2 flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            Grįžti į pradžią
+            Pradžia
           </button>
         </div>
       )}
 
       {mode === "pick-quiz" && (
-        <div className="flex w-full flex-col items-center gap-6 animate-fade-in">
-          <h1 className="text-xl font-bold text-amber-50">Pasirink kvizą</h1>
-          <p className="text-center text-sm text-amber-200/50">
-            Kurį kvizą žaisit su draugais?
-          </p>
+        <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
+          <h1 className="text-2xl font-extrabold text-white">Pasirink kvizą</h1>
 
           {error && (
-            <p className="w-full rounded-lg bg-red-400/10 px-3 py-2 text-center text-sm text-red-300">
+            <p className="w-full rounded-xl bg-[#e21b3c]/20 px-4 py-3 text-center text-sm font-bold text-white">
               {error}
             </p>
           )}
@@ -159,14 +150,14 @@ function PlayPageInner() {
           <button
             onClick={handleQuizNext}
             disabled={!selectedQuizId}
-            className="w-full rounded-xl bg-amber-500 px-6 py-4 text-lg font-bold text-amber-950 transition-colors hover:bg-amber-400 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="btn-primary w-full text-center disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            Toliau
+            Toliau →
           </button>
 
           <button
             onClick={() => { setMode("menu"); setError(null); setSelectedQuizId(null); }}
-            className="flex items-center gap-1.5 text-sm text-amber-200/40 hover:text-amber-200/60"
+            className="flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             Atgal
@@ -175,11 +166,11 @@ function PlayPageInner() {
       )}
 
       {mode === "pick-mode" && (
-        <div className="flex w-full flex-col items-center gap-6 animate-fade-in">
-          <h1 className="text-xl font-bold text-amber-50">Pasirink režimą</h1>
+        <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
+          <h1 className="text-2xl font-extrabold text-white">Pasirink režimą</h1>
 
           {error && (
-            <p className="w-full rounded-lg bg-red-400/10 px-3 py-2 text-center text-sm text-red-300">
+            <p className="w-full rounded-xl bg-[#e21b3c]/20 px-4 py-3 text-center text-sm font-bold text-white">
               {error}
             </p>
           )}
@@ -190,7 +181,7 @@ function PlayPageInner() {
 
           <button
             onClick={() => { setMode("pick-quiz"); setError(null); }}
-            className="flex items-center gap-1.5 text-sm text-amber-200/40 hover:text-amber-200/60"
+            className="flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             Atgal
@@ -199,11 +190,8 @@ function PlayPageInner() {
       )}
 
       {mode === "join" && (
-        <div className="flex w-full flex-col items-center gap-6 animate-fade-in">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-400/10">
-            <LogIn className="h-8 w-8 text-amber-400" />
-          </div>
-          <h1 className="text-xl font-bold text-amber-50">Prisijungti prie žaidimo</h1>
+        <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
+          <h1 className="text-2xl font-extrabold text-white">Prisijungti</h1>
 
           <JoinForm
             initialCode={codeFromUrl}
@@ -214,7 +202,7 @@ function PlayPageInner() {
 
           <button
             onClick={() => { setMode("menu"); setError(null); }}
-            className="flex items-center gap-1.5 text-sm text-amber-200/40 hover:text-amber-200/60"
+            className="flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             Atgal
@@ -224,8 +212,8 @@ function PlayPageInner() {
 
       {mode === "creating" && (
         <div className="flex flex-col items-center gap-4 animate-fade-in">
-          <Loader2 className="h-12 w-12 animate-spin text-amber-400" />
-          <p className="text-lg text-amber-200/60">Kuriamas kambarys...</p>
+          <Loader2 className="h-12 w-12 animate-spin text-white" />
+          <p className="text-lg font-bold text-white/60">Kuriamas kambarys...</p>
         </div>
       )}
     </main>
@@ -234,16 +222,11 @@ function PlayPageInner() {
 
 export default function PlayPage() {
   return (
-    <div className="relative flex min-h-svh flex-col items-center bg-[#0f0e0a]">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-1/3 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-amber-500/[0.07] blur-3xl" />
-        <div className="absolute -bottom-1/4 right-0 h-[400px] w-[400px] rounded-full bg-red-500/[0.05] blur-3xl" />
-      </div>
-
+    <div className="relative flex min-h-svh flex-col items-center bg-[#46178f] bg-pattern">
       <Suspense
         fallback={
           <div className="relative z-10 flex flex-1 items-center justify-center">
-            <Loader2 className="h-10 w-10 animate-spin text-amber-400" />
+            <Loader2 className="h-10 w-10 animate-spin text-white" />
           </div>
         }
       >

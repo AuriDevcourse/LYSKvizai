@@ -12,10 +12,10 @@ import AudioPlayer from "./AudioPlayer";
 import VideoPlayer from "./VideoPlayer";
 
 const BUTTON_COLORS = [
-  "bg-red-500 hover:bg-red-400 active:bg-red-600",
-  "bg-blue-500 hover:bg-blue-400 active:bg-blue-600",
-  "bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600",
-  "bg-amber-500 hover:bg-amber-400 active:bg-amber-600",
+  "bg-[#e21b3c] hover:brightness-110 active:brightness-90",
+  "bg-[#1368ce] hover:brightness-110 active:brightness-90",
+  "bg-[#26890c] hover:brightness-110 active:brightness-90",
+  "bg-[#d89e00] hover:brightness-110 active:brightness-90",
 ];
 
 const BUTTON_ICONS = [
@@ -52,7 +52,6 @@ export default function PlayerQuestion({
   const isProgressive = question.progressiveReveal ?? false;
   const words = question.question.split(/\s+/);
 
-  // Reset selection when question changes
   useEffect(() => {
     setSelected(null);
   }, [question.index]);
@@ -63,7 +62,6 @@ export default function PlayerQuestion({
     isProgressive
   );
 
-  // Effective timer with freeze reduction
   const effectiveDuration = Math.max(5, question.timerDuration - timerReduction);
 
   const handleSelect = (index: number) => {
@@ -76,24 +74,24 @@ export default function PlayerQuestion({
   if (eliminated) {
     return (
       <div className="flex flex-1 flex-col gap-4">
-        <div className="flex items-center justify-center gap-2 rounded-lg bg-red-500/20 px-4 py-2 text-sm font-medium text-red-300">
+        <div className="flex items-center justify-center gap-2 rounded-xl bg-[#e21b3c]/20 px-4 py-2 text-sm font-bold text-white">
           <Eye className="h-4 w-4" />
           Stebėjimo režimas
         </div>
 
-        <div className="flex items-center justify-between text-sm text-amber-200/50">
-          <span>{question.index + 1} / {question.total}</span>
+        <div className="text-center text-sm font-bold text-white/50">
+          {question.index + 1} / {question.total}
         </div>
 
-        <h2 className="text-center text-lg font-bold text-amber-50/60">
+        <h2 className="text-center text-lg font-extrabold text-white/60">
           {question.question}
         </h2>
 
-        <div className="grid flex-1 grid-cols-2 gap-3 opacity-50">
+        <div className="grid flex-1 grid-cols-2 gap-3 opacity-40">
           {question.options.map((option, i) => (
             <div
               key={i}
-              className={`flex flex-col items-center justify-center gap-2 rounded-2xl px-3 py-6 text-center font-semibold text-white/60 ${BUTTON_COLORS[i].split(" ")[0]}`}
+              className={`flex flex-col items-center justify-center gap-2 rounded-2xl px-3 py-6 text-center font-bold text-white ${BUTTON_COLORS[i].split(" ")[0]}`}
             >
               {BUTTON_ICONS[i]}
               <span className="text-sm leading-tight sm:text-base">{option}</span>
@@ -108,12 +106,11 @@ export default function PlayerQuestion({
   if (!canAnswer && waitingPlayerName) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-400/15">
-          <Eye className="h-8 w-8 text-blue-400" />
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/10">
+          <Eye className="h-8 w-8 text-white" />
         </div>
-        <p className="text-lg font-semibold text-amber-50">Laukiame {waitingPlayerName} atsakymo</p>
-        <p className="text-amber-200/50">Šį raundą atsako jūsų komandos narys</p>
-
+        <p className="text-lg font-extrabold text-white">Laukiame {waitingPlayerName}</p>
+        <p className="font-bold text-white/50">Šį raundą atsako jūsų komandos narys</p>
         <Timer
           duration={effectiveDuration}
           startTime={question.startTime}
@@ -125,28 +122,26 @@ export default function PlayerQuestion({
 
   if (selected !== null) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center gap-4">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-400/15">
-          <Check className="h-8 w-8 text-emerald-400" />
+      <div className="flex flex-1 flex-col items-center justify-center gap-4 animate-scale-in">
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/15">
+          <Check className="h-10 w-10 text-white" />
         </div>
-        <p className="text-lg font-semibold text-amber-50">Atsakymas priimtas!</p>
-        <p className="text-amber-200/50">Laukiame kitų žaidėjų...</p>
+        <p className="text-xl font-extrabold text-white">Priimta!</p>
+        <p className="font-bold text-white/50">Laukiame kitų...</p>
       </div>
     );
   }
 
   return (
     <div className="flex flex-1 flex-col gap-4">
-      {/* Timer + question number + wager badge */}
-      <div className="flex items-center justify-between text-sm text-amber-200/50">
-        <span>
-          {question.index + 1} / {question.total}
-          {question.isWagerRound && (
-            <span className="ml-2 rounded bg-amber-500/20 px-1.5 py-0.5 text-xs font-bold text-amber-300">
-              STATYMAS
-            </span>
-          )}
-        </span>
+      {/* Timer + question number */}
+      <div className="text-center text-sm font-bold text-white/50">
+        {question.index + 1} / {question.total}
+        {question.isWagerRound && (
+          <span className="ml-2 rounded-lg bg-[#d89e00]/20 px-2 py-0.5 text-xs font-extrabold text-[#d89e00]">
+            STATYMAS
+          </span>
+        )}
       </div>
 
       <Timer
@@ -161,13 +156,15 @@ export default function PlayerQuestion({
       )}
 
       {/* Question text */}
-      <h2 className="text-center text-lg font-bold text-amber-50">
-        {isProgressive ? (
-          <ProgressiveText text={question.question} visibleWordCount={visibleWordCount} />
-        ) : (
-          question.question
-        )}
-      </h2>
+      <div className="glass rounded-2xl px-5 py-4 text-center">
+        <h2 className="text-lg font-extrabold text-white">
+          {isProgressive ? (
+            <ProgressiveText text={question.question} visibleWordCount={visibleWordCount} />
+          ) : (
+            question.question
+          )}
+        </h2>
+      </div>
 
       {/* Audio */}
       {question.type === "audio" && question.audioUrl && (
@@ -199,12 +196,12 @@ export default function PlayerQuestion({
       )}
 
       {/* Big answer buttons */}
-      <div className="grid flex-1 grid-cols-2 gap-3">
+      <div className="grid flex-1 grid-cols-2 gap-3 stagger-children">
         {question.options.map((option, i) => (
           <button
             key={i}
             onClick={() => handleSelect(i)}
-            className={`flex flex-col items-center justify-center gap-2 rounded-2xl px-3 py-6 text-center font-semibold text-white transition-transform active:scale-95 ${BUTTON_COLORS[i]}`}
+            className={`answer-btn flex flex-col items-center justify-center gap-2 rounded-2xl px-3 py-6 text-center font-bold text-white ${BUTTON_COLORS[i]}`}
           >
             {BUTTON_ICONS[i]}
             <span className="text-sm leading-tight sm:text-base">{option}</span>

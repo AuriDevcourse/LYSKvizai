@@ -69,7 +69,7 @@ export default function ReactionPicker({ onReact }: ReactionPickerProps) {
                 className="absolute bottom-0 animate-float-up"
                 style={{ left: `${f.x}%`, transform: "translateX(-50%)" }}
               >
-                <div className="max-w-[200px] rounded-full bg-white/15 px-4 py-1.5 text-sm font-medium text-amber-50 backdrop-blur-sm">
+                <div className="max-w-[200px] rounded-full bg-white/15 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm">
                   {f.content}
                 </div>
               </div>
@@ -105,12 +105,12 @@ export default function ReactionPicker({ onReact }: ReactionPickerProps) {
           onChange={(e) => setText(e.target.value)}
           placeholder="Parašyk komentarą..."
           maxLength={60}
-          className="flex-1 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-amber-50 placeholder:text-amber-200/30 focus:border-amber-400/40 focus:outline-none"
+          className="flex-1 rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/30 focus:outline-none"
         />
         <button
           type="submit"
           disabled={!text.trim()}
-          className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500 text-amber-950 transition-colors hover:bg-amber-400 disabled:opacity-30"
+          className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-[#46178f] transition-colors hover:bg-white/90 disabled:opacity-30"
         >
           <Send className="h-4 w-4" />
         </button>

@@ -145,21 +145,21 @@ export default function QuizEditorPage({ params }: PageProps) {
 
   if (loading) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#0f0e0a]">
-        <Loader2 className="h-10 w-10 animate-spin text-amber-400" />
+      <div className="flex min-h-svh items-center justify-center bg-[#46178f] bg-pattern">
+        <Loader2 className="h-10 w-10 animate-spin text-white" />
       </div>
     );
   }
 
   if (error && !title && !isNew) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#0f0e0a]">
+      <div className="flex min-h-svh items-center justify-center bg-[#46178f] bg-pattern">
         <div className="flex flex-col items-center gap-4 text-center">
           <div className="text-5xl">😵</div>
-          <p className="text-lg text-red-300">{error}</p>
+          <p className="text-lg text-white">{error}</p>
           <button
             onClick={() => router.push("/editor")}
-            className="rounded-xl bg-amber-500 px-6 py-3 font-semibold text-amber-950 hover:bg-amber-400"
+            className="rounded-xl bg-white px-6 py-3 font-semibold text-[#46178f] hover:bg-white/90"
           >
             Grįžti
           </button>
@@ -169,9 +169,9 @@ export default function QuizEditorPage({ params }: PageProps) {
   }
 
   return (
-    <div className="relative flex min-h-svh flex-col bg-[#0f0e0a]">
+    <div className="relative flex min-h-svh flex-col bg-[#46178f] bg-pattern">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-1/3 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-amber-500/[0.07] blur-3xl" />
+        <div className="absolute -top-1/3 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-white/[0.07] blur-3xl" />
         <div className="absolute -bottom-1/4 right-0 h-[400px] w-[400px] rounded-full bg-red-500/[0.05] blur-3xl" />
       </div>
 
@@ -180,7 +180,7 @@ export default function QuizEditorPage({ params }: PageProps) {
         <div className="mb-6 flex items-center justify-between">
           <button
             onClick={() => router.push("/editor")}
-            className="flex items-center gap-1.5 text-sm text-amber-200/40 hover:text-amber-200/60"
+            className="flex items-center gap-1.5 text-sm text-white/40 hover:text-white/60"
           >
             <ArrowLeft className="h-4 w-4" />
             Atgal
@@ -188,7 +188,7 @@ export default function QuizEditorPage({ params }: PageProps) {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-2 rounded-xl bg-amber-500 px-5 py-2.5 font-semibold text-amber-950 transition-colors hover:bg-amber-400 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 font-semibold text-[#46178f] transition-colors hover:bg-white/90 disabled:opacity-50"
           >
             {saving ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -200,41 +200,41 @@ export default function QuizEditorPage({ params }: PageProps) {
         </div>
 
         {error && (
-          <div className="mb-4 rounded-lg bg-red-400/10 px-4 py-2 text-sm text-red-300">
+          <div className="mb-4 rounded-lg bg-[#e21b3c]/20 px-4 py-2 text-sm text-white">
             {error}
           </div>
         )}
 
         {/* Metadata */}
-        <div className="mb-6 space-y-4 rounded-2xl border-2 border-white/10 bg-white/5 p-5">
+        <div className="mb-6 space-y-4 rounded-2xl border-2 border-white/15 bg-white/5 p-5">
           <div>
-            <label className="mb-1 block text-xs font-medium text-amber-200/50">
+            <label className="mb-1 block text-xs font-medium text-white/50">
               Pavadinimas
             </label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full rounded-lg border-2 border-white/10 bg-white/5 px-3 py-2 text-lg font-bold text-amber-50 placeholder:text-amber-200/30 focus:border-amber-400/50 focus:outline-none"
+              className="w-full rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-lg font-bold text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
               placeholder="Kvizo pavadinimas"
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-xs font-medium text-amber-200/50">
+            <label className="mb-1 block text-xs font-medium text-white/50">
               Aprašymas
             </label>
             <input
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full rounded-lg border-2 border-white/10 bg-white/5 px-3 py-2 text-sm text-amber-50 placeholder:text-amber-200/30 focus:border-amber-400/50 focus:outline-none"
+              className="w-full rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
               placeholder="Trumpas aprašymas..."
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-xs font-medium text-amber-200/50">
+            <label className="mb-1 block text-xs font-medium text-white/50">
               Emoji
             </label>
             <div className="flex flex-wrap gap-2">
@@ -245,7 +245,7 @@ export default function QuizEditorPage({ params }: PageProps) {
                   onClick={() => setEmoji(e)}
                   className={`flex h-10 w-10 items-center justify-center rounded-lg text-xl transition-colors ${
                     emoji === e
-                      ? "bg-amber-400/20 ring-2 ring-amber-400"
+                      ? "bg-white/15 ring-2 ring-white"
                       : "bg-white/5 hover:bg-white/10"
                   }`}
                 >
@@ -257,7 +257,7 @@ export default function QuizEditorPage({ params }: PageProps) {
         </div>
 
         {/* Questions */}
-        <h2 className="mb-4 text-lg font-bold text-amber-50">
+        <h2 className="mb-4 text-lg font-bold text-white">
           Klausimai ({questions.length})
         </h2>
 
@@ -279,7 +279,7 @@ export default function QuizEditorPage({ params }: PageProps) {
         {/* Add question button */}
         <button
           onClick={addQuestion}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-white/10 py-4 text-amber-200/50 transition-colors hover:border-amber-400/30 hover:bg-amber-400/5 hover:text-amber-200"
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-white/15 py-4 text-white/50 transition-colors hover:border-white/30 hover:bg-white/5 hover:text-white/80"
         >
           <Plus className="h-5 w-5" />
           Pridėti klausimą
@@ -290,7 +290,7 @@ export default function QuizEditorPage({ params }: PageProps) {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-2 rounded-xl bg-amber-500 px-8 py-3 font-semibold text-amber-950 transition-colors hover:bg-amber-400 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-xl bg-white px-8 py-3 font-semibold text-[#46178f] transition-colors hover:bg-white/90 disabled:opacity-50"
           >
             {saving ? (
               <Loader2 className="h-4 w-4 animate-spin" />

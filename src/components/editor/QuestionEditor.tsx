@@ -44,30 +44,30 @@ export default function QuestionEditor({
   const questionType = question.type ?? "standard";
 
   return (
-    <div className="rounded-2xl border-2 border-white/10 bg-white/5 p-5">
+    <div className="rounded-2xl border-2 border-white/15 bg-white/5 p-5">
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
-        <span className="text-sm font-bold text-amber-400">
+        <span className="text-sm font-bold text-white">
           {index + 1} klausimas
         </span>
         <div className="flex items-center gap-1">
           <button
             onClick={onMoveUp}
             disabled={index === 0}
-            className="rounded-lg p-1.5 text-amber-200/40 hover:bg-white/10 hover:text-amber-200 disabled:opacity-30"
+            className="rounded-lg p-1.5 text-white/40 hover:bg-white/10 hover:text-white/80 disabled:opacity-30"
           >
             <ChevronUp className="h-4 w-4" />
           </button>
           <button
             onClick={onMoveDown}
             disabled={index === total - 1}
-            className="rounded-lg p-1.5 text-amber-200/40 hover:bg-white/10 hover:text-amber-200 disabled:opacity-30"
+            className="rounded-lg p-1.5 text-white/40 hover:bg-white/10 hover:text-white/80 disabled:opacity-30"
           >
             <ChevronDown className="h-4 w-4" />
           </button>
           <button
             onClick={onDelete}
-            className="rounded-lg p-1.5 text-red-400/60 hover:bg-red-400/10 hover:text-red-400"
+            className="rounded-lg p-1.5 text-red-400/60 hover:bg-[#e21b3c]/20 hover:text-red-400"
           >
             <Trash2 className="h-4 w-4" />
           </button>
@@ -76,7 +76,7 @@ export default function QuestionEditor({
 
       {/* Question type */}
       <div className="mb-4">
-        <label className="mb-1 block text-xs font-medium text-amber-200/50">
+        <label className="mb-1 block text-xs font-medium text-white/50">
           Tipas
         </label>
         <div className="flex flex-wrap gap-2">
@@ -87,8 +87,8 @@ export default function QuestionEditor({
               onClick={() => updateField("type", qt.value)}
               className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
                 questionType === qt.value
-                  ? "bg-amber-400/20 text-amber-200"
-                  : "bg-white/5 text-amber-200/50 hover:bg-white/10"
+                  ? "bg-white/15 text-white/80"
+                  : "bg-white/5 text-white/50 hover:bg-white/10"
               }`}
             >
               {qt.label}
@@ -99,14 +99,14 @@ export default function QuestionEditor({
 
       {/* Question text */}
       <div className="mb-4">
-        <label className="mb-1 block text-xs font-medium text-amber-200/50">
+        <label className="mb-1 block text-xs font-medium text-white/50">
           Klausimas
         </label>
         <textarea
           value={question.question}
           onChange={(e) => updateField("question", e.target.value)}
           rows={2}
-          className="w-full rounded-lg border-2 border-white/10 bg-white/5 px-3 py-2 text-sm text-amber-50 placeholder:text-amber-200/30 focus:border-amber-400/50 focus:outline-none"
+          className="w-full rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
           placeholder="Įvesk klausimą..."
         />
       </div>
@@ -121,7 +121,7 @@ export default function QuestionEditor({
             type="text"
             value={question.bluffAnswer ?? ""}
             onChange={(e) => updateField("bluffAnswer", e.target.value)}
-            className="w-full rounded-lg border-2 border-purple-400/30 bg-purple-400/5 px-3 py-2 text-sm text-amber-50 placeholder:text-amber-200/30 focus:border-purple-400/50 focus:outline-none"
+            className="w-full rounded-lg border-2 border-purple-400/30 bg-purple-400/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-purple-400/50 focus:outline-none"
             placeholder="Netikras atsakymas, kuris pakeis vieną iš neteisingų..."
           />
         </div>
@@ -157,7 +157,7 @@ export default function QuestionEditor({
 
       {/* Options + correct answer */}
       <div className="mb-4 space-y-2">
-        <label className="block text-xs font-medium text-amber-200/50">
+        <label className="block text-xs font-medium text-white/50">
           Atsakymai (pasirink teisingą)
         </label>
         {question.options.map((opt, i) => (
@@ -168,7 +168,7 @@ export default function QuestionEditor({
               className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-bold transition-colors ${
                 question.correct === i
                   ? "bg-emerald-400 text-emerald-950"
-                  : "bg-white/10 text-amber-200/50 hover:bg-white/20"
+                  : "bg-white/10 text-white/50 hover:bg-white/20"
               }`}
             >
               {["A", "B", "C", "D"][i]}
@@ -177,7 +177,7 @@ export default function QuestionEditor({
               type="text"
               value={opt}
               onChange={(e) => updateOption(i, e.target.value)}
-              className="flex-1 rounded-lg border-2 border-white/10 bg-white/5 px-3 py-1.5 text-sm text-amber-50 placeholder:text-amber-200/30 focus:border-amber-400/50 focus:outline-none"
+              className="flex-1 rounded-lg border-2 border-white/15 bg-white/5 px-3 py-1.5 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
               placeholder={`Atsakymas ${["A", "B", "C", "D"][i]}`}
             />
           </div>
@@ -186,21 +186,21 @@ export default function QuestionEditor({
 
       {/* Explanation */}
       <div className="mb-4">
-        <label className="mb-1 block text-xs font-medium text-amber-200/50">
+        <label className="mb-1 block text-xs font-medium text-white/50">
           Paaiškinimas
         </label>
         <textarea
           value={question.explanation}
           onChange={(e) => updateField("explanation", e.target.value)}
           rows={2}
-          className="w-full rounded-lg border-2 border-white/10 bg-white/5 px-3 py-2 text-sm text-amber-50 placeholder:text-amber-200/30 focus:border-amber-400/50 focus:outline-none"
+          className="w-full rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
           placeholder="Paaiškinimas rodomas po atsakymo..."
         />
       </div>
 
       {/* Image */}
       <div className="mb-4">
-        <label className="mb-1 block text-xs font-medium text-amber-200/50">
+        <label className="mb-1 block text-xs font-medium text-white/50">
           Nuotrauka (neprivaloma)
         </label>
         <ImageUpload
@@ -216,9 +216,9 @@ export default function QuestionEditor({
             type="checkbox"
             checked={question.progressiveReveal ?? false}
             onChange={(e) => updateField("progressiveReveal", e.target.checked || undefined)}
-            className="h-4 w-4 rounded accent-amber-500"
+            className="h-4 w-4 rounded accent-white"
           />
-          <span className="text-xs font-medium text-amber-200/50">
+          <span className="text-xs font-medium text-white/50">
             Laipsniškas atskleidimas (tekstas žodis po žodžio, nuotrauka iš sulietos)
           </span>
         </label>

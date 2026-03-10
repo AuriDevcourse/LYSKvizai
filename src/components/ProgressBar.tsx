@@ -6,20 +6,21 @@ interface ProgressBarProps {
 }
 
 export default function ProgressBar({ current, total }: ProgressBarProps) {
-  const percentage = (current / total) * 100;
-
   return (
     <div className="w-full">
-      <div className="mb-2 flex justify-between text-sm text-amber-200/70">
-        <span>Klausimas {current} iš {total}</span>
-        <span>{Math.round(percentage)}%</span>
+      <div className="flex items-center gap-1.5">
+        {Array.from({ length: total }, (_, i) => (
+          <div
+            key={i}
+            className={`h-2 flex-1 rounded-full transition-all duration-500 ${
+              i < current ? "bg-white" : "bg-white/20"
+            }`}
+          />
+        ))}
       </div>
-      <div className="h-3 w-full overflow-hidden rounded-full bg-white/10">
-        <div
-          className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-500 transition-all duration-500 ease-out"
-          style={{ width: `${percentage}%` }}
-        />
-      </div>
+      <p className="mt-2 text-center text-sm font-bold text-white/60">
+        {current} / {total}
+      </p>
     </div>
   );
 }

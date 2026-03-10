@@ -10,10 +10,10 @@ import AudioPlayer from "./AudioPlayer";
 import VideoPlayer from "./VideoPlayer";
 
 const OPTION_BG = [
-  "bg-red-600",
-  "bg-blue-600",
-  "bg-emerald-600",
-  "bg-amber-600",
+  "bg-[#e21b3c]",
+  "bg-[#1368ce]",
+  "bg-[#26890c]",
+  "bg-[#d89e00]",
 ];
 
 const OPTION_ICONS = [Triangle, Diamond, Circle, Square];
@@ -47,42 +47,36 @@ export default function HostQuestion({
     isProgressive
   );
 
-  const timerColor =
-    fraction > 0.5
-      ? "bg-emerald-500 text-emerald-50"
-      : fraction > 0.25
-        ? "bg-amber-500 text-amber-50"
-        : "bg-red-500 text-red-50";
-
-  const barColor =
-    fraction > 0.5
-      ? "bg-emerald-400"
-      : fraction > 0.25
-        ? "bg-amber-400"
-        : "bg-red-400";
+  const isCritical = fraction <= 0.25;
 
   return (
     <div className="flex flex-1 flex-col">
-      {/* ---- TOP: Question number + timer bar + wager badge ---- */}
+      {/* TOP: Question number + timer bar */}
       <div className="flex items-center gap-4 pb-3">
         <div className="flex items-center gap-2">
-          <div className="rounded-lg bg-white/10 px-3 py-1 text-sm font-medium text-amber-200/70">
+          <div className="rounded-lg bg-white/10 px-3 py-1 text-sm font-extrabold text-white/70">
             {question.index + 1} / {question.total}
           </div>
           {question.isWagerRound && (
-            <span className="rounded-lg bg-amber-500/20 px-2 py-1 text-xs font-bold text-amber-300">
+            <span className="rounded-lg bg-[#d89e00]/20 px-2 py-1 text-xs font-extrabold text-[#d89e00]">
               STATYMAS
             </span>
           )}
           {question.type && question.type !== "standard" && (
-            <span className="rounded-lg bg-purple-500/20 px-2 py-1 text-xs font-bold text-purple-300">
+            <span className="rounded-lg bg-purple-500/20 px-2 py-1 text-xs font-extrabold text-purple-300">
               {question.type === "bluff" ? "APGAULĖ" : question.type === "audio" ? "AUDIO" : "VIDEO"}
             </span>
           )}
         </div>
-        <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/10">
+        <div className="h-3 flex-1 overflow-hidden rounded-full bg-white/10">
           <div
-            className={`h-full rounded-full transition-all duration-100 ${barColor}`}
+            className={`h-full rounded-full transition-all duration-100 ${
+              fraction > 0.5
+                ? "bg-[#26890c]"
+                : fraction > 0.25
+                  ? "bg-[#d89e00]"
+                  : "bg-[#e21b3c]"
+            }`}
             style={{ width: `${fraction * 100}%` }}
           />
         </div>
@@ -90,7 +84,7 @@ export default function HostQuestion({
 
       {/* Power-up toast */}
       {powerUpEvent && (
-        <div className="mb-3 flex items-center justify-center gap-2 rounded-lg bg-cyan-500/20 px-4 py-2 text-sm text-cyan-200 animate-fade-in">
+        <div className="mb-3 flex items-center justify-center gap-2 rounded-xl bg-white/10 px-4 py-2 text-sm font-bold text-white animate-fade-in">
           <Snowflake className="h-4 w-4" />
           <span>{powerUpEvent.playerEmoji} {powerUpEvent.playerName} naudoja {
             powerUpEvent.powerUp === "freeze" ? "Užšaldymą" :
@@ -99,36 +93,41 @@ export default function HostQuestion({
         </div>
       )}
 
-      {/* ---- CENTER: Timer | Question + Media | Answer count ---- */}
+      {/* CENTER: Timer | Question + Media | Answer count */}
       <div className="flex flex-1 items-center gap-4 sm:gap-8">
-        {/* Timer circle — left */}
+        {/* Timer circle */}
         <div
-          className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full text-2xl font-black sm:h-20 sm:w-20 sm:text-3xl ${timerColor}`}
+          className={`flex h-18 w-18 shrink-0 items-center justify-center rounded-full text-3xl font-black sm:h-22 sm:w-22 sm:text-4xl ${
+            isCritical
+              ? "bg-[#e21b3c] text-white timer-critical"
+              : fraction > 0.5
+                ? "bg-[#26890c] text-white"
+                : "bg-[#d89e00] text-white"
+          }`}
         >
           {displaySeconds}
         </div>
 
-        {/* Question + media — center */}
+        {/* Question + media */}
         <div className="flex flex-1 flex-col items-center justify-center gap-4">
-          <h2 className="max-w-3xl text-center text-2xl font-bold leading-snug text-amber-50 sm:text-3xl lg:text-4xl">
-            {isProgressive ? (
-              <ProgressiveText text={question.question} visibleWordCount={visibleWordCount} />
-            ) : (
-              question.question
-            )}
-          </h2>
+          <div className="glass max-w-3xl rounded-2xl px-8 py-6">
+            <h2 className="text-center text-2xl font-extrabold leading-snug text-white sm:text-3xl lg:text-4xl">
+              {isProgressive ? (
+                <ProgressiveText text={question.question} visibleWordCount={visibleWordCount} />
+              ) : (
+                question.question
+              )}
+            </h2>
+          </div>
 
-          {/* Audio player */}
           {question.type === "audio" && question.audioUrl && (
             <AudioPlayer src={question.audioUrl} />
           )}
 
-          {/* Video player */}
           {question.type === "video" && question.videoUrl && (
             <VideoPlayer src={question.videoUrl} />
           )}
 
-          {/* Image */}
           {question.image && (
             <div className="max-w-md overflow-hidden rounded-xl">
               {isProgressive ? (
@@ -148,31 +147,31 @@ export default function HostQuestion({
           )}
         </div>
 
-        {/* Answer count — right */}
+        {/* Answer count */}
         <div className="flex shrink-0 flex-col items-center">
-          <span className="text-2xl font-black text-amber-50 sm:text-3xl">
+          <span className="text-3xl font-black text-white sm:text-4xl">
             {count}
           </span>
-          <span className="text-xs font-medium text-amber-200/50 sm:text-sm">
+          <span className="text-xs font-bold text-white/50 sm:text-sm">
             Atsakė
           </span>
         </div>
       </div>
 
-      {/* ---- BOTTOM: answer blocks (2×2 grid) ---- */}
+      {/* BOTTOM: answer blocks (2×2 grid) */}
       <div className={`grid min-h-[30vh] grid-cols-2 gap-2 pt-4 sm:gap-3 ${
         question.options.filter(Boolean).length <= 2 ? "grid-rows-1" : "grid-rows-2"
-      }`}>
+      } stagger-children`}>
         {question.options.map((option, i) => {
           if (!option && question.options.filter(Boolean).length <= 2) return null;
           const Icon = OPTION_ICONS[i];
           return (
             <div
               key={i}
-              className={`flex items-end gap-3 rounded-xl px-5 pb-5 pt-4 sm:gap-4 sm:px-8 sm:pb-7 ${OPTION_BG[i]}`}
+              className={`answer-btn flex items-end gap-3 rounded-2xl px-5 pb-5 pt-4 sm:gap-4 sm:px-8 sm:pb-7 ${OPTION_BG[i]}`}
             >
               <Icon className="h-7 w-7 shrink-0 text-white/90 sm:h-8 sm:w-8" fill="currentColor" />
-              <span className="text-lg font-bold text-white sm:text-xl lg:text-2xl">
+              <span className="text-lg font-extrabold text-white sm:text-xl lg:text-2xl">
                 {option}
               </span>
             </div>

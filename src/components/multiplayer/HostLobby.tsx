@@ -35,7 +35,7 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-8">
-      <h1 className="text-3xl font-bold text-amber-50 sm:text-4xl">
+      <h1 className="text-3xl font-bold text-white sm:text-4xl">
         LYS Kvizai
       </h1>
 
@@ -43,7 +43,7 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
       {gameMode !== "classic" && (
         <div className={`flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-bold ${
           gameMode === "elimination"
-            ? "bg-red-500/20 text-red-300"
+            ? "bg-red-500/20 text-white"
             : "bg-blue-500/20 text-blue-300"
         }`}>
           {gameMode === "elimination" ? <Skull className="h-4 w-4" /> : <Users className="h-4 w-4" />}
@@ -56,12 +56,12 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
         <div className="flex flex-col items-center gap-4">
           <RoomCodeDisplay code={code} />
           {joinUrl && <QRCodeComponent url={joinUrl} size={200} />}
-          <div className="flex items-center gap-1.5 text-sm text-amber-200/40">
+          <div className="flex items-center gap-1.5 text-sm text-white/40">
             <QrCode className="h-3.5 w-3.5" />
             <span>Nuskenuok QR arba įvesk kodą</span>
           </div>
           {joinUrl && (
-            <p className="max-w-xs break-all text-center font-mono text-xs text-amber-200/30">
+            <p className="max-w-xs break-all text-center font-mono text-xs text-white/30">
               {joinUrl}
             </p>
           )}
@@ -69,13 +69,13 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
 
         {/* Right: player list */}
         <div className="flex min-w-[240px] flex-col items-center gap-4">
-          <div className="flex items-center gap-2 text-sm uppercase tracking-wider text-amber-200/50">
+          <div className="flex items-center gap-2 text-sm uppercase tracking-wider text-white/50">
             <Users className="h-4 w-4" />
             <span>Žaidėjai ({players.length})</span>
           </div>
 
           {players.length === 0 ? (
-            <div className="flex flex-col items-center gap-2 py-8 text-amber-200/30">
+            <div className="flex flex-col items-center gap-2 py-8 text-white/30">
               <Users className="h-8 w-8" />
               <p>Laukiame žaidėjų...</p>
             </div>
@@ -84,10 +84,10 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
               {players.map((p) => (
                 <div
                   key={p.id}
-                  className="flex items-center gap-2.5 rounded-lg bg-amber-400/10 px-4 py-2"
+                  className="flex items-center gap-2.5 rounded-lg bg-white/10 px-4 py-2"
                 >
                   <span className="text-xl">{p.emoji}</span>
-                  <span className="font-medium text-amber-100">{p.name}</span>
+                  <span className="font-medium text-white">{p.name}</span>
                 </div>
               ))}
             </div>
@@ -96,7 +96,7 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
           <button
             onClick={onStart}
             disabled={players.length === 0}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-500 px-10 py-4 text-xl font-bold text-amber-950 transition-colors hover:bg-amber-400 disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-white text-[#46178f] px-10 py-4 text-xl font-bold transition-colors hover:bg-white/90 disabled:opacity-50"
           >
             <Play className="h-6 w-6" />
             Pradėti!

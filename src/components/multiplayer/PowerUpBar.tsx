@@ -13,7 +13,7 @@ interface PowerUpBarProps {
 const POWER_UPS: { type: PowerUpType; label: string; icon: typeof Snowflake; color: string; description: string }[] = [
   { type: "freeze", label: "Užšaldymas", icon: Snowflake, color: "bg-cyan-500 hover:bg-cyan-400", description: "-3s kitiems" },
   { type: "shield", label: "Skydas", icon: Shield, color: "bg-emerald-500 hover:bg-emerald-400", description: "Serija saugi" },
-  { type: "double", label: "Dvigubai", icon: Zap, color: "bg-amber-500 hover:bg-amber-400", description: "2× taškai" },
+  { type: "double", label: "Dvigubai", icon: Zap, color: "bg-white text-[#46178f] hover:bg-white/90", description: "2× taškai" },
 ];
 
 export default function PowerUpBar({ usesLeft, onUse, disabled }: PowerUpBarProps) {
@@ -23,7 +23,7 @@ export default function PowerUpBar({ usesLeft, onUse, disabled }: PowerUpBarProp
 
   return (
     <div className="flex items-center justify-center gap-2">
-      <span className="text-xs text-amber-200/40">Galios ({usesLeft}):</span>
+      <span className="text-xs text-white/40">Galios ({usesLeft}):</span>
       {POWER_UPS.map((pu) => {
         const Icon = pu.icon;
         const isDisabled = disabled || usedThisRound || usesLeft <= 0;

@@ -14,15 +14,15 @@ const MODES = [
     label: "Klasikinis",
     description: "Visi žaidžia, daugiausiai taškų laimi",
     icon: Swords,
-    color: "border-amber-400/50 bg-amber-400/10",
-    activeColor: "border-amber-400 bg-amber-400/20 ring-2 ring-amber-400/30",
+    color: "border-white/35 bg-white/10",
+    activeColor: "border-white bg-white/20 ring-2 ring-white/30",
   },
   {
     id: "elimination" as GameMode,
     label: "Eliminacija",
     description: "Kas 3 raundus pašalinamas silpniausias",
     icon: Skull,
-    color: "border-red-400/50 bg-red-400/10",
+    color: "border-red-400/50 bg-[#e21b3c]/20",
     activeColor: "border-red-400 bg-red-400/20 ring-2 ring-red-400/30",
   },
   {
@@ -49,7 +49,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <h3 className="text-center text-sm font-medium text-amber-200/60">Žaidimo režimas</h3>
+      <h3 className="text-center text-sm font-medium text-white/60">Žaidimo režimas</h3>
 
       <div className="grid gap-3">
         {MODES.map((mode) => {
@@ -129,7 +129,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
       <button
         type="button"
         onClick={handleConfirm}
-        className="rounded-xl bg-amber-500 px-6 py-3 font-bold text-amber-950 transition-colors hover:bg-amber-400"
+        className="rounded-xl bg-white text-[#46178f] px-6 py-3 font-bold transition-colors hover:bg-white/90"
       >
         Pasirinkti
       </button>

@@ -66,13 +66,11 @@ export default function GamePage({ params }: PageProps) {
 
   const { startGame, submitAnswer, nextQuestion, sendReaction, usePowerUp, submitWager } = useRoomActions();
 
-  // Current player info
   const currentPlayer = useMemo(
     () => players.find((p) => p.id === playerId),
     [players, playerId]
   );
 
-  // Store the last question for showing during results (host needs the options)
   const [lastQuestion, setLastQuestion] = useState(question);
   useEffect(() => {
     if (question) setLastQuestion(question);
@@ -174,13 +172,11 @@ export default function GamePage({ params }: PageProps) {
     }
   }, [isHost, code, hostId]);
 
-  // Determine if player can answer (team mode)
   const canAnswer = useMemo(() => {
     if (gameMode !== "team" || !question?.currentTeamAnswerers) return true;
     return question.currentTeamAnswerers.includes(playerId);
   }, [gameMode, question, playerId]);
 
-  // Find the team answerer name for "waiting" display
   const waitingPlayerName = useMemo(() => {
     if (canAnswer || gameMode !== "team" || !question?.currentTeamAnswerers) return undefined;
     const answererId = question.currentTeamAnswerers.find((id) => {
@@ -191,16 +187,14 @@ export default function GamePage({ params }: PageProps) {
     return players.find((p) => p.id === answererId)?.name;
   }, [canAnswer, gameMode, question, players, currentPlayer, playerId]);
 
-  // Error state — room not found or connection failed permanently
   if (roomError) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#0f0e0a]">
+      <div className="flex min-h-svh items-center justify-center bg-[#46178f]">
         <div className="flex flex-col items-center gap-4 px-6 text-center">
-          <div className="text-5xl">😵</div>
-          <p className="text-lg text-red-300">{roomError}</p>
+          <p className="text-lg font-bold text-white">{roomError}</p>
           <button
             onClick={() => router.push("/play")}
-            className="rounded-xl bg-amber-500 px-6 py-3 font-semibold text-amber-950 hover:bg-amber-400"
+            className="btn-primary"
           >
             Grįžti
           </button>
@@ -209,13 +203,12 @@ export default function GamePage({ params }: PageProps) {
     );
   }
 
-  // Loading state
   if (!state) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#0f0e0a]">
+      <div className="flex min-h-svh items-center justify-center bg-[#46178f]">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="h-10 w-10 animate-spin text-amber-400" />
-          <p className="text-amber-200/50">
+          <Loader2 className="h-10 w-10 animate-spin text-white" />
+          <p className="font-bold text-white/50">
             {connected ? "Kraunama..." : "Jungiamasi..."}
           </p>
         </div>
@@ -228,25 +221,17 @@ export default function GamePage({ params }: PageProps) {
   const isLastQuestion = currentIndex + 1 >= totalQuestions;
 
   return (
-    <div className="relative flex min-h-svh flex-col bg-[#0f0e0a]">
-      {/* Decorative gradient */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-1/3 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-amber-500/[0.07] blur-3xl" />
-        <div className="absolute -bottom-1/4 right-0 h-[400px] w-[400px] rounded-full bg-red-500/[0.05] blur-3xl" />
-        <div className="absolute left-0 top-1/2 h-[300px] w-[300px] rounded-full bg-emerald-500/[0.04] blur-3xl" />
-      </div>
-
+    <div className="relative flex min-h-svh flex-col bg-[#46178f] bg-pattern">
       {/* Exit button */}
       <button
         onClick={handleExit}
-        className="absolute right-3 top-3 z-20 flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 text-amber-200/60 transition-colors hover:bg-white/20 hover:text-amber-100"
+        className="absolute right-3 top-3 z-20 flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 text-white/60 transition-all hover:bg-white/20 hover:text-white"
         title="Išeiti"
       >
         <X className="h-5 w-5" />
       </button>
 
       <main className="relative z-10 mx-auto flex w-[92%] max-w-5xl flex-1 flex-col px-4 py-6 sm:px-8">
-        {/* --- LOBBY --- */}
         {state === "lobby" && isHost && (
           <HostLobby
             code={code}
@@ -261,7 +246,6 @@ export default function GamePage({ params }: PageProps) {
           <PlayerLobby code={code} players={players} playerName={playerName} playerEmoji={playerEmoji} />
         )}
 
-        {/* --- WAGER --- */}
         {state === "wager" && isHost && (
           <HostWager
             players={players}
@@ -276,7 +260,6 @@ export default function GamePage({ params }: PageProps) {
           />
         )}
 
-        {/* --- QUESTION --- */}
         {state === "question" && question && isHost && (
           <HostQuestion
             question={question}
@@ -300,7 +283,6 @@ export default function GamePage({ params }: PageProps) {
           />
         )}
 
-        {/* --- RESULTS --- */}
         {state === "results" && results && isHost && (
           <HostResults
             question={lastQuestion}
@@ -316,7 +298,6 @@ export default function GamePage({ params }: PageProps) {
           <PlayerResults playerId={playerId} results={results} onReact={handleReact} />
         )}
 
-        {/* --- FINISHED --- */}
         {state === "finished" && leaderboard && (
           <div className="flex flex-1 flex-col items-center justify-center">
             <Leaderboard
@@ -325,7 +306,7 @@ export default function GamePage({ params }: PageProps) {
             />
             <button
               onClick={() => router.push("/play")}
-              className="mt-8 rounded-xl border-2 border-amber-400/30 bg-amber-400/5 px-6 py-3 font-semibold text-amber-100 transition-colors hover:border-amber-400/50 hover:bg-amber-400/10"
+              className="btn-secondary mt-8"
             >
               Žaisti dar kartą
             </button>

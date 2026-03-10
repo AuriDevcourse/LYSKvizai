@@ -58,12 +58,12 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
 
   if (value) {
     return (
-      <div className="flex items-center gap-3 rounded-xl border-2 border-white/10 bg-white/5 px-4 py-3">
-        <Icon className="h-5 w-5 shrink-0 text-amber-400" />
-        <span className="flex-1 truncate text-sm text-amber-200/70">{value}</span>
+      <div className="flex items-center gap-3 rounded-xl border-2 border-white/15 bg-white/5 px-4 py-3">
+        <Icon className="h-5 w-5 shrink-0 text-white" />
+        <span className="flex-1 truncate text-sm text-white/70">{value}</span>
         <button
           onClick={() => onChange(undefined)}
-          className="rounded-lg p-1.5 text-red-400/60 hover:bg-red-400/10 hover:text-red-400"
+          className="rounded-lg p-1.5 text-red-400/60 hover:bg-[#e21b3c]/20 hover:text-red-400"
         >
           <X className="h-4 w-4" />
         </button>
@@ -79,8 +79,8 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
           onClick={() => setMode("file")}
           className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
             mode === "file"
-              ? "bg-amber-400/20 text-amber-200"
-              : "bg-white/5 text-amber-200/50 hover:bg-white/10"
+              ? "bg-white/15 text-white/80"
+              : "bg-white/5 text-white/50 hover:bg-white/10"
           }`}
         >
           <Upload className="mr-1 inline h-3 w-3" />
@@ -91,8 +91,8 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
           onClick={() => setMode("url")}
           className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
             mode === "url"
-              ? "bg-amber-400/20 text-amber-200"
-              : "bg-white/5 text-amber-200/50 hover:bg-white/10"
+              ? "bg-white/15 text-white/80"
+              : "bg-white/5 text-white/50 hover:bg-white/10"
           }`}
         >
           <LinkIcon className="mr-1 inline h-3 w-3" />
@@ -105,14 +105,14 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop}
           onClick={() => fileRef.current?.click()}
-          className="flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 border-dashed border-white/10 bg-white/[0.02] px-4 py-6 transition-colors hover:border-amber-400/30 hover:bg-amber-400/5"
+          className="flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 border-dashed border-white/15 bg-white/[0.02] px-4 py-6 transition-colors hover:border-white/30 hover:bg-white/5"
         >
           {uploading ? (
-            <Loader2 className="h-6 w-6 animate-spin text-amber-400" />
+            <Loader2 className="h-6 w-6 animate-spin text-white" />
           ) : (
             <>
-              <Icon className="h-6 w-6 text-amber-200/40" />
-              <p className="text-xs text-amber-200/40">
+              <Icon className="h-6 w-6 text-white/40" />
+              <p className="text-xs text-white/40">
                 Vilk failą arba paspausk ({info.hint})
               </p>
             </>
@@ -136,12 +136,12 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
             onChange={(e) => setUrlInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleUrlSubmit()}
             placeholder={type === "video" ? "https://youtube.com/watch?v=..." : "https://example.com/audio.mp3"}
-            className="flex-1 rounded-lg border-2 border-white/10 bg-white/5 px-3 py-2 text-sm text-amber-50 placeholder:text-amber-200/30 focus:border-amber-400/50 focus:outline-none"
+            className="flex-1 rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
           />
           <button
             type="button"
             onClick={handleUrlSubmit}
-            className="rounded-lg bg-amber-500 px-3 py-2 text-sm font-semibold text-amber-950 hover:bg-amber-400"
+            className="rounded-lg bg-white px-3 py-2 text-sm font-semibold text-[#46178f] hover:bg-white/90"
           >
             Pridėti
           </button>

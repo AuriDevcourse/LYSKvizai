@@ -34,7 +34,7 @@ export default function PlayerResults({ playerId, results, onReact }: PlayerResu
     <div className="flex flex-1 flex-col items-center justify-center gap-6">
       {/* Eliminated announcement */}
       {wasEliminated && (
-        <div className="flex items-center gap-3 rounded-xl border-2 border-red-400/30 bg-red-400/10 px-6 py-4">
+        <div className="flex items-center gap-3 rounded-xl border-2 border-red-400/30 bg-[#e21b3c]/20 px-6 py-4">
           <Skull className="h-8 w-8 text-red-400" />
           <div>
             <p className="text-lg font-bold text-red-100">Pašalintas!</p>
@@ -47,29 +47,29 @@ export default function PlayerResults({ playerId, results, onReact }: PlayerResu
       {myResult ? (
         <div className="flex flex-col items-center gap-3">
           {myResult.correct ? (
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-400/15">
-              <CheckCircle className="h-10 w-10 text-emerald-400" />
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#26890c]/20">
+              <CheckCircle className="h-10 w-10 text-[#26890c]" />
             </div>
           ) : (
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-red-400/15">
               <XCircle className="h-10 w-10 text-red-400" />
             </div>
           )}
-          <h2 className="text-2xl font-bold text-amber-50">
+          <h2 className="text-2xl font-bold text-white">
             {myResult.correct ? "Teisingai!" : "Neteisingai"}
           </h2>
           {myResult.correct && myResult.points > 0 && (
-            <p className="text-lg font-semibold text-emerald-300">
+            <p className="text-lg font-bold text-emerald-300">
               +{myResult.points} tšk.
             </p>
           )}
           {myResult.streak >= 3 ? (
-            <div className="flex items-center gap-1.5 text-sm font-semibold text-orange-300">
+            <div className="flex items-center gap-1.5 text-sm font-bold text-orange-300">
               <Flame className="h-4 w-4 text-orange-400" />
               <span>Serija: {myResult.streak} iš eilės! +{Math.min((myResult.streak - 2) * 100, 500)} bonus</span>
             </div>
           ) : myResult.streak > 1 ? (
-            <div className="flex items-center gap-1.5 text-sm text-amber-200/60">
+            <div className="flex items-center gap-1.5 text-sm text-white/60">
               <Flame className="h-4 w-4 text-orange-400" />
               <span>Serija: {myResult.streak} iš eilės!</span>
             </div>
@@ -77,10 +77,10 @@ export default function PlayerResults({ playerId, results, onReact }: PlayerResu
         </div>
       ) : (
         <div className="flex flex-col items-center gap-3">
-          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-amber-400/10">
-            <Clock className="h-10 w-10 text-amber-400" />
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/10">
+            <Clock className="h-10 w-10 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-amber-50">Neatsakėte</h2>
+          <h2 className="text-2xl font-bold text-white">Neatsakėte</h2>
         </div>
       )}
 
@@ -103,7 +103,7 @@ export default function PlayerResults({ playerId, results, onReact }: PlayerResu
       {/* Wager result */}
       {myWager && (
         <div className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${
-          myWager.won ? "bg-emerald-500/15 text-emerald-300" : "bg-red-500/15 text-red-300"
+          myWager.won ? "bg-emerald-500/15 text-emerald-300" : "bg-red-500/15 text-white"
         }`}>
           <Coins className="h-4 w-4" />
           {myWager.won
@@ -115,18 +115,18 @@ export default function PlayerResults({ playerId, results, onReact }: PlayerResu
 
       {/* Your rank */}
       {myRank && (
-        <div className="rounded-xl border-2 border-amber-400/20 bg-amber-400/5 px-8 py-4 text-center">
-          <div className="flex items-center justify-center gap-1.5 text-sm text-amber-200/50">
+        <div className="rounded-xl border-2 border-white/20 bg-white/5 px-8 py-4 text-center">
+          <div className="flex items-center justify-center gap-1.5 text-sm text-white/50">
             <Hash className="h-3.5 w-3.5" />
             <span>Tavo vieta</span>
           </div>
-          <p className="mt-1 text-3xl font-bold text-amber-50">
+          <p className="mt-1 text-3xl font-bold text-white">
             #{myRank}
-            <span className="ml-2 text-lg text-amber-200/60">
+            <span className="ml-2 text-lg text-white/60">
               / {results.leaderboard.length}
             </span>
           </p>
-          <p className="mt-1 text-sm font-medium text-amber-200">
+          <p className="mt-1 text-sm font-medium text-white/80">
             {myResult?.totalScore ?? 0} tšk.
           </p>
         </div>
@@ -134,7 +134,7 @@ export default function PlayerResults({ playerId, results, onReact }: PlayerResu
 
       {onReact && <ReactionPicker onReact={onReact} />}
 
-      <div className="flex items-center gap-2 text-sm text-amber-200/40">
+      <div className="flex items-center gap-2 text-sm text-white/40">
         <Clock className="h-3.5 w-3.5" />
         <span>Laukiame kito klausimo...</span>
       </div>

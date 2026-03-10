@@ -24,39 +24,36 @@ export default function QuizPicker({ onSelect, selectedId }: QuizPickerProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-amber-400" />
+        <Loader2 className="h-8 w-8 animate-spin text-white" />
       </div>
     );
   }
 
   if (quizzes.length === 0) {
     return (
-      <div className="py-12 text-center text-amber-200/50">
-        <p className="text-lg">Nėra kvizų</p>
+      <div className="py-12 text-center text-white/60">
+        <p className="text-lg font-bold">Nėra kvizų</p>
         <p className="mt-1 text-sm">Sukurk naują per redaktorių</p>
       </div>
     );
   }
 
   return (
-    <div className="grid gap-3 sm:grid-cols-2">
+    <div className="grid gap-3 sm:grid-cols-2 stagger-children">
       {quizzes.map((quiz) => (
         <button
           key={quiz.id}
           onClick={() => onSelect(quiz.id)}
-          className={`flex items-start gap-4 rounded-2xl border-2 px-5 py-4 text-left transition-all ${
+          className={`answer-btn flex items-center gap-4 rounded-2xl px-5 py-4 text-left transition-all ${
             selectedId === quiz.id
-              ? "border-amber-400 bg-amber-400/15"
-              : "border-white/10 bg-white/5 hover:border-amber-400/40 hover:bg-amber-400/10"
+              ? "bg-white/20 ring-2 ring-white"
+              : "glass hover:bg-white/12"
           }`}
         >
-          <span className="mt-0.5 text-4xl">{quiz.emoji}</span>
+          <span className="text-4xl">{quiz.emoji}</span>
           <div className="min-w-0 flex-1">
-            <h3 className="font-bold text-amber-50">{quiz.title}</h3>
-            <p className="mt-0.5 text-sm text-amber-200/50 line-clamp-2">
-              {quiz.description}
-            </p>
-            <p className="mt-1.5 text-xs text-amber-200/40">
+            <h3 className="font-extrabold text-white">{quiz.title}</h3>
+            <p className="mt-1 text-xs font-medium text-white/50">
               {quiz.questionCount} klausimų
             </p>
           </div>

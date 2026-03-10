@@ -40,9 +40,9 @@ export default function EditorPage() {
   };
 
   return (
-    <div className="relative flex min-h-svh flex-col items-center bg-[#0f0e0a]">
+    <div className="relative flex min-h-svh flex-col items-center bg-[#46178f] bg-pattern">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-1/3 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-amber-500/[0.07] blur-3xl" />
+        <div className="absolute -top-1/3 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-white/[0.07] blur-3xl" />
         <div className="absolute -bottom-1/4 right-0 h-[400px] w-[400px] rounded-full bg-red-500/[0.05] blur-3xl" />
       </div>
 
@@ -50,12 +50,12 @@ export default function EditorPage() {
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-amber-50">Redaktorius</h1>
-            <p className="text-sm text-amber-200/50">Kvizų biblioteka</p>
+            <h1 className="text-2xl font-bold text-white">Redaktorius</h1>
+            <p className="text-sm text-white/50">Kvizų biblioteka</p>
           </div>
           <button
             onClick={handleCreate}
-            className="flex items-center gap-2 rounded-xl bg-amber-500 px-5 py-2.5 font-semibold text-amber-950 transition-colors hover:bg-amber-400"
+            className="flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 font-semibold text-[#46178f] transition-colors hover:bg-white/90"
           >
             <Plus className="h-4 w-4" />
             Sukurti
@@ -65,13 +65,13 @@ export default function EditorPage() {
         {/* Quiz list */}
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <Loader2 className="h-8 w-8 animate-spin text-amber-400" />
+            <Loader2 className="h-8 w-8 animate-spin text-white" />
           </div>
         ) : quizzes.length === 0 ? (
           <div className="py-16 text-center">
             <div className="mb-4 text-5xl">📝</div>
-            <p className="text-lg text-amber-200/50">Dar nėra kvizų</p>
-            <p className="mt-1 text-sm text-amber-200/30">
+            <p className="text-lg text-white/50">Dar nėra kvizų</p>
+            <p className="mt-1 text-sm text-white/30">
               Paspausk &quot;Sukurti&quot; ir pradėk!
             </p>
           </div>
@@ -80,26 +80,26 @@ export default function EditorPage() {
             {quizzes.map((quiz) => (
               <div
                 key={quiz.id}
-                className="flex items-center gap-4 rounded-2xl border-2 border-white/10 bg-white/5 px-5 py-4"
+                className="flex items-center gap-4 rounded-2xl border-2 border-white/15 bg-white/5 px-5 py-4"
               >
                 <span className="text-3xl">{quiz.emoji}</span>
                 <div className="min-w-0 flex-1">
-                  <h3 className="font-bold text-amber-50">{quiz.title}</h3>
-                  <p className="text-sm text-amber-200/40">
+                  <h3 className="font-bold text-white">{quiz.title}</h3>
+                  <p className="text-sm text-white/40">
                     {quiz.questionCount} klausimų
                   </p>
                 </div>
                 <div className="flex gap-2">
                   <Link
                     href={`/editor/${quiz.id}`}
-                    className="rounded-lg bg-white/10 p-2 text-amber-200/60 hover:bg-white/20 hover:text-amber-200"
+                    className="rounded-lg bg-white/10 p-2 text-white/60 hover:bg-white/20 hover:text-white/80"
                   >
                     <Pencil className="h-4 w-4" />
                   </Link>
                   <button
                     onClick={() => handleDelete(quiz.id, quiz.title)}
                     disabled={deleting === quiz.id}
-                    className="rounded-lg bg-white/10 p-2 text-red-400/60 hover:bg-red-400/10 hover:text-red-400 disabled:opacity-50"
+                    className="rounded-lg bg-white/10 p-2 text-red-400/60 hover:bg-[#e21b3c]/20 hover:text-red-400 disabled:opacity-50"
                   >
                     {deleting === quiz.id ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -116,7 +116,7 @@ export default function EditorPage() {
         {/* Back link */}
         <Link
           href="/"
-          className="mt-8 flex items-center gap-1.5 self-center text-sm text-amber-200/40 hover:text-amber-200/60"
+          className="mt-8 flex items-center gap-1.5 self-center text-sm text-white/40 hover:text-white/60"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           Grįžti į pradžią

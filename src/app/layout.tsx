@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Montserrat } from "next/font/google";
 import { Agentation } from "agentation";
 import "./globals.css";
 
@@ -8,10 +8,16 @@ const geistSans = Geist({
   subsets: ["latin", "latin-ext"],
 });
 
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "600", "700", "800", "900"],
+});
+
 export const metadata: Metadata = {
-  title: "LYS Kvizai — Žaisk, mokykis, laimėk!",
+  title: "LYS Kvizai",
   description:
-    "Interaktyvūs kvizai nuo LYS. Žaisk vienas arba su draugais Kahoot stiliumi!",
+    "Interaktyvūs kvizai. Žaisk vienas arba su draugais!",
 };
 
 export default function RootLayout({
@@ -21,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="lt">
-      <body className={`${geistSans.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${montserrat.variable} font-[Montserrat] antialiased`}>
           {children}
           {process.env.NODE_ENV === "development" && <Agentation />}
         </body>

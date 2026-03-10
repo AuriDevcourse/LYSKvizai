@@ -16,7 +16,7 @@ export default function QRCode({ url, size = 200 }: QRCodeProps) {
     QRCodeLib.toCanvas(canvasRef.current, url, {
       width: size,
       margin: 2,
-      color: { dark: "#0f0e0a", light: "#fef3c7" },
+      color: { dark: "#46178f", light: "#ffffff" },
     });
   }, [url, size]);
 

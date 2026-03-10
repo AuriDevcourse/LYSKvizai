@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { Triangle, Diamond, Circle, Square, Check, X } from "lucide-react";
 import type { Question } from "@/data/types";
 import { useSound } from "@/hooks/useSound";
 
@@ -13,7 +14,12 @@ interface QuizCardProps {
   isLast: boolean;
 }
 
-const labels = ["A", "B", "C", "D"];
+const COLORS = [
+  { bg: "bg-[#e21b3c]", hover: "hover:brightness-110", icon: Triangle },
+  { bg: "bg-[#1368ce]", hover: "hover:brightness-110", icon: Diamond },
+  { bg: "bg-[#26890c]", hover: "hover:brightness-110", icon: Circle },
+  { bg: "bg-[#d89e00]", hover: "hover:brightness-110", icon: Square },
+];
 
 export default function QuizCard({
   question,
@@ -28,24 +34,24 @@ export default function QuizCard({
   const { playCorrect, playWrong } = useSound();
   const soundPlayedRef = useRef(false);
 
-  // Play sound when answer is first selected
   if (answered && !soundPlayedRef.current) {
     soundPlayedRef.current = true;
     if (isCorrect) playCorrect();
     else playWrong();
   }
-  // Reset when question changes
   if (!answered) soundPlayedRef.current = false;
 
   return (
-    <div className="animate-fade-in w-full">
-      <h2 className="mb-4 text-lg font-semibold leading-relaxed text-amber-50 sm:text-xl">
-        <span className="text-amber-400">{questionNumber}.</span>{" "}
-        {question.question}
-      </h2>
+    <div className="animate-fade-in-up w-full">
+      {/* Question */}
+      <div className="glass mb-6 rounded-2xl px-6 py-5 text-center">
+        <h2 className="text-xl font-extrabold leading-relaxed text-white sm:text-2xl">
+          {question.question}
+        </h2>
+      </div>
 
       {question.image && (
-        <div className="mb-4 overflow-hidden rounded-xl">
+        <div className="mb-6 overflow-hidden rounded-2xl">
           <img
             src={question.image}
             alt=""
@@ -54,20 +60,25 @@ export default function QuizCard({
         </div>
       )}
 
-      <div className="flex flex-col gap-3">
+      {/* 2x2 Answer Grid */}
+      <div className="grid grid-cols-2 gap-3 stagger-children">
         {question.options.map((option, i) => {
-          let classes =
-            "flex items-start gap-3 rounded-xl border-2 px-4 py-3 text-left transition-all duration-200 cursor-pointer ";
+          const { bg, hover, icon: Icon } = COLORS[i];
+          const isThis = i === selectedAnswer;
+          const isCorrectAnswer = i === question.correct;
 
-          if (!answered) {
-            classes +=
-              "border-white/10 bg-white/5 hover:border-amber-400/50 hover:bg-amber-400/10";
-          } else if (i === question.correct) {
-            classes += "border-emerald-400 bg-emerald-400/15 text-emerald-100";
-          } else if (i === selectedAnswer) {
-            classes += "border-red-400 bg-red-400/15 text-red-100";
+          let classes = `answer-btn relative flex items-center gap-3 rounded-2xl px-4 py-5 text-left font-bold text-white transition-all sm:py-6 ${bg}`;
+
+          if (answered) {
+            if (isCorrectAnswer) {
+              classes += " ring-4 ring-white scale-[1.02]";
+            } else if (isThis) {
+              classes += " opacity-60 grayscale";
+            } else {
+              classes += " opacity-30";
+            }
           } else {
-            classes += "border-white/5 bg-white/[0.02] opacity-50";
+            classes += ` ${hover}`;
           }
 
           return (
@@ -77,43 +88,42 @@ export default function QuizCard({
               disabled={answered}
               className={classes}
             >
-              <span
-                className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-sm font-bold ${
-                  answered && i === question.correct
-                    ? "bg-emerald-400 text-emerald-950"
-                    : answered && i === selectedAnswer
-                      ? "bg-red-400 text-red-950"
-                      : "bg-white/10 text-amber-200"
-                }`}
-              >
-                {labels[i]}
-              </span>
-              <span className="pt-0.5 text-sm sm:text-base">{option}</span>
+              <Icon className="h-6 w-6 shrink-0" fill="currentColor" />
+              <span className="text-sm leading-tight sm:text-base">{option}</span>
+              {answered && isCorrectAnswer && (
+                <Check className="absolute right-3 top-3 h-5 w-5 animate-bounce-in" />
+              )}
+              {answered && isThis && !isCorrectAnswer && (
+                <X className="absolute right-3 top-3 h-5 w-5 animate-bounce-in" />
+              )}
             </button>
           );
         })}
       </div>
 
+      {/* Feedback + Next */}
       {answered && (
-        <div className="animate-fade-in mt-5">
+        <div className="animate-slide-up mt-6">
           <div
-            className={`rounded-xl border px-4 py-3 text-sm leading-relaxed ${
+            className={`rounded-2xl px-5 py-4 text-center font-bold ${
               isCorrect
-                ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-100"
-                : "border-red-400/30 bg-red-400/10 text-red-100"
+                ? "bg-[#26890c] text-white"
+                : "bg-[#e21b3c] text-white"
             }`}
           >
-            <span className="font-semibold">
-              {isCorrect ? "Teisingai!" : "Neteisingai."}
-            </span>{" "}
-            {question.explanation}
+            <p className="text-lg">
+              {isCorrect ? "Teisingai! ✓" : "Neteisingai ✗"}
+            </p>
+            <p className="mt-1 text-sm font-medium text-white/80">
+              {question.explanation}
+            </p>
           </div>
 
           <button
             onClick={onNext}
-            className="mt-4 w-full rounded-xl bg-amber-500 px-6 py-3 font-semibold text-amber-950 transition-colors hover:bg-amber-400"
+            className="btn-primary mt-4 w-full text-center"
           >
-            {isLast ? "Žiūrėti rezultatus" : "Kitas klausimas →"}
+            {isLast ? "Rezultatai" : "Toliau →"}
           </button>
         </div>
       )}
