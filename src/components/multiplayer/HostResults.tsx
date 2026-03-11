@@ -39,7 +39,7 @@ export default function HostResults({
   // Translate quiz content: correct answer text, explanation, and all options
   const correctText = results.correctAnswerText ?? question?.options[results.correctAnswer] ?? "";
   const optionTexts = question?.options ?? ["", "", "", ""];
-  const contentToTranslate = [correctText, results.explanation, ...optionTexts];
+  const contentToTranslate = [correctText, results.explanation ?? "", ...optionTexts];
   const translated = useContentTranslation(contentToTranslate);
   const tCorrectAnswer = translated[0];
   const tExplanation = translated[1];

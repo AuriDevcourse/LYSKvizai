@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 // Client-side cache for translated content
@@ -16,54 +16,74 @@ function cacheKey(text: string, to: string): string {
  */
 export function useContentTranslation(texts: string[]): string[] {
   const { lang } = useTranslation();
-  const [translated, setTranslated] = useState<string[]>(texts);
+  // Stabilize the texts array using a string key to avoid re-renders
+  const textsKey = texts.join("\n||||\n");
+  const stableTexts = useMemo(() => texts, [textsKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  const [translated, setTranslated] = useState<string[]>(stableTexts);
   const prevKey = useRef("");
 
   useEffect(() => {
     // Content is already in Lithuanian — no translation needed
     if (lang === "lt") {
-      setTranslated(texts);
+      setTranslated(stableTexts);
       return;
     }
 
-    // Check if all are cached
-    const key = texts.join("|||") + ":" + lang;
+    const key = textsKey + ":" + lang;
     if (key === prevKey.current) return;
     prevKey.current = key;
 
-    const allCached = texts.every((t) => clientCache.has(cacheKey(t, lang)));
+    // Check if all are cached
+    const allCached = stableTexts.every((t) => !t || clientCache.has(cacheKey(t, lang)));
     if (allCached) {
-      setTranslated(texts.map((t) => clientCache.get(cacheKey(t, lang)) ?? t));
+      setTranslated(stableTexts.map((t) => (t ? clientCache.get(cacheKey(t, lang)) ?? t : t)));
       return;
     }
 
     // Show originals immediately, then translate
-    setTranslated(texts);
+    setTranslated(stableTexts);
+
+    // Filter out empty strings for the API call
+    const nonEmpty = stableTexts.filter((t) => t && t.trim());
+    if (nonEmpty.length === 0) return;
 
     const controller = new AbortController();
 
     fetch("/api/translate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ texts, from: "lt", to: lang }),
+      body: JSON.stringify({ texts: nonEmpty, from: "lt", to: lang }),
       signal: controller.signal,
     })
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error("Translation failed");
+        return r.json();
+      })
       .then((data) => {
         if (data.translated) {
-          // Cache results
-          for (let i = 0; i < texts.length; i++) {
-            clientCache.set(cacheKey(texts[i], lang), data.translated[i]);
+          // Cache non-empty results
+          for (let i = 0; i < nonEmpty.length; i++) {
+            if (data.translated[i]) {
+              clientCache.set(cacheKey(nonEmpty[i], lang), data.translated[i]);
+            }
           }
-          setTranslated(data.translated);
+          // Rebuild full array with translations
+          setTranslated(
+            stableTexts.map((t) => {
+              if (!t || !t.trim()) return t;
+              return clientCache.get(cacheKey(t, lang)) ?? t;
+            })
+          );
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        // Silently fail — show originals
+      });
 
     return () => controller.abort();
-  }, [texts, lang]);
+  }, [stableTexts, lang, textsKey]);
 
-  return lang === "lt" ? texts : translated;
+  return lang === "lt" ? stableTexts : translated;
 }
 
 /**
