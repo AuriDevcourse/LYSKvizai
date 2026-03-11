@@ -34,6 +34,7 @@ if (!g.__quiz_cleanup) {
     const now = Date.now();
     for (const [code, room] of rooms) {
       if (now - room.createdAt > ROOM_TTL_MS) {
+        if (room.questionTimer) clearTimeout(room.questionTimer);
         removeRoomConnections(code);
         rooms.delete(code);
       }
@@ -400,6 +401,8 @@ export async function createRoom(
     wagerInterval: 3,
     isWagerRound: false,
 
+    questionTimer: null,
+
     activePowerUps: new Map(),
     freezeActive: false,
 
@@ -494,6 +497,7 @@ export function startGame(code: string, hostId: string): { error?: string } {
   setupBluffQuestion(room, 0);
 
   broadcast(code, { type: "question-start", data: getQuestionPayload(room) });
+  scheduleQuestionTimer(room);
   return {};
 }
 
@@ -590,6 +594,11 @@ export function submitAnswer(
 }
 
 function showResults(room: Room): void {
+  // Clear server-side timer
+  if (room.questionTimer) {
+    clearTimeout(room.questionTimer);
+    room.questionTimer = null;
+  }
   room.state = "results";
 
   const results = getResultsPayload(room);
@@ -670,6 +679,24 @@ export function nextQuestion(code: string, hostId: string): { error?: string } {
   return {};
 }
 
+/** Schedule a server-side timer to auto-end the question when time runs out */
+function scheduleQuestionTimer(room: Room): void {
+  // Clear any existing timer
+  if (room.questionTimer) {
+    clearTimeout(room.questionTimer);
+    room.questionTimer = null;
+  }
+
+  // Add 2s buffer for network latency
+  const ms = (room.timerDuration + 2) * 1000;
+  room.questionTimer = setTimeout(() => {
+    room.questionTimer = null;
+    if (room.state === "question") {
+      showResults(room);
+    }
+  }, ms);
+}
+
 function startQuestionRound(room: Room): void {
   room.questionStartTime = Date.now();
   room.state = "question";
@@ -689,6 +716,7 @@ function startQuestionRound(room: Room): void {
   }
 
   broadcast(room.code, { type: "question-start", data: getQuestionPayload(room) });
+  scheduleQuestionTimer(room);
 }
 
 export function submitWager(

@@ -65,6 +65,9 @@ export interface Room {
   wagerInterval: number; // wager every N questions (default 3)
   isWagerRound: boolean;
 
+  // --- Server-side timer ---
+  questionTimer: ReturnType<typeof setTimeout> | null;
+
   // --- Power-ups ---
   activePowerUps: Map<string, PowerUpType>; // playerId -> active power-up this question
   freezeActive: boolean; // whether freeze was used this question
