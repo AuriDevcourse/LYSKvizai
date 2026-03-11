@@ -1,0 +1,121 @@
+{
+  "id": "news-health-2026-03-11",
+  "title": "Today's Health News",
+  "description": "News quiz for 2026-03-11",
+  "emoji": "🏥",
+  "questions": [
+    {
+      "question": "What type of medication has been newly approved on the NHS as an alternative to HRT for menopausal hot flushes?",
+      "options": [
+        "A hormonal injection",
+        "A non-hormonal daily pill",
+        "A topical cream",
+        "An herbal supplement"
+      ],
+      "correct": 1,
+      "explanation": "The news reports that a non-hormonal daily pill is now available on the NHS as an alternative for approximately 500,000 women for whom HRT is not suitable."
+    },
+    {
+      "question": "How many women could potentially benefit from the new non-hormonal alternative to HRT?",
+      "options": [
+        "Approximately 100,000",
+        "Approximately 500,000",
+        "Approximately 250,000",
+        "Approximately 1 million"
+      ],
+      "correct": 1,
+      "explanation": "The article states that this non-hormonal daily pill could benefit 500,000 women for whom HRT is not suitable."
+    },
+    {
+      "question": "What condition is Jo-Ann Burns raising awareness about after her daughter Nicola's death?",
+      "options": [
+        "Sleep apnea",
+        "Undiagnosed diabetes",
+        "Heart arrhythmia",
+        "Sudden Unexpected Death in Epilepsy"
+      ],
+      "correct": 3,
+      "explanation": "Jo-Ann Burns is speaking out about Sudden Unexpected Death in Epilepsy (SUDEP), saying her daughter was not informed about this risk."
+    },
+    {
+      "question": "What medical error contributed to bank cashier Aleisha Rochester's death from sepsis?",
+      "options": [
+        "Surgical instruments left inside her body",
+        "She was not given any antibiotics",
+        "The abscess removal procedure was performed incorrectly",
+        "She was given the wrong antibiotics"
+      ],
+      "correct": 3,
+      "explanation": "The article reports that Aleisha Rochester died from sepsis following a routine abscess removal procedure after being given wrong antibiotics."
+    },
+    {
+      "question": "Who has been appointed to lead the maternity services inquiry at Leeds hospitals?",
+      "options": [
+        "Dr Sarah Williams",
+        "Professor James Mitchell",
+        "Donna Ockenden",
+        "Rachel Thompson"
+      ],
+      "correct": 2,
+      "explanation": "Donna Ockenden has been appointed as the chair to lead the maternity services inquiry at Leeds hospitals in a government decision."
+    },
+    {
+      "question": "According to a BBC Sounds podcast, which activity does Dr Xand discuss for its wellness benefits?",
+      "options": [
+        "Knitting",
+        "Swimming",
+        "Meditation",
+        "Running"
+      ],
+      "correct": 0,
+      "explanation": "Dr Xand discusses the wellness benefits of knitting on the BBC Sounds podcast 'What's Up Docs?'"
+    },
+    {
+      "question": "What challenge are pediatricians facing when discussing vaccines with parents?",
+      "options": [
+        "Lack of vaccine supply",
+        "Insurance coverage issues",
+        "Language barriers",
+        "Misinformation and vaccine hesitancy"
+      ],
+      "correct": 3,
+      "explanation": "The article highlights that pediatricians are navigating widespread misinformation and confusion while trying to support parents and promote children's health."
+    },
+    {
+      "question": "Which Indigenous communities are experiencing high rates of cancer near Canada's oil sands?",
+      "options": [
+        "Communities in northern Alberta",
+        "Communities in the Arctic",
+        "Communities in southern British Columbia",
+        "Communities near the oil sands wastelands"
+      ],
+      "correct": 3,
+      "explanation": "The article reports that Indigenous communities near Canada's oil sands wastelands are experiencing persistently high cancer rates."
+    },
+    {
+      "question": "What health risks are experts warning about following strikes on Iranian fuel depots?",
+      "options": [
+        "Immediate acute respiratory failure",
+        "Long-term respiratory and neurological risks",
+        "Only short-term eye irritation",
+        "Primarily gastrointestinal issues"
+      ],
+      "correct": 1,
+      "explanation": "Health experts warn that the smoke from burning oil spreading across the region poses long-term respiratory and neurological health risks."
+    },
+    {
+      "question": "What significant business achievement did Beate Uhse accomplish in Europe?",
+      "options": [
+        "She developed Europe's biggest emporium of erotic goods",
+        "She founded Europe's largest lingerie chain",
+        "She opened the first European spa resort",
+        "She created Europe's leading cosmetics company"
+      ],
+      "correct": 0,
+      "explanation": "Beate Uhse developed Europe's biggest emporium of erotic goods and opened a three-story sex museum in Germany."
+    }
+  ],
+  "createdAt": "2026-03-11T15:29:55.886Z",
+  "updatedAt": "2026-03-11T15:29:55.886Z",
+  "language": "en"
+}

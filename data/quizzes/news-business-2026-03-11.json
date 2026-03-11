@@ -1,0 +1,121 @@
+{
+  "id": "news-business-2026-03-11",
+  "title": "Today's Business News",
+  "description": "News quiz for 2026-03-11",
+  "emoji": "📈",
+  "questions": [
+    {
+      "question": "Which group of nations agreed to coordinate the release of emergency oil reserves in response to recent price surges?",
+      "options": [
+        "NATO",
+        "G20",
+        "G7",
+        "OPEC"
+      ],
+      "correct": 2,
+      "explanation": "The G7 group of nations welcomed the idea of releasing oil in response to the surge in prices since the US-Israel war with Iran began."
+    },
+    {
+      "question": "What was the trigger for mortgage rates hitting their highest level since last August?",
+      "options": [
+        "Iran war turmoil",
+        "Brexit negotiations",
+        "Bank of England rate hike",
+        "Housing market crash"
+      ],
+      "correct": 0,
+      "explanation": "Mortgage rates rose due to the turmoil caused by the Iran war situation, marking the biggest upheaval since the mini-Budget."
+    },
+    {
+      "question": "When is a fuel duty cut scheduled to be phased out, potentially leading to a 5p tax increase?",
+      "options": [
+        "June",
+        "September",
+        "July",
+        "December"
+      ],
+      "correct": 1,
+      "explanation": "The fuel duty on petrol and diesel is due to rise from September when a 5p cut is phased out, though this is being kept under review due to Iran war concerns."
+    },
+    {
+      "question": "What is the Bank of England planning to feature on its new banknotes?",
+      "options": [
+        "Historical figures only",
+        "Technology and innovation",
+        "Architecture and monuments",
+        "Wildlife including animals and birds"
+      ],
+      "correct": 3,
+      "explanation": "Wildlife will replace historical figures on Bank of England's new notes, with the public helping to choose which animals and birds will appear."
+    },
+    {
+      "question": "According to the BBC report, what is the hourly wage mentioned for workers behind the OnlyFans boom?",
+      "options": [
+        "$5 per hour",
+        "$8 per hour",
+        "$10 per hour",
+        "$2 per hour"
+      ],
+      "correct": 3,
+      "explanation": "The BBC reported on a Philippines-based woman paid $2 per hour to pretend to be an OnlyFans star in online chats."
+    },
+    {
+      "question": "What market are independent veterinary practices looking to challenge according to recent reports?",
+      "options": [
+        "Pet food retail",
+        "Animal pharmaceuticals",
+        "Big veterinary chains",
+        "Pet insurance providers"
+      ],
+      "correct": 2,
+      "explanation": "Independent veterinary practices, operating in an Aldi-style model, are looking to take on big vet chains as pet owners complain about rising prices."
+    },
+    {
+      "question": "According to Maersk's chief executive, who should reach 'some kind of deal' regarding war-related shipping costs?",
+      "options": [
+        "EU, Russia, and China",
+        "OPEC nations",
+        "NATO members only",
+        "US, Israel, and Iran"
+      ],
+      "correct": 3,
+      "explanation": "Maersk chief executive Vincent Clerc called on the US, Israel, and Iran to reach 'some kind of deal' as war costs will be passed to consumers through shipping prices."
+    },
+    {
+      "question": "What major tech company recently acquired Moltbook?",
+      "options": [
+        "Google",
+        "Amazon",
+        "Microsoft",
+        "Meta"
+      ],
+      "correct": 3,
+      "explanation": "Meta bought Moltbook, a forum-style app and 'social media network for AI' that sparked interest by showing how AI bots interact without human involvement."
+    },
+    {
+      "question": "British Airways suspended UK repatriation flights until what date due to Middle East tensions?",
+      "options": [
+        "March 15",
+        "March 28",
+        "March 21",
+        "April 5"
+      ],
+      "correct": 1,
+      "explanation": "British Airways cancelled more Middle East flights until March 28 following Iranian strikes across the region in retaliation to US and Israeli bombardment."
+    },
+    {
+      "question": "What did President Trump's statement about the war being 'very complete' lead to in the energy markets?",
+      "options": [
+        "Oil prices rose sharply",
+        "Gas became more expensive",
+        "Oil prices fell and shares rebounded",
+        "Energy stocks crashed"
+      ],
+      "correct": 2,
+      "explanation": "Trump's comments that the war was 'very complete' led to a drop in crude oil costs and a rebound in shares as markets responded positively."
+    }
+  ],
+  "createdAt": "2026-03-11T15:29:30.264Z",
+  "updatedAt": "2026-03-11T15:29:30.264Z",
+  "language": "en"
+}

@@ -3,17 +3,27 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Users, Zap, Play } from "lucide-react";
-import QuizPicker from "@/components/QuizPicker";
+import { Users, Play, Heart, Swords } from "lucide-react";
+import TopicPicker from "@/components/TopicPicker";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+
+type GameMode = "classic" | "survival";
 
 export default function Home() {
   const router = useRouter();
   const { t } = useTranslation();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [mode, setMode] = useState<GameMode>("classic");
 
   const handleStart = () => {
     if (selectedIds.length === 0) return;
+
+    if (mode === "survival") {
+      router.push(`/survival?ids=${selectedIds.join(",")}`);
+      return;
+    }
+
+    // Classic
     if (selectedIds.length === 1) {
       router.push(`/quiz/${selectedIds[0]}`);
     } else {
@@ -31,18 +41,47 @@ export default function Home() {
           </h1>
         </div>
 
-        {/* Quiz grid */}
-        <QuizPicker onSelect={setSelectedIds} selectedIds={selectedIds} />
+        {/* Topic grid → drill into subtopics */}
+        <TopicPicker onSelect={setSelectedIds} selectedIds={selectedIds} />
 
-        {/* Start button */}
+        {/* Mode selector + Start — shown when topics selected */}
         {selectedIds.length > 0 && (
-          <button
-            onClick={handleStart}
-            className="btn-primary mt-6 flex w-full items-center justify-center gap-2 animate-slide-up"
-          >
-            <Play className="h-5 w-5" fill="currentColor" />
-            Start{selectedIds.length > 1 ? ` (${selectedIds.length} quizzes)` : ""}
-          </button>
+          <div className="mt-6 flex flex-col gap-3 animate-slide-up">
+            {/* Mode toggle */}
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={() => setMode("classic")}
+                className={`flex items-center justify-center gap-2 rounded-xl border-2 px-4 py-3 font-bold transition-all ${
+                  mode === "classic"
+                    ? "border-white bg-white/20 text-white"
+                    : "border-white/20 bg-white/5 text-white/50 hover:bg-white/10"
+                }`}
+              >
+                <Swords className="h-5 w-5" />
+                {t("home.classic")}
+              </button>
+              <button
+                onClick={() => setMode("survival")}
+                className={`flex items-center justify-center gap-2 rounded-xl border-2 px-4 py-3 font-bold transition-all ${
+                  mode === "survival"
+                    ? "border-red-400 bg-red-500/20 text-white"
+                    : "border-white/20 bg-white/5 text-white/50 hover:bg-white/10"
+                }`}
+              >
+                <Heart className="h-5 w-5" />
+                {t("home.survival")}
+              </button>
+            </div>
+
+            {/* Start button */}
+            <button
+              onClick={handleStart}
+              className="btn-primary flex w-full items-center justify-center gap-2"
+            >
+              <Play className="h-5 w-5" fill="currentColor" />
+              Start
+            </button>
+          </div>
         )}
 
         {/* Action links — hidden on mobile (bottom nav handles it) */}
@@ -50,10 +89,6 @@ export default function Home() {
           <Link href="/play" className="btn-secondary flex items-center gap-2">
             <Users className="h-5 w-5" />
             {t("home.playWithFriends")}
-          </Link>
-          <Link href="/editor" className="btn-secondary flex items-center gap-2">
-            <Zap className="h-4 w-4" />
-            {t("home.editor")}
           </Link>
         </div>
       </main>

@@ -137,6 +137,10 @@ h1, h2, h3 {
 .stagger-children > *:nth-child(6) { animation-delay: 300ms; }
 .stagger-children > *:nth-child(7) { animation-delay: 360ms; }
 .stagger-children > *:nth-child(8) { animation-delay: 420ms; }
+.stagger-children > *:nth-child(9) { animation-delay: 480ms; }
+.stagger-children > *:nth-child(10) { animation-delay: 540ms; }
+.stagger-children > *:nth-child(11) { animation-delay: 600ms; }
+.stagger-children > *:nth-child(n+12) { animation-delay: 660ms; }
 
 /* Answer button hover effect */
 .answer-btn {

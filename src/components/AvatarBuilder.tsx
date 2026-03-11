@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Dices } from "lucide-react";
 import Avatar from "./Avatar";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
@@ -119,9 +119,10 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
   const [bgColor, setBgColor] = useState(BG_PALETTE[0]);
   const [tab, setTab] = useState<Tab>("character");
 
-  useState(() => {
+  useEffect(() => {
     onChange("");
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const encode = (file: string, bg: string) => `svg:${file}:${bg}`;
 

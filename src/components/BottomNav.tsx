@@ -12,7 +12,7 @@ const NAV_ITEMS = [
 ];
 
 /** Pages where the bottom nav should be hidden (active gameplay) */
-const HIDDEN_PATTERNS = [/^\/quiz\//, /^\/play\/[A-Z0-9]/i, /^\/editor\//];
+const HIDDEN_PATTERNS = [/^\/quiz\//, /^\/play\/[A-Z0-9]/i, /^\/editor\//, /^\/survival/];
 
 export default function BottomNav() {
   const pathname = usePathname();

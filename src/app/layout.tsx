@@ -19,8 +19,18 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: "Quizmo",
-  description:
-    "Interactive quizzes. Play solo or with friends!",
+  description: "Interactive quizzes. Play solo or with friends!",
+  manifest: "/manifest.json",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/icons/apple-touch-icon.png",
+  },
+  themeColor: "#46178f",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Quizmo",
+  },
 };
 
 export default function RootLayout({

@@ -1,0 +1,118 @@
+{
+  "id": "muzika-pop",
+  "title": "Pop muzika",
+  "description": "Klausimai apie pop muzika",
+  "emoji": "🎤",
+  "questions": [
+    {
+      "question": "Kuri dainininkė išleido albumą 1989?",
+      "options": [
+        "Billie Eilish",
+        "Adele",
+        "Rihanna",
+        "Taylor Swift"
+      ],
+      "correct": 3,
+      "explanation": "Albumą 1989 išleido Taylor Swift 2014 m."
+    },
+    {
+      "question": "Kuri Billie Eilish daina tapo viena populiariausių 2019 m.?",
+      "options": [
+        "Bad Guy",
+        "Lovely",
+        "Ocean Eyes",
+        "Happier Than Ever"
+      ],
+      "correct": 0,
+      "explanation": "Bad Guy tapo didžiausiu Billie Eilish hitu 2019 m., užėmusiu 1 vietą JAV."
+    },
+    {
+      "question": "Kuris atlikėjas žinomas daina Blinding Lights?",
+      "options": [
+        "Drake",
+        "Ed Sheeran",
+        "Post Malone",
+        "The Weeknd"
+      ],
+      "correct": 3,
+      "explanation": "Blinding Lights – tai The Weeknd hitas, išleistas 2019 m."
+    },
+    {
+      "question": "Kuri dainininkė žinoma kaip Karalienė Bey?",
+      "options": [
+        "Rihanna",
+        "Beyoncé",
+        "Lady Gaga",
+        "Shakira"
+      ],
+      "correct": 1,
+      "explanation": "Beyoncé dažnai vadinama Queen Bey dėl savo įtakos pop kultūrai."
+    },
+    {
+      "question": "Kuris atlikėjas sukūrė hitą Shape of You?",
+      "options": [
+        "Justin Bieber",
+        "Sam Smith",
+        "Bruno Mars",
+        "Ed Sheeran"
+      ],
+      "correct": 3,
+      "explanation": "Shape of You – tai Ed Sheeran megahitas iš 2017 m. albumo Divide."
+    },
+    {
+      "question": "Kuri dainininkė atliko dainą Rolling in the Deep?",
+      "options": [
+        "Amy Winehouse",
+        "Adele",
+        "Florence Welch",
+        "Lana Del Rey"
+      ],
+      "correct": 1,
+      "explanation": "Rolling in the Deep – tai Adele hitas iš albumo 21, išleisto 2011 m."
+    },
+    {
+      "question": "Kuris Michaelo Jacksono albumas yra daugiausiai parduotas pasaulyje?",
+      "options": [
+        "Bad",
+        "Thriller",
+        "Dangerous",
+        "Off the Wall"
+      ],
+      "correct": 1,
+      "explanation": "Thriller (1982) yra daugiausiai parduotas albumas pasaulio istorijoje – virš 70 mln. kopijų."
+    },
+    {
+      "question": "Kuri grupė atliko hitą Dynamite 2020 m.?",
+      "options": [
+        "BTS",
+        "BLACKPINK",
+        "EXO",
+        "TWICE"
+      ],
+      "correct": 0,
+      "explanation": "Dynamite – tai BTS pirmasis angliškai įrašytas singlas, pasiekęs #1 JAV."
+    },
+    {
+      "question": "Kuris atlikėjas žinomas dainomis Umbrella ir Diamonds?",
+      "options": [
+        "Beyoncé",
+        "Nicki Minaj",
+        "Katy Perry",
+        "Rihanna"
+      ],
+      "correct": 3,
+      "explanation": "Rihanna – Barbadoso kilmės dainininkė, atliekanti Umbrella ir Diamonds."
+    },
+    {
+      "question": "Kuri dainininkė atliko Born This Way?",
+      "options": [
+        "Madonna",
+        "Cher",
+        "Lady Gaga",
+        "Cyndi Lauper"
+      ],
+      "correct": 2,
+      "explanation": "Born This Way – tai Lady Gaga hitas, tapęs LGBTQ+ himnu."
+    }
+  ]
+}

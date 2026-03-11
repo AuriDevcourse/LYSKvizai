@@ -33,4 +33,6 @@ export interface QuizMeta {
   description: string;
   emoji: string;
   questionCount: number;
+  /** Content language/region: "lt" for Lithuanian-focused, "en" for English/international */
+  language?: string;
 }

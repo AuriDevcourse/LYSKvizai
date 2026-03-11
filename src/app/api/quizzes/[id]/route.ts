@@ -16,14 +16,16 @@ export async function GET(
   if (!quiz) return json({ error: "Quiz not found" }, 404);
 
   const lang = req.nextUrl.searchParams.get("lang");
-  if (lang && lang !== "lt") {
+  const quizLang = (quiz as unknown as Record<string, unknown>).language as string | undefined;
+  // Skip translation if quiz is already in the requested language
+  if (lang && lang !== (quizLang || "lt")) {
     // Collect all translatable strings
     const texts: string[] = [quiz.title];
     for (const q of quiz.questions) {
       texts.push(q.question, ...q.options, q.explanation);
     }
 
-    const translated = await translateBatch(texts, "lt", lang);
+    const translated = await translateBatch(texts, quizLang || "lt", lang);
 
     // Rebuild quiz with translated content
     let idx = 0;

@@ -3,7 +3,7 @@
 import { use, useState, useCallback, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { Loader2, ArrowLeft, X } from "lucide-react";
 import type { Question } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 import ProgressBar from "@/components/ProgressBar";
@@ -131,6 +131,12 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
 
   return (
     <div className="relative flex min-h-svh flex-col items-center bg-[#46178f] bg-pattern">
+      <Link
+        href="/"
+        className="fixed right-3 top-3 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
+      >
+        <X className="h-5 w-5" />
+      </Link>
       <main className="relative z-10 flex w-full max-w-xl flex-1 flex-col justify-center px-5 py-8 sm:px-8">
         {finished ? (
           <div className="flex flex-1 flex-col items-center justify-center">

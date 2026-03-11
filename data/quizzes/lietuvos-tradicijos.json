@@ -7,45 +7,45 @@
     {
       "question": "Kas kiek metų vyksta Lietuvių dainų šventė?",
       "options": [
-        "Kas dvejus metus",
+        "Kas ketverius metus",
         "Kas trejus metus",
         "Kas penkerius metus",
-        "Kas ketverius metus"
+        "Kas dvejus metus"
       ],
-      "correct": 3,
+      "correct": 0,
       "explanation": "Lietuvių dainų šventė vyksta kas ketverius metus. Tai didžiulis renginys, subūriantis tūkstančius choristų, šokėjų ir muzikantų iš visos Lietuvos."
     },
     {
       "question": "Kuriais metais UNESCO pripažino Baltų dainų ir šokių švenčių tradiciją nematerialiu kultūros paveldu?",
       "options": [
-        "2008",
         "2003",
+        "2008",
         "2005",
         "2010"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "2008 metais UNESCO įtraukė Baltų valstybių (Lietuvos, Latvijos ir Estijos) dainų ir šokių švenčių tradiciją į Nematerialaus kultūros paveldo sąrašą."
     },
     {
       "question": "Kas yra sutartinės?",
       "options": [
-        "Senovinės lietuvių monodinio giedojimo giesmės",
         "Unikalios lietuvių polifoninės dainos",
+        "Senovinės lietuvių monodinio giedojimo giesmės",
         "Lietuvių liaudies ratelinės dainos su šokiu",
         "Daugiabalsės lietuvių raudų melodijos"
       ],
-      "correct": 1,
+      "correct": 0,
       "explanation": "Sutartinės — tai unikalios senovinės lietuvių polifoninės dainos, kuriose du ar daugiau balsų dainuoja skirtingas melodijas vienu metu. 2010 m. UNESCO jas pripažino nematerialiu paveldu."
     },
     {
       "question": "Kokia Lietuvos tradicija, susijusi su medienos meistrais, yra UNESCO saugoma?",
       "options": [
-        "Drožinių skulptūra",
-        "Medinių rūpintojėlių drožyba",
         "Kryždirbystė",
+        "Medinių rūpintojėlių drožyba",
+        "Drožinių skulptūra",
         "Koplytstulpių tapyba"
       ],
-      "correct": 2,
+      "correct": 0,
       "explanation": "Lietuvių kryždirbystė ir jos simbolika — unikalus medinių kryžių, koplytstulpių ir stogastulpių statymo menas — 2001 m. buvo pirmoji Lietuvos tradicija, patekusi į UNESCO nematerialaus paveldo sąrašą."
     },
     {
@@ -62,56 +62,56 @@
     {
       "question": "Kas yra margučiai?",
       "options": [
-        "Velykų dažyti kiaušiniai",
         "Velykų pyrageliai su razinomis",
+        "Velykų dažyti kiaušiniai",
         "Velykų riestainiai su aguonomis",
         "Velykų duonelės su cinamonu"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "Margučiai — tai per Velykas natūraliais dažais (dažniausiai svogūnų lukštais) marginami kiaušiniai. Jie puošiami vašku, skutinėjami ar kitais būdais dekoruojami."
     },
     {
       "question": "Koks pagrindinis Velykų žaidimas su kiaušiniais Lietuvoje?",
       "options": [
         "Margučių sukimas ant stalo",
-        "Margučių ridenimas ir mušimas",
+        "Margučių mėtymas į krepšį",
         "Margučių slėpimas sode",
-        "Margučių mėtymas į krepšį"
+        "Margučių ridenimas ir mušimas"
       ],
-      "correct": 1,
+      "correct": 3,
       "explanation": "Per Velykas lietuviai ridena margučius nuo kalniuko ir muša juos — kieno kiaušinis neįtrūksta, tas laimi. Tai vienas seniausių velykinių žaidimų."
     },
     {
       "question": "Kas minima lapkričio 1-ąją Lietuvoje?",
       "options": [
         "Vėlinės (Mirusiųjų atminimo diena)",
-        "Vėlių naktis (Helouvinas)",
+        "Visų Šventųjų diena",
         "Visų Sielų diena",
-        "Visų Šventųjų diena"
+        "Vėlių naktis (Helouvinas)"
       ],
-      "correct": 3,
+      "correct": 1,
       "explanation": "Lapkričio 1-oji — Visų Šventųjų diena, o lapkričio 2-oji — Vėlinės (Mirusiųjų atminimo diena). Tačiau Lietuvoje jau nuo lapkričio 1-osios žmonės lanko kapines ir uždega žvakes."
     },
     {
       "question": "Ką lietuviai daro per Vėlines?",
       "options": [
         "Stato kryžius prie namų ir gieda giesmes",
-        "Leidžia žvakutes plaukti upėmis",
         "Lanko artimųjų kapus ir uždega žvakeles",
+        "Leidžia žvakutes plaukti upėmis",
         "Rengia tylaus atminimo vakarienę namuose"
       ],
-      "correct": 2,
+      "correct": 1,
       "explanation": "Per Vėlines lietuviai lanko mirusiųjų artimųjų kapus, juos tvarko ir uždega žvakeles. Vakare kapinės nušvinta tūkstančiais žvakių liepsnelių."
     },
     {
       "question": "Ką minime vasario 16-ąją?",
       "options": [
         "Lietuvos Nepriklausomybės atkūrimo dieną (1990 m.)",
-        "Lietuvos valstybės atkūrimo dieną (1918 m.)",
+        "Lietuvos Konstitucijos dieną",
         "Mindaugo karūnavimo dieną",
-        "Lietuvos Konstitucijos dieną"
+        "Lietuvos valstybės atkūrimo dieną (1918 m.)"
       ],
-      "correct": 1,
+      "correct": 3,
       "explanation": "Vasario 16-oji — Lietuvos valstybės atkūrimo diena. 1918 m. vasario 16 d. Lietuvos Taryba pasirašė Nepriklausomybės Aktą, paskelbusį nepriklausomos Lietuvos valstybės atkūrimą."
     },
     {
@@ -119,43 +119,43 @@
       "options": [
         "Lietuvos valstybės atkūrimo dieną (1918 m.)",
         "Lietuvos Konstitucijos dieną",
-        "Lietuvos įstojimo į NATO dieną",
-        "Lietuvos Nepriklausomybės atkūrimo dieną (1990 m.)"
+        "Lietuvos Nepriklausomybės atkūrimo dieną (1990 m.)",
+        "Lietuvos įstojimo į NATO dieną"
       ],
-      "correct": 3,
+      "correct": 2,
       "explanation": "Kovo 11-oji — Lietuvos Nepriklausomybės atkūrimo diena. 1990 m. kovo 11 d. Aukščiausioji Taryba paskelbė Lietuvos nepriklausomybės atkūrimą nuo Sovietų Sąjungos."
     },
     {
       "question": "Ką minime liepos 6-ąją?",
       "options": [
-        "Mindaugo karūnavimo dieną (Valstybės dieną)",
+        "Lietuvos vardo paminėjimo dieną",
         "Žalgirio mūšio dieną",
         "Lietuvos karaliaus Gedimino dieną",
-        "Lietuvos vardo paminėjimo dieną"
+        "Mindaugo karūnavimo dieną (Valstybės dieną)"
       ],
-      "correct": 0,
+      "correct": 3,
       "explanation": "Liepos 6-oji — Valstybės (Karaliaus Mindaugo karūnavimo) diena. 1253 m. liepos 6 d. Mindaugas buvo karūnuotas pirmuoju ir vieninteliu Lietuvos karaliumi."
     },
     {
       "question": "Kas pavaizduotas Lietuvos herbe — Vytyje?",
       "options": [
         "Šarvuotas raitelis ant žirgo su skydu ir ietimi",
-        "Riteris ant žirgo su dvigubu kryžiumi rankoje",
+        "Šarvuotas raitelis ant žirgo su iškelta kardu",
         "Karys pėstininkas su kalaviju ir skydu",
-        "Šarvuotas raitelis ant žirgo su iškelta kardu"
+        "Riteris ant žirgo su dvigubu kryžiumi rankoje"
       ],
-      "correct": 3,
+      "correct": 1,
       "explanation": "Vytis — Lietuvos herbas, kuriame pavaizduotas šarvuotas raitelis ant balto žirgo, rankoje laikantis iškeltą kalaviją ir skydą su dvigubu kryžiumi. Tai vienas seniausių Europos herbų."
     },
     {
       "question": "Kokios spalvos yra Lietuvos trispalvė vėliava (iš viršaus į apačią)?",
       "options": [
         "Geltona, raudona, žalia",
-        "Geltona, žalia, raudona",
         "Žalia, geltona, raudona",
+        "Geltona, žalia, raudona",
         "Raudona, geltona, žalia"
       ],
-      "correct": 1,
+      "correct": 2,
       "explanation": "Lietuvos trispalvė vėliava — geltona (viršuje), žalia (viduryje), raudona (apačioje). Geltona simbolizuoja saulę, šviesą ir gerovę, žalia — gamtą ir viltį, raudona — kraują, paaukotą už Tėvynę."
     },
     {
@@ -163,43 +163,43 @@
       "options": [
         "Kugelis",
         "Bulviniai blynai",
-        "Cepelinai (didžkukuliai)",
-        "Virtiniai su bulvėmis"
+        "Virtiniai su bulvėmis",
+        "Cepelinai (didžkukuliai)"
       ],
-      "correct": 2,
+      "correct": 3,
       "explanation": "Cepelinai (arba didžkukuliai) — tai tarkuotos bulvių masės kukuliai su mėsos, varškės ar grybų įdaru. Pavadinimas kilo nuo panašumo į cepelinus — dirižablius."
     },
     {
       "question": "Iš ko gaminami šaltibarščiai?",
       "options": [
-        "Burokėlių ir kefyro",
+        "Ridikėlių ir grietinės",
         "Burokėlių ir pasukų",
         "Rūgštynių ir kefyro",
-        "Ridikėlių ir grietinės"
+        "Burokėlių ir kefyro"
       ],
-      "correct": 0,
+      "correct": 3,
       "explanation": "Šaltibarščiai — šalta rožinė sriuba iš burokėlių, kefyro, agurkų, krapų ir kiaušinių. Patiekiama su karštomis bulvėmis. Tai ikoniškas lietuviškas vasaros patiekalas."
     },
     {
       "question": "Kaip vadinamas tradicinis lietuviškas šakotasis pyragas, kepamas ant iešmo?",
       "options": [
-        "Skruzdėlynas",
-        "Raguolis",
         "Šakotis",
+        "Raguolis",
+        "Skruzdėlynas",
         "Spurgos ant iešmo"
       ],
-      "correct": 2,
+      "correct": 0,
       "explanation": "Šakotis — tai tradicinis lietuviškas pyragas, kepamas ant besisukančio iešmo, todėl tešla suformuoja šakas primenančias ataugas. Jis neatsiejamas nuo vestuvių ir švenčių."
     },
     {
       "question": "Kaip vadinamas seniausias lietuvių liaudies styginių instrumentas?",
       "options": [
-        "Kanklės",
+        "Basetle",
         "Arklys",
         "Birbynė",
-        "Basetle"
+        "Kanklės"
       ],
-      "correct": 0,
+      "correct": 3,
       "explanation": "Kanklės — tai seniausias lietuvių liaudies styginių instrumentas, panašus į citerą. Kanklių muzika neatskiriama nuo lietuvių folklorinės tradicijos. Instrumentas turi nuo 5 iki 30 stygų."
     },
     {

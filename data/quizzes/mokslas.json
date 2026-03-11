@@ -6,92 +6,167 @@
   "questions": [
     {
       "question": "Koks yra didžiausias žmogaus kūno organas?",
-      "options": ["Kepenys", "Smegenys", "Oda", "Širdis"],
-      "correct": 2,
+      "options": [
+        "Kepenys",
+        "Smegenys",
+        "Širdis",
+        "Oda"
+      ],
+      "correct": 3,
       "explanation": "Oda yra didžiausias žmogaus kūno organas, kurio plotas siekia apie 1,5–2 kvadratinius metrus."
     },
     {
       "question": "Koks cheminis elementas turi simbolį 'O'?",
-      "options": ["Auksis", "Deguonis", "Osmiumas", "Ozonas"],
-      "correct": 1,
+      "options": [
+        "Auksis",
+        "Osmiumas",
+        "Deguonis",
+        "Ozonas"
+      ],
+      "correct": 2,
       "explanation": "Deguonis žymimas cheminiu simboliu O ir yra gyvybei būtinas elementas."
     },
     {
       "question": "Kuri planeta yra arčiausiai Saulės?",
-      "options": ["Venera", "Žemė", "Marsas", "Merkurijus"],
-      "correct": 3,
+      "options": [
+        "Venera",
+        "Žemė",
+        "Merkurijus",
+        "Marsas"
+      ],
+      "correct": 2,
       "explanation": "Merkurijus yra pirmoji ir arčiausiai Saulės esanti Saulės sistemos planeta."
     },
     {
       "question": "Kokia yra šviesos greičio reikšmė vakuume?",
-      "options": ["150 000 km/s", "300 000 km/s", "500 000 km/s", "1 000 000 km/s"],
-      "correct": 1,
+      "options": [
+        "150 000 km/s",
+        "1 000 000 km/s",
+        "500 000 km/s",
+        "300 000 km/s"
+      ],
+      "correct": 3,
       "explanation": "Šviesos greitis vakuume yra apie 300 000 km/s (tiksliau 299 792 km/s)."
     },
     {
       "question": "Kuris dujų sluoksnis apsaugo Žemę nuo ultravioletinių spindulių?",
-      "options": ["Troposfera", "Mezosfera", "Ozono sluoksnis", "Termosfera"],
-      "correct": 2,
+      "options": [
+        "Ozono sluoksnis",
+        "Mezosfera",
+        "Troposfera",
+        "Termosfera"
+      ],
+      "correct": 0,
       "explanation": "Ozono sluoksnis stratoferoje sugeria didžiąją dalį kenksmingų Saulės ultravioletinių spindulių."
     },
     {
       "question": "Kiek kaulų turi suaugusio žmogaus skeletas?",
-      "options": ["106", "206", "306", "156"],
-      "correct": 1,
+      "options": [
+        "206",
+        "106",
+        "306",
+        "156"
+      ],
+      "correct": 0,
       "explanation": "Suaugusio žmogaus skeletą sudaro 206 kaulai."
     },
     {
       "question": "Kas yra H₂O cheminė formulė?",
-      "options": ["Vandenilio peroksidas", "Anglies dioksidas", "Vanduo", "Druskos rūgštis"],
-      "correct": 2,
+      "options": [
+        "Vanduo",
+        "Anglies dioksidas",
+        "Vandenilio peroksidas",
+        "Druskos rūgštis"
+      ],
+      "correct": 0,
       "explanation": "H₂O yra vandens cheminė formulė, sudaryta iš dviejų vandenilio ir vieno deguonies atomo."
     },
     {
       "question": "Kuri planeta Saulės sistemoje yra didžiausia?",
-      "options": ["Saturnas", "Jupiteris", "Neptūnas", "Uranas"],
-      "correct": 1,
+      "options": [
+        "Jupiteris",
+        "Saturnas",
+        "Neptūnas",
+        "Uranas"
+      ],
+      "correct": 0,
       "explanation": "Jupiteris yra didžiausia Saulės sistemos planeta, kurios skersmuo yra apie 11 kartų didesnis nei Žemės."
     },
     {
       "question": "Koks procesas leidžia augalams gaminti maistą iš saulės šviesos?",
-      "options": ["Fermentacija", "Fotosintezė", "Osmosas", "Difuzija"],
-      "correct": 1,
+      "options": [
+        "Fermentacija",
+        "Osmosas",
+        "Fotosintezė",
+        "Difuzija"
+      ],
+      "correct": 2,
       "explanation": "Fotosintezės metu augalai, naudodami saulės šviesą, anglies dioksidą ir vandenį, gamina gliukozę ir deguonį."
     },
     {
       "question": "Kokia jėga pritraukia daiktus prie Žemės paviršiaus?",
-      "options": ["Magnetinė jėga", "Trinties jėga", "Gravitacija", "Elektrostatinė jėga"],
-      "correct": 2,
+      "options": [
+        "Magnetinė jėga",
+        "Gravitacija",
+        "Trinties jėga",
+        "Elektrostatinė jėga"
+      ],
+      "correct": 1,
       "explanation": "Gravitacija yra jėga, kuri pritraukia visus kūnus turinčius masę vienas prie kito, įskaitant daiktus prie Žemės."
     },
     {
       "question": "Koks cheminis elementas turi didžiausią dalį Saulėje?",
-      "options": ["Helis", "Anglis", "Deguonis", "Vandenilis"],
+      "options": [
+        "Helis",
+        "Anglis",
+        "Deguonis",
+        "Vandenilis"
+      ],
       "correct": 3,
       "explanation": "Vandenilis sudaro apie 73% Saulės masės ir yra pagrindinis branduolių sintezės kuras."
     },
     {
       "question": "Kaip vadinamas išsiveržęs ugnikalnis, kurio krateris užpildytas vandeniu?",
-      "options": ["Kaldera", "Geizeris", "Lagūna", "Riftas"],
-      "correct": 0,
+      "options": [
+        "Geizeris",
+        "Kaldera",
+        "Lagūna",
+        "Riftas"
+      ],
+      "correct": 1,
       "explanation": "Kaldera yra didelis duburys, susidaręs ugnikalnio viršūnei įgriuvus, kuris dažnai užsipildo vandeniu."
     },
     {
       "question": "Kiek planetų yra Saulės sistemoje?",
-      "options": ["7", "9", "8", "10"],
+      "options": [
+        "7",
+        "9",
+        "8",
+        "10"
+      ],
       "correct": 2,
       "explanation": "Saulės sistemoje yra 8 planetos, nes Plutonas nuo 2006 m. laikomas nykštukine planeta."
     },
     {
       "question": "Kuris gyvūnas yra didžiausias kada nors gyvenęs Žemėje?",
-      "options": ["Afrikinis dramblys", "Mėlynasis banginis", "Tiranozauras reksas", "Megalodontas"],
+      "options": [
+        "Afrikinis dramblys",
+        "Mėlynasis banginis",
+        "Tiranozauras reksas",
+        "Megalodontas"
+      ],
       "correct": 1,
       "explanation": "Mėlynasis banginis, siekiantis iki 30 metrų ilgio, yra didžiausias gyvūnas, kada nors gyvenęs Žemėje."
     },
     {
       "question": "Kokia periodinės lentelės elemento atominio numerio reikšmė atitinka geležį?",
-      "options": ["26", "30", "56", "12"],
-      "correct": 0,
+      "options": [
+        "12",
+        "30",
+        "56",
+        "26"
+      ],
+      "correct": 3,
       "explanation": "Geležis (Fe) periodinėje lentelėje turi atominį numerį 26."
     }
   ]

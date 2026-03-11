@@ -267,8 +267,7 @@ export default function GamePage({ params }: PageProps) {
       {/* Exit button */}
       <button
         onClick={handleExit}
-        className="absolute right-3 top-3 z-20 flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 text-white/60 transition-all hover:bg-white/20 hover:text-white"
-        title="Exit"
+        className="fixed right-3 top-3 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
       >
         <X className="h-5 w-5" />
       </button>

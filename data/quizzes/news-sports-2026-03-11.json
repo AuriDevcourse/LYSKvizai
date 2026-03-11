@@ -1,0 +1,121 @@
+{
+  "id": "news-sports-2026-03-11",
+  "title": "Today's Sports News",
+  "description": "News quiz for 2026-03-11",
+  "emoji": "⚽",
+  "questions": [
+    {
+      "question": "What was the final score of Tottenham's Champions League match against Atletico Madrid?",
+      "options": [
+        "Tottenham won 5-2",
+        "Atletico Madrid won 4-1",
+        "The match ended 3-3",
+        "Atletico Madrid won 5-2"
+      ],
+      "correct": 3,
+      "explanation": "Tottenham suffered a 5-2 defeat at Atletico Madrid in the Champions League last-16 tie."
+    },
+    {
+      "question": "In which minute was Tottenham goalkeeper Antonin Kinsky substituted during the Atletico Madrid match?",
+      "options": [
+        "5th minute",
+        "17th minute",
+        "10th minute",
+        "25th minute"
+      ],
+      "correct": 1,
+      "explanation": "Kinsky was replaced in the 17th minute after Tottenham had already conceded three goals."
+    },
+    {
+      "question": "How many points did Bam Adebayo score in his record-breaking game for the Miami Heat?",
+      "options": [
+        "78 points",
+        "83 points",
+        "85 points",
+        "90 points"
+      ],
+      "correct": 1,
+      "explanation": "Bam Adebayo scored 83 points in a single game, which is the second-highest individual game score after Wilt Chamberlain's record."
+    },
+    {
+      "question": "What nationality is Jack Dempsey, who plays as a number eight?",
+      "options": [
+        "Australian",
+        "Irish",
+        "English",
+        "Scottish"
+      ],
+      "correct": 3,
+      "explanation": "Jack Dempsey, now a Scotland powerhouse, was previously cast off by Australia for lacking physicality."
+    },
+    {
+      "question": "According to Fifa President Infantino, what did Donald Trump say about Iran's participation in the World Cup?",
+      "options": [
+        "Iran should be banned",
+        "No comment on Iran's status",
+        "Iran must qualify first",
+        "Iran are welcome to participate"
+      ],
+      "correct": 3,
+      "explanation": "Trump stated that Iran are 'welcome' to take part in this summer's World Cup despite the countries being at war."
+    },
+    {
+      "question": "Which Premier League team's corner-kick dominance is mentioned as a concern that other teams are trying to stop?",
+      "options": [
+        "Manchester City",
+        "Arsenal",
+        "Liverpool",
+        "Brighton"
+      ],
+      "correct": 1,
+      "explanation": "The article discusses Arsenal's corner-kick dominance and whether the Premier League could learn from Kidderminster's defensive approach."
+    },
+    {
+      "question": "What did German cross-country skiers do on the Winter Paralympics podium in protest?",
+      "options": [
+        "Walked off the podium",
+        "Raised their fists",
+        "Turned their backs on Russian gold medallists",
+        "Refused to shake hands"
+      ],
+      "correct": 2,
+      "explanation": "German skiers turned their backs on Russian gold medallists to protest Russia's inclusion at the Paralympics."
+    },
+    {
+      "question": "Which police chief criticized Celtic and Rangers after the Old Firm disorder at Ibrox?",
+      "options": [
+        "Assistant Commissioner David Brown",
+        "Chief Superintendent Mark Henderson",
+        "Inspector General John Smith",
+        "Chief Constable Jo Farrell"
+      ],
+      "correct": 3,
+      "explanation": "Chief Constable Jo Farrell criticized both clubs for failing to condemn the disorder that occurred during the Old Firm match at Ibrox."
+    },
+    {
+      "question": "Which three nations are in contention for the 2026 Six Nations title according to the article?",
+      "options": [
+        "Ireland, Scotland, France",
+        "England, Wales, Italy",
+        "Wales, Ireland, England",
+        "Scotland, Italy, France"
+      ],
+      "correct": 0,
+      "explanation": "The Six Nations preview highlights a three-horse race between Ireland, Scotland, and France for the 2026 title."
+    },
+    {
+      "question": "Which horse has been confirmed to compete in Friday's Cheltenham Gold Cup under Harry Redknapp?",
+      "options": [
+        "Royal Ascot",
+        "Cheltenham Wonder",
+        "Gold Standard",
+        "Jukebox Man"
+      ],
+      "correct": 3,
+      "explanation": "Harry Redknapp's horse 'Jukebox Man' has been confirmed for the Cheltenham Gold Cup, joining 10 other horses in the field."
+    }
+  ],
+  "createdAt": "2026-03-11T15:29:38.795Z",
+  "updatedAt": "2026-03-11T15:29:38.795Z",
+  "language": "en"
+}

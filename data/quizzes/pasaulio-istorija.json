@@ -7,45 +7,45 @@
     {
       "question": "Kuriais metais buvo pastatyta Didžioji Cheopsо piramidė Egipte?",
       "options": [
-        "Apie 1500 m. pr. Kr.",
         "Apie 2560 m. pr. Kr.",
+        "Apie 1500 m. pr. Kr.",
         "Apie 3500 m. pr. Kr.",
         "Apie 800 m. pr. Kr."
       ],
-      "correct": 1,
+      "correct": 0,
       "explanation": "Didžioji Cheopso piramidė buvo pastatyta apie 2560 m. pr. Kr. ir yra vienintelis išlikęs senovės pasaulio stebuklas."
     },
     {
       "question": "Kas buvo pirmasis Romos imperatorius?",
       "options": [
-        "Julijus Cezaris",
-        "Neronas",
         "Augustas",
+        "Neronas",
+        "Julijus Cezaris",
         "Trajanas"
       ],
-      "correct": 2,
+      "correct": 0,
       "explanation": "Augustas (Oktavianas) tapo pirmuoju Romos imperatoriumi 27 m. pr. Kr."
     },
     {
       "question": "Kuriame mieste vyko pirmosios Olimpinės žaidynės senovės Graikijoje?",
       "options": [
         "Atėnuose",
-        "Spartoje",
         "Olimpijoje",
+        "Spartoje",
         "Korinte"
       ],
-      "correct": 2,
+      "correct": 1,
       "explanation": "Pirmosios Olimpinės žaidynės vyko Olimpijoje 776 m. pr. Kr."
     },
     {
       "question": "Kuriais metais Kristupas Kolumbas atrado Ameriką?",
       "options": [
-        "1488 m.",
+        "1492 m.",
         "1512 m.",
         "1475 m.",
-        "1492 m."
+        "1488 m."
       ],
-      "correct": 3,
+      "correct": 0,
       "explanation": "Kristupas Kolumbas pasiekė Ameriką 1492 m. spalio 12 d."
     },
     {
@@ -62,45 +62,45 @@
     {
       "question": "Kuriais metais prasidėjo Pirmasis pasaulinis karas?",
       "options": [
-        "1914 m.",
         "1918 m.",
+        "1914 m.",
         "1912 m.",
         "1916 m."
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "Pirmasis pasaulinis karas prasidėjo 1914 m. liepos 28 d."
     },
     {
       "question": "Kas vadovavo nacistinei Vokietijai Antrojo pasaulinio karo metu?",
       "options": [
-        "Oto fon Bismarkas",
+        "Adolfas Hitleris",
         "Vilhelmas II",
         "Heinrichas Himleris",
-        "Adolfas Hitleris"
+        "Oto fon Bismarkas"
       ],
-      "correct": 3,
+      "correct": 0,
       "explanation": "Adolfas Hitleris buvo nacistinės Vokietijos fiureris nuo 1933 iki 1945 m."
     },
     {
       "question": "Kuriais metais baigėsi Antrasis pasaulinis karas Europoje?",
       "options": [
-        "1943 m.",
-        "1944 m.",
         "1945 m.",
+        "1944 m.",
+        "1943 m.",
         "1946 m."
       ],
-      "correct": 2,
+      "correct": 0,
       "explanation": "Antrasis pasaulinis karas Europoje baigėsi 1945 m. gegužės 8 d., Vokietijai kapituliavus."
     },
     {
       "question": "Kas buvo pirmasis žmogus, išskridęs į kosmosą?",
       "options": [
         "Nilas Armstrongas",
-        "Jurijus Gagarinas",
         "Džonas Glenas",
+        "Jurijus Gagarinas",
         "Valentina Tereškova"
       ],
-      "correct": 1,
+      "correct": 2,
       "explanation": "Jurijus Gagarinas 1961 m. balandžio 12 d. tapo pirmuoju žmogumi kosmose."
     },
     {
@@ -108,10 +108,10 @@
       "options": [
         "1965 m.",
         "1972 m.",
-        "1969 m.",
-        "1975 m."
+        "1975 m.",
+        "1969 m."
       ],
-      "correct": 2,
+      "correct": 3,
       "explanation": "Nilas Armstrongas ir Bazas Oldrinas išsilaipino Mėnulyje 1969 m. liepos 20 d."
     },
     {
@@ -119,10 +119,10 @@
       "options": [
         "1987 m.",
         "1991 m.",
-        "1985 m.",
-        "1989 m."
+        "1989 m.",
+        "1985 m."
       ],
-      "correct": 3,
+      "correct": 2,
       "explanation": "Berlyno siena griuvo 1989 m. lapkričio 9 d., simbolizuodama Šaltojo karo pabaigą."
     },
     {
@@ -130,32 +130,32 @@
       "options": [
         "Tomas Edisonas",
         "Nikola Tesla",
-        "Aleksandras Grahamas Belas",
-        "Samuelis Morzė"
+        "Samuelis Morzė",
+        "Aleksandras Grahamas Belas"
       ],
-      "correct": 2,
+      "correct": 3,
       "explanation": "Aleksandras Grahamas Belas 1876 m. užpatentavo pirmąjį praktinį telefoną."
     },
     {
       "question": "Kuris viduramžių įvykis 1347–1353 m. nusinešė trečdalį Europos gyventojų?",
       "options": [
-        "Šimtametis karas",
-        "Kryžiaus žygiai",
         "Juodoji mirtis",
+        "Kryžiaus žygiai",
+        "Šimtametis karas",
         "Didysis badas"
       ],
-      "correct": 2,
+      "correct": 0,
       "explanation": "Juodoji mirtis (maro pandemija) 1347–1353 m. nusinešė apie trečdalį Europos gyventojų."
     },
     {
       "question": "Kuriais metais įvyko Prancūzijos revoliucija?",
       "options": [
         "1776 m.",
-        "1815 m.",
         "1789 m.",
+        "1815 m.",
         "1804 m."
       ],
-      "correct": 2,
+      "correct": 1,
       "explanation": "Prancūzijos revoliucija prasidėjo 1789 m., kai buvo užimta Bastilija liepos 14 d."
     },
     {

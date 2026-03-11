@@ -7,34 +7,34 @@
     {
       "question": "Kiek yra 111 × 111?",
       "options": [
-        "12 221",
         "12 321",
+        "12 221",
         "11 211",
         "12 111"
       ],
-      "correct": 1,
+      "correct": 0,
       "explanation": "111 × 111 = 12 321."
     },
     {
       "question": "Koks yra trikampio vidaus kampų suma?",
       "options": [
-        "180°",
         "270°",
+        "180°",
         "90°",
         "360°"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "Bet kurio trikampio vidaus kampų suma visada lygi 180°."
     },
     {
       "question": "Koks yra apytikslis skaičiaus π (pi) reikšmė?",
       "options": [
         "2,72",
-        "3,41",
+        "3,14",
         "3,17",
-        "3,14"
+        "3,41"
       ],
-      "correct": 3,
+      "correct": 1,
       "explanation": "Skaičius π apytiksliai lygus 3,14159..."
     },
     {
@@ -42,10 +42,10 @@
       "options": [
         "11",
         "14",
-        "13",
-        "10"
+        "10",
+        "13"
       ],
-      "correct": 2,
+      "correct": 3,
       "explanation": "Fibonačio sekoje kiekvienas skaičius yra dviejų ankstesnių suma: 5 + 8 = 13."
     },
     {
@@ -53,54 +53,54 @@
       "options": [
         "8",
         "6",
-        "10",
-        "7"
+        "7",
+        "10"
       ],
-      "correct": 3,
+      "correct": 2,
       "explanation": "2x = 20 − 6 = 14, todėl x = 7."
     },
     {
       "question": "Koks yra stačiakampio plotas, jei jo kraštinės yra 7 cm ir 9 cm?",
       "options": [
         "56 cm²",
-        "63 cm²",
+        "32 cm²",
         "72 cm²",
-        "32 cm²"
+        "63 cm²"
       ],
-      "correct": 1,
+      "correct": 3,
       "explanation": "Stačiakampio plotas = 7 × 9 = 63 cm²."
     },
     {
       "question": "Traukinys važiuoja 120 km/h greičiu. Per kiek valandų jis nuvažiuos 360 km?",
       "options": [
-        "2 val.",
         "3 val.",
+        "2 val.",
         "4 val.",
         "2,5 val."
       ],
-      "correct": 1,
+      "correct": 0,
       "explanation": "360 ÷ 120 = 3 valandos."
     },
     {
       "question": "Kiek yra 25% nuo 200?",
       "options": [
-        "50",
-        "25",
         "75",
+        "25",
+        "50",
         "40"
       ],
-      "correct": 0,
+      "correct": 2,
       "explanation": "25% nuo 200 = 200 × 0,25 = 50."
     },
     {
       "question": "Koks skaičius pakeltas bet kokiu laipsniu visada lygus 1?",
       "options": [
         "0",
-        "2",
+        "1",
         "10",
-        "1"
+        "2"
       ],
-      "correct": 3,
+      "correct": 1,
       "explanation": "1 pakeltas bet kokiu laipsniu visada lygus 1."
     },
     {
@@ -119,10 +119,10 @@
       "options": [
         "14",
         "11",
-        "12",
-        "13"
+        "13",
+        "12"
       ],
-      "correct": 2,
+      "correct": 3,
       "explanation": "12 × 12 = 144, todėl √144 = 12."
     },
     {
@@ -150,23 +150,23 @@
     {
       "question": "Kiek yra 7! (7 faktorialas)?",
       "options": [
-        "720",
-        "40 320",
         "5 040",
+        "40 320",
+        "720",
         "362 880"
       ],
-      "correct": 2,
+      "correct": 0,
       "explanation": "7! = 7 × 6 × 5 × 4 × 3 × 2 × 1 = 5 040."
     },
     {
       "question": "Stačiakampio trikampio statiniai yra 3 cm ir 4 cm. Koks yra įžambinės ilgis?",
       "options": [
-        "5 cm",
         "7 cm",
+        "5 cm",
         "8 cm",
         "6 cm"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "Pagal Pitagoro teoremą: √(3² + 4²) = √(9 + 16) = √25 = 5 cm."
     }
   ]

@@ -9,10 +9,10 @@
       "options": [
         "9 patiekalai — po vieną kiekvienam choro angelui",
         "13 patiekalų — dvylika apaštalų ir Jėzus",
-        "12 patiekalų",
-        "7 patiekalai — po vieną kiekvienam sakramentui"
+        "7 patiekalai — po vieną kiekvienam sakramentui",
+        "12 patiekalų"
       ],
-      "correct": 2,
+      "correct": 3,
       "explanation": "Tradiciškai ant Kūčių stalo turi būti 12 patiekalų — tiek, kiek mėnesių metuose arba tiek, kiek Jėzaus apaštalų."
     },
     {
@@ -29,67 +29,67 @@
     {
       "question": "Kas yra kūčiukai?",
       "options": [
-        "Maži pyragėliai su aguonomis",
+        "Kepti tešlos rutuliukai su medumi ir cinamonu",
         "Maži nerauginti paplotėliai su kmynais",
         "Šližikai su džiovintais vaisiais",
-        "Kepti tešlos rutuliukai su medumi ir cinamonu"
+        "Maži pyragėliai su aguonomis"
       ],
-      "correct": 0,
+      "correct": 3,
       "explanation": "Kūčiukai — mažyti sausi pyragėliai su aguonomis, valgomi su aguonų pienu. Tai bene žinomiausias Kūčių valgis."
     },
     {
       "question": "Su kuo tradiciškai valgomi kūčiukai?",
       "options": [
         "Su kanapių pienu",
-        "Su migdolų pienu",
         "Su aguonų pienu",
+        "Su migdolų pienu",
         "Su avižų pienu"
       ],
-      "correct": 2,
+      "correct": 1,
       "explanation": "Kūčiukai valgomi su aguonų pienu — saldžiu gėrimu iš trintų aguonų, vandens ir cukraus. Tai neatsiejama Kūčių tradicija."
     },
     {
       "question": "Kodėl per Kūčias paliekama tuščia vieta prie stalo?",
       "options": [
-        "Nelauktam keleiviui, kuris gali pasibeldęs prašyti pastogės",
+        "Mirusiems šeimos nariams",
         "Angelui sargui, kuris saugo šeimą per šventąją naktį",
         "Kūdikėliui Jėzui, simboliškai kviečiamam prie stalo",
-        "Mirusiems šeimos nariams"
+        "Nelauktam keleiviui, kuris gali pasibeldęs prašyti pastogės"
       ],
-      "correct": 3,
+      "correct": 0,
       "explanation": "Tuščia vieta prie stalo paliekama mirusiems šeimos nariams — tikima, kad jų sielos Kūčių vakarą aplanko gyvuosius."
     },
     {
       "question": "Kas yra plotkelė (kalėdaitis)?",
       "options": [
         "Pašventinta duonos kepalėlio riekelė, dalinama visiems prie stalo",
-        "Plonas neraugintas paplotis, kuriuo dalijamasi linkint gerovės",
+        "Avižinis paplotis, laužomas ir mirkomas meduje",
         "Plonas kvietinis paplotis su įspaustais Biblijos simboliais, valgomas prieš kiekvieną patiekalą",
-        "Avižinis paplotis, laužomas ir mirkomas meduje"
+        "Plonas neraugintas paplotis, kuriuo dalijamasi linkint gerovės"
       ],
-      "correct": 1,
+      "correct": 3,
       "explanation": "Plotkelė (kalėdaitis) — plonas neraugintos tešlos paplotis. Kūčių vakare šeimos nariai laužia ją ir dalijasi linkėjimais."
     },
     {
       "question": "Kokio tipo valgiai NĖRA leidžiami ant tradicinio Kūčių stalo?",
       "options": [
-        "Žuvies ir grybų patiekalai",
-        "Daržovių ir kopūstų patiekalai",
         "Mėsa ir pieno produktai",
+        "Daržovių ir kopūstų patiekalai",
+        "Žuvies ir grybų patiekalai",
         "Grūdų ir duonos patiekalai"
       ],
-      "correct": 2,
+      "correct": 0,
       "explanation": "Kūčių vakarienė yra pasninkinė — ant stalo neturi būti mėsos, pieno produktų nei alkoholio. Valgoma žuvies, daržovių ir grūdų patiekalai."
     },
     {
       "question": "Koks būrimas per Kūčias atliekamas su šiaudais?",
       "options": [
-        "Šiaudas dedamas po lėkšte — jei ryte rastas sulaužytas, metai bus sunkūs",
+        "Iš po staltiešės traukiamas šiaudas — ilgas reiškia ilgą gyvenimą",
         "Šiaudai rišami į kryželius ir kabinami virš durų kaip apsauga",
         "Šiaudai statomi stačiai — kieno pirmas nuvirsta, tas pirmas ves ar tekės",
-        "Iš po staltiešės traukiamas šiaudas — ilgas reiškia ilgą gyvenimą"
+        "Šiaudas dedamas po lėkšte — jei ryte rastas sulaužytas, metai bus sunkūs"
       ],
-      "correct": 3,
+      "correct": 0,
       "explanation": "Vienas populiariausių Kūčių būrimų — iš po staltiešės traukti šiaudą. Ilgas šiaudas reiškia ilgą gyvenimą, trumpas — trumpesnį."
     },
     {
@@ -97,43 +97,43 @@
       "options": [
         "XVII amžiaus pabaigoje su jėzuitų misijomis",
         "XVIII amžiaus viduryje per Lenkijos-Lietuvos dvarų kultūrą",
-        "XIX amžiaus antroje pusėje",
-        "XX amžiaus pradžioje, atėjusi per Rusijos imperijos įtaką"
+        "XX amžiaus pradžioje, atėjusi per Rusijos imperijos įtaką",
+        "XIX amžiaus antroje pusėje"
       ],
-      "correct": 2,
+      "correct": 3,
       "explanation": "Kalėdų eglutės tradicija Lietuvoje išplito XIX a. antroje pusėje, atėjusi iš vokiškų kraštų, nors kai kuriuose dvaruose ji buvo žinoma ir anksčiau."
     },
     {
       "question": "Kas yra Bernelių mišios?",
       "options": [
-        "Mišios, laikomos Kalėdų naktį (dažniausiai vidurnaktį)",
-        "Mišios, laikomos Kūčių rytą prieš pasninką",
         "Mišios, laikomos paskutinį Advento sekmadienį vidurnaktį",
+        "Mišios, laikomos Kūčių rytą prieš pasninką",
+        "Mišios, laikomos Kalėdų naktį (dažniausiai vidurnaktį)",
         "Mišios, laikomos Kalėdų dieną auštant, prieš šventinį pusryčius"
       ],
-      "correct": 0,
+      "correct": 2,
       "explanation": "Bernelių mišios (Piemenų mišios) — tai iškilmingos Kalėdų nakties mišios, dažniausiai laikomos vidurnaktį iš gruodžio 24 į 25 d."
     },
     {
       "question": "Ką reiškia „Trys Karaliai“ ir kada jie švenčiami?",
       "options": [
         "Trijų šventųjų kankinių paminėjimas, švenčiamas sausio 1 d.",
-        "Trijų išminčių apsilankymas, švenčiamas sausio 6 d.",
         "Trijų biblinių pranašų diena, švenčiama sausio 13 d.",
+        "Trijų išminčių apsilankymas, švenčiamas sausio 6 d.",
         "Trijų arkangelų šventė, švenčiama gruodžio 28 d."
       ],
-      "correct": 1,
+      "correct": 2,
       "explanation": "Trys Karaliai (Epifanija) — sausio 6 d. minimas trijų išminčių iš Rytų apsilankymas, kurie atnešė kūdikiui Jėzui dovanų. Tai oficialiai baigia Kalėdų laikotarpį."
     },
     {
       "question": "Koks Kūčių būrimas siejamas su švino lydimu?",
       "options": [
-        "Iš išsilydžiusio švino formos spėjama ateitis",
+        "Švinas lydomas ir jo skambesys klausomas — iš garso spėjamas laimės kiekis",
         "Švino lašas įlašinamas į vandenį ir iš garų kvapo sprendžiama apie sveikatą",
         "Išsilydęs švinas pilamas ant sniego ir iš spalvos sprendžiama apie orą",
-        "Švinas lydomas ir jo skambesys klausomas — iš garso spėjamas laimės kiekis"
+        "Iš išsilydžiusio švino formos spėjama ateitis"
       ],
-      "correct": 0,
+      "correct": 3,
       "explanation": "Per Kūčias buvo įprasta lydyti šviną ir pilti į šaltą vandenį — iš susidariusios formos bandoma atspėti ateitį, pvz., būsimą profesiją ar santuoką."
     },
     {
@@ -141,21 +141,21 @@
       "options": [
         "Kūčių Senelis",
         "Šventasis Mikalojus",
-        "Kalėdų Senelis",
-        "Kalėdų Nykštukas"
+        "Kalėdų Nykštukas",
+        "Kalėdų Senelis"
       ],
-      "correct": 2,
+      "correct": 3,
       "explanation": "Lietuvoje dovanas atneša Kalėdų Senelis — tai XX a. išpopuliarėjusi tradicija. Seniau kai kuriuose regionuose buvo minimas ir Kūčių Senelis."
     },
     {
       "question": "Kiek trunka Advento laikotarpis prieš Kalėdas?",
       "options": [
         "3 savaitės — nuo šv. Mikalojaus dienos iki Kūčių",
-        "Apie 4 savaites",
         "Lygiai 40 dienų — kaip Gavėnia prieš Velykas",
+        "Apie 4 savaites",
         "6 savaitės — nuo pirmojo gruodžio sekmadienio"
       ],
-      "correct": 1,
+      "correct": 2,
       "explanation": "Adventas trunka apie 4 savaites — nuo ketvirtojo sekmadienio prieš Kalėdas iki Kūčių vakaro. Tai pasiruosimo ir laukimo laikotarpis."
     },
     {
@@ -172,23 +172,23 @@
     {
       "question": "Koks žuvies patiekalas yra būtinas ant Kūčių stalo daugelyje Lietuvos regionų?",
       "options": [
-        "Silkė (paruošta įvairiais būdais)",
         "Kepta lydeka su daržovėmis",
+        "Silkė (paruošta įvairiais būdais)",
         "Troškinta karpio filė su svogūnais",
         "Virta žuvis su burokėlių padažu"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "Silkė — vienas svarbiausių Kūčių patiekalų. Ji ruošiama įvairiai: su svogūnais, su burokėliais, su aliejumi — tradiciniame variante be pieno produktų."
     },
     {
       "question": "Kas rašoma ant durų per Tris Karalius kai kuriuose Lietuvos regionuose?",
       "options": [
         "Raidės G+J+D ir metai kreida — Gasparo, Juozapo ir Dovydo inicialai",
-        "Raidės K+M+B ir metai kreida",
+        "Raidės J+M+J ir metai kreida — Jėzaus, Marijos ir Juozapo inicialai",
         "Kryžiaus ženklas ir šeimos pavardės inicialai kreida",
-        "Raidės J+M+J ir metai kreida — Jėzaus, Marijos ir Juozapo inicialai"
+        "Raidės K+M+B ir metai kreida"
       ],
-      "correct": 1,
+      "correct": 3,
       "explanation": "Per Tris Karalius ant durų kreida rašoma K+M+B (Kasparas, Merkelis, Baltazaras — trijų išminčių vardai) ir metai. Tai turi apsaugoti namus."
     },
     {
@@ -196,32 +196,32 @@
       "options": [
         "Žemaitijoje",
         "Suvalkijoje",
-        "Aukštaitijoje",
-        "Dzūkijoje"
+        "Dzūkijoje",
+        "Aukštaitijoje"
       ],
-      "correct": 3,
+      "correct": 2,
       "explanation": "Dzūkija laikoma regionu, kur išsaugota daugiausia senovinių Kūčių papročių — būrimų, tikėjimų ir ritualinių valgių tradicijų."
     },
     {
       "question": "Kodėl per Kūčias svarbu, kad visi šeimos nariai būtų kartu prie stalo?",
       "options": [
         "Nes tikima, kad kiekviena tuščia vieta pritraukia piktąsias dvasias",
-        "Nes tikima, kad kas nesėdės prie Kūčių stalo, gali nesulaukti kitų metų",
+        "Nes plotkelę reikia laužyti su kiekvienu — kitaip linkėjimai neišsipildys",
         "Nes šeimos palaiminimas galioja tik visiems susirinkus draugėn",
-        "Nes plotkelę reikia laužyti su kiekvienu — kitaip linkėjimai neišsipildys"
+        "Nes tikima, kad kas nesėdės prie Kūčių stalo, gali nesulaukti kitų metų"
       ],
-      "correct": 1,
+      "correct": 3,
       "explanation": "Senas tikėjimas sako, kad visi šeimos nariai privalo susėsti prie Kūčių stalo — kas nesėdės, tas gali nesulaukti kitų Kūčių."
     },
     {
       "question": "Kokia Advento tradicija Lietuvoje susijusi su vainiku?",
       "options": [
         "Advento vainikas su 3 žvakėmis — Tikėjimui, Vilčiai ir Meilei",
-        "Eglišakių vainikas su 5 žvakėmis — kiekviena simbolizuoja Advento savaitę ir Kūčias",
+        "Advento vainikas su 4 žvakėmis — kas sekmadienį uždegama po vieną",
         "Advento vainikas kabinamas ant durų ir kiekvieną savaitę papuošiamas nauju kaspinu",
-        "Advento vainikas su 4 žvakėmis — kas sekmadienį uždegama po vieną"
+        "Eglišakių vainikas su 5 žvakėmis — kiekviena simbolizuoja Advento savaitę ir Kūčias"
       ],
-      "correct": 3,
+      "correct": 1,
       "explanation": "Advento vainikas su 4 žvakėmis — populiari tradicija. Kiekvieną Advento sekmadienį uždegama po vieną žvakę, simbolizuojant artėjančias Kalėdas."
     }
   ],

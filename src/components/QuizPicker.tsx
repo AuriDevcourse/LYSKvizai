@@ -25,8 +25,6 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
       .finally(() => setLoading(false));
   }, [lang]);
 
-  const quizTitles = quizzes.map((q) => q.title);
-
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -71,7 +69,7 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
           </span>
         </div>
       )}
-      <div className="grid grid-cols-2 gap-2.5 sm:gap-3 stagger-children">
+      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3 stagger-children">
         {quizzes.map((quiz) => {
           const isSelected = selectedIds.includes(quiz.id);
           const theme = getQuizTheme(quiz.id);
@@ -94,10 +92,9 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
               <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${theme.bg}`}>
                 <Icon className="h-6 w-6 text-white" />
               </div>
-              <h3 className="text-sm font-extrabold leading-tight text-white">{quizTitles[quizzes.indexOf(quiz)]}</h3>
-              <p className="text-[11px] font-bold text-white/40">
+              <span className="text-[11px] font-bold text-white/40">
                 {quiz.questionCount} {t("quizPicker.q")}
-              </p>
+              </span>
             </button>
           );
         })}

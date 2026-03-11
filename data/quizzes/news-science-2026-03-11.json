@@ -1,0 +1,121 @@
+{
+  "id": "news-science-2026-03-11",
+  "title": "Today's Science News",
+  "description": "News quiz for 2026-03-11",
+  "emoji": "🔬",
+  "questions": [
+    {
+      "question": "Which animal has recently been discovered to have the ability to breathe underwater?",
+      "options": [
+        "Hedgehogs",
+        "Darwin's finches",
+        "Partula snails",
+        "Bumblebee queens"
+      ],
+      "correct": 3,
+      "explanation": "A new study found that bumblebee queens can breathe underwater, which helps them survive flooding as they emerge from hibernation during winter."
+    },
+    {
+      "question": "What type of research did scientists conduct to understand hedgehog hearing abilities?",
+      "options": [
+        "They measured electrical brain activity",
+        "They played a soundtrack to hedgehogs",
+        "They compared their ear size to other mammals",
+        "They studied their evolutionary history"
+      ],
+      "correct": 1,
+      "explanation": "Researchers played a soundtrack to hedgehogs to identify the frequency of sounds they can hear, discovering their hearing extends far beyond the human range."
+    },
+    {
+      "question": "According to recent findings, what pollutant has been found at damaging levels in UK rivers?",
+      "options": [
+        "Pet flea treatment chemicals",
+        "Plastic microbeads",
+        "Industrial pesticides",
+        "Heavy metals from mining"
+      ],
+      "correct": 0,
+      "explanation": "Scientists found that toxic chemicals from pet flea treatments are widespread in rivers across the UK at concerning levels."
+    },
+    {
+      "question": "What is the primary concern about the Van Allen Probe spacecraft re-entering Earth's atmosphere?",
+      "options": [
+        "The risk of surviving components hitting people on the ground",
+        "Complete destruction of surrounding cities",
+        "Contamination of the water supply",
+        "Disruption to satellite communications"
+      ],
+      "correct": 0,
+      "explanation": "NASA says much of the 1,300lb Van Allen Probe will burn up, but there is a low risk that some surviving components could strike people."
+    },
+    {
+      "question": "Which location were Partula snails nearly extinct from before conservation efforts?",
+      "options": [
+        "The Caribbean islands",
+        "The Pacific Northwest",
+        "Southeast Asia",
+        "Polynesia"
+      ],
+      "correct": 3,
+      "explanation": "Partula snails nearly vanished from Polynesia after a carnivorous foreign snail arrived, but a global alliance of zoos has worked to bring them back."
+    },
+    {
+      "question": "What did scientists trace back to the Amazon using ancient bird feathers?",
+      "options": [
+        "A migration pattern of macaws",
+        "The origin of bird domestication",
+        "An ancient parrot trade from Peru",
+        "Climate patterns from 500 years ago"
+      ],
+      "correct": 2,
+      "explanation": "Scientists studied centuries-old bird feathers from an ancient tomb on the Peruvian coast and traced their origins back to the Amazon, revealing an ancient parrot trade that crossed the Andes."
+    },
+    {
+      "question": "What is the government's stated reason for giving data centres priority access to the electricity grid?",
+      "options": [
+        "To speed up AI development",
+        "To create more manufacturing jobs",
+        "To reduce overall energy consumption",
+        "To lower electricity costs for consumers"
+      ],
+      "correct": 0,
+      "explanation": "The government plans to give data centres priority access to the electricity grid to speed up AI development, though builders warn this could block new home construction."
+    },
+    {
+      "question": "What phenomenon is occurring in Tehran as a result of recent air strikes?",
+      "options": [
+        "Acid rain forming",
+        "Dust storms covering the region",
+        "Black rain from damaged oil facilities",
+        "Flooding in surrounding areas"
+      ],
+      "correct": 2,
+      "explanation": "Air strikes have damaged at least four oil facilities, and the damage is causing black rain in Tehran."
+    },
+    {
+      "question": "According to experts, what condition must be met for oil prices to decline after the Iran war?",
+      "options": [
+        "OPEC must increase production",
+        "New oil reserves must be discovered",
+        "Global demand must decrease significantly",
+        "Traffic through the Strait of Hormuz must return to normal"
+      ],
+      "correct": 3,
+      "explanation": "Experts say higher oil prices will likely persist until traffic through the Strait of Hormuz returns to normal levels."
+    },
+    {
+      "question": "What is a potential paradoxical outcome of the Iran conflict according to environmentalists?",
+      "options": [
+        "Increased renewable energy adoption or increased coal usage",
+        "Lower energy prices but higher pollution",
+        "Complete energy independence for all countries",
+        "Elimination of all fossil fuel infrastructure"
+      ],
+      "correct": 0,
+      "explanation": "While the war's effects on oil and gas prices could argue for moving to clean energy, the reality is likely messier, with the potential for countries to shift to coal instead."
+    }
+  ],
+  "createdAt": "2026-03-11T15:29:21.609Z",
+  "updatedAt": "2026-03-11T15:29:21.609Z",
+  "language": "en"
+}

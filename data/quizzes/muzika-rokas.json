@@ -1,0 +1,118 @@
+{
+  "id": "muzika-rokas",
+  "title": "Roko muzika",
+  "description": "Klausimai apie roko muziką",
+  "emoji": "🎸",
+  "questions": [
+    {
+      "question": "Kuri grupė atliko legendinę dainą Bohemian Rhapsody?",
+      "options": [
+        "Queen",
+        "Led Zeppelin",
+        "The Beatles",
+        "Pink Floyd"
+      ],
+      "correct": 0,
+      "explanation": "Bohemian Rhapsody – tai Queen grupės daina, išleista 1975 m."
+    },
+    {
+      "question": "Kuri grupė atliko dainą Stairway to Heaven?",
+      "options": [
+        "Deep Purple",
+        "Black Sabbath",
+        "Led Zeppelin",
+        "The Rolling Stones"
+      ],
+      "correct": 2,
+      "explanation": "Stairway to Heaven – tai legendinė Led Zeppelin daina iš 1971 m."
+    },
+    {
+      "question": "Kuris The Beatles narys buvo nužudytas 1980 m.?",
+      "options": [
+        "John Lennon",
+        "Ringo Starr",
+        "George Harrison",
+        "Paul McCartney"
+      ],
+      "correct": 0,
+      "explanation": "John Lennon buvo nušautas 1980 m. gruodžio 8 d. Niujorke."
+    },
+    {
+      "question": "Kuri grupė atliko Smells Like Teen Spirit?",
+      "options": [
+        "Pearl Jam",
+        "Alice in Chains",
+        "Soundgarden",
+        "Nirvana"
+      ],
+      "correct": 3,
+      "explanation": "Smells Like Teen Spirit – tai Nirvana hitas, tapęs grunge judėjimo himnu."
+    },
+    {
+      "question": "Kas buvo The Rolling Stones vokalistas?",
+      "options": [
+        "Keith Richards",
+        "Robert Plant",
+        "Roger Daltrey",
+        "Mick Jagger"
+      ],
+      "correct": 3,
+      "explanation": "Mick Jagger – The Rolling Stones vokalistas nuo grupės įkūrimo 1962 m."
+    },
+    {
+      "question": "Kuri grupė sukūrė albumą The Dark Side of the Moon?",
+      "options": [
+        "Pink Floyd",
+        "Yes",
+        "Genesis",
+        "King Crimson"
+      ],
+      "correct": 0,
+      "explanation": "The Dark Side of the Moon (1973) – vienas geriausiai parduodamų Pink Floyd albumų."
+    },
+    {
+      "question": "Kuris gitaristas laikomas vienu geriausių visų laikų ir grojo kairiarankiu gitara?",
+      "options": [
+        "Jimi Hendrix",
+        "Jimmy Page",
+        "Eric Clapton",
+        "Chuck Berry"
+      ],
+      "correct": 0,
+      "explanation": "Jimi Hendrix – legendinis kairiarankis gitaristas, pakeitęs roko muziką."
+    },
+    {
+      "question": "Kuri grupė atliko Back in Black?",
+      "options": [
+        "AC/DC",
+        "Metallica",
+        "Iron Maiden",
+        "Guns N' Roses"
+      ],
+      "correct": 0,
+      "explanation": "Back in Black – tai AC/DC albumas ir daina, išleisti 1980 m."
+    },
+    {
+      "question": "Kuri grupė atliko Hotel California?",
+      "options": [
+        "Fleetwood Mac",
+        "The Eagles",
+        "Lynyrd Skynyrd",
+        "Creedence Clearwater Revival"
+      ],
+      "correct": 1,
+      "explanation": "Hotel California – tai The Eagles klasikinė daina iš 1977 m."
+    },
+    {
+      "question": "Kuris Freddie Mercury buvo pagal tautybę?",
+      "options": [
+        "Zanzibaro kilmės parsas",
+        "Indas",
+        "Britas",
+        "Australas"
+      ],
+      "correct": 0,
+      "explanation": "Freddie Mercury gimė Zanzibare (dabar Tanzanija) parsų šeimoje, vėliau gyveno Didžiojoje Britanijoje."
+    }
+  ]
+}

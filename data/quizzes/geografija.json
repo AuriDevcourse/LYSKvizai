@@ -7,23 +7,23 @@
     {
       "question": "Kokia yra Australijos sostinė?",
       "options": [
-        "Sidnėjus",
-        "Melburnas",
         "Kanbera",
+        "Melburnas",
+        "Sidnėjus",
         "Brisbeinas"
       ],
-      "correct": 2,
+      "correct": 0,
       "explanation": "Australijos sostinė yra Kanbera, nors Sidnėjus ir Melburnas yra didesni miestai."
     },
     {
       "question": "Kuri upė yra ilgiausia pasaulyje?",
       "options": [
-        "Nilas",
-        "Amazonė",
         "Jangdzė",
+        "Amazonė",
+        "Nilas",
         "Misisipė"
       ],
-      "correct": 0,
+      "correct": 2,
       "explanation": "Nilas, tekantis per Afriką, yra ilgiausia pasaulio upė — apie 6 650 km."
     },
     {
@@ -40,34 +40,34 @@
     {
       "question": "Kokia yra Brazilijos sostinė?",
       "options": [
-        "San Paulas",
         "Brazilija",
+        "San Paulas",
         "Rio de Žaneiras",
         "Salvadoras"
       ],
-      "correct": 1,
+      "correct": 0,
       "explanation": "Brazilijos sostinė yra Brazilija, specialiai suprojektuotas miestas, tapęs sostine 1960 m."
     },
     {
       "question": "Kiek vandenynų yra Žemėje?",
       "options": [
         "3",
-        "4",
         "5",
+        "4",
         "6"
       ],
-      "correct": 2,
+      "correct": 1,
       "explanation": "Žemėje yra 5 vandenynai: Ramusis, Atlanto, Indijos, Šiaurės Ledynuotasis ir Pietų."
     },
     {
       "question": "Kuri šalis yra didžiausia pagal plotą pasaulyje?",
       "options": [
-        "Kanada",
+        "Rusija",
         "Kinija",
         "JAV",
-        "Rusija"
+        "Kanada"
       ],
-      "correct": 3,
+      "correct": 0,
       "explanation": "Rusija yra didžiausia pasaulio šalis pagal plotą — daugiau nei 17 mln. km²."
     },
     {
@@ -117,12 +117,12 @@
     {
       "question": "Koks ežeras yra didžiausias Lietuvoje?",
       "options": [
-        "Platelių ežeras",
         "Drūkšių ežeras",
+        "Platelių ežeras",
         "Tauragno ežeras",
         "Galvės ežeras"
       ],
-      "correct": 1,
+      "correct": 0,
       "explanation": "Drūkšių ežeras yra didžiausias Lietuvos ežeras — jo plotas apie 44,8 km²."
     },
     {
@@ -141,32 +141,32 @@
       "options": [
         "Stambulas",
         "Izmiras",
-        "Ankara",
-        "Antalija"
+        "Antalija",
+        "Ankara"
       ],
-      "correct": 2,
+      "correct": 3,
       "explanation": "Turkijos sostinė yra Ankara, nors Stambulas yra didžiausias šalies miestas."
     },
     {
       "question": "Kuri šalis yra mažiausia pasaulyje pagal plotą?",
       "options": [
         "Monakas",
-        "Vatikanas",
+        "Lichtenšteinas",
         "San Marinas",
-        "Lichtenšteinas"
+        "Vatikanas"
       ],
-      "correct": 1,
+      "correct": 3,
       "explanation": "Vatikanas yra mažiausia pasaulio valstybė — jo plotas tik apie 0,44 km²."
     },
     {
       "question": "Kurioje šalyje yra Didysis barjerinis rifas?",
       "options": [
         "Indonezijoje",
-        "Filipinuose",
         "Australijoje",
+        "Filipinuose",
         "Tailande"
       ],
-      "correct": 2,
+      "correct": 1,
       "explanation": "Didysis barjerinis rifas yra prie Australijos šiaurės rytų pakrantės — tai didžiausia koralų rifų sistema pasaulyje."
     }
   ]

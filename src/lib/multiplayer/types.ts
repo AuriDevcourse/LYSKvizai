@@ -3,7 +3,7 @@ import type { Question, QuestionType } from "@/data/types";
 // --- Room & Player ---
 
 export type RoomState = "lobby" | "question" | "results" | "wager" | "finished";
-export type GameMode = "classic" | "elimination" | "team";
+export type GameMode = "classic" | "elimination" | "team" | "survival";
 export type PowerUpType = "freeze" | "shield" | "double";
 
 export interface Player {

@@ -29,12 +29,14 @@ export async function listQuizzes(): Promise<QuizMeta[]> {
     try {
       const raw = await fs.readFile(path.join(QUIZZES_DIR, file), "utf-8");
       const quiz: Quiz = JSON.parse(raw);
+      const raw_quiz = quiz as unknown as Record<string, unknown>;
       metas.push({
         id: quiz.id,
         title: quiz.title,
         description: quiz.description,
         emoji: quiz.emoji,
         questionCount: quiz.questions.length,
+        language: (raw_quiz.language as string) || undefined,
       });
     } catch {
       // skip invalid files

@@ -4,11 +4,14 @@ export const translations = {
     "nav.home": "Home",
     "nav.play": "Play",
     "nav.editor": "Editor",
+    "nav.survival": "Survival",
     "nav.back": "Back",
     "nav.backToHome": "Back to home",
 
     // Home page
     "home.playWithFriends": "Play with friends",
+    "home.classic": "Classic",
+    "home.survival": "Survival",
     "home.editor": "Editor",
 
     // Play page
@@ -133,6 +136,8 @@ export const translations = {
     "gameMode.eliminationDesc": "Weakest player eliminated every 3 rounds",
     "gameMode.team": "Team",
     "gameMode.teamDesc": "Teams compete, answer in turns",
+    "gameMode.survival": "Survival",
+    "gameMode.survivalDesc": "3 lives, timer speeds up, how far can you go?",
     "gameMode.numberOfTeams": "Number of teams",
     "gameMode.eliminateEvery": "Eliminate every N rounds",
     "gameMode.select": "Select",
@@ -179,6 +184,19 @@ export const translations = {
     "yearGuesser.lockIn": "Lock in",
     "yearGuesser.lockedIn": "Locked in!",
     "yearGuesser.waitingForOthers": "Waiting for others...",
+
+    // Topics
+    "topics.news": "Daily News",
+    "topics.geography": "Geography",
+    "topics.movies": "Movies & TV",
+    "topics.celebrities": "Celebrities",
+    "topics.history": "History",
+    "topics.science": "Science",
+    "topics.math": "Math",
+    "topics.music": "Music",
+    "topics.technology": "Technology",
+    "topics.sports": "Sports",
+    "topics.holidays": "Holidays",
 
     // Quiz Picker
     "quizPicker.noQuizzes": "No quizzes",
@@ -243,11 +261,14 @@ export const translations = {
     "nav.home": "Pradžia",
     "nav.play": "Žaisti",
     "nav.editor": "Redaktorius",
+    "nav.survival": "Išgyvenimas",
     "nav.back": "Atgal",
     "nav.backToHome": "Grįžti į pradžią",
 
     // Home page
     "home.playWithFriends": "Žaisti su draugais",
+    "home.classic": "Klasikinis",
+    "home.survival": "Išgyvenimas",
     "home.editor": "Redaktorius",
 
     // Play page
@@ -372,6 +393,8 @@ export const translations = {
     "gameMode.eliminationDesc": "Silpniausias žaidėjas eliminuojamas kas 3 raundus",
     "gameMode.team": "Komanda",
     "gameMode.teamDesc": "Komandos varžosi, atsako pakaitomis",
+    "gameMode.survival": "Išgyvenimas",
+    "gameMode.survivalDesc": "3 gyvybės, laikmatis greitėja, kiek toli nueisi?",
     "gameMode.numberOfTeams": "Komandų skaičius",
     "gameMode.eliminateEvery": "Eliminuoti kas N raundų",
     "gameMode.select": "Pasirinkti",
@@ -418,6 +441,19 @@ export const translations = {
     "yearGuesser.lockIn": "Užfiksuoti",
     "yearGuesser.lockedIn": "Užfiksuota!",
     "yearGuesser.waitingForOthers": "Laukiama kitų...",
+
+    // Topics
+    "topics.news": "Dienos naujienos",
+    "topics.geography": "Geografija",
+    "topics.movies": "Filmai ir TV",
+    "topics.celebrities": "Įžymybės",
+    "topics.history": "Istorija",
+    "topics.science": "Mokslas",
+    "topics.math": "Matematika",
+    "topics.music": "Muzika",
+    "topics.technology": "Technologijos",
+    "topics.sports": "Sportas",
+    "topics.holidays": "Šventės",
 
     // Quiz Picker
     "quizPicker.noQuizzes": "Nėra viktorinų",

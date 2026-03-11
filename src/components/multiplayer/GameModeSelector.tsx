@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Swords, Users, Skull } from "lucide-react";
+import { Swords, Users, Skull, Heart } from "lucide-react";
 import type { GameMode } from "@/lib/multiplayer/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
@@ -34,6 +34,14 @@ const MODES = [
     color: "border-blue-400/50 bg-blue-400/10",
     activeColor: "border-blue-400 bg-blue-400/20 ring-2 ring-blue-400/30",
   },
+  {
+    id: "survival" as GameMode,
+    labelKey: "gameMode.survival" as const,
+    descKey: "gameMode.survivalDesc" as const,
+    icon: Heart,
+    color: "border-pink-400/50 bg-pink-400/10",
+    activeColor: "border-pink-400 bg-pink-400/20 ring-2 ring-pink-400/30",
+  },
 ];
 
 export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
@@ -53,7 +61,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
     <div className="flex flex-col gap-4">
       <h3 className="text-center text-sm font-medium text-white/60">{t("gameMode.title")}</h3>
 
-      <div className="grid gap-3">
+      <div className="grid grid-cols-4 gap-3">
         {MODES.map((mode) => {
           const Icon = mode.icon;
           const isActive = selected === mode.id;
@@ -62,17 +70,14 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
               key={mode.id}
               type="button"
               onClick={() => setSelected(mode.id)}
-              className={`flex items-center gap-3 rounded-xl border-2 px-4 py-3 text-left transition-all ${
+              className={`flex flex-col items-center gap-2 rounded-xl border-2 px-3 py-4 text-center transition-all ${
                 isActive ? mode.activeColor : mode.color
               }`}
             >
-              <Icon className={`h-5 w-5 shrink-0 ${isActive ? "text-white" : "text-white/60"}`} />
-              <div>
-                <p className={`text-sm font-bold ${isActive ? "text-white" : "text-white/80"}`}>
-                  {t(mode.labelKey)}
-                </p>
-                <p className="text-xs text-white/50">{t(mode.descKey)}</p>
-              </div>
+              <Icon className={`h-6 w-6 ${isActive ? "text-white" : "text-white/60"}`} />
+              <p className={`text-sm font-bold ${isActive ? "text-white" : "text-white/80"}`}>
+                {t(mode.labelKey)}
+              </p>
             </button>
           );
         })}

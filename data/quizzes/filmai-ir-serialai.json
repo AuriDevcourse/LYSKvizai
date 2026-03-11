@@ -8,11 +8,11 @@
       "question": "Kuris aktorius vaidina Geležinį Žmogų (Iron Man) Marvel filmuose?",
       "options": [
         "Chris Evans",
-        "Robert Downey Jr.",
+        "Mark Ruffalo",
         "Chris Hemsworth",
-        "Mark Ruffalo"
+        "Robert Downey Jr."
       ],
-      "correct": 1,
+      "correct": 3,
       "explanation": "Robert Downey Jr. įkūnijo Tony Starką visuose Marvel Iron Man filmuose."
     },
     {
@@ -20,21 +20,21 @@
       "options": [
         "Žuvytė Dorė",
         "Šamas",
-        "Ieškant Nemo",
-        "Luca"
+        "Luca",
+        "Ieškant Nemo"
       ],
-      "correct": 2,
-      "explanation": "„Ieškant Nemo\u201C (2003) pasakoja apie klouninę žuvytę Marliną, ieškantį savo sūnaus Nemo."
+      "correct": 3,
+      "explanation": "„Ieškant Nemo“ (2003) pasakoja apie klouninę žuvytę Marliną, ieškantį savo sūnaus Nemo."
     },
     {
       "question": "Kuriame seriale vaikai kovoja su padarais iš „Apversto pasaulio“ (Upside Down)?",
       "options": [
         "Tamsioji materija",
-        "Stranger Things",
         "Westworld",
+        "Stranger Things",
         "Lokis"
       ],
-      "correct": 1,
+      "correct": 2,
       "explanation": "„Stranger Things“ veiksmas vyksta Hokinse, kur vaikai susiduria su padarais iš Apversto pasaulio."
     },
     {
@@ -51,23 +51,23 @@
     {
       "question": "Kuris filmas laimėjo geriausio filmo „Oskarą“ 2024 metais?",
       "options": [
-        "Barbie",
-        "Killeriai pagal žiedų mėnulį",
         "Oppenheimeris",
+        "Killeriai pagal žiedų mėnulį",
+        "Barbie",
         "Vargšai daiktai"
       ],
-      "correct": 2,
+      "correct": 0,
       "explanation": "„Oppenheimeris“ laimėjo geriausio filmo „Oskarą“ 2024 m. ceremonijoje."
     },
     {
       "question": "Kaip vadinasi dirbtinio intelekto robotas filme „Didysis šešetas“ (Big Hero 6)?",
       "options": [
         "Volisas",
-        "Beimaksas",
         "Optimus",
+        "Beimaksas",
         "Robis"
       ],
-      "correct": 1,
+      "correct": 2,
       "explanation": "Beimaksas yra pripučiamas sveikatos priežiūros robotas iš Disney filmo „Didysis šešetas“."
     },
     {
@@ -84,67 +84,67 @@
     {
       "question": "Kuris Disney filmas pasakoja apie dviejų seserų – Elzos ir Anos – istoriją?",
       "options": [
-        "Rapuncelė",
-        "Vaiana",
         "Ledo šalis",
+        "Vaiana",
+        "Rapuncelė",
         "Pelenė"
       ],
-      "correct": 2,
+      "correct": 0,
       "explanation": "„Ledo šalis“ (Frozen, 2013) pasakoja apie seseris Elzą ir Aną iš Arendelio karalystės."
     },
     {
       "question": "Kuris režisierius sukūrė filmą „Iškrypėlių aštuonetas“ ir „Pulp Fiction“?",
       "options": [
-        "Martinas Scorsese",
+        "Quentinas Tarantino",
         "Davidas Fincheris",
         "Ridlis Skotas",
-        "Quentinas Tarantino"
+        "Martinas Scorsese"
       ],
-      "correct": 3,
+      "correct": 0,
       "explanation": "Quentinas Tarantino režisavo abu šiuos filmus ir yra žinomas dėl savo unikalaus stiliaus."
     },
     {
       "question": "Kaip vadinasi serialas apie septynių karalysčių kovą dėl Geležinio sosto?",
       "options": [
-        "Vikingai",
         "Sostų karai",
+        "Vikingai",
         "Žiedų valdovas: Galios žiedai",
         "Vedlys"
       ],
-      "correct": 1,
+      "correct": 0,
       "explanation": "„Sostų karai“ (Game of Thrones) yra HBO serialas pagal George'o R.R. Martino knygas."
     },
     {
       "question": "Kuris aktorius vaidina Betmeną filme „Betmenas“ (2022)?",
       "options": [
         "Benas Affleckas",
-        "Christianas Bale'as",
         "Robertas Pattinsonas",
+        "Christianas Bale'as",
         "George'as Clooney"
       ],
-      "correct": 2,
+      "correct": 1,
       "explanation": "Robertas Pattinsonas suvaidino Betmeną Matto Reeveso režisuotame 2022 m. filme."
     },
     {
       "question": "Kokį gyvūną Simba yra animaciniame filme „Liūtas karalius“?",
       "options": [
         "Leopardas",
-        "Gepardas",
+        "Liūtas",
         "Tigras",
-        "Liūtas"
+        "Gepardas"
       ],
-      "correct": 3,
+      "correct": 1,
       "explanation": "Simba yra liūtas, kuris tampa Padidės žemių karaliumi Disney filme „Liūtas karalius“."
     },
     {
       "question": "Kuris Netflix serialas pasakoja apie šachmatų geniję Beth Harmon?",
       "options": [
-        "Karalienės gambitas",
         "Ozark",
+        "Karalienės gambitas",
         "Popieriaus namas",
         "Bridžertonai"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "„Karalienės gambitas“ (The Queen's Gambit) — Netflix miniserialas apie šachmatų geniję Beth Harmon."
     },
     {
@@ -161,12 +161,12 @@
     {
       "question": "Kuris animacinis filmas pasakoja apie emocijas – Džiaugsmą, Liūdesį, Pyktį – gyvenančias mergaitės galvoje?",
       "options": [
-        "Susijaukę",
+        "Luca",
         "Šaunuolis Superis",
         "Coco",
-        "Luca"
+        "Susijaukę"
       ],
-      "correct": 0,
+      "correct": 3,
       "explanation": "Pixar filmas „Susijaukę“ (Inside Out, 2015) vaizduoja emocijas, gyvenančias mergaitės Railės galvoje."
     }
   ]

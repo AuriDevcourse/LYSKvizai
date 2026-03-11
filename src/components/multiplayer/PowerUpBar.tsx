@@ -50,7 +50,7 @@ export default function PowerUpBar({ usesLeft, usedTypes = [], onUse, disabled }
               <Icon className="h-5 w-5" />
               <span className="text-xs font-extrabold">{t(pu.labelKey)}</span>
               <span className="text-[10px] font-medium text-white/70">
-                {alreadyUsed ? t("powerUp.used") : t(pu.descKey)}
+                {t(pu.descKey)}
               </span>
             </button>
           );

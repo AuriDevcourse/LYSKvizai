@@ -1,0 +1,118 @@
+{
+  "id": "muzika-klasikine",
+  "title": "Klasikinė muzika",
+  "description": "Klausimai apie klasikinę muziką",
+  "emoji": "🎻",
+  "questions": [
+    {
+      "question": "Kas sukūrė Mėnulio sonatą?",
+      "options": [
+        "Wolfgang Amadeus Mozart",
+        "Frédéric Chopin",
+        "Ludwig van Beethoven",
+        "Johann Sebastian Bach"
+      ],
+      "correct": 2,
+      "explanation": "Mėnulio sonata (Sonata Nr. 14) – tai Ludwig van Beethoven kūrinys, sukurtas 1801 m."
+    },
+    {
+      "question": "Kas yra M. K. Čiurlionis?",
+      "options": [
+        "Lietuvių poetas",
+        "Lietuvių rašytojas",
+        "Lietuvių architektas",
+        "Lietuvių dailininkas ir kompozitorius"
+      ],
+      "correct": 3,
+      "explanation": "M. K. Čiurlionis – garsus lietuvių dailininkas ir kompozitorius."
+    },
+    {
+      "question": "Kuris kompozitorius parašė Keturis metų laikus?",
+      "options": [
+        "Antonio Vivaldi",
+        "Johann Sebastian Bach",
+        "Georg Friedrich Händel",
+        "Joseph Haydn"
+      ],
+      "correct": 0,
+      "explanation": "Keturi metų laikai – tai Antonio Vivaldi smuiko koncertų ciklas, sukurtas apie 1723 m."
+    },
+    {
+      "question": "Kuris kompozitorius tapo kurčias, bet toliau kūrė muziką?",
+      "options": [
+        "Mozart",
+        "Schubert",
+        "Beethoven",
+        "Brahms"
+      ],
+      "correct": 2,
+      "explanation": "Beethoven pradėjo kursti 1798 m., bet sukūrė savo geriausius kūrinius būdamas beveik visiškai kurčias."
+    },
+    {
+      "question": "Kas sukūrė operą Kermošius?",
+      "options": [
+        "Juozas Gruodis",
+        "Stasys Šimkus",
+        "Balys Dvarionas",
+        "Mikas Petrauskas"
+      ],
+      "correct": 3,
+      "explanation": "Kermošius – tai pirmoji lietuviška opera, sukurta Miko Petrausko 1906 m."
+    },
+    {
+      "question": "Kiek stygų turi smuikas?",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "correct": 1,
+      "explanation": "Smuikas turi 4 stygas: G, D, A ir E."
+    },
+    {
+      "question": "Kuris kompozitorius žinomas Gulbių ežeru ir Spragtuką?",
+      "options": [
+        "Sergejus Rachmaninov",
+        "Piotras Čaikovskis",
+        "Igor Stravinskis",
+        "Dmitrijus Šostakovičius"
+      ],
+      "correct": 1,
+      "explanation": "Piotras Čaikovskis sukūrė baletus Gulbių ežeras, Spragtuko ir Miegančioji gražuolė."
+    },
+    {
+      "question": "Kas sukūrė Requiem, kurį baigė kitas kompozitorius po jo mirties?",
+      "options": [
+        "Beethoven",
+        "Bach",
+        "Händel",
+        "Mozart"
+      ],
+      "correct": 3,
+      "explanation": "Mozart pradėjo rašyti Requiem 1791 m., bet mirė jį nebaigęs. Kūrinį užbaigė jo mokinys Süssmayr."
+    },
+    {
+      "question": "Kiek natų yra vienoje oktavoje?",
+      "options": [
+        "7",
+        "12",
+        "8",
+        "10"
+      ],
+      "correct": 1,
+      "explanation": "Oktavoje yra 12 pustonių (chromatinė gama)."
+    },
+    {
+      "question": "Kas yra Grammy apdovanojimas?",
+      "options": [
+        "Kino premija",
+        "Mokslo premija",
+        "Literatūros premija",
+        "Muzikos premija"
+      ],
+      "correct": 3,
+      "explanation": "Grammy – tai prestižiškiausias muzikos apdovanojimas, teikiamas kasmet JAV."
+    }
+  ]
+}
