@@ -74,6 +74,19 @@ interface AvatarProps {
 export default function Avatar({ value, size = 48, className = "" }: AvatarProps) {
   const config = decodeAvatar(value);
 
+  // SVG file avatar (e.g. "punk-asian-female.svg")
+  if (value.endsWith(".svg")) {
+    return (
+      <img
+        src={`/avatars/${value}`}
+        alt="avatar"
+        className={`rounded-full object-cover ${className}`}
+        style={{ width: size, height: size }}
+        draggable={false}
+      />
+    );
+  }
+
   // Fallback: render as emoji text
   if (!config) {
     const fontSize = size * 0.6;
