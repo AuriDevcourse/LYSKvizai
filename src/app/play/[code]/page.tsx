@@ -289,6 +289,7 @@ export default function GamePage({ params }: PageProps) {
             onTimerExpire={handleTimerExpire}
             timerReduction={timerReduction}
             powerUpUses={currentPlayer?.powerUpUses ?? 0}
+            usedPowerUpTypes={currentPlayer?.usedPowerUpTypes ?? []}
             onUsePowerUp={handlePowerUp}
             eliminated={currentPlayer?.eliminated ?? false}
             canAnswer={canAnswer}
@@ -303,6 +304,7 @@ export default function GamePage({ params }: PageProps) {
             onTimerExpire={handleTimerExpire}
             timerReduction={timerReduction}
             powerUpUses={currentPlayer?.powerUpUses ?? 0}
+            usedPowerUpTypes={currentPlayer?.usedPowerUpTypes ?? []}
             onUsePowerUp={handlePowerUp}
             eliminated={currentPlayer?.eliminated ?? false}
             canAnswer={canAnswer}

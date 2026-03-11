@@ -31,6 +31,7 @@ interface PlayerQuestionProps {
   onTimerExpire: () => void;
   timerReduction?: number;
   powerUpUses?: number;
+  usedPowerUpTypes?: string[];
   onUsePowerUp?: (powerUp: PowerUpType) => void;
   eliminated?: boolean;
   canAnswer?: boolean;
@@ -43,6 +44,7 @@ export default function PlayerQuestion({
   onTimerExpire,
   timerReduction = 0,
   powerUpUses = 0,
+  usedPowerUpTypes = [],
   onUsePowerUp,
   eliminated = false,
   canAnswer = true,
@@ -152,7 +154,7 @@ export default function PlayerQuestion({
 
       {/* Power-ups */}
       {onUsePowerUp && powerUpUses > 0 && (
-        <PowerUpBar usesLeft={powerUpUses} onUse={onUsePowerUp} />
+        <PowerUpBar usesLeft={powerUpUses} usedTypes={usedPowerUpTypes} onUse={onUsePowerUp} />
       )}
 
       {/* Question text */}

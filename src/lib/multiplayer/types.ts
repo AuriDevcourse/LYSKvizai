@@ -17,8 +17,10 @@ export interface Player {
   /** Timestamp when answer was submitted */
   answerTime: number | null;
   connected: boolean;
-  /** Power-up uses remaining (starts at 2) */
+  /** Power-up uses remaining (starts at 3) */
   powerUpUses: number;
+  /** Which power-up types have been used (each type can only be used once) */
+  usedPowerUpTypes: Set<PowerUpType>;
   /** Whether player is eliminated (elimination mode) */
   eliminated: boolean;
   /** Team index (team mode), null if not in team mode */
@@ -107,6 +109,7 @@ export interface PlayerInfo {
   eliminated?: boolean;
   teamIndex?: number | null;
   powerUpUses?: number;
+  usedPowerUpTypes?: string[];
 }
 
 export interface RoomSnapshot {

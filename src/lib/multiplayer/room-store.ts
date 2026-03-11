@@ -63,6 +63,7 @@ function playerToInfo(p: Player): PlayerInfo {
     eliminated: p.eliminated || undefined,
     teamIndex: p.teamIndex,
     powerUpUses: p.powerUpUses,
+    usedPowerUpTypes: [...p.usedPowerUpTypes],
   };
 }
 
@@ -449,6 +450,7 @@ export function joinRoom(
       answerTime: null,
       connected: true,
       powerUpUses: 3,
+      usedPowerUpTypes: new Set(),
       eliminated: false,
       teamIndex: null,
     };
@@ -469,6 +471,7 @@ export function startGame(code: string, hostId: string): { error?: string } {
   // Init power-up uses for all players
   for (const p of room.players.values()) {
     p.powerUpUses = 3;
+    p.usedPowerUpTypes = new Set();
     p.eliminated = false;
     p.currentAnswer = null;
     p.answerTime = null;
@@ -745,8 +748,10 @@ export function usePowerUp(
   if (player.eliminated) return { error: "Esate pašalintas" };
   if (player.powerUpUses <= 0) return { error: "Nebeturite galių" };
   if (room.activePowerUps.has(playerId)) return { error: "Jau naudojote galią šį raundą" };
+  if (player.usedPowerUpTypes.has(powerUp)) return { error: "Šią galią jau naudojote" };
 
   player.powerUpUses--;
+  player.usedPowerUpTypes.add(powerUp);
   room.activePowerUps.set(playerId, powerUp);
 
   // Broadcast power-up usage

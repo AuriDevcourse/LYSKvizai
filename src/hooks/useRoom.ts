@@ -166,7 +166,11 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
       setPlayers((prev) =>
         prev.map((p) =>
           p.id === data.playerId
-            ? { ...p, powerUpUses: Math.max(0, (p.powerUpUses ?? 0) - 1) }
+            ? {
+                ...p,
+                powerUpUses: Math.max(0, (p.powerUpUses ?? 0) - 1),
+                usedPowerUpTypes: [...(p.usedPowerUpTypes ?? []), data.powerUp],
+              }
             : p
         )
       );
