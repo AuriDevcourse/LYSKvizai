@@ -5,7 +5,7 @@ import { Loader2, Check } from "lucide-react";
 import type { QuizMeta } from "@/data/types";
 import { getQuizTheme } from "@/lib/quiz-theme";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
-import { useContentTranslation } from "@/hooks/useContentTranslation";
+import { useContentTranslation, preTranslateContent } from "@/hooks/useContentTranslation";
 
 interface QuizPickerProps {
   onSelect: (quizIds: string[]) => void;
@@ -14,17 +14,21 @@ interface QuizPickerProps {
 }
 
 export default function QuizPicker({ onSelect, selectedIds = [], multi = true }: QuizPickerProps) {
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   const [quizzes, setQuizzes] = useState<QuizMeta[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/quizzes")
       .then((res) => res.json())
-      .then((data) => setQuizzes(data))
+      .then(async (data: QuizMeta[]) => {
+        // Pre-translate titles before showing content
+        await preTranslateContent(data.map((q) => q.title), lang);
+        setQuizzes(data);
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, []);
+  }, [lang]);
 
   // Hook must be called unconditionally (before any early returns)
   const quizTitles = useContentTranslation(quizzes.map((q) => q.title));

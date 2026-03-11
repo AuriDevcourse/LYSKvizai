@@ -106,3 +106,53 @@ export function useContentTranslationSingle(text: string): string {
   const result = useContentTranslation([text]);
   return result[0];
 }
+
+/**
+ * Pre-translate an array of strings and warm the client cache.
+ * Call this before rendering so useContentTranslation resolves synchronously.
+ * Returns a promise that resolves when all translations are cached.
+ */
+export async function preTranslateContent(
+  texts: string[],
+  lang: string
+): Promise<void> {
+  if (lang === "lt") return;
+
+  // Filter to only uncached, non-empty strings (deduplicate)
+  const seen = new Set<string>();
+  const toTranslate: string[] = [];
+  for (const t of texts) {
+    if (!t || !t.trim()) continue;
+    if (seen.has(t)) continue;
+    seen.add(t);
+    if (!clientCache.has(cacheKey(t, lang))) {
+      toTranslate.push(t);
+    }
+  }
+
+  if (toTranslate.length === 0) return;
+
+  // Batch in chunks of 80 to stay under API limit
+  const CHUNK = 80;
+  for (let i = 0; i < toTranslate.length; i += CHUNK) {
+    const chunk = toTranslate.slice(i, i + CHUNK);
+    try {
+      const res = await fetch("/api/translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ texts: chunk, from: "lt", to: lang }),
+      });
+      if (!res.ok) continue;
+      const data = await res.json();
+      if (data.translated) {
+        for (let j = 0; j < chunk.length; j++) {
+          if (data.translated[j]) {
+            clientCache.set(cacheKey(chunk[j], lang), data.translated[j]);
+          }
+        }
+      }
+    } catch {
+      // Silently fail — individual questions will still try per-question translation
+    }
+  }
+}

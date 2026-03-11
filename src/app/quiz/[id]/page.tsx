@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Loader2, ArrowLeft } from "lucide-react";
 import type { Question } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { preTranslateContent } from "@/hooks/useContentTranslation";
 import ProgressBar from "@/components/ProgressBar";
 import QuizCard from "@/components/QuizCard";
 import ResultScreen from "@/components/ResultScreen";
@@ -26,7 +27,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 export default function SinglePlayerQuiz({ params }: PageProps) {
   const { id } = use(params);
   const searchParams = useSearchParams();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [quizTitle, setQuizTitle] = useState("");
   const [loading, setLoading] = useState(true);
@@ -41,6 +42,15 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
     const isMix = id === "mix";
     const idsParam = searchParams.get("ids");
 
+    /** Collect all translatable strings from questions and pre-translate them */
+    async function preTranslateQuestions(qs: Question[], title: string) {
+      const allTexts: string[] = [title];
+      for (const q of qs) {
+        allTexts.push(q.question, ...q.options, q.explanation);
+      }
+      await preTranslateContent(allTexts, lang);
+    }
+
     if (isMix && idsParam) {
       // Multi-quiz mode: fetch all quizzes and merge
       const quizIds = idsParam.split(",").filter(Boolean);
@@ -52,16 +62,19 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
           })
         )
       )
-        .then((results) => {
+        .then(async (results) => {
           const validQuizzes = results.filter(Boolean);
           if (validQuizzes.length === 0) {
             setError(t("quiz.notFound"));
             return;
           }
           const allQuestions: Question[] = validQuizzes.flatMap((q: { questions: Question[] }) => q.questions);
-          setQuestions(shuffleArray(allQuestions));
+          const shuffled = shuffleArray(allQuestions);
           const titles = validQuizzes.map((q: { title: string }) => q.title);
-          setQuizTitle(`${t("quiz.mix")}${titles.join(" + ")}`);
+          const title = `${t("quiz.mix")}${titles.join(" + ")}`;
+          await preTranslateQuestions(shuffled, title);
+          setQuestions(shuffled);
+          setQuizTitle(title);
         })
         .catch(() => setError("Error loading quizzes"))
         .finally(() => setLoading(false));
@@ -72,14 +85,15 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
           if (!res.ok) throw new Error(t("quiz.notFound"));
           return res.json();
         })
-        .then((quiz) => {
+        .then(async (quiz) => {
+          await preTranslateQuestions(quiz.questions, quiz.title);
           setQuestions(quiz.questions);
           setQuizTitle(quiz.title);
         })
         .catch((e) => setError(e.message))
         .finally(() => setLoading(false));
     }
-  }, [id, searchParams]);
+  }, [id, searchParams, lang]);
 
   const handleSelect = useCallback(
     (index: number) => {
