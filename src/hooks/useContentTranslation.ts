@@ -14,12 +14,37 @@ function cacheKey(text: string, to: string): string {
  * Translate an array of strings when language is not Lithuanian.
  * Returns the translated strings (or originals while loading).
  */
+/**
+ * Resolve texts from cache synchronously. Returns translated array if all cached, else null.
+ */
+function resolveFromCache(texts: string[], lang: string): string[] | null {
+  if (lang === "lt") return texts;
+  const out: string[] = new Array(texts.length);
+  for (let i = 0; i < texts.length; i++) {
+    const t = texts[i];
+    if (!t || !t.trim()) {
+      out[i] = t ?? "";
+      continue;
+    }
+    const cached = clientCache.get(cacheKey(t, lang));
+    if (cached) {
+      out[i] = cached;
+    } else {
+      return null;
+    }
+  }
+  return out;
+}
+
 export function useContentTranslation(texts: string[]): string[] {
   const { lang } = useTranslation();
   // Stabilize the texts array using a string key to avoid re-renders
   const textsKey = texts.join("\n||||\n");
   const stableTexts = useMemo(() => texts, [textsKey]); // eslint-disable-line react-hooks/exhaustive-deps
-  const [translated, setTranslated] = useState<string[]>(stableTexts);
+  // Initialize with cached translations when available to avoid flash
+  const [translated, setTranslated] = useState<string[]>(
+    () => resolveFromCache(stableTexts, lang) ?? stableTexts
+  );
   const prevKey = useRef("");
 
   useEffect(() => {
@@ -33,15 +58,15 @@ export function useContentTranslation(texts: string[]): string[] {
     if (key === prevKey.current) return;
     prevKey.current = key;
 
-    // Check if all are cached
-    const allCached = stableTexts.every((t) => !t || clientCache.has(cacheKey(t, lang)));
-    if (allCached) {
-      setTranslated(stableTexts.map((t) => (t ? clientCache.get(cacheKey(t, lang)) ?? t : t)));
+    // Check if all are cached — apply immediately without flash
+    const cached = resolveFromCache(stableTexts, lang);
+    if (cached) {
+      setTranslated(cached);
       return;
     }
 
-    // Show originals immediately, then translate
-    setTranslated(stableTexts);
+    // Don't flash originals — keep previous translated state while fetching
+    // (only set originals if we have nothing better)
 
     // Filter out empty strings for the API call
     const nonEmpty = stableTexts.filter((t) => t && t.trim());
