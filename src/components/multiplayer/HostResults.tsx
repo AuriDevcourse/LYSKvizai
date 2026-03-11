@@ -141,15 +141,18 @@ export default function HostResults({
       {/* Wager results */}
       {results.wagerResults && results.wagerResults.length > 0 && (
         <div className="rounded-2xl glass px-6 py-5">
-          <div className="mb-3 flex items-center gap-2 font-extrabold text-[#d89e00]">
+          <div className="mb-4 flex items-center justify-center gap-2 font-extrabold text-[#d89e00]">
             <Coins className="h-5 w-5" />
             {t("hostResults.wagerResults")}
           </div>
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-3">
             {results.wagerResults.map((wr) => (
-              <div key={wr.playerId} className="flex items-center justify-between text-base">
+              <div key={wr.playerId} className="flex flex-col items-center text-center">
                 <span className="font-bold text-white">{wr.playerName}</span>
-                <span className={`font-extrabold ${wr.won ? "text-[#26890c]" : "text-[#e21b3c]"}`}>
+                <span className={`text-sm font-extrabold ${wr.won ? "text-[#26890c]" : "text-[#e21b3c]"}`}>
+                  {wr.won ? t("hostResults.wagerWon") : t("hostResults.wagerLost")}
+                </span>
+                <span className={`text-2xl font-extrabold ${wr.won ? "text-[#26890c]" : "text-[#e21b3c]"}`}>
                   {wr.won ? "+" : ""}{wr.netPoints} pts
                 </span>
               </div>

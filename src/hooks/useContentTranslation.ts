@@ -11,65 +11,54 @@ function cacheKey(text: string, to: string): string {
 }
 
 /**
- * Translate an array of strings when language is not Lithuanian.
- * Returns the translated strings (or originals while loading).
+ * Resolve as many texts as possible from cache synchronously.
+ * Returns fully resolved array + whether all were resolved.
  */
-/**
- * Resolve texts from cache synchronously. Returns translated array if all cached, else null.
- */
-function resolveFromCache(texts: string[], lang: string): string[] | null {
-  if (lang === "lt") return texts;
-  const out: string[] = new Array(texts.length);
+function resolveFromCache(texts: string[], lang: string): { result: string[]; complete: boolean } {
+  if (lang === "lt") return { result: texts, complete: true };
+  let complete = true;
+  const result: string[] = new Array(texts.length);
   for (let i = 0; i < texts.length; i++) {
     const t = texts[i];
     if (!t || !t.trim()) {
-      out[i] = t ?? "";
+      result[i] = t ?? "";
       continue;
     }
     const cached = clientCache.get(cacheKey(t, lang));
     if (cached) {
-      out[i] = cached;
+      result[i] = cached;
     } else {
-      return null;
+      result[i] = t;
+      complete = false;
     }
   }
-  return out;
+  return { result, complete };
 }
 
 export function useContentTranslation(texts: string[]): string[] {
   const { lang } = useTranslation();
-  // Stabilize the texts array using a string key to avoid re-renders
   const textsKey = texts.join("\n||||\n");
   const stableTexts = useMemo(() => texts, [textsKey]); // eslint-disable-line react-hooks/exhaustive-deps
-  // Initialize with cached translations when available to avoid flash
-  const [translated, setTranslated] = useState<string[]>(
-    () => resolveFromCache(stableTexts, lang) ?? stableTexts
-  );
+
+  // Resolve synchronously from cache on every render — no flash for cached content
+  const { result: syncResolved, complete } = resolveFromCache(stableTexts, lang);
+
+  const [asyncTranslated, setAsyncTranslated] = useState<string[] | null>(null);
   const prevKey = useRef("");
+  const fetchingKey = useRef("");
 
   useEffect(() => {
-    // Content is already in Lithuanian — no translation needed
-    if (lang === "lt") {
-      setTranslated(stableTexts);
+    if (lang === "lt" || complete) {
+      setAsyncTranslated(null);
       return;
     }
 
     const key = textsKey + ":" + lang;
     if (key === prevKey.current) return;
     prevKey.current = key;
+    fetchingKey.current = key;
 
-    // Check if all are cached — apply immediately without flash
-    const cached = resolveFromCache(stableTexts, lang);
-    if (cached) {
-      setTranslated(cached);
-      return;
-    }
-
-    // Don't flash originals — keep previous translated state while fetching
-    // (only set originals if we have nothing better)
-
-    // Filter out empty strings for the API call
-    const nonEmpty = stableTexts.filter((t) => t && t.trim());
+    const nonEmpty = stableTexts.filter((t) => t && t.trim() && !clientCache.has(cacheKey(t, lang)));
     if (nonEmpty.length === 0) return;
 
     const controller = new AbortController();
@@ -85,15 +74,14 @@ export function useContentTranslation(texts: string[]): string[] {
         return r.json();
       })
       .then((data) => {
-        if (data.translated) {
-          // Cache non-empty results
+        if (data.translated && fetchingKey.current === key) {
           for (let i = 0; i < nonEmpty.length; i++) {
             if (data.translated[i]) {
               clientCache.set(cacheKey(nonEmpty[i], lang), data.translated[i]);
             }
           }
-          // Rebuild full array with translations
-          setTranslated(
+          // Trigger re-render so syncResolved picks up new cache entries
+          setAsyncTranslated(
             stableTexts.map((t) => {
               if (!t || !t.trim()) return t;
               return clientCache.get(cacheKey(t, lang)) ?? t;
@@ -101,14 +89,14 @@ export function useContentTranslation(texts: string[]): string[] {
           );
         }
       })
-      .catch(() => {
-        // Silently fail — show originals
-      });
+      .catch(() => {});
 
     return () => controller.abort();
-  }, [stableTexts, lang, textsKey]);
+  }, [stableTexts, lang, textsKey, complete]);
 
-  return lang === "lt" ? stableTexts : translated;
+  if (lang === "lt") return stableTexts;
+  if (complete) return syncResolved;
+  return asyncTranslated ?? syncResolved;
 }
 
 /**
