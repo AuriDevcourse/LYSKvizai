@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Montserrat } from "next/font/google";
 import BottomNav from "@/components/BottomNav";
 import LanguageToggle from "@/components/LanguageToggle";
+import DevAgentation from "@/components/DevAgentation";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import "./globals.css";
 
@@ -37,6 +38,7 @@ export default function RootLayout({
           {children}
           <BottomNav />
         </LanguageProvider>
+        <DevAgentation />
       </body>
     </html>
   );
