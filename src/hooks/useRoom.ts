@@ -13,7 +13,7 @@ import type {
   PowerUpUsedPayload,
   WagerPayload,
 } from "@/lib/multiplayer/types";
-import { MP_WS_URL } from "@/lib/multiplayer/config";
+import { MP_SSE_URL } from "@/lib/multiplayer/config";
 
 export interface EmojiReactionWithId extends EmojiReaction {
   id: string;
@@ -37,7 +37,7 @@ interface UseRoomReturn {
   eliminatedEvent: { playerId: string; playerName: string; playerEmoji: string } | null;
 }
 
-const MAX_RETRIES = 5;
+const MAX_RETRIES = 50; // Higher limit since Vercel may drop SSE every ~25s
 
 export function useRoom(code: string | null, playerId: string | null): UseRoomReturn {
   const [state, setState] = useState<RoomState | null>(null);
@@ -56,7 +56,7 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
   const [powerUpEvent, setPowerUpEvent] = useState<PowerUpUsedPayload | null>(null);
   const [eliminatedEvent, setEliminatedEvent] = useState<{ playerId: string; playerName: string; playerEmoji: string } | null>(null);
 
-  const wsRef = useRef<WebSocket | null>(null);
+  const esRef = useRef<EventSource | null>(null);
   const reconnectTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
   const retriesRef = useRef(0);
   const reactionIdRef = useRef(0);
@@ -71,149 +71,142 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
       return { ...q, startTime: q.startTime + clockOffset };
     }
 
-    const url = `${MP_WS_URL}/ws/${code.toUpperCase()}?playerId=${playerId}`;
-    const ws = new WebSocket(url);
-    wsRef.current = ws;
+    const url = `${MP_SSE_URL}/${code.toUpperCase()}?playerId=${playerId}`;
+    const es = new EventSource(url);
+    esRef.current = es;
 
-    ws.onopen = () => {
+    es.addEventListener("room-state", (e) => {
+      const snapshot: RoomSnapshot = JSON.parse(e.data);
+      setState(snapshot.state);
+      setPlayers(snapshot.players);
+      setQuestion(adjustQuestion(snapshot.question));
+      setResults(snapshot.results ?? null);
+      setLeaderboard(snapshot.leaderboard ?? null);
+      setAnswerCount(null);
+      setGameMode(snapshot.gameMode ?? "classic");
+      setTeamNames(snapshot.teamNames ?? []);
+      setWager(snapshot.wager ?? null);
+      setConnected(true);
+      setError(null);
+      retriesRef.current = 0;
+    });
+
+    es.addEventListener("player-joined", (e) => {
+      const { player } = JSON.parse(e.data);
+      setPlayers((prev) => {
+        const existing = prev.findIndex((p) => p.id === player.id);
+        if (existing >= 0) {
+          const updated = [...prev];
+          updated[existing] = player;
+          return updated;
+        }
+        return [...prev, player];
+      });
+    });
+
+    es.addEventListener("player-left", (e) => {
+      const { playerId: leftId } = JSON.parse(e.data);
+      setPlayers((prev) =>
+        prev.map((p) => (p.id === leftId ? { ...p, connected: false } : p))
+      );
+    });
+
+    es.addEventListener("question-start", (e) => {
+      const payload: QuestionPayload = JSON.parse(e.data);
+      setState("question");
+      setQuestion(adjustQuestion(payload));
+      setResults(null);
+      setAnswerCount(null);
+      setTimerReduction(0);
+    });
+
+    es.addEventListener("answer-count", (e) => {
+      setAnswerCount(JSON.parse(e.data));
+    });
+
+    es.addEventListener("results", (e) => {
+      const payload: ResultsPayload = JSON.parse(e.data);
+      setState("results");
+      setResults(payload);
+      setQuestion(null);
+      setWager(null);
+      setPlayers((prev) =>
+        prev.map((p) => {
+          const entry = payload.leaderboard.find((l) => l.playerId === p.id);
+          const eliminated = payload.eliminatedThisRound?.find((el) => el.playerId === p.id);
+          return {
+            ...p,
+            score: entry?.score ?? p.score,
+            eliminated: eliminated ? true : p.eliminated,
+          };
+        })
+      );
+    });
+
+    es.addEventListener("finished", (e) => {
+      const { leaderboard: lb } = JSON.parse(e.data);
+      setState("finished");
+      setLeaderboard(lb);
+      setResults(null);
+      setQuestion(null);
+    });
+
+    es.addEventListener("emoji-reaction", (e) => {
+      const data: EmojiReaction = JSON.parse(e.data);
+      const id = `r_${++reactionIdRef.current}`;
+      setReactions((prev) => [...prev, { ...data, id }]);
+      setTimeout(() => {
+        setReactions((prev) => prev.filter((r) => r.id !== id));
+      }, 3000);
+    });
+
+    es.addEventListener("powerup-used", (e) => {
+      const data: PowerUpUsedPayload = JSON.parse(e.data);
+      setPowerUpEvent(data);
+      setPlayers((prev) =>
+        prev.map((p) =>
+          p.id === data.playerId
+            ? {
+                ...p,
+                powerUpUses: Math.max(0, (p.powerUpUses ?? 0) - 1),
+                usedPowerUpTypes: [...(p.usedPowerUpTypes ?? []), data.powerUp],
+              }
+            : p
+        )
+      );
+      setTimeout(() => setPowerUpEvent(null), 3000);
+    });
+
+    es.addEventListener("wager-start", (e) => {
+      const data: WagerPayload = JSON.parse(e.data);
+      setState("wager");
+      setWager(data);
+      setQuestion(null);
+    });
+
+    es.addEventListener("player-eliminated", (e) => {
+      const data = JSON.parse(e.data);
+      setEliminatedEvent(data);
+      setPlayers((prev) =>
+        prev.map((p) => (p.id === data.playerId ? { ...p, eliminated: true } : p))
+      );
+      setTimeout(() => setEliminatedEvent(null), 5000);
+    });
+
+    es.addEventListener("timer-reduced", (e) => {
+      const data = JSON.parse(e.data);
+      setTimerReduction((prev) => prev + data.seconds);
+    });
+
+    es.onopen = () => {
       setConnected(true);
       setError(null);
       retriesRef.current = 0;
     };
 
-    ws.onmessage = (e) => {
-      const event = JSON.parse(e.data);
-
-      switch (event.type) {
-        case "room-state": {
-          const snapshot: RoomSnapshot = event.data;
-          setState(snapshot.state);
-          setPlayers(snapshot.players);
-          setQuestion(adjustQuestion(snapshot.question));
-          setResults(snapshot.results ?? null);
-          setLeaderboard(snapshot.leaderboard ?? null);
-          setAnswerCount(null);
-          setGameMode(snapshot.gameMode ?? "classic");
-          setTeamNames(snapshot.teamNames ?? []);
-          setWager(snapshot.wager ?? null);
-          setConnected(true);
-          setError(null);
-          retriesRef.current = 0;
-          break;
-        }
-        case "player-joined": {
-          const { player } = event.data;
-          setPlayers((prev) => {
-            const existing = prev.findIndex((p) => p.id === player.id);
-            if (existing >= 0) {
-              const updated = [...prev];
-              updated[existing] = player;
-              return updated;
-            }
-            return [...prev, player];
-          });
-          break;
-        }
-        case "player-left": {
-          const { playerId: leftId } = event.data;
-          setPlayers((prev) =>
-            prev.map((p) => (p.id === leftId ? { ...p, connected: false } : p))
-          );
-          break;
-        }
-        case "question-start": {
-          const payload: QuestionPayload = event.data;
-          setState("question");
-          setQuestion(adjustQuestion(payload));
-          setResults(null);
-          setAnswerCount(null);
-          setTimerReduction(0);
-          break;
-        }
-        case "answer-count":
-          setAnswerCount(event.data);
-          break;
-        case "results": {
-          const payload: ResultsPayload = event.data;
-          setState("results");
-          setResults(payload);
-          setQuestion(null);
-          setWager(null);
-          setPlayers((prev) =>
-            prev.map((p) => {
-              const entry = payload.leaderboard.find((l) => l.playerId === p.id);
-              const eliminated = payload.eliminatedThisRound?.find((el) => el.playerId === p.id);
-              return {
-                ...p,
-                score: entry?.score ?? p.score,
-                eliminated: eliminated ? true : p.eliminated,
-              };
-            })
-          );
-          break;
-        }
-        case "finished": {
-          const { leaderboard: lb } = event.data;
-          setState("finished");
-          setLeaderboard(lb);
-          setResults(null);
-          setQuestion(null);
-          break;
-        }
-        case "emoji-reaction": {
-          const data: EmojiReaction = event.data;
-          const id = `r_${++reactionIdRef.current}`;
-          setReactions((prev) => [...prev, { ...data, id }]);
-          setTimeout(() => {
-            setReactions((prev) => prev.filter((r) => r.id !== id));
-          }, 3000);
-          break;
-        }
-        case "powerup-used": {
-          const data: PowerUpUsedPayload = event.data;
-          setPowerUpEvent(data);
-          setPlayers((prev) =>
-            prev.map((p) =>
-              p.id === data.playerId
-                ? {
-                    ...p,
-                    powerUpUses: Math.max(0, (p.powerUpUses ?? 0) - 1),
-                    usedPowerUpTypes: [...(p.usedPowerUpTypes ?? []), data.powerUp],
-                  }
-                : p
-            )
-          );
-          setTimeout(() => setPowerUpEvent(null), 3000);
-          break;
-        }
-        case "wager-start": {
-          const data: WagerPayload = event.data;
-          setState("wager");
-          setWager(data);
-          setQuestion(null);
-          break;
-        }
-        case "player-eliminated": {
-          const data = event.data;
-          setEliminatedEvent(data);
-          setPlayers((prev) =>
-            prev.map((p) => (p.id === data.playerId ? { ...p, eliminated: true } : p))
-          );
-          setTimeout(() => setEliminatedEvent(null), 5000);
-          break;
-        }
-        case "timer-reduced": {
-          setTimerReduction((prev) => prev + event.data.seconds);
-          break;
-        }
-        case "ping":
-          // keep-alive, ignore
-          break;
-      }
-    };
-
-    ws.onclose = () => {
+    es.onerror = () => {
       setConnected(false);
+      es.close();
 
       retriesRef.current++;
       if (retriesRef.current >= MAX_RETRIES) {
@@ -221,14 +214,11 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
         return;
       }
 
-      const delay = Math.min(1000 * Math.pow(2, retriesRef.current - 1), 8000);
+      // Quick reconnect (Vercel may drop SSE after ~25s, this is expected)
+      const delay = Math.min(500 * Math.pow(1.5, Math.min(retriesRef.current - 1, 5)), 4000);
       reconnectTimeout.current = setTimeout(() => {
         connect();
       }, delay);
-    };
-
-    ws.onerror = () => {
-      // onclose will fire after this, handling reconnection
     };
   }, [code, playerId]);
 
@@ -236,7 +226,7 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
     connect();
     return () => {
       clearTimeout(reconnectTimeout.current);
-      wsRef.current?.close();
+      esRef.current?.close();
     };
   }, [connect]);
 

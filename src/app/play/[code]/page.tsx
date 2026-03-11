@@ -17,7 +17,7 @@ import Leaderboard from "@/components/multiplayer/Leaderboard";
 import WagerScreen from "@/components/multiplayer/WagerScreen";
 import HostWager from "@/components/multiplayer/HostWager";
 import type { PowerUpType } from "@/lib/multiplayer/types";
-import { MP_HTTP_URL } from "@/lib/multiplayer/config";
+import { MP_API_URL } from "@/lib/multiplayer/config";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface PageProps {
@@ -110,7 +110,7 @@ export default function GamePage({ params }: PageProps) {
     async (year: number) => {
       if (!playerId) return;
       try {
-        await fetch(`${MP_HTTP_URL}/api/rooms`, {
+        await fetch(`${MP_API_URL}/rooms`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ action: "answer-year", code, playerId, year }),
@@ -126,7 +126,7 @@ export default function GamePage({ params }: PageProps) {
     async (text: string) => {
       if (!playerId) return;
       try {
-        await fetch(`${MP_HTTP_URL}/api/rooms`, {
+        await fetch(`${MP_API_URL}/rooms`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ action: "answer-text", code, playerId, answer: text }),
@@ -181,7 +181,7 @@ export default function GamePage({ params }: PageProps) {
 
   const handleAdvanceFromWager = useCallback(async () => {
     try {
-      await fetch(`${MP_HTTP_URL}/api/rooms`, {
+      await fetch(`${MP_API_URL}/rooms`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "advance-wager", code, hostId }),
@@ -193,7 +193,7 @@ export default function GamePage({ params }: PageProps) {
 
   const handleExit = useCallback(() => {
     try {
-      fetch(`${MP_HTTP_URL}/api/rooms`, {
+      fetch(`${MP_API_URL}/rooms`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "disconnect", code, playerId }),
@@ -205,7 +205,7 @@ export default function GamePage({ params }: PageProps) {
   const handleTimerExpire = useCallback(async () => {
     if (!isHost) return;
     try {
-      await fetch(`${MP_HTTP_URL}/api/rooms`, {
+      await fetch(`${MP_API_URL}/rooms`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "force-results", code, hostId }),

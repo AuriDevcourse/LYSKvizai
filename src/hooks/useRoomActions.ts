@@ -2,10 +2,10 @@
 
 import { useCallback } from "react";
 import type { GameMode, PowerUpType } from "@/lib/multiplayer/types";
-import { MP_HTTP_URL } from "@/lib/multiplayer/config";
+import { MP_API_URL } from "@/lib/multiplayer/config";
 
 async function postAction(body: Record<string, unknown>) {
-  const res = await fetch(`${MP_HTTP_URL}/api/rooms`, {
+  const res = await fetch(`${MP_API_URL}/rooms`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),

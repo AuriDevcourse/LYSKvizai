@@ -101,38 +101,52 @@ function generateRoomCode() {
   return code;
 }
 
-// ===== WebSocket Connection Manager =====
-const wsConnections = new Map(); // connId -> { ws, playerId, roomCode }
+// ===== Connection Manager (WebSocket + SSE) =====
+const connections = new Map(); // connId -> { type: "ws"|"sse", ws?, res?, playerId, roomCode }
 let connCounter = 0;
 
 function addWsConnection(roomCode, playerId, ws) {
   const id = `conn_${++connCounter}`;
-  wsConnections.set(id, { ws, playerId, roomCode });
+  connections.set(id, { type: "ws", ws, playerId, roomCode });
   return id;
 }
 
-function removeWsConnection(id) {
-  wsConnections.delete(id);
+function addSseConnection(roomCode, playerId, res) {
+  const id = `conn_${++connCounter}`;
+  connections.set(id, { type: "sse", res, playerId, roomCode });
+  return id;
+}
+
+function removeConnection(id) {
+  connections.delete(id);
 }
 
 function broadcast(roomCode, event) {
-  const message = JSON.stringify(event);
-  for (const [id, conn] of wsConnections) {
+  const jsonMsg = JSON.stringify(event);
+  const sseMsg = `event: ${event.type}\ndata: ${JSON.stringify(event.data)}\n\n`;
+  for (const [id, conn] of connections) {
     if (conn.roomCode === roomCode) {
       try {
-        if (conn.ws.readyState === 1) conn.ws.send(message);
+        if (conn.type === "ws" && conn.ws.readyState === 1) {
+          conn.ws.send(jsonMsg);
+        } else if (conn.type === "sse") {
+          conn.res.write(sseMsg);
+        }
       } catch {
-        wsConnections.delete(id);
+        connections.delete(id);
       }
     }
   }
 }
 
 function removeRoomConnections(roomCode) {
-  for (const [id, conn] of wsConnections) {
+  for (const [id, conn] of connections) {
     if (conn.roomCode === roomCode) {
-      try { conn.ws.close(); } catch {}
-      wsConnections.delete(id);
+      try {
+        if (conn.type === "ws") conn.ws.close();
+        else if (conn.type === "sse") conn.res.end();
+      } catch {}
+      connections.delete(id);
     }
   }
 }
@@ -805,7 +819,7 @@ const server = createServer((req, res) => {
   // Health check
   if (url.pathname === "/health") {
     res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ ok: true, rooms: rooms.size, connections: wsConnections.size }));
+    res.end(JSON.stringify({ ok: true, rooms: rooms.size, connections: connections.size }));
     return;
   }
 
@@ -835,6 +849,39 @@ const server = createServer((req, res) => {
     if (!room) { res.writeHead(404, { "Content-Type": "application/json" }); res.end(JSON.stringify({ error: "Room not found" })); return; }
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ snapshot: getRoomSnapshot(room) }));
+    return;
+  }
+
+  // SSE endpoint: GET /sse/:code?playerId=xxx
+  const sseMatch = url.pathname.match(/^\/sse\/([A-Z0-9]+)$/i);
+  if (req.method === "GET" && sseMatch) {
+    const code = sseMatch[1].toUpperCase();
+    const playerId = url.searchParams.get("playerId") ?? "unknown";
+    const room = rooms.get(code);
+    if (!room) { res.writeHead(404); res.end("Room not found"); return; }
+
+    res.writeHead(200, {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache, no-transform",
+      "Connection": "keep-alive",
+      "X-Accel-Buffering": "no",
+    });
+
+    const connId = addSseConnection(code, playerId, res);
+
+    // Send initial room state
+    const snapshot = getRoomSnapshot(room);
+    res.write(`event: room-state\ndata: ${JSON.stringify(snapshot)}\n\n`);
+
+    // Keep-alive ping every 15s
+    const pingInterval = setInterval(() => {
+      try { res.write(`event: ping\ndata: null\n\n`); } catch {}
+    }, 15000);
+
+    req.on("close", () => {
+      clearInterval(pingInterval);
+      removeConnection(connId);
+    });
     return;
   }
 
@@ -943,12 +990,12 @@ wss.on("connection", (ws, req) => {
 
   ws.on("close", () => {
     clearInterval(pingInterval);
-    removeWsConnection(connId);
+    removeConnection(connId);
   });
 
   ws.on("error", () => {
     clearInterval(pingInterval);
-    removeWsConnection(connId);
+    removeConnection(connId);
   });
 });
 
