@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { CheckCircle, XCircle, Clock, Flame, Hash, Skull, Zap, Coins, Shield, Sparkles, Calendar } from "lucide-react";
 import type { ResultsPayload } from "@/lib/multiplayer/types";
-import { useSound } from "@/hooks/useSound";
 import ReactionPicker from "./ReactionPicker";
 
 interface PlayerResultsProps {
@@ -14,16 +12,7 @@ interface PlayerResultsProps {
 }
 
 export default function PlayerResults({ playerId, results, onReact, children }: PlayerResultsProps) {
-  const { playCorrect, playWrong } = useSound();
-  const soundPlayedRef = useRef(false);
   const myResult = results.playerResults.find((r) => r.playerId === playerId);
-
-  useEffect(() => {
-    if (soundPlayedRef.current) return;
-    soundPlayedRef.current = true;
-    if (myResult?.correct) playCorrect();
-    else if (myResult && !myResult.correct) playWrong();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const myRank = results.leaderboard.find((e) => e.playerId === playerId)?.rank;
   const wasEliminated = results.eliminatedThisRound?.some((el) => el.playerId === playerId);

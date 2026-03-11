@@ -1,9 +1,7 @@
 "use client";
 
-import { useRef } from "react";
 import { Triangle, Diamond, Circle, Square, Check, X } from "lucide-react";
 import type { Question } from "@/data/types";
-import { useSound } from "@/hooks/useSound";
 
 interface QuizCardProps {
   question: Question;
@@ -31,15 +29,6 @@ export default function QuizCard({
 }: QuizCardProps) {
   const answered = selectedAnswer !== null;
   const isCorrect = selectedAnswer === question.correct;
-  const { playCorrect, playWrong } = useSound();
-  const soundPlayedRef = useRef(false);
-
-  if (answered && !soundPlayedRef.current) {
-    soundPlayedRef.current = true;
-    if (isCorrect) playCorrect();
-    else playWrong();
-  }
-  if (!answered) soundPlayedRef.current = false;
 
   return (
     <div className="animate-fade-in-up w-full">

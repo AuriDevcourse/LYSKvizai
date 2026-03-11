@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Plus, Trash2, Pencil, ArrowLeft, Loader2 } from "lucide-react";
 import type { QuizMeta } from "@/data/types";
+import { getQuizTheme } from "@/lib/quiz-theme";
 
 export default function EditorPage() {
   const router = useRouter();
@@ -82,7 +83,15 @@ export default function EditorPage() {
                 key={quiz.id}
                 className="flex items-center gap-4 rounded-2xl border-2 border-white/15 bg-white/5 px-5 py-4"
               >
-                <span className="text-3xl">{quiz.emoji}</span>
+                {(() => {
+                  const theme = getQuizTheme(quiz.id);
+                  const Icon = theme.icon;
+                  return (
+                    <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${theme.bg}`}>
+                      <Icon className="h-6 w-6 text-white" />
+                    </div>
+                  );
+                })()}
                 <div className="min-w-0 flex-1">
                   <h3 className="font-bold text-white">{quiz.title}</h3>
                   <p className="text-sm text-white/40">

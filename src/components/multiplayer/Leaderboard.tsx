@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { Trophy, Crown, Award, Medal } from "lucide-react";
 import type { LeaderboardEntry } from "@/lib/multiplayer/types";
 import Avatar from "@/components/Avatar";
@@ -11,79 +14,108 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
   const top3 = leaderboard.slice(0, 3);
   const rest = leaderboard.slice(3);
 
-  return (
-    <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
-      <Trophy className="h-12 w-12 text-[#d89e00] animate-bounce-in" />
-      <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Rezultatai</h2>
+  // Dramatic reveal: 3rd → 2nd → 1st
+  const [revealStep, setRevealStep] = useState(0);
 
-      {/* Podium - top 3 */}
-      <div className="flex w-full max-w-lg items-end justify-center gap-3 stagger-children">
+  useEffect(() => {
+    // Step 0: nothing shown
+    // Step 1: 3rd place (after 600ms)
+    // Step 2: 2nd place (after 1800ms)
+    // Step 3: 1st place (after 3000ms)
+    // Step 4: rest of leaderboard (after 4000ms)
+    const timers = [
+      setTimeout(() => setRevealStep(1), 600),
+      setTimeout(() => setRevealStep(2), 1800),
+      setTimeout(() => setRevealStep(3), 3000),
+      setTimeout(() => setRevealStep(4), 4000),
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, []);
+
+  const isMe = (id: string) => id === currentPlayerId;
+
+  return (
+    <div className="flex w-full flex-col items-center gap-6">
+      {/* Trophy icon */}
+      <Trophy className="h-12 w-12 text-[#d89e00] animate-bounce-in" />
+      <h2 className="text-3xl font-extrabold text-white sm:text-4xl animate-fade-in-up">
+        Final Results
+      </h2>
+
+      {/* Podium */}
+      <div className="flex w-full max-w-lg items-end justify-center gap-3 mt-2">
         {/* 2nd place */}
-        {top3[1] && (
-          <div className="flex w-1/3 flex-col items-center">
-            <Award className="h-7 w-7 text-gray-300" />
-            <div
-              className={`mt-2 flex w-full flex-col items-center rounded-t-2xl px-2 py-4 ${
-                top3[1].playerId === currentPlayerId
-                  ? "bg-white/20 ring-2 ring-white"
-                  : "glass"
-              }`}
-              style={{ minHeight: 80 }}
-            >
-              <Avatar value={top3[1].emoji} size={36} />
-              <p className="mt-1 text-sm font-extrabold text-white text-center">{top3[1].name}</p>
-              <p className="text-sm font-bold text-white/60">{top3[1].score}</p>
-            </div>
-          </div>
-        )}
+        <div className="flex w-1/3 flex-col items-center" style={{ opacity: revealStep >= 2 ? 1 : 0, transition: "opacity 0.5s" }}>
+          {top3[1] && (
+            <>
+              <Award className="h-7 w-7 text-gray-300 animate-bounce-in" />
+              <div
+                className={`mt-2 flex w-full flex-col items-center rounded-t-2xl px-2 py-4 animate-fade-in-up ${
+                  isMe(top3[1].playerId) ? "bg-white/20 ring-2 ring-white" : "glass"
+                }`}
+                style={{ minHeight: 100 }}
+              >
+                <div className="text-2xl font-extrabold text-gray-300 mb-1">2</div>
+                <Avatar value={top3[1].emoji} size={40} />
+                <p className="mt-1.5 text-sm font-extrabold text-white text-center">{top3[1].name}</p>
+                <p className="text-lg font-extrabold text-white/70">{top3[1].score}</p>
+              </div>
+            </>
+          )}
+        </div>
 
         {/* 1st place */}
-        {top3[0] && (
-          <div className="flex w-1/3 flex-col items-center">
-            <Crown className="h-8 w-8 text-[#d89e00]" />
-            <div
-              className={`mt-2 flex w-full flex-col items-center rounded-t-2xl px-2 py-6 ${
-                top3[0].playerId === currentPlayerId
-                  ? "bg-white/20 ring-2 ring-white"
-                  : "glass"
-              }`}
-              style={{ minHeight: 100 }}
-            >
-              <Avatar value={top3[0].emoji} size={48} />
-              <p className="mt-1 text-base font-extrabold text-white text-center">{top3[0].name}</p>
-              <p className="text-lg font-extrabold text-[#d89e00]">{top3[0].score}</p>
-            </div>
-          </div>
-        )}
+        <div className="flex w-1/3 flex-col items-center" style={{ opacity: revealStep >= 3 ? 1 : 0, transition: "opacity 0.5s" }}>
+          {top3[0] && (
+            <>
+              <Crown className="h-9 w-9 text-[#d89e00] animate-bounce-in" />
+              <div
+                className={`mt-2 flex w-full flex-col items-center rounded-t-2xl px-2 py-6 animate-fade-in-up ${
+                  isMe(top3[0].playerId) ? "bg-white/20 ring-2 ring-white" : "glass"
+                }`}
+                style={{ minHeight: 130 }}
+              >
+                <div className="text-3xl font-extrabold text-[#d89e00] mb-1">1</div>
+                <Avatar value={top3[0].emoji} size={52} />
+                <p className="mt-1.5 text-base font-extrabold text-white text-center">{top3[0].name}</p>
+                <p className="text-xl font-extrabold text-[#d89e00]">{top3[0].score}</p>
+              </div>
+            </>
+          )}
+        </div>
 
         {/* 3rd place */}
-        {top3[2] && (
-          <div className="flex w-1/3 flex-col items-center">
-            <Medal className="h-6 w-6 text-amber-700" />
-            <div
-              className={`mt-2 flex w-full flex-col items-center rounded-t-2xl px-2 py-3 ${
-                top3[2].playerId === currentPlayerId
-                  ? "bg-white/20 ring-2 ring-white"
-                  : "glass"
-              }`}
-              style={{ minHeight: 60 }}
-            >
-              <Avatar value={top3[2].emoji} size={36} />
-              <p className="mt-1 text-sm font-extrabold text-white text-center">{top3[2].name}</p>
-              <p className="text-sm font-bold text-white/60">{top3[2].score}</p>
-            </div>
-          </div>
-        )}
+        <div className="flex w-1/3 flex-col items-center" style={{ opacity: revealStep >= 1 ? 1 : 0, transition: "opacity 0.5s" }}>
+          {top3[2] && (
+            <>
+              <Medal className="h-6 w-6 text-amber-700 animate-bounce-in" />
+              <div
+                className={`mt-2 flex w-full flex-col items-center rounded-t-2xl px-2 py-3 animate-fade-in-up ${
+                  isMe(top3[2].playerId) ? "bg-white/20 ring-2 ring-white" : "glass"
+                }`}
+                style={{ minHeight: 70 }}
+              >
+                <div className="text-xl font-extrabold text-amber-700 mb-1">3</div>
+                <Avatar value={top3[2].emoji} size={36} />
+                <p className="mt-1 text-sm font-extrabold text-white text-center">{top3[2].name}</p>
+                <p className="text-sm font-bold text-white/60">{top3[2].score}</p>
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Rest of leaderboard */}
       {rest.length > 0 && (
-        <div className="flex w-full max-w-lg flex-col gap-1 stagger-children">
+        <div
+          className="flex w-full max-w-lg flex-col gap-1 stagger-children"
+          style={{ opacity: revealStep >= 4 ? 1 : 0, transition: "opacity 0.5s" }}
+        >
           {rest.map((entry) => (
             <div
               key={entry.playerId}
               className={`flex items-center justify-between rounded-xl px-4 py-2.5 ${
-                entry.playerId === currentPlayerId
+                isMe(entry.playerId)
                   ? "bg-white/15 ring-1 ring-white/50"
                   : "glass"
               }`}
