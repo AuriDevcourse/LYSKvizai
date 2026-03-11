@@ -57,7 +57,7 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
       {/* Avatar builder */}
       <div>
         <label className="mb-1.5 block text-sm font-bold text-white/60">
-          Avataras
+          Avatar
         </label>
         <AvatarBuilder onChange={setAvatar} />
       </div>

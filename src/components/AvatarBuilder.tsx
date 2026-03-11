@@ -1,14 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Avatar, {
-  ANIMALS,
-  COLORS,
-  HATS,
-  ACCESSORIES,
-  encodeAvatar,
-  type AvatarConfig,
-} from "./Avatar";
+import Avatar from "./Avatar";
 
 // --- SVG portrait data ---
 
@@ -105,16 +98,15 @@ const ALL_PORTRAITS = [
 const SKIN_TOKENS = ["asian", "black", "white", "african", "caucasian"] as const;
 
 const SKIN_COLORS = [
-  { id: "light", tokens: ["white", "caucasian"], label: "Light", swatch: "#f5d0a9" },
-  { id: "medium", tokens: ["asian"], label: "Medium", swatch: "#c68642" },
-  { id: "dark", tokens: ["black", "african"], label: "Dark", swatch: "#8d5524" },
+  { id: "light", tokens: ["white", "caucasian"], swatch: "#f5d0a9" },
+  { id: "medium", tokens: ["asian"], swatch: "#c68642" },
+  { id: "dark", tokens: ["black", "african"], swatch: "#8d5524" },
 ];
 
 interface AvatarGroup {
-  base: string;           // group key (filename without skin token)
-  label: string;          // display name
+  base: string;
   variants: { skin: string; file: string }[];
-  defaultFile: string;    // first variant filename
+  defaultFile: string;
 }
 
 function buildGroups(): AvatarGroup[] {
@@ -124,7 +116,6 @@ function buildGroups(): AvatarGroup[] {
     const name = file.replace(".svg", "").replace("avatar-", "").replace("-coronavirus", "");
     const parts = name.split("-");
 
-    // Find skin token
     let skinToken: string | null = null;
     let skinIdx = -1;
     for (let i = 0; i < parts.length; i++) {
@@ -151,17 +142,7 @@ function buildGroups(): AvatarGroup[] {
 
   const groups: AvatarGroup[] = [];
   for (const [base, variants] of groupMap) {
-    // Pretty label from base
-    const label = base
-      .replace(/-/g, " ")
-      .replace(/\b\w/g, (c) => c.toUpperCase());
-
-    groups.push({
-      base,
-      label,
-      variants,
-      defaultFile: variants[0].file,
-    });
+    groups.push({ base, variants, defaultFile: variants[0].file });
   }
   return groups;
 }
@@ -169,303 +150,136 @@ function buildGroups(): AvatarGroup[] {
 const BG_COLORS = [
   "#46178f", "#e21b3c", "#1368ce", "#26890c", "#d89e00",
   "#7b2ff2", "#e84393", "#00b894", "#e17055", "#0ea5e9",
-  "#6c5ce7", "#fdcb6e",
+  "#6c5ce7", "#fdcb6e", "#2d3436", "#00cec9", "#ff7675",
+  "#a29bfe",
 ];
 
 // --- Component ---
 
 interface AvatarBuilderProps {
   onChange: (encoded: string) => void;
-  initial?: AvatarConfig;
 }
 
-type Mode = "builder" | "portraits";
-type Tab = "animal" | "color" | "hat" | "accessory";
-
-const TABS: { id: Tab; label: string }[] = [
-  { id: "animal", label: "Animal" },
-  { id: "color", label: "Color" },
-  { id: "hat", label: "Hat" },
-  { id: "accessory", label: "Acc." },
-];
-
-export default function AvatarBuilder({ onChange, initial }: AvatarBuilderProps) {
+export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
   const groups = useMemo(() => buildGroups(), []);
 
-  const [config, setConfig] = useState<AvatarConfig>(
-    initial ?? {
-      animal: ANIMALS[Math.floor(Math.random() * ANIMALS.length)].id,
-      color: COLORS[Math.floor(Math.random() * COLORS.length)].id,
-      hat: "none",
-      accessory: "none",
-    }
-  );
-  const [tab, setTab] = useState<Tab>("animal");
-  const [mode, setMode] = useState<Mode>("portraits");
-
-  // Portrait state
   const [selectedGroup, setSelectedGroup] = useState<AvatarGroup | null>(null);
   const [selectedFile, setSelectedFile] = useState("");
   const [bgColor, setBgColor] = useState(BG_COLORS[0]);
 
-  const update = (partial: Partial<AvatarConfig>) => {
-    const next = { ...config, ...partial };
-    setConfig(next);
-    onChange(encodeAvatar(next));
-  };
-
-  // Fire initial value
+  // Fire initial empty value
   useState(() => {
-    onChange(encodeAvatar(config));
+    onChange("");
   });
 
-  const encodeSvgAvatar = (file: string, bg: string) => `svg:${file}:${bg}`;
+  const encode = (file: string, bg: string) => `svg:${file}:${bg}`;
 
   const selectGroup = (group: AvatarGroup) => {
     setSelectedGroup(group);
-    // Pick first variant
     const file = group.defaultFile;
     setSelectedFile(file);
-    onChange(encodeSvgAvatar(file, bgColor));
+    onChange(encode(file, bgColor));
   };
 
   const selectSkin = (file: string) => {
     setSelectedFile(file);
-    onChange(encodeSvgAvatar(file, bgColor));
+    onChange(encode(file, bgColor));
   };
 
   const selectBgColor = (color: string) => {
     setBgColor(color);
     if (selectedFile) {
-      onChange(encodeSvgAvatar(selectedFile, color));
+      onChange(encode(selectedFile, color));
     }
   };
 
-  const switchToBuilder = () => {
-    setMode("builder");
-    setSelectedGroup(null);
-    setSelectedFile("");
-    onChange(encodeAvatar(config));
-  };
-
-  const currentPreview = mode === "portraits" && selectedFile
-    ? encodeSvgAvatar(selectedFile, bgColor)
-    : encodeAvatar(config);
+  const currentPreview = selectedFile ? encode(selectedFile, bgColor) : "";
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      {/* Mode switcher */}
-      <div className="flex w-full rounded-xl bg-white/5 p-1">
-        <button
-          type="button"
-          onClick={() => setMode("portraits")}
-          className={`flex-1 rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
-            mode === "portraits"
-              ? "bg-white text-[#46178f]"
-              : "text-white/60 hover:text-white"
-          }`}
-        >
-          Portraits
-        </button>
-        <button
-          type="button"
-          onClick={switchToBuilder}
-          className={`flex-1 rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
-            mode === "builder"
-              ? "bg-white text-[#46178f]"
-              : "text-white/60 hover:text-white"
-          }`}
-        >
-          Create
-        </button>
-      </div>
-
+    <div className="flex flex-col items-center gap-3">
       {/* Preview */}
       <div className="flex items-center justify-center rounded-2xl bg-white/10 p-3">
-        <Avatar value={currentPreview} size={80} />
+        {currentPreview ? (
+          <Avatar value={currentPreview} size={80} />
+        ) : (
+          <div className="flex h-20 w-20 items-center justify-center text-sm font-bold text-white/30">
+            Pick one
+          </div>
+        )}
       </div>
 
-      {mode === "portraits" ? (
-        <div className="flex w-full flex-col gap-3">
-          {/* Background color picker */}
-          <div>
-            <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/40">Background</p>
-            <div className="flex flex-wrap gap-1.5">
-              {BG_COLORS.map((c) => (
+      {/* Background color */}
+      <div className="w-full">
+        <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/40">Background</p>
+        <div className="flex flex-wrap gap-1.5">
+          {BG_COLORS.map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => selectBgColor(c)}
+              className={`h-7 w-7 rounded-full transition-all ${
+                bgColor === c ? "ring-2 ring-white scale-110" : "hover:scale-110"
+              }`}
+              style={{ backgroundColor: c }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Skin tone (when group with variants is selected) */}
+      {selectedGroup && selectedGroup.variants.length > 1 && (
+        <div className="w-full">
+          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/40">Skin tone</p>
+          <div className="flex gap-2">
+            {SKIN_COLORS.map((sc) => {
+              const match = selectedGroup.variants.find((v) =>
+                sc.tokens.includes(v.skin)
+              );
+              if (!match) return null;
+              return (
                 <button
-                  key={c}
+                  key={sc.id}
                   type="button"
-                  onClick={() => selectBgColor(c)}
-                  className={`h-7 w-7 rounded-full transition-all ${
-                    bgColor === c ? "ring-2 ring-white scale-110" : "hover:scale-110"
+                  onClick={() => selectSkin(match.file)}
+                  className={`h-8 w-8 rounded-full border-2 transition-all ${
+                    selectedFile === match.file
+                      ? "border-white scale-110"
+                      : "border-transparent hover:scale-110"
                   }`}
-                  style={{ backgroundColor: c }}
+                  style={{ backgroundColor: sc.swatch }}
                 />
-              ))}
-            </div>
-          </div>
-
-          {/* Skin tone picker (only when a group with variants is selected) */}
-          {selectedGroup && selectedGroup.variants.length > 1 && (
-            <div>
-              <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/40">Skin tone</p>
-              <div className="flex gap-2">
-                {SKIN_COLORS.map((sc) => {
-                  const match = selectedGroup.variants.find((v) =>
-                    sc.tokens.includes(v.skin)
-                  );
-                  if (!match) return null;
-                  return (
-                    <button
-                      key={sc.id}
-                      type="button"
-                      onClick={() => selectSkin(match.file)}
-                      className={`h-8 w-8 rounded-full border-2 transition-all ${
-                        selectedFile === match.file
-                          ? "border-white scale-110"
-                          : "border-transparent hover:scale-110"
-                      }`}
-                      style={{ backgroundColor: sc.swatch }}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* Character grid */}
-          <div>
-            <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/40">Character</p>
-            <div className="grid grid-cols-4 gap-2 max-h-52 overflow-y-auto rounded-lg pr-1">
-              {groups.map((group) => {
-                const isSelected = selectedGroup?.base === group.base;
-                const previewFile = isSelected && selectedFile
-                  ? selectedFile
-                  : group.defaultFile;
-                return (
-                  <button
-                    key={group.base}
-                    type="button"
-                    onClick={() => selectGroup(group)}
-                    className={`flex flex-col items-center gap-1 rounded-xl p-1.5 transition-all ${
-                      isSelected
-                        ? "bg-white/20 ring-2 ring-white"
-                        : "bg-white/5 hover:bg-white/10"
-                    }`}
-                  >
-                    <Avatar value={encodeSvgAvatar(previewFile, bgColor)} size={44} />
-                  </button>
-                );
-              })}
-            </div>
+              );
+            })}
           </div>
         </div>
-      ) : (
-        <>
-          {/* Builder tabs */}
-          <div className="flex w-full rounded-xl bg-white/5 p-1">
-            {TABS.map((t) => (
+      )}
+
+      {/* Character grid */}
+      <div className="w-full">
+        <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/40">Avatar</p>
+        <div className="grid grid-cols-4 gap-2 max-h-52 overflow-y-auto rounded-lg pr-1">
+          {groups.map((group) => {
+            const isSelected = selectedGroup?.base === group.base;
+            const previewFile = isSelected && selectedFile
+              ? selectedFile
+              : group.defaultFile;
+            return (
               <button
-                key={t.id}
+                key={group.base}
                 type="button"
-                onClick={() => setTab(t.id)}
-                className={`flex-1 rounded-lg px-2 py-1.5 text-xs font-bold transition-all ${
-                  tab === t.id
-                    ? "bg-white text-[#46178f]"
-                    : "text-white/60 hover:text-white"
+                onClick={() => selectGroup(group)}
+                className={`flex items-center justify-center rounded-xl p-1.5 transition-all ${
+                  isSelected
+                    ? "bg-white/20 ring-2 ring-white"
+                    : "bg-white/5 hover:bg-white/10"
                 }`}
               >
-                {t.label}
+                <Avatar value={encode(previewFile, bgColor)} size={44} />
               </button>
-            ))}
-          </div>
-
-          {/* Builder options */}
-          <div className="w-full">
-            {tab === "animal" && (
-              <div className="grid grid-cols-4 gap-2">
-                {ANIMALS.map((a) => (
-                  <button
-                    key={a.id}
-                    type="button"
-                    onClick={() => update({ animal: a.id })}
-                    className={`flex flex-col items-center gap-1 rounded-xl p-2 transition-all ${
-                      config.animal === a.id
-                        ? "bg-white/20 ring-2 ring-white"
-                        : "bg-white/5 hover:bg-white/10"
-                    }`}
-                  >
-                    <Avatar value={encodeAvatar({ ...config, animal: a.id })} size={40} />
-                    <span className="text-[10px] font-bold text-white/70">{a.label}</span>
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {tab === "color" && (
-              <div className="grid grid-cols-4 gap-2">
-                {COLORS.map((c) => (
-                  <button
-                    key={c.id}
-                    type="button"
-                    onClick={() => update({ color: c.id })}
-                    className={`flex items-center justify-center rounded-xl p-3 transition-all ${
-                      config.color === c.id
-                        ? "ring-2 ring-white scale-105"
-                        : "hover:scale-105"
-                    }`}
-                  >
-                    <div
-                      className="h-10 w-10 rounded-full"
-                      style={{ backgroundColor: c.fill }}
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {tab === "hat" && (
-              <div className="grid grid-cols-4 gap-2">
-                {HATS.map((h) => (
-                  <button
-                    key={h.id}
-                    type="button"
-                    onClick={() => update({ hat: h.id })}
-                    className={`flex flex-col items-center gap-1 rounded-xl p-2 transition-all ${
-                      config.hat === h.id
-                        ? "bg-white/20 ring-2 ring-white"
-                        : "bg-white/5 hover:bg-white/10"
-                    }`}
-                  >
-                    <Avatar value={encodeAvatar({ ...config, hat: h.id })} size={36} />
-                    <span className="text-[10px] font-bold text-white/70">{h.label}</span>
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {tab === "accessory" && (
-              <div className="grid grid-cols-3 gap-2">
-                {ACCESSORIES.map((a) => (
-                  <button
-                    key={a.id}
-                    type="button"
-                    onClick={() => update({ accessory: a.id })}
-                    className={`flex flex-col items-center gap-1 rounded-xl p-2 transition-all ${
-                      config.accessory === a.id
-                        ? "bg-white/20 ring-2 ring-white"
-                        : "bg-white/5 hover:bg-white/10"
-                    }`}
-                  >
-                    <Avatar value={encodeAvatar({ ...config, accessory: a.id })} size={36} />
-                    <span className="text-[10px] font-bold text-white/70">{a.label}</span>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </>
-      )}
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

@@ -270,7 +270,7 @@ function PlayPageInner() {
               </div>
               <div>
                 <label className="mb-1.5 block text-sm font-bold text-white/60">
-                  Avataras
+                  Avatar
                 </label>
                 <AvatarBuilder onChange={setHostAvatar} />
               </div>
