@@ -61,7 +61,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
     <div className="flex flex-col gap-4">
       <h3 className="text-center text-sm font-medium text-white/60">{t("gameMode.title")}</h3>
 
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {MODES.map((mode) => {
           const Icon = mode.icon;
           const isActive = selected === mode.id;

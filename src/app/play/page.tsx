@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Plus, LogIn, ArrowLeft, Loader2, Smartphone, Monitor } from "lucide-react";
 import { useRoomActions } from "@/hooks/useRoomActions";
 import JoinForm from "@/components/multiplayer/JoinForm";
-import QuizPicker from "@/components/QuizPicker";
+import TopicPicker from "@/components/TopicPicker";
 import GameModeSelector from "@/components/multiplayer/GameModeSelector";
 import AvatarBuilder from "@/components/AvatarBuilder";
 import type { GameMode } from "@/lib/multiplayer/types";
@@ -107,7 +107,7 @@ function PlayPageInner() {
   };
 
   return (
-    <main className="relative z-10 flex w-full max-w-xl flex-1 flex-col items-center justify-center px-5 py-8">
+    <main className="relative z-10 flex w-full max-w-2xl flex-1 flex-col items-center justify-center px-5 py-8">
       {mode === "menu" && (
         <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
           <h1 className="text-3xl font-extrabold text-white sm:text-4xl">
@@ -159,7 +159,7 @@ function PlayPageInner() {
           )}
 
           <div className="w-full">
-            <QuizPicker onSelect={setSelectedQuizIds} selectedIds={selectedQuizIds} />
+            <TopicPicker onSelect={setSelectedQuizIds} selectedIds={selectedQuizIds} />
           </div>
 
           <button
