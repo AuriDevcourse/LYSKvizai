@@ -74,12 +74,11 @@ interface AvatarProps {
 export default function Avatar({ value, size = 48, className = "" }: AvatarProps) {
   const config = decodeAvatar(value);
 
-  // SVG portrait avatar: "svg:filename.svg:#bgColor:#tintColor"
+  // SVG portrait avatar: "svg:filename.svg:#bgColor"
   if (value.startsWith("svg:")) {
     const parts = value.split(":");
     const file = parts[1];
     const bgColor = parts[2] || "#46178f";
-    const tintColor = parts[3] || "";
     return (
       <div
         className={`relative overflow-hidden rounded-full ${className}`}
@@ -91,12 +90,6 @@ export default function Avatar({ value, size = 48, className = "" }: AvatarProps
           className="absolute inset-0 h-full w-full object-cover"
           draggable={false}
         />
-        {tintColor && (
-          <div
-            className="absolute inset-0"
-            style={{ backgroundColor: tintColor, mixBlendMode: "color", opacity: 0.6 }}
-          />
-        )}
       </div>
     );
   }
