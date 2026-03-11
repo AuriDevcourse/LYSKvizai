@@ -10,9 +10,10 @@ interface PlayerResultsProps {
   playerId: string;
   results: ResultsPayload;
   onReact?: (emoji: string) => void;
+  children?: React.ReactNode;
 }
 
-export default function PlayerResults({ playerId, results, onReact }: PlayerResultsProps) {
+export default function PlayerResults({ playerId, results, onReact, children }: PlayerResultsProps) {
   const { playCorrect, playWrong } = useSound();
   const soundPlayedRef = useRef(false);
   const myResult = results.playerResults.find((r) => r.playerId === playerId);
@@ -134,10 +135,14 @@ export default function PlayerResults({ playerId, results, onReact }: PlayerResu
 
       {onReact && <ReactionPicker onReact={onReact} />}
 
-      <div className="flex items-center gap-2 text-sm text-white/40">
-        <Clock className="h-3.5 w-3.5" />
-        <span>Laukiame kito klausimo...</span>
-      </div>
+      {children}
+
+      {!children && (
+        <div className="flex items-center gap-2 text-sm text-white/40">
+          <Clock className="h-3.5 w-3.5" />
+          <span>Laukiame kito klausimo...</span>
+        </div>
+      )}
     </div>
   );
 }

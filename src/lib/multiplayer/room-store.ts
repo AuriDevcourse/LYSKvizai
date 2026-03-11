@@ -468,7 +468,7 @@ export function startGame(code: string, hostId: string): { error?: string } {
 
   // Init power-up uses for all players
   for (const p of room.players.values()) {
-    p.powerUpUses = 2;
+    p.powerUpUses = 3;
     p.eliminated = false;
     p.currentAnswer = null;
     p.answerTime = null;

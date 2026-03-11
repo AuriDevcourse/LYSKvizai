@@ -44,7 +44,13 @@ export default function GamePage({ params }: PageProps) {
     return sessionStorage.getItem("quiz-player-emoji") ?? "🎭";
   });
 
+  const [hostPlaying] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return sessionStorage.getItem("quiz-host-playing") === "true";
+  });
+
   const isHost = !!hostId && hostId === playerId;
+  const isHostPlayer = isHost && hostPlaying;
 
   const {
     state,
@@ -246,10 +252,17 @@ export default function GamePage({ params }: PageProps) {
           <PlayerLobby code={code} players={players} playerName={playerName} playerEmoji={playerEmoji} />
         )}
 
-        {state === "wager" && isHost && (
+        {state === "wager" && isHost && !isHostPlayer && (
           <HostWager
             players={players}
             onAdvance={handleAdvanceFromWager}
+          />
+        )}
+
+        {state === "wager" && isHost && isHostPlayer && (
+          <WagerScreen
+            currentScore={currentPlayer?.score ?? 0}
+            onSubmit={handleWager}
           />
         )}
 
@@ -260,12 +273,26 @@ export default function GamePage({ params }: PageProps) {
           />
         )}
 
-        {state === "question" && question && isHost && (
+        {state === "question" && question && isHost && !isHostPlayer && (
           <HostQuestion
             question={question}
             answerCount={answerCount}
             onTimerExpire={handleTimerExpire}
             powerUpEvent={powerUpEvent}
+          />
+        )}
+
+        {state === "question" && question && isHost && isHostPlayer && (
+          <PlayerQuestion
+            question={question}
+            onAnswer={handleAnswer}
+            onTimerExpire={handleTimerExpire}
+            timerReduction={timerReduction}
+            powerUpUses={currentPlayer?.powerUpUses ?? 0}
+            onUsePowerUp={handlePowerUp}
+            eliminated={currentPlayer?.eliminated ?? false}
+            canAnswer={canAnswer}
+            waitingPlayerName={waitingPlayerName}
           />
         )}
 
@@ -283,7 +310,7 @@ export default function GamePage({ params }: PageProps) {
           />
         )}
 
-        {state === "results" && results && isHost && (
+        {state === "results" && results && isHost && !isHostPlayer && (
           <HostResults
             question={lastQuestion}
             results={results}
@@ -292,6 +319,17 @@ export default function GamePage({ params }: PageProps) {
             onNext={handleNext}
             gameMode={gameMode}
           />
+        )}
+
+        {state === "results" && results && isHost && isHostPlayer && (
+          <PlayerResults playerId={playerId} results={results} onReact={handleReact}>
+            <button
+              onClick={handleNext}
+              className="btn-primary flex items-center justify-center gap-2 w-full text-lg mt-4"
+            >
+              {isLastQuestion ? "Rezultatai" : "Kitas klausimas →"}
+            </button>
+          </PlayerResults>
         )}
 
         {state === "results" && results && !isHost && (

@@ -162,6 +162,14 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
     es.addEventListener("powerup-used", (e) => {
       const data: PowerUpUsedPayload = JSON.parse(e.data);
       setPowerUpEvent(data);
+      // Decrement the player's powerUpUses on the client
+      setPlayers((prev) =>
+        prev.map((p) =>
+          p.id === data.playerId
+            ? { ...p, powerUpUses: Math.max(0, (p.powerUpUses ?? 0) - 1) }
+            : p
+        )
+      );
       setTimeout(() => setPowerUpEvent(null), 3000);
     });
 
