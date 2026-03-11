@@ -26,6 +26,9 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
       .finally(() => setLoading(false));
   }, []);
 
+  // Hook must be called unconditionally (before any early returns)
+  const quizTitles = useContentTranslation(quizzes.map((q) => q.title));
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -53,8 +56,6 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
       onSelect([quizId]);
     }
   };
-
-  const quizTitles = useContentTranslation(quizzes.map((q) => q.title));
 
   const totalQuestions = quizzes
     .filter((q) => selectedIds.includes(q.id))
