@@ -1,4 +1,4 @@
-export type QuestionType = "standard" | "bluff" | "audio" | "video";
+export type QuestionType = "standard" | "bluff" | "audio" | "video" | "fastest-finger" | "year-guesser";
 
 export interface Question {
   question: string;
@@ -11,6 +11,10 @@ export interface Question {
   audioUrl?: string;
   videoUrl?: string;
   progressiveReveal?: boolean;
+  /** Accepted text answers for fastest-finger questions (case-insensitive matching) */
+  acceptedAnswers?: string[];
+  /** Correct year for year-guesser questions */
+  correctYear?: number;
 }
 
 export interface Quiz {

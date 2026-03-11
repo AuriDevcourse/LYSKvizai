@@ -64,8 +64,8 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
   if (quizzes.length === 0) {
     return (
       <div className="py-12 text-center text-white/60">
-        <p className="text-lg font-bold">Nėra kvizų</p>
-        <p className="mt-1 text-sm">Sukurk naują per redaktorių</p>
+        <p className="text-lg font-bold">No quizzes</p>
+        <p className="mt-1 text-sm">Create one in the editor</p>
       </div>
     );
   }
@@ -90,10 +90,10 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
       {multi && selectedIds.length > 0 && (
         <div className="mb-3 flex items-center justify-between rounded-xl bg-white/10 px-4 py-2">
           <span className="text-sm font-bold text-white/70">
-            {selectedIds.length} {selectedIds.length === 1 ? "kvizas" : "kvizai"} pasirinkti
+            {selectedIds.length} {selectedIds.length === 1 ? "quiz" : "quizzes"} selected
           </span>
           <span className="text-sm font-bold text-white/50">
-            {totalQuestions} klausimų
+            {totalQuestions} questions
           </span>
         </div>
       )}
@@ -122,7 +122,7 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
               </div>
               <h3 className="text-sm font-extrabold leading-tight text-white">{quiz.title}</h3>
               <p className="text-[11px] font-bold text-white/40">
-                {quiz.questionCount} kl.
+                {quiz.questionCount} q.
               </p>
             </button>
           );

@@ -210,7 +210,7 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
 
       retriesRef.current++;
       if (retriesRef.current >= MAX_RETRIES) {
-        setError("Kambarys nerastas arba ryšys nutrūko. Grįžkite į /play ir bandykite iš naujo.");
+        setError("Room not found or connection lost. Go back to /play and try again.");
         return;
       }
 

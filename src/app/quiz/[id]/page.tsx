@@ -53,7 +53,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
         .then((results) => {
           const validQuizzes = results.filter(Boolean);
           if (validQuizzes.length === 0) {
-            setError("Kvizai nerasti");
+            setError("Quizzes not found");
             return;
           }
           const allQuestions: Question[] = validQuizzes.flatMap((q: { questions: Question[] }) => q.questions);
@@ -61,13 +61,13 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
           const titles = validQuizzes.map((q: { title: string }) => q.title);
           setQuizTitle(`Mix: ${titles.join(" + ")}`);
         })
-        .catch(() => setError("Klaida kraunant kvizus"))
+        .catch(() => setError("Error loading quizzes"))
         .finally(() => setLoading(false));
     } else {
       // Single quiz mode
       fetch(`/api/quizzes/${id}`)
         .then((res) => {
-          if (!res.ok) throw new Error("Kvizas nerastas");
+          if (!res.ok) throw new Error("Quiz not found");
           return res.json();
         })
         .then((quiz) => {
@@ -118,9 +118,9 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
     return (
       <div className="flex min-h-svh items-center justify-center bg-[#46178f]">
         <div className="flex flex-col items-center gap-4 text-center">
-          <p className="text-lg font-bold text-white">{error || "Kvizas tuščias"}</p>
+          <p className="text-lg font-bold text-white">{error || "Quiz is empty"}</p>
           <Link href="/" className="btn-primary">
-            Grįžti
+            Back
           </Link>
         </div>
       </div>
@@ -142,7 +142,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
               className="mt-6 flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
-              Pradžia
+              Home
             </Link>
           </div>
         ) : (

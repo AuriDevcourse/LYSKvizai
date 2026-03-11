@@ -23,13 +23,13 @@ export default function EditorPage() {
   useEffect(fetchQuizzes, []);
 
   const handleDelete = async (id: string, title: string) => {
-    if (!confirm(`Tikrai nori ištrinti "${title}"?`)) return;
+    if (!confirm(`Are you sure you want to delete "${title}"?`)) return;
     setDeleting(id);
     try {
       await fetch(`/api/quizzes/${id}`, { method: "DELETE" });
       setQuizzes((prev) => prev.filter((q) => q.id !== id));
     } catch {
-      alert("Klaida trinant kvizą");
+      alert("Error deleting quiz");
     } finally {
       setDeleting(null);
     }
@@ -50,15 +50,15 @@ export default function EditorPage() {
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white">Redaktorius</h1>
-            <p className="text-sm text-white/50">Kvizų biblioteka</p>
+            <h1 className="text-2xl font-bold text-white">Editor</h1>
+            <p className="text-sm text-white/50">Quiz library</p>
           </div>
           <button
             onClick={handleCreate}
             className="flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 font-semibold text-[#46178f] transition-colors hover:bg-white/90"
           >
             <Plus className="h-4 w-4" />
-            Sukurti
+            Create
           </button>
         </div>
 
@@ -70,9 +70,9 @@ export default function EditorPage() {
         ) : quizzes.length === 0 ? (
           <div className="py-16 text-center">
             <div className="mb-4 text-5xl">📝</div>
-            <p className="text-lg text-white/50">Dar nėra kvizų</p>
+            <p className="text-lg text-white/50">No quizzes yet</p>
             <p className="mt-1 text-sm text-white/30">
-              Paspausk &quot;Sukurti&quot; ir pradėk!
+              Press &quot;Create&quot; to get started!
             </p>
           </div>
         ) : (
@@ -86,7 +86,7 @@ export default function EditorPage() {
                 <div className="min-w-0 flex-1">
                   <h3 className="font-bold text-white">{quiz.title}</h3>
                   <p className="text-sm text-white/40">
-                    {quiz.questionCount} klausimų
+                    {quiz.questionCount} questions
                   </p>
                 </div>
                 <div className="flex gap-2">
@@ -119,7 +119,7 @@ export default function EditorPage() {
           className="mt-8 flex items-center gap-1.5 self-center text-sm text-white/40 hover:text-white/60"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
-          Grįžti į pradžią
+          Back to home
         </Link>
       </main>
     </div>

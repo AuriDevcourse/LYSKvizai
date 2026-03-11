@@ -48,7 +48,7 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
             : "bg-blue-500/20 text-blue-300"
         }`}>
           {gameMode === "elimination" ? <Skull className="h-4 w-4" /> : <Users className="h-4 w-4" />}
-          {gameMode === "elimination" ? "Eliminacija" : `Komandinis (${teamNames.length} komandos)`}
+          {gameMode === "elimination" ? "Elimination" : `Team (${teamNames.length} teams)`}
         </div>
       )}
 
@@ -59,7 +59,7 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
           {joinUrl && <QRCodeComponent url={joinUrl} size={200} />}
           <div className="flex items-center gap-1.5 text-sm text-white/40">
             <QrCode className="h-3.5 w-3.5" />
-            <span>Nuskenuok QR arba įvesk kodą</span>
+            <span>Scan QR or enter code</span>
           </div>
           {joinUrl && (
             <p className="max-w-xs break-all text-center font-mono text-xs text-white/30">
@@ -72,13 +72,13 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
         <div className="flex min-w-[240px] flex-col items-center gap-4">
           <div className="flex items-center gap-2 text-sm uppercase tracking-wider text-white/50">
             <Users className="h-4 w-4" />
-            <span>Žaidėjai ({players.length})</span>
+            <span>Players ({players.length})</span>
           </div>
 
           {players.length === 0 ? (
             <div className="flex flex-col items-center gap-2 py-8 text-white/30">
               <Users className="h-8 w-8" />
-              <p>Laukiame žaidėjų...</p>
+              <p>Waiting for players...</p>
             </div>
           ) : (
             <div className="flex flex-col gap-2">
@@ -100,7 +100,7 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
             className="flex w-full items-center justify-center gap-2 rounded-xl bg-white text-[#46178f] px-10 py-4 text-xl font-bold transition-colors hover:bg-white/90 disabled:opacity-50"
           >
             <Play className="h-6 w-6" />
-            Pradėti!
+            Start!
           </button>
         </div>
       </div>

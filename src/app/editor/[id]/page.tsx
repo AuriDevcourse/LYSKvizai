@@ -39,7 +39,7 @@ export default function QuizEditorPage({ params }: PageProps) {
     if (isNew) return;
     fetch(`/api/quizzes/${id}`)
       .then((res) => {
-        if (!res.ok) throw new Error("Kvizas nerastas");
+        if (!res.ok) throw new Error("Quiz not found");
         return res.json();
       })
       .then((quiz: Quiz) => {
@@ -56,7 +56,7 @@ export default function QuizEditorPage({ params }: PageProps) {
   const handleSave = useCallback(async () => {
     // Validation
     if (!title.trim()) {
-      setError("Įvesk pavadinimą");
+      setError("Enter a title");
       return;
     }
     const finalId = isNew
@@ -72,7 +72,7 @@ export default function QuizEditorPage({ params }: PageProps) {
       : quizId;
 
     if (!finalId) {
-      setError("Netinkamas pavadinimas ID generavimui");
+      setError("Invalid title for ID generation");
       return;
     }
 
@@ -81,7 +81,7 @@ export default function QuizEditorPage({ params }: PageProps) {
       (q) => q.question.trim() && q.options.some((o) => o.trim())
     );
     if (validQuestions.length === 0) {
-      setError("Pridėk bent vieną klausimą");
+      setError("Add at least one question");
       return;
     }
 
@@ -104,7 +104,7 @@ export default function QuizEditorPage({ params }: PageProps) {
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Klaida išsaugant");
+        throw new Error(data.error || "Error saving");
       }
 
       setSaved(true);
@@ -114,7 +114,7 @@ export default function QuizEditorPage({ params }: PageProps) {
         router.replace(`/editor/${finalId}`);
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Klaida");
+      setError(e instanceof Error ? e.message : "Error");
     } finally {
       setSaving(false);
     }
@@ -161,7 +161,7 @@ export default function QuizEditorPage({ params }: PageProps) {
             onClick={() => router.push("/editor")}
             className="rounded-xl bg-white px-6 py-3 font-semibold text-[#46178f] hover:bg-white/90"
           >
-            Grįžti
+            Back
           </button>
         </div>
       </div>
@@ -183,7 +183,7 @@ export default function QuizEditorPage({ params }: PageProps) {
             className="flex items-center gap-1.5 text-sm text-white/40 hover:text-white/60"
           >
             <ArrowLeft className="h-4 w-4" />
-            Atgal
+            Back
           </button>
           <button
             onClick={handleSave}
@@ -195,7 +195,7 @@ export default function QuizEditorPage({ params }: PageProps) {
             ) : (
               <Save className="h-4 w-4" />
             )}
-            {saved ? "Išsaugota!" : "Išsaugoti"}
+            {saved ? "Saved!" : "Save"}
           </button>
         </div>
 
@@ -209,27 +209,27 @@ export default function QuizEditorPage({ params }: PageProps) {
         <div className="mb-6 space-y-4 rounded-2xl border-2 border-white/15 bg-white/5 p-5">
           <div>
             <label className="mb-1 block text-xs font-medium text-white/50">
-              Pavadinimas
+              Title
             </label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-lg font-bold text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
-              placeholder="Kvizo pavadinimas"
+              placeholder="Quiz title"
             />
           </div>
 
           <div>
             <label className="mb-1 block text-xs font-medium text-white/50">
-              Aprašymas
+              Description
             </label>
             <input
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="w-full rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
-              placeholder="Trumpas aprašymas..."
+              placeholder="Short description..."
             />
           </div>
 
@@ -258,7 +258,7 @@ export default function QuizEditorPage({ params }: PageProps) {
 
         {/* Questions */}
         <h2 className="mb-4 text-lg font-bold text-white">
-          Klausimai ({questions.length})
+          Questions ({questions.length})
         </h2>
 
         <div className="space-y-4">
@@ -282,7 +282,7 @@ export default function QuizEditorPage({ params }: PageProps) {
           className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-white/15 py-4 text-white/50 transition-colors hover:border-white/30 hover:bg-white/5 hover:text-white/80"
         >
           <Plus className="h-5 w-5" />
-          Pridėti klausimą
+          Add question
         </button>
 
         {/* Bottom save */}
@@ -297,7 +297,7 @@ export default function QuizEditorPage({ params }: PageProps) {
             ) : (
               <Save className="h-4 w-4" />
             )}
-            {saved ? "Išsaugota!" : "Išsaugoti kvizą"}
+            {saved ? "Saved!" : "Save quiz"}
           </button>
         </div>
       </main>

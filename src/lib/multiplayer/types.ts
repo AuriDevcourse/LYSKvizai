@@ -25,6 +25,8 @@ export interface Player {
   eliminated: boolean;
   /** Team index (team mode), null if not in team mode */
   teamIndex: number | null;
+  /** Text answer for fastest-finger questions */
+  currentTextAnswer: string | null;
 }
 
 export interface Room {
@@ -77,6 +79,10 @@ export interface Room {
   bluffDisplayIndex: number | null;
   /** Original option that was replaced by bluff */
   bluffReplacedOriginalIndex: number | null;
+
+  // --- Mystery Multiplier ---
+  /** Mystery multiplier: questionIndex -> multiplier (2-5) */
+  mysteryMultipliers: Map<number, number>;
 }
 
 // --- Server → Client Events (SSE) ---
@@ -162,6 +168,8 @@ export interface AnswerResult {
   points: number;
   totalScore: number;
   streak: number;
+  /** Points before mystery multiplier (for display) */
+  basePoints?: number;
 }
 
 export interface ResultsPayload {
@@ -182,6 +190,14 @@ export interface ResultsPayload {
   wagerResults?: WagerResult[];
   // Power-ups
   powerUpEffects?: PowerUpEffect[];
+  // Mystery Multiplier
+  mysteryMultiplier?: number;
+  // Fastest Finger
+  fastestFinger?: { playerId: string; playerName: string; bonusPoints: number };
+  /** The correct answer text (for fastest-finger questions) */
+  correctAnswerText?: string;
+  /** Year guesser results */
+  yearGuesses?: { playerId: string; playerName: string; guessedYear: number; correctYear: number; points: number }[];
 }
 
 export interface LeaderboardEntry {
@@ -240,4 +256,6 @@ export type ClientAction =
   | { action: "disconnect"; code: string; playerId: string }
   | { action: "use-powerup"; code: string; playerId: string; powerUp: PowerUpType }
   | { action: "submit-wager"; code: string; playerId: string; amount: number }
-  | { action: "advance-wager"; code: string; hostId: string };
+  | { action: "advance-wager"; code: string; hostId: string }
+  | { action: "answer-text"; code: string; playerId: string; answer: string }
+  | { action: "answer-year"; code: string; playerId: string; year: number };

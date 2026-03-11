@@ -39,7 +39,7 @@ export default function Home() {
             className="btn-primary mt-6 flex w-full items-center justify-center gap-2 animate-slide-up"
           >
             <Play className="h-5 w-5" fill="currentColor" />
-            Pradėti{selectedIds.length > 1 ? ` (${selectedIds.length} kvizai)` : ""}
+            Start{selectedIds.length > 1 ? ` (${selectedIds.length} quizzes)` : ""}
           </button>
         )}
 
@@ -47,11 +47,11 @@ export default function Home() {
         <div className="mt-6 hidden sm:flex sm:flex-row sm:justify-center gap-3 animate-fade-in-up" style={{ animationDelay: "200ms", animationFillMode: "backwards" }}>
           <Link href="/play" className="btn-secondary flex items-center gap-2">
             <Users className="h-5 w-5" />
-            Žaisti su draugais
+            Play with friends
           </Link>
           <Link href="/editor" className="btn-secondary flex items-center gap-2">
             <Zap className="h-4 w-4" />
-            Redaktorius
+            Editor
           </Link>
         </div>
       </main>

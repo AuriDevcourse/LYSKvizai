@@ -26,7 +26,7 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
     <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">
       <div>
         <label className="mb-1.5 block text-sm font-bold text-white/60">
-          Kambario kodas
+          Room code
         </label>
         <input
           type="text"
@@ -41,13 +41,13 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
 
       <div>
         <label className="mb-1.5 block text-sm font-bold text-white/60">
-          Vardas
+          Name
         </label>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Pvz., Jonas"
+          placeholder="e.g. John"
           maxLength={20}
           className="w-full rounded-xl border-2 border-white/15 bg-white/5 px-4 py-3 text-lg text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
           autoFocus={!!initialCode}
@@ -74,7 +74,7 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
         className="btn-primary flex items-center justify-center gap-2 w-full disabled:opacity-50"
       >
         <LogIn className="h-5 w-5" />
-        {loading ? "Jungiamasi..." : "Prisijungti"}
+        {loading ? "Joining..." : "Join"}
       </button>
     </form>
   );

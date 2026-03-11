@@ -147,7 +147,7 @@ function getTeamScores(room: Room): TeamScore[] {
     }
     scores.push({
       teamIndex: i,
-      teamName: room.teamNames[i] || `Komanda ${i + 1}`,
+      teamName: room.teamNames[i] || `Team ${i + 1}`,
       score: total,
     });
   }
@@ -167,14 +167,33 @@ function getResultsPayload(room: Room): ResultsPayload {
   const powerUpEffects: PowerUpEffect[] = [];
 
   for (const player of room.players.values()) {
-    if (player.currentAnswer !== null) {
+    if (player.currentAnswer !== null && player.currentAnswer >= 0) {
       distribution[player.currentAnswer]++;
     }
-    // Check if the player's answer (display index) maps to the original correct
-    const originalAnswer = player.currentAnswer !== null
-      ? displayToOriginal(room, player.currentAnswer)
-      : -1;
-    const correct = originalAnswer === q.correct;
+
+    // Check correctness — fastest-finger uses text comparison, year-guesser uses proximity
+    let correct: boolean;
+    if (q.type === "fastest-finger") {
+      if (!player.currentTextAnswer) {
+        correct = false;
+      } else {
+        const norm = player.currentTextAnswer.toLowerCase();
+        const accepted = q.acceptedAnswers ?? [q.options[q.correct].toLowerCase()];
+        correct = accepted.some(a => a.toLowerCase().trim() === norm);
+      }
+    } else if (q.type === "year-guesser") {
+      if (!player.currentTextAnswer || q.correctYear == null) {
+        correct = false;
+      } else {
+        const guessed = parseInt(player.currentTextAnswer, 10);
+        correct = !isNaN(guessed) && scoreYearGuess(guessed, q.correctYear) > 0;
+      }
+    } else {
+      const originalAnswer = player.currentAnswer !== null
+        ? displayToOriginal(room, player.currentAnswer)
+        : -1;
+      correct = originalAnswer === q.correct;
+    }
 
     // Check if player picked bluff answer
     if (q.type === "bluff" && room.bluffDisplayIndex !== null && player.currentAnswer === room.bluffDisplayIndex) {
@@ -184,9 +203,9 @@ function getResultsPayload(room: Room): ResultsPayload {
     // Collect power-up effects
     const activePU = room.activePowerUps.get(player.id);
     if (activePU === "double" && correct) {
-      powerUpEffects.push({ playerId: player.id, playerName: player.name, powerUp: "double", effect: "Dvigubi taškai!" });
+      powerUpEffects.push({ playerId: player.id, playerName: player.name, powerUp: "double", effect: "Double points!" });
     } else if (activePU === "shield" && !correct) {
-      powerUpEffects.push({ playerId: player.id, playerName: player.name, powerUp: "shield", effect: "Skydas apsaugojo seriją!" });
+      powerUpEffects.push({ playerId: player.id, playerName: player.name, powerUp: "shield", effect: "Shield protected your streak!" });
     }
 
     // Wager results
@@ -201,21 +220,34 @@ function getResultsPayload(room: Room): ResultsPayload {
       });
     }
 
+    let basePts: number;
+    if (q.type === "year-guesser" && player.currentTextAnswer && q.correctYear != null) {
+      const guessed = parseInt(player.currentTextAnswer, 10);
+      basePts = !isNaN(guessed) ? scoreYearGuess(guessed, q.correctYear) : 0;
+    } else {
+      basePts = correct ? calculateScore(
+        true,
+        (player.answerTime ?? room.questionStartTime) - room.questionStartTime,
+        room.timerDuration * 1000,
+        player.streak - 1
+      ).points : 0;
+    }
+    const mysteryMult = room.mysteryMultipliers.get(room.currentQuestionIndex) ?? 1;
+    const multipliedPts = basePts * mysteryMult;
+
     playerResults.push({
       playerId: player.id,
       playerName: player.name,
       playerEmoji: player.emoji,
       correct,
-      points: correct ? calculateScore(
-        true,
-        (player.answerTime ?? room.questionStartTime) - room.questionStartTime,
-        room.timerDuration * 1000,
-        player.streak - 1
-      ).points : 0,
+      points: multipliedPts,
       totalScore: player.score,
       streak: player.streak,
+      basePoints: mysteryMult > 1 ? basePts : undefined,
     });
   }
+
+  const mysteryMultiplier = room.mysteryMultipliers.get(room.currentQuestionIndex);
 
   const result: ResultsPayload = {
     correctAnswer: shuffledCorrectIdx,
@@ -223,7 +255,56 @@ function getResultsPayload(room: Room): ResultsPayload {
     answerDistribution: distribution,
     playerResults,
     leaderboard: getLeaderboard(room),
+    mysteryMultiplier: mysteryMultiplier && mysteryMultiplier > 1 ? mysteryMultiplier : undefined,
   };
+
+  // Fastest finger data
+  if (q.type === "fastest-finger") {
+    const accepted = q.acceptedAnswers ?? [q.options[q.correct].toLowerCase()];
+    const correctPlayers = [...room.players.values()]
+      .filter(p => {
+        if (!p.currentTextAnswer) return false;
+        const norm = p.currentTextAnswer.toLowerCase();
+        return accepted.some(a => a.toLowerCase().trim() === norm);
+      })
+      .sort((a, b) => (a.answerTime ?? Infinity) - (b.answerTime ?? Infinity));
+
+    if (correctPlayers.length > 0) {
+      result.fastestFinger = {
+        playerId: correctPlayers[0].id,
+        playerName: correctPlayers[0].name,
+        bonusPoints: 500,
+      };
+    }
+    // Include the correct answer text for display
+    result.correctAnswerText = q.acceptedAnswers?.[0] ?? q.options[q.correct];
+  }
+
+  // Year guesser data
+  if (q.type === "year-guesser" && q.correctYear != null) {
+    const yearGuesses: ResultsPayload["yearGuesses"] = [];
+    for (const player of room.players.values()) {
+      if (player.currentTextAnswer) {
+        const guessed = parseInt(player.currentTextAnswer, 10);
+        if (!isNaN(guessed)) {
+          yearGuesses.push({
+            playerId: player.id,
+            playerName: player.name,
+            guessedYear: guessed,
+            correctYear: q.correctYear,
+            points: scoreYearGuess(guessed, q.correctYear),
+          });
+        }
+      }
+    }
+    // Sort by closest guess
+    yearGuesses.sort((a, b) => {
+      const diffA = Math.abs(a.guessedYear - a.correctYear);
+      const diffB = Math.abs(b.guessedYear - b.correctYear);
+      return diffA - diffB;
+    });
+    result.yearGuesses = yearGuesses;
+  }
 
   // Bluff data
   if (q.type === "bluff" && q.bluffAnswer) {
@@ -347,16 +428,16 @@ export async function createRoom(
 ): Promise<Room> {
   // Support both single ID and array of IDs
   const ids = Array.isArray(quizIds) ? quizIds : [quizIds];
-  if (ids.length === 0) throw new Error("Nepasirinktas kvizas");
+  if (ids.length === 0) throw new Error("No quiz selected");
 
   // Load all quizzes and merge questions
   const allQuestions: Question[] = [];
   for (const qid of ids) {
     const quiz = await getQuiz(qid);
-    if (!quiz) throw new Error(`Kvizas "${qid}" nerastas`);
+    if (!quiz) throw new Error(`Quiz "${qid}" not found`);
     allQuestions.push(...quiz.questions);
   }
-  if (allQuestions.length === 0) throw new Error("Kvizai neturi klausimų");
+  if (allQuestions.length === 0) throw new Error("Quizzes have no questions");
 
   let code: string;
   do {
@@ -373,7 +454,7 @@ export async function createRoom(
   // Generate shuffled option orders for each selected question
   const optionShuffles = questionIndices.map(() => shuffle([0, 1, 2, 3]));
 
-  const DEFAULT_TEAM_NAMES = ["Blynai", "Lašiniai", "Morė", "Kanapė"];
+  const DEFAULT_TEAM_NAMES = ["Alpha", "Bravo", "Charlie", "Delta"];
 
   const room: Room = {
     code,
@@ -408,6 +489,8 @@ export async function createRoom(
 
     bluffDisplayIndex: null,
     bluffReplacedOriginalIndex: null,
+
+    mysteryMultipliers: new Map(),
   };
 
   rooms.set(code, room);
@@ -425,14 +508,14 @@ export function joinRoom(
   emoji: string
 ): { room: Room; player: Player } | { error: string } {
   const room = rooms.get(code.toUpperCase());
-  if (!room) return { error: "Kambarys nerastas" };
-  if (room.state !== "lobby") return { error: "Žaidimas jau prasidėjo" };
-  if (room.players.size >= 50) return { error: "Kambarys pilnas" };
+  if (!room) return { error: "Room not found" };
+  if (room.state !== "lobby") return { error: "Game already started" };
+  if (room.players.size >= 50) return { error: "Room is full" };
 
   // Check for duplicate name
   for (const p of room.players.values()) {
     if (p.name.toLowerCase() === name.toLowerCase() && p.id !== playerId) {
-      return { error: "Šis vardas jau užimtas" };
+      return { error: "This name is taken" };
     }
   }
 
@@ -456,6 +539,7 @@ export function joinRoom(
       usedPowerUpTypes: new Set(),
       eliminated: false,
       teamIndex: null,
+      currentTextAnswer: null,
     };
     room.players.set(playerId, player);
   }
@@ -466,10 +550,10 @@ export function joinRoom(
 
 export function startGame(code: string, hostId: string): { error?: string } {
   const room = rooms.get(code);
-  if (!room) return { error: "Kambarys nerastas" };
-  if (room.hostId !== hostId) return { error: "Tik šeimininkas gali pradėti" };
-  if (room.state !== "lobby") return { error: "Žaidimas jau prasidėjo" };
-  if (room.players.size === 0) return { error: "Reikia bent vieno žaidėjo" };
+  if (!room) return { error: "Room not found" };
+  if (room.hostId !== hostId) return { error: "Only the host can start" };
+  if (room.state !== "lobby") return { error: "Game already started" };
+  if (room.players.size === 0) return { error: "Need at least one player" };
 
   // Init power-up uses for all players
   for (const p of room.players.values()) {
@@ -478,6 +562,7 @@ export function startGame(code: string, hostId: string): { error?: string } {
     p.eliminated = false;
     p.currentAnswer = null;
     p.answerTime = null;
+    p.currentTextAnswer = null;
   }
 
   // Team mode: assign players to teams
@@ -487,6 +572,14 @@ export function startGame(code: string, hostId: string): { error?: string } {
       p.teamIndex = i % room.teamCount;
     });
     rotateTeamAnswerers(room);
+  }
+
+  // Mystery multiplier: randomly pick ~25% of questions
+  room.mysteryMultipliers.clear();
+  for (let i = 0; i < room.questionIndices.length; i++) {
+    if (Math.random() < 0.25) {
+      room.mysteryMultipliers.set(i, Math.floor(Math.random() * 4) + 2); // 2-5
+    }
   }
 
   room.state = "question";
@@ -507,20 +600,20 @@ export function submitAnswer(
   answerIndex: number
 ): { error?: string } {
   const room = rooms.get(code);
-  if (!room) return { error: "Kambarys nerastas" };
-  if (room.state !== "question") return { error: "Dabar negalima atsakyti" };
+  if (!room) return { error: "Room not found" };
+  if (room.state !== "question") return { error: "Can't answer right now" };
 
   const player = room.players.get(playerId);
-  if (!player) return { error: "Žaidėjas nerastas" };
-  if (player.currentAnswer !== null) return { error: "Jau atsakėte" };
+  if (!player) return { error: "Player not found" };
+  if (player.currentAnswer !== null) return { error: "Already answered" };
 
   // Elimination: eliminated players can't answer
-  if (player.eliminated) return { error: "Esate pašalintas" };
+  if (player.eliminated) return { error: "You are eliminated" };
 
   // Team mode: only designated answerer can answer
   if (room.gameMode === "team") {
     const isDesignated = [...room.currentTeamAnswerer.values()].includes(playerId);
-    if (!isDesignated) return { error: "Šį raundą atsako kitas komandos narys" };
+    if (!isDesignated) return { error: "Another team member answers this round" };
   }
 
   const now = Date.now();
@@ -554,7 +647,9 @@ export function submitAnswer(
     if (room.isWagerRound && room.wagers.has(playerId)) {
       finalPoints += room.wagers.get(playerId)! * 2;
     }
-    player.score += finalPoints;
+    // Mystery multiplier
+    const mysteryMult = room.mysteryMultipliers.get(room.currentQuestionIndex) ?? 1;
+    player.score += finalPoints * mysteryMult;
     player.streak = newStreak;
   } else {
     // Wrong answer
@@ -586,6 +681,157 @@ export function submitAnswer(
   });
 
   // Auto-advance if everyone answered
+  if (answered >= totalEligible) {
+    showResults(room);
+  }
+
+  return {};
+}
+
+export function submitTextAnswer(
+  code: string,
+  playerId: string,
+  answer: string
+): { error?: string } {
+  const room = rooms.get(code);
+  if (!room) return { error: "Room not found" };
+  if (room.state !== "question") return { error: "Can't answer right now" };
+
+  const player = room.players.get(playerId);
+  if (!player) return { error: "Player not found" };
+  if (player.currentTextAnswer !== null) return { error: "Already answered" };
+  if (player.eliminated) return { error: "You are eliminated" };
+
+  const qIndex = room.questionIndices[room.currentQuestionIndex];
+  const q = room.questions[qIndex];
+
+  player.currentTextAnswer = answer.trim();
+  player.answerTime = Date.now();
+
+  // Check correctness
+  const normalizedAnswer = answer.trim().toLowerCase();
+  const acceptedAnswers = q.acceptedAnswers ?? [q.options[q.correct].toLowerCase()];
+  const correct = acceptedAnswers.some(a => a.toLowerCase().trim() === normalizedAnswer);
+
+  // Use same scoring as regular answers
+  const elapsed = player.answerTime - room.questionStartTime;
+  const { points, newStreak } = calculateScore(correct, elapsed, room.timerDuration * 1000, player.streak);
+
+  const activePU = room.activePowerUps.get(playerId);
+
+  if (correct) {
+    let finalPoints = points;
+    if (activePU === "double") finalPoints = points * 2;
+
+    // Check if this is the first correct answer (fastest finger bonus)
+    const isFirstCorrect = ![...room.players.values()].some(p => {
+      if (p.id === playerId) return false;
+      if (!p.currentTextAnswer) return false;
+      const pNorm = p.currentTextAnswer.toLowerCase();
+      return acceptedAnswers.some(a => a.toLowerCase().trim() === pNorm);
+    });
+    if (isFirstCorrect) finalPoints += 500;
+
+    const mysteryMult = room.mysteryMultipliers.get(room.currentQuestionIndex) ?? 1;
+    player.score += finalPoints * mysteryMult;
+    player.streak = newStreak;
+  } else {
+    if (activePU === "shield") {
+      // keep streak
+    } else {
+      player.streak = 0;
+    }
+  }
+
+  // Set currentAnswer to a dummy value to mark as answered (for answer count tracking)
+  player.currentAnswer = correct ? 0 : -1;
+
+  // Broadcast answer count
+  let answered = 0;
+  let totalEligible = 0;
+  for (const p of room.players.values()) {
+    if (p.eliminated) continue;
+    totalEligible++;
+    if (p.currentTextAnswer !== null) answered++;
+  }
+  broadcast(code, { type: "answer-count", data: { count: answered, total: totalEligible } });
+
+  if (answered >= totalEligible) {
+    showResults(room);
+  }
+
+  return {};
+}
+
+function scoreYearGuess(guessedYear: number, correctYear: number): number {
+  const diff = Math.abs(guessedYear - correctYear);
+  if (diff === 0) return 1500;
+  if (diff <= 2) return 1200;
+  if (diff <= 5) return 1000;
+  if (diff <= 10) return 750;
+  if (diff <= 25) return 500;
+  if (diff <= 50) return 250;
+  return 0;
+}
+
+export function submitYearAnswer(
+  code: string,
+  playerId: string,
+  year: number
+): { error?: string } {
+  const room = rooms.get(code);
+  if (!room) return { error: "Room not found" };
+  if (room.state !== "question") return { error: "Can't answer right now" };
+
+  const player = room.players.get(playerId);
+  if (!player) return { error: "Player not found" };
+  if (player.currentTextAnswer !== null) return { error: "Already answered" };
+  if (player.eliminated) return { error: "You are eliminated" };
+
+  const qIndex = room.questionIndices[room.currentQuestionIndex];
+  const q = room.questions[qIndex];
+
+  if (q.type !== "year-guesser" || q.correctYear == null) {
+    return { error: "Not a year-guesser question" };
+  }
+
+  player.currentTextAnswer = String(year);
+  player.answerTime = Date.now();
+
+  const points = scoreYearGuess(year, q.correctYear);
+  const activePU = room.activePowerUps.get(playerId);
+
+  let finalPoints = points;
+  if (activePU === "double" && points > 0) {
+    finalPoints = points * 2;
+  }
+
+  const mysteryMult = room.mysteryMultipliers.get(room.currentQuestionIndex) ?? 1;
+  player.score += finalPoints * mysteryMult;
+
+  if (points > 0) {
+    player.streak += 1;
+  } else {
+    if (activePU === "shield") {
+      // keep streak
+    } else {
+      player.streak = 0;
+    }
+  }
+
+  // Mark as answered for answer count tracking
+  player.currentAnswer = points > 0 ? 0 : -1;
+
+  // Broadcast answer count
+  let answered = 0;
+  let totalEligible = 0;
+  for (const p of room.players.values()) {
+    if (p.eliminated) continue;
+    totalEligible++;
+    if (p.currentTextAnswer !== null) answered++;
+  }
+  broadcast(code, { type: "answer-count", data: { count: answered, total: totalEligible } });
+
   if (answered >= totalEligible) {
     showResults(room);
   }
@@ -647,9 +893,9 @@ function showResults(room: Room): void {
 
 export function nextQuestion(code: string, hostId: string): { error?: string } {
   const room = rooms.get(code);
-  if (!room) return { error: "Kambarys nerastas" };
-  if (room.hostId !== hostId) return { error: "Tik šeimininkas gali tęsti" };
-  if (room.state !== "results") return { error: "Dar negalima tęsti" };
+  if (!room) return { error: "Room not found" };
+  if (room.hostId !== hostId) return { error: "Only the host can continue" };
+  if (room.state !== "results") return { error: "Can't continue yet" };
 
   if (room.currentQuestionIndex + 1 >= room.questionIndices.length) {
     room.state = "finished";
@@ -705,6 +951,7 @@ function startQuestionRound(room: Room): void {
   for (const p of room.players.values()) {
     p.currentAnswer = null;
     p.answerTime = null;
+    p.currentTextAnswer = null;
   }
 
   // Setup bluff if needed
@@ -725,12 +972,12 @@ export function submitWager(
   amount: number
 ): { error?: string } {
   const room = rooms.get(code);
-  if (!room) return { error: "Kambarys nerastas" };
-  if (room.state !== "wager") return { error: "Dabar negalima statyti" };
+  if (!room) return { error: "Room not found" };
+  if (room.state !== "wager") return { error: "Can't wager right now" };
 
   const player = room.players.get(playerId);
-  if (!player) return { error: "Žaidėjas nerastas" };
-  if (player.eliminated) return { error: "Esate pašalintas" };
+  if (!player) return { error: "Player not found" };
+  if (player.eliminated) return { error: "You are eliminated" };
 
   // Clamp wager to [0, min(500, score)]
   const maxWager = Math.min(500, player.score);
@@ -749,9 +996,9 @@ export function submitWager(
 
 export function advanceFromWagerAction(code: string, hostId: string): { error?: string } {
   const room = rooms.get(code);
-  if (!room) return { error: "Kambarys nerastas" };
-  if (room.hostId !== hostId) return { error: "Tik šeimininkas gali tęsti" };
-  if (room.state !== "wager") return { error: "Nėra statymų fazės" };
+  if (!room) return { error: "Room not found" };
+  if (room.hostId !== hostId) return { error: "Only the host can continue" };
+  if (room.state !== "wager") return { error: "No wager phase" };
 
   advanceFromWager(room);
   return {};
@@ -768,15 +1015,15 @@ export function usePowerUp(
   powerUp: PowerUpType
 ): { error?: string } {
   const room = rooms.get(code);
-  if (!room) return { error: "Kambarys nerastas" };
-  if (room.state !== "question") return { error: "Dabar negalima naudoti galių" };
+  if (!room) return { error: "Room not found" };
+  if (room.state !== "question") return { error: "Can't use powers right now" };
 
   const player = room.players.get(playerId);
-  if (!player) return { error: "Žaidėjas nerastas" };
-  if (player.eliminated) return { error: "Esate pašalintas" };
-  if (player.powerUpUses <= 0) return { error: "Nebeturite galių" };
-  if (room.activePowerUps.has(playerId)) return { error: "Jau naudojote galią šį raundą" };
-  if (player.usedPowerUpTypes.has(powerUp)) return { error: "Šią galią jau naudojote" };
+  if (!player) return { error: "Player not found" };
+  if (player.eliminated) return { error: "You are eliminated" };
+  if (player.powerUpUses <= 0) return { error: "No powers left" };
+  if (room.activePowerUps.has(playerId)) return { error: "Already used a power this round" };
+  if (player.usedPowerUpTypes.has(powerUp)) return { error: "Already used this power" };
 
   player.powerUpUses--;
   player.usedPowerUpTypes.add(powerUp);
@@ -818,9 +1065,9 @@ export function disconnectPlayer(code: string, playerId: string): void {
 
 export function forceShowResults(code: string, hostId: string): { error?: string } {
   const room = rooms.get(code);
-  if (!room) return { error: "Kambarys nerastas" };
-  if (room.hostId !== hostId) return { error: "Tik šeimininkas gali tęsti" };
-  if (room.state !== "question") return { error: "Nėra aktyvaus klausimo" };
+  if (!room) return { error: "Room not found" };
+  if (room.hostId !== hostId) return { error: "Only the host can continue" };
+  if (room.state !== "question") return { error: "No active question" };
 
   showResults(room);
   return {};

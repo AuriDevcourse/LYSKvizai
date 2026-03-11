@@ -112,7 +112,7 @@ export default function QuizCard({
             }`}
           >
             <p className="text-lg">
-              {isCorrect ? "Teisingai! ✓" : "Neteisingai ✗"}
+              {isCorrect ? "Correct! ✓" : "Incorrect ✗"}
             </p>
             <p className="mt-1 text-sm font-medium text-white/80">
               {question.explanation}
@@ -123,7 +123,7 @@ export default function QuizCard({
             onClick={onNext}
             className="btn-primary mt-4 w-full text-center"
           >
-            {isLast ? "Rezultatai" : "Toliau →"}
+            {isLast ? "Results" : "Next →"}
           </button>
         </div>
       )}

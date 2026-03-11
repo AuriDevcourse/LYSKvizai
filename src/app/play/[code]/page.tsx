@@ -9,6 +9,8 @@ import HostLobby from "@/components/multiplayer/HostLobby";
 import PlayerLobby from "@/components/multiplayer/PlayerLobby";
 import HostQuestion from "@/components/multiplayer/HostQuestion";
 import PlayerQuestion from "@/components/multiplayer/PlayerQuestion";
+import FastestFingerInput from "@/components/multiplayer/FastestFingerInput";
+import YearGuesserInput from "@/components/multiplayer/YearGuesserInput";
 import HostResults from "@/components/multiplayer/HostResults";
 import PlayerResults from "@/components/multiplayer/PlayerResults";
 import Leaderboard from "@/components/multiplayer/Leaderboard";
@@ -99,6 +101,38 @@ export default function GamePage({ params }: PageProps) {
       }
     },
     [code, playerId, submitAnswer]
+  );
+
+  const handleYearAnswer = useCallback(
+    async (year: number) => {
+      if (!playerId) return;
+      try {
+        await fetch("/api/rooms", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "answer-year", code, playerId, year }),
+        });
+      } catch (e) {
+        console.error("Failed to submit year answer:", e);
+      }
+    },
+    [code, playerId]
+  );
+
+  const handleTextAnswer = useCallback(
+    async (text: string) => {
+      if (!playerId) return;
+      try {
+        await fetch("/api/rooms", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "answer-text", code, playerId, answer: text }),
+        });
+      } catch (e) {
+        console.error("Failed to submit text answer:", e);
+      }
+    },
+    [code, playerId]
   );
 
   const handleNext = useCallback(async () => {
@@ -202,7 +236,7 @@ export default function GamePage({ params }: PageProps) {
             onClick={() => router.push("/play")}
             className="btn-primary"
           >
-            Grįžti
+            Back
           </button>
         </div>
       </div>
@@ -215,7 +249,7 @@ export default function GamePage({ params }: PageProps) {
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="h-10 w-10 animate-spin text-white" />
           <p className="font-bold text-white/50">
-            {connected ? "Kraunama..." : "Jungiamasi..."}
+            {connected ? "Loading..." : "Connecting..."}
           </p>
         </div>
       </div>
@@ -232,7 +266,7 @@ export default function GamePage({ params }: PageProps) {
       <button
         onClick={handleExit}
         className="absolute right-3 top-3 z-20 flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 text-white/60 transition-all hover:bg-white/20 hover:text-white"
-        title="Išeiti"
+        title="Exit"
       >
         <X className="h-5 w-5" />
       </button>
@@ -283,33 +317,69 @@ export default function GamePage({ params }: PageProps) {
         )}
 
         {state === "question" && question && isHost && isHostPlayer && (
-          <PlayerQuestion
-            question={question}
-            onAnswer={handleAnswer}
-            onTimerExpire={handleTimerExpire}
-            timerReduction={timerReduction}
-            powerUpUses={currentPlayer?.powerUpUses ?? 0}
-            usedPowerUpTypes={currentPlayer?.usedPowerUpTypes ?? []}
-            onUsePowerUp={handlePowerUp}
-            eliminated={currentPlayer?.eliminated ?? false}
-            canAnswer={canAnswer}
-            waitingPlayerName={waitingPlayerName}
-          />
+          question.type === "fastest-finger" ? (
+            <FastestFingerInput
+              question={question}
+              onAnswer={handleTextAnswer}
+              onTimerExpire={handleTimerExpire}
+              timerReduction={timerReduction}
+              eliminated={currentPlayer?.eliminated ?? false}
+            />
+          ) : question.type === "year-guesser" ? (
+            <YearGuesserInput
+              question={question}
+              onAnswer={handleYearAnswer}
+              onTimerExpire={handleTimerExpire}
+              timerReduction={timerReduction}
+              eliminated={currentPlayer?.eliminated ?? false}
+            />
+          ) : (
+            <PlayerQuestion
+              question={question}
+              onAnswer={handleAnswer}
+              onTimerExpire={handleTimerExpire}
+              timerReduction={timerReduction}
+              powerUpUses={currentPlayer?.powerUpUses ?? 0}
+              usedPowerUpTypes={currentPlayer?.usedPowerUpTypes ?? []}
+              onUsePowerUp={handlePowerUp}
+              eliminated={currentPlayer?.eliminated ?? false}
+              canAnswer={canAnswer}
+              waitingPlayerName={waitingPlayerName}
+            />
+          )
         )}
 
         {state === "question" && question && !isHost && (
-          <PlayerQuestion
-            question={question}
-            onAnswer={handleAnswer}
-            onTimerExpire={handleTimerExpire}
-            timerReduction={timerReduction}
-            powerUpUses={currentPlayer?.powerUpUses ?? 0}
-            usedPowerUpTypes={currentPlayer?.usedPowerUpTypes ?? []}
-            onUsePowerUp={handlePowerUp}
-            eliminated={currentPlayer?.eliminated ?? false}
-            canAnswer={canAnswer}
-            waitingPlayerName={waitingPlayerName}
-          />
+          question.type === "fastest-finger" ? (
+            <FastestFingerInput
+              question={question}
+              onAnswer={handleTextAnswer}
+              onTimerExpire={handleTimerExpire}
+              timerReduction={timerReduction}
+              eliminated={currentPlayer?.eliminated ?? false}
+            />
+          ) : question.type === "year-guesser" ? (
+            <YearGuesserInput
+              question={question}
+              onAnswer={handleYearAnswer}
+              onTimerExpire={handleTimerExpire}
+              timerReduction={timerReduction}
+              eliminated={currentPlayer?.eliminated ?? false}
+            />
+          ) : (
+            <PlayerQuestion
+              question={question}
+              onAnswer={handleAnswer}
+              onTimerExpire={handleTimerExpire}
+              timerReduction={timerReduction}
+              powerUpUses={currentPlayer?.powerUpUses ?? 0}
+              usedPowerUpTypes={currentPlayer?.usedPowerUpTypes ?? []}
+              onUsePowerUp={handlePowerUp}
+              eliminated={currentPlayer?.eliminated ?? false}
+              canAnswer={canAnswer}
+              waitingPlayerName={waitingPlayerName}
+            />
+          )
         )}
 
         {state === "results" && results && isHost && !isHostPlayer && (
@@ -329,7 +399,7 @@ export default function GamePage({ params }: PageProps) {
               onClick={handleNext}
               className="btn-primary flex items-center justify-center gap-2 w-full text-lg mt-4"
             >
-              {isLastQuestion ? "Rezultatai" : "Kitas klausimas →"}
+              {isLastQuestion ? "Results" : "Next question →"}
             </button>
           </PlayerResults>
         )}
@@ -348,7 +418,7 @@ export default function GamePage({ params }: PageProps) {
               onClick={() => router.push("/play")}
               className="btn-secondary mt-8"
             >
-              Žaisti dar kartą
+              Play again
             </button>
           </div>
         )}

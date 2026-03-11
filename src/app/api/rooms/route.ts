@@ -6,6 +6,8 @@ import {
   joinRoom,
   startGame,
   submitAnswer,
+  submitTextAnswer,
+  submitYearAnswer,
   nextQuestion,
   disconnectPlayer,
   getRoomSnapshot,
@@ -97,6 +99,18 @@ export async function POST(req: NextRequest) {
 
     case "advance-wager": {
       const result = advanceFromWagerAction(body.code, body.hostId);
+      if (result.error) return json({ error: result.error }, 400);
+      return json({ ok: true });
+    }
+
+    case "answer-text": {
+      const result = submitTextAnswer(body.code, body.playerId, body.answer);
+      if (result.error) return json({ error: result.error }, 400);
+      return json({ ok: true });
+    }
+
+    case "answer-year": {
+      const result = submitYearAnswer(body.code, body.playerId, body.year);
       if (result.error) return json({ error: result.error }, 400);
       return json({ ok: true });
     }

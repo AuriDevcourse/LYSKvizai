@@ -10,12 +10,12 @@ interface ResultScreenProps {
 
 function getMessage(score: number, total: number): { title: string; emoji: string } {
   const pct = score / total;
-  if (pct === 1) return { title: "Tobula!", emoji: "🏆" };
-  if (pct >= 0.9) return { title: "Puikiai!", emoji: "🔥" };
-  if (pct >= 0.7) return { title: "Labai gerai!", emoji: "⭐" };
-  if (pct >= 0.5) return { title: "Neblogai!", emoji: "👍" };
-  if (pct >= 0.3) return { title: "Galėtų būti geriau", emoji: "💪" };
-  return { title: "Pabandyk dar!", emoji: "🎯" };
+  if (pct === 1) return { title: "Perfect!", emoji: "🏆" };
+  if (pct >= 0.9) return { title: "Excellent!", emoji: "🔥" };
+  if (pct >= 0.7) return { title: "Great job!", emoji: "⭐" };
+  if (pct >= 0.5) return { title: "Not bad!", emoji: "👍" };
+  if (pct >= 0.3) return { title: "Could be better", emoji: "💪" };
+  return { title: "Try again!", emoji: "🎯" };
 }
 
 export default function ResultScreen({ score, total, onRestart }: ResultScreenProps) {
@@ -73,7 +73,7 @@ export default function ResultScreen({ score, total, onRestart }: ResultScreenPr
       </h2>
 
       <button onClick={onRestart} className="btn-primary w-full max-w-xs text-center">
-        Žaisti dar kartą
+        Play again
       </button>
     </div>
   );

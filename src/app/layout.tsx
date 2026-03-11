@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="lt">
+    <html lang="en">
       <body className={`${geistSans.variable} ${montserrat.variable} font-[Montserrat] antialiased`}>
           {children}
           <BottomNav />

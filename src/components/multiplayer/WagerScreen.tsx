@@ -24,9 +24,9 @@ export default function WagerScreen({ currentScore, onSubmit }: WagerScreenProps
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
         <Coins className="h-12 w-12 text-white" />
-        <p className="text-lg font-bold text-white">Statymas priimtas!</p>
-        <p className="text-white/50">Statėte {amount} tšk.</p>
-        <p className="text-sm text-white/40">Laukiame kitų žaidėjų...</p>
+        <p className="text-lg font-bold text-white">Wager accepted!</p>
+        <p className="text-white/50">You wagered {amount} pts</p>
+        <p className="text-sm text-white/40">Waiting for other players...</p>
       </div>
     );
   }
@@ -35,13 +35,13 @@ export default function WagerScreen({ currentScore, onSubmit }: WagerScreenProps
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
         <Coins className="h-12 w-12 text-white/50" />
-        <p className="text-lg font-bold text-white">Statymų raundas</p>
-        <p className="text-white/50">Neturite taškų statyti</p>
+        <p className="text-lg font-bold text-white">Wager round</p>
+        <p className="text-white/50">No points to wager</p>
         <button
           onClick={() => { setSubmitted(true); onSubmit(0); }}
           className="rounded-xl bg-white text-[#46178f] px-8 py-3 font-bold transition-colors hover:bg-white/90"
         >
-          Tęsti
+          Continue
         </button>
       </div>
     );
@@ -50,13 +50,13 @@ export default function WagerScreen({ currentScore, onSubmit }: WagerScreenProps
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-6">
       <Coins className="h-12 w-12 text-white" />
-      <h2 className="text-2xl font-bold text-white">Statymų raundas!</h2>
+      <h2 className="text-2xl font-bold text-white">Wager round!</h2>
       <p className="text-center text-white/60">
-        Kiek taškų statysite? Teisingai = statymas ×2, neteisingai = prarandate.
+        How much will you wager? Correct = wager ×2, incorrect = you lose it.
       </p>
 
       <div className="rounded-xl border-2 border-white/20 bg-white/5 px-6 py-3 text-center">
-        <p className="text-xs text-white/50">Jūsų taškai</p>
+        <p className="text-xs text-white/50">Your points</p>
         <p className="text-2xl font-bold text-white">{currentScore}</p>
       </div>
 
@@ -88,14 +88,14 @@ export default function WagerScreen({ currentScore, onSubmit }: WagerScreenProps
           onChange={(e) => setAmount(Number(e.target.value))}
           className="w-full accent-white"
         />
-        <p className="mt-1 text-center text-lg font-bold text-white">{amount} tšk.</p>
+        <p className="mt-1 text-center text-lg font-bold text-white">{amount} pts</p>
       </div>
 
       <button
         onClick={handleSubmit}
         className="rounded-xl bg-white text-[#46178f] px-10 py-4 text-lg font-bold transition-colors hover:bg-white/90"
       >
-        Statyti!
+        Wager!
       </button>
     </div>
   );

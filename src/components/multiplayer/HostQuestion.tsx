@@ -59,12 +59,12 @@ export default function HostQuestion({
           </div>
           {question.isWagerRound && (
             <span className="rounded-lg bg-[#d89e00]/20 px-2 py-1 text-xs font-extrabold text-[#d89e00]">
-              STATYMAS
+              WAGER
             </span>
           )}
           {question.type && question.type !== "standard" && (
             <span className="rounded-lg bg-purple-500/20 px-2 py-1 text-xs font-extrabold text-purple-300">
-              {question.type === "bluff" ? "APGAULĖ" : question.type === "audio" ? "AUDIO" : "VIDEO"}
+              {question.type === "bluff" ? "BLUFF" : question.type === "audio" ? "AUDIO" : "VIDEO"}
             </span>
           )}
         </div>
@@ -86,9 +86,9 @@ export default function HostQuestion({
       {powerUpEvent && (
         <div className="mb-3 flex items-center justify-center gap-2 rounded-xl bg-white/10 px-4 py-2 text-sm font-bold text-white animate-fade-in">
           <Snowflake className="h-4 w-4" />
-          <span>{powerUpEvent.playerEmoji} {powerUpEvent.playerName} naudoja {
-            powerUpEvent.powerUp === "freeze" ? "Užšaldymą" :
-            powerUpEvent.powerUp === "shield" ? "Skydą" : "Dvigubai"
+          <span>{powerUpEvent.playerEmoji} {powerUpEvent.playerName} used {
+            powerUpEvent.powerUp === "freeze" ? "Freeze" :
+            powerUpEvent.powerUp === "shield" ? "Shield" : "Double"
           }!</span>
         </div>
       )}
@@ -153,7 +153,7 @@ export default function HostQuestion({
             {count}
           </span>
           <span className="text-xs font-bold text-white/50 sm:text-sm">
-            Atsakė
+            Answered
           </span>
         </div>
       </div>

@@ -78,7 +78,7 @@ export default function PlayerQuestion({
       <div className="flex flex-1 flex-col gap-4">
         <div className="flex items-center justify-center gap-2 rounded-xl bg-[#e21b3c]/20 px-4 py-2 text-sm font-bold text-white">
           <Eye className="h-4 w-4" />
-          Stebėjimo režimas
+          Spectator mode
         </div>
 
         <div className="text-center text-sm font-bold text-white/50">
@@ -111,8 +111,8 @@ export default function PlayerQuestion({
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/10">
           <Eye className="h-8 w-8 text-white" />
         </div>
-        <p className="text-lg font-extrabold text-white">Laukiame {waitingPlayerName}</p>
-        <p className="font-bold text-white/50">Šį raundą atsako jūsų komandos narys</p>
+        <p className="text-lg font-extrabold text-white">Waiting for {waitingPlayerName}</p>
+        <p className="font-bold text-white/50">Your teammate answers this round</p>
         <Timer
           duration={effectiveDuration}
           startTime={question.startTime}
@@ -128,8 +128,8 @@ export default function PlayerQuestion({
         <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/15">
           <Check className="h-10 w-10 text-white" />
         </div>
-        <p className="text-xl font-extrabold text-white">Priimta!</p>
-        <p className="font-bold text-white/50">Laukiame kitų...</p>
+        <p className="text-xl font-extrabold text-white">Locked in!</p>
+        <p className="font-bold text-white/50">Waiting for others...</p>
       </div>
     );
   }
@@ -141,7 +141,7 @@ export default function PlayerQuestion({
         {question.index + 1} / {question.total}
         {question.isWagerRound && (
           <span className="ml-2 rounded-lg bg-[#d89e00]/20 px-2 py-0.5 text-xs font-extrabold text-[#d89e00]">
-            STATYMAS
+            WAGER
           </span>
         )}
       </div>

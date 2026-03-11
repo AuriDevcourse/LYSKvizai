@@ -11,24 +11,24 @@ interface GameModeSelectorProps {
 const MODES = [
   {
     id: "classic" as GameMode,
-    label: "Klasikinis",
-    description: "Visi žaidžia, daugiausiai taškų laimi",
+    label: "Classic",
+    description: "Everyone plays, most points wins",
     icon: Swords,
     color: "border-white/35 bg-white/10",
     activeColor: "border-white bg-white/20 ring-2 ring-white/30",
   },
   {
     id: "elimination" as GameMode,
-    label: "Eliminacija",
-    description: "Kas 3 raundus pašalinamas silpniausias",
+    label: "Elimination",
+    description: "Weakest player eliminated every 3 rounds",
     icon: Skull,
     color: "border-red-400/50 bg-[#e21b3c]/20",
     activeColor: "border-red-400 bg-red-400/20 ring-2 ring-red-400/30",
   },
   {
     id: "team" as GameMode,
-    label: "Komandinis",
-    description: "Komandos varžosi, atsakinėja paeiliui",
+    label: "Team",
+    description: "Teams compete, answer in turns",
     icon: Users,
     color: "border-blue-400/50 bg-blue-400/10",
     activeColor: "border-blue-400 bg-blue-400/20 ring-2 ring-blue-400/30",
@@ -49,7 +49,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <h3 className="text-center text-sm font-medium text-white/60">Žaidimo režimas</h3>
+      <h3 className="text-center text-sm font-medium text-white/60">Game mode</h3>
 
       <div className="grid gap-3">
         {MODES.map((mode) => {
@@ -80,7 +80,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
       {selected === "team" && (
         <div className="rounded-xl border-2 border-blue-400/20 bg-blue-400/5 px-4 py-3">
           <label className="mb-2 block text-xs font-medium text-blue-200/60">
-            Komandų skaičius
+            Number of teams
           </label>
           <div className="flex gap-2">
             {[2, 3, 4].map((n) => (
@@ -105,7 +105,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
       {selected === "elimination" && (
         <div className="rounded-xl border-2 border-red-400/20 bg-red-400/5 px-4 py-3">
           <label className="mb-2 block text-xs font-medium text-red-200/60">
-            Pašalinti kas N raundų
+            Eliminate every N rounds
           </label>
           <div className="flex gap-2">
             {[2, 3, 5].map((n) => (
@@ -131,7 +131,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
         onClick={handleConfirm}
         className="rounded-xl bg-white text-[#46178f] px-6 py-3 font-bold transition-colors hover:bg-white/90"
       >
-        Pasirinkti
+        Select
       </button>
     </div>
   );

@@ -2,7 +2,7 @@
 
 import {
   CheckCircle, ArrowRight, BarChart3, Trophy, Award, Triangle, Diamond, Circle, Square,
-  Skull, Users, Coins, Zap,
+  Skull, Users, Coins, Zap, Sparkles, Calendar,
 } from "lucide-react";
 import type { ResultsPayload, QuestionPayload, GameMode } from "@/lib/multiplayer/types";
 import type { EmojiReactionWithId } from "@/hooks/useRoom";
@@ -44,7 +44,7 @@ export default function HostResults({
         <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#e21b3c]/20 px-6 py-5">
           <Skull className="h-7 w-7 text-[#e21b3c]" />
           <div className="text-center">
-            <p className="text-sm font-bold text-white/60">Pašalintas!</p>
+            <p className="text-sm font-bold text-white/60">Eliminated!</p>
             {results.eliminatedThisRound.map((el) => (
               <p key={el.playerId} className="inline-flex items-center gap-2 text-xl font-extrabold text-white">
                 <Avatar value={el.playerEmoji} size={28} /> {el.playerName}
@@ -59,48 +59,87 @@ export default function HostResults({
         <div className="rounded-2xl bg-purple-500/15 px-6 py-5">
           <div className="flex items-center gap-2 text-sm font-extrabold text-purple-300">
             <Zap className="h-5 w-5" />
-            Apgaulė!
+            Bluff!
           </div>
           <p className="mt-1 text-lg font-bold text-white">
-            Netikras atsakymas: <span className="text-purple-200">{results.bluffAnswer}</span>
+            Fake answer: <span className="text-purple-200">{results.bluffAnswer}</span>
           </p>
           {results.bluffVictims && results.bluffVictims.length > 0 && (
             <p className="mt-1 text-sm font-bold text-purple-200/60">
-              Patikėjo: {results.bluffVictims.join(", ")}
+              Fell for it: {results.bluffVictims.join(", ")}
             </p>
           )}
         </div>
       )}
 
-      {/* Correct answer — big and bold */}
-      <div className="rounded-2xl bg-[#26890c] px-6 py-5">
-        <div className="flex items-center gap-3">
-          <CheckCircle className="h-8 w-8 shrink-0 text-white" />
-          <div>
-            <p className="text-sm font-bold text-white/70">Teisingas atsakymas</p>
-            <p className="text-2xl font-extrabold text-white">
-              {question?.options[results.correctAnswer]}
-            </p>
-          </div>
+      {/* Mystery Multiplier reveal */}
+      {results.mysteryMultiplier && results.mysteryMultiplier > 1 && (
+        <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#d89e00]/20 px-6 py-5 animate-bounce-in">
+          <Sparkles className="h-7 w-7 text-[#d89e00]" />
+          <p className="text-2xl font-extrabold text-[#d89e00]">
+            Mystery x{results.mysteryMultiplier}!
+          </p>
+          <Sparkles className="h-7 w-7 text-[#d89e00]" />
         </div>
-        {results.explanation && (
-          <p className="mt-3 text-base font-medium text-white/80">{results.explanation}</p>
-        )}
-      </div>
+      )}
+
+      {/* Fastest Finger banner */}
+      {results.fastestFinger && (
+        <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#d89e00]/20 px-6 py-5 animate-bounce-in">
+          <Zap className="h-7 w-7 text-[#d89e00]" />
+          <p className="text-2xl font-extrabold text-[#d89e00]">
+            Fastest Finger: {results.fastestFinger.playerName}
+          </p>
+          <Zap className="h-7 w-7 text-[#d89e00]" />
+        </div>
+      )}
+
+      {/* Correct answer — big and bold */}
+      {results.yearGuesses && results.yearGuesses.length > 0 ? (
+        <div className="rounded-2xl bg-[#26890c] px-6 py-5">
+          <div className="flex items-center gap-3">
+            <Calendar className="h-8 w-8 shrink-0 text-white" />
+            <div>
+              <p className="text-sm font-bold text-white/70">Correct year</p>
+              <p className="text-4xl font-extrabold text-white">
+                {results.yearGuesses[0].correctYear}
+              </p>
+            </div>
+          </div>
+          {results.explanation && (
+            <p className="mt-3 text-base font-medium text-white/80">{results.explanation}</p>
+          )}
+        </div>
+      ) : (
+        <div className="rounded-2xl bg-[#26890c] px-6 py-5">
+          <div className="flex items-center gap-3">
+            <CheckCircle className="h-8 w-8 shrink-0 text-white" />
+            <div>
+              <p className="text-sm font-bold text-white/70">Correct answer</p>
+              <p className="text-2xl font-extrabold text-white">
+                {results.correctAnswerText ?? question?.options[results.correctAnswer]}
+              </p>
+            </div>
+          </div>
+          {results.explanation && (
+            <p className="mt-3 text-base font-medium text-white/80">{results.explanation}</p>
+          )}
+        </div>
+      )}
 
       {/* Wager results */}
       {results.wagerResults && results.wagerResults.length > 0 && (
         <div className="rounded-2xl glass px-6 py-5">
           <div className="mb-3 flex items-center gap-2 font-extrabold text-[#d89e00]">
             <Coins className="h-5 w-5" />
-            Statymų rezultatai
+            Wager results
           </div>
           <div className="flex flex-col gap-1.5">
             {results.wagerResults.map((wr) => (
               <div key={wr.playerId} className="flex items-center justify-between text-base">
                 <span className="font-bold text-white">{wr.playerName}</span>
                 <span className={`font-extrabold ${wr.won ? "text-[#26890c]" : "text-[#e21b3c]"}`}>
-                  {wr.won ? "+" : ""}{wr.netPoints} tšk.
+                  {wr.won ? "+" : ""}{wr.netPoints} pts
                 </span>
               </div>
             ))}
@@ -113,7 +152,7 @@ export default function HostResults({
         <div className="rounded-2xl glass px-6 py-5">
           <div className="mb-3 flex items-center gap-2 font-extrabold text-cyan-300">
             <Zap className="h-5 w-5" />
-            Galių efektai
+            Power-up effects
           </div>
           <div className="flex flex-col gap-1">
             {results.powerUpEffects.map((pe, i) => (
@@ -125,12 +164,55 @@ export default function HostResults({
         </div>
       )}
 
+      {/* Year Guesser — player guesses visual */}
+      {results.yearGuesses && results.yearGuesses.length > 0 && (() => {
+        const correctYear = results.yearGuesses[0].correctYear;
+        const guesses = results.yearGuesses;
+        return (
+          <div className="rounded-2xl glass px-6 py-5">
+            <div className="mb-4 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-white/60">
+              <Calendar className="h-5 w-5" />
+              Guesses
+            </div>
+            <div className="flex flex-col gap-2">
+              {guesses.map((g) => {
+                const diff = g.guessedYear - correctYear;
+                const absDiff = Math.abs(diff);
+                const color = absDiff === 0
+                  ? "text-[#26890c]"
+                  : absDiff <= 5
+                    ? "text-[#d89e00]"
+                    : absDiff <= 25
+                      ? "text-white"
+                      : "text-[#e21b3c]";
+                return (
+                  <div key={g.playerId} className="flex items-center justify-between rounded-xl bg-white/5 px-4 py-3">
+                    <span className="font-bold text-white">{g.playerName}</span>
+                    <div className="flex items-center gap-3">
+                      <span className={`text-lg font-extrabold ${color}`}>
+                        {g.guessedYear}
+                      </span>
+                      <span className="text-sm font-bold text-white/50">
+                        {absDiff === 0 ? "Exact!" : `${diff > 0 ? "+" : ""}${diff}`}
+                      </span>
+                      <span className="min-w-[4rem] text-right text-base font-extrabold text-emerald-300">
+                        +{g.points}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })()}
+
       <div className="grid gap-6 sm:grid-cols-2">
-        {/* Answer distribution */}
-        <div>
+        {/* Answer distribution (hidden for year-guesser) */}
+        <div className={results.yearGuesses && results.yearGuesses.length > 0 ? "hidden" : ""}>
           <div className="mb-4 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-white/60">
             <BarChart3 className="h-5 w-5" />
-            Atsakymai
+            Answers
           </div>
           <div className="flex flex-col gap-2.5">
             {question?.options.map((option, i) => {
@@ -185,7 +267,7 @@ export default function HostResults({
             <div className="mb-4">
               <div className="mb-3 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-white/60">
                 <Users className="h-5 w-5" />
-                Komandos
+                Teams
               </div>
               <div className="flex flex-col gap-1.5">
                 {results.teamScores.map((ts) => (
@@ -204,7 +286,7 @@ export default function HostResults({
           {/* Top 5 leaderboard */}
           <div className="mb-4 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-white/60">
             <Trophy className="h-5 w-5" />
-            Lyderiai
+            Leaders
           </div>
           <div className="flex flex-col gap-1.5">
             {results.leaderboard.slice(0, 5).map((entry) => (
@@ -242,11 +324,11 @@ export default function HostResults({
         {isLast ? (
           <>
             <Trophy className="h-5 w-5" />
-            Rezultatai
+            Results
           </>
         ) : (
           <>
-            Kitas klausimas
+            Next question
             <ArrowRight className="h-5 w-5" />
           </>
         )}
