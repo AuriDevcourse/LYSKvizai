@@ -74,7 +74,27 @@ interface AvatarProps {
 export default function Avatar({ value, size = 48, className = "" }: AvatarProps) {
   const config = decodeAvatar(value);
 
-  // SVG file avatar (e.g. "punk-asian-female.svg")
+  // SVG portrait avatar with background color: "svg:filename.svg:#hexcolor"
+  if (value.startsWith("svg:")) {
+    const parts = value.split(":");
+    const file = parts[1];
+    const bgColor = parts[2] || "#46178f";
+    return (
+      <div
+        className={`relative overflow-hidden rounded-full ${className}`}
+        style={{ width: size, height: size, backgroundColor: bgColor }}
+      >
+        <img
+          src={`/avatars/${file}`}
+          alt="avatar"
+          className="absolute inset-0 h-full w-full object-cover"
+          draggable={false}
+        />
+      </div>
+    );
+  }
+
+  // Legacy: plain SVG filename (e.g. "punk-asian-female.svg")
   if (value.endsWith(".svg")) {
     return (
       <img
