@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Swords, Users, Skull } from "lucide-react";
 import type { GameMode } from "@/lib/multiplayer/types";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface GameModeSelectorProps {
   onSelect: (mode: GameMode, options: { teamCount?: number; eliminationInterval?: number }) => void;
@@ -11,24 +12,24 @@ interface GameModeSelectorProps {
 const MODES = [
   {
     id: "classic" as GameMode,
-    label: "Classic",
-    description: "Everyone plays, most points wins",
+    labelKey: "gameMode.classic" as const,
+    descKey: "gameMode.classicDesc" as const,
     icon: Swords,
     color: "border-white/35 bg-white/10",
     activeColor: "border-white bg-white/20 ring-2 ring-white/30",
   },
   {
     id: "elimination" as GameMode,
-    label: "Elimination",
-    description: "Weakest player eliminated every 3 rounds",
+    labelKey: "gameMode.elimination" as const,
+    descKey: "gameMode.eliminationDesc" as const,
     icon: Skull,
     color: "border-red-400/50 bg-[#e21b3c]/20",
     activeColor: "border-red-400 bg-red-400/20 ring-2 ring-red-400/30",
   },
   {
     id: "team" as GameMode,
-    label: "Team",
-    description: "Teams compete, answer in turns",
+    labelKey: "gameMode.team" as const,
+    descKey: "gameMode.teamDesc" as const,
     icon: Users,
     color: "border-blue-400/50 bg-blue-400/10",
     activeColor: "border-blue-400 bg-blue-400/20 ring-2 ring-blue-400/30",
@@ -36,6 +37,7 @@ const MODES = [
 ];
 
 export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
+  const { t } = useTranslation();
   const [selected, setSelected] = useState<GameMode>("classic");
   const [teamCount, setTeamCount] = useState(2);
   const [eliminationInterval, setEliminationInterval] = useState(3);
@@ -49,7 +51,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <h3 className="text-center text-sm font-medium text-white/60">Game mode</h3>
+      <h3 className="text-center text-sm font-medium text-white/60">{t("gameMode.title")}</h3>
 
       <div className="grid gap-3">
         {MODES.map((mode) => {
@@ -67,9 +69,9 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
               <Icon className={`h-5 w-5 shrink-0 ${isActive ? "text-white" : "text-white/60"}`} />
               <div>
                 <p className={`text-sm font-bold ${isActive ? "text-white" : "text-white/80"}`}>
-                  {mode.label}
+                  {t(mode.labelKey)}
                 </p>
-                <p className="text-xs text-white/50">{mode.description}</p>
+                <p className="text-xs text-white/50">{t(mode.descKey)}</p>
               </div>
             </button>
           );
@@ -80,7 +82,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
       {selected === "team" && (
         <div className="rounded-xl border-2 border-blue-400/20 bg-blue-400/5 px-4 py-3">
           <label className="mb-2 block text-xs font-medium text-blue-200/60">
-            Number of teams
+            {t("gameMode.numberOfTeams")}
           </label>
           <div className="flex gap-2">
             {[2, 3, 4].map((n) => (
@@ -105,7 +107,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
       {selected === "elimination" && (
         <div className="rounded-xl border-2 border-red-400/20 bg-red-400/5 px-4 py-3">
           <label className="mb-2 block text-xs font-medium text-red-200/60">
-            Eliminate every N rounds
+            {t("gameMode.eliminateEvery")}
           </label>
           <div className="flex gap-2">
             {[2, 3, 5].map((n) => (
@@ -131,7 +133,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
         onClick={handleConfirm}
         className="rounded-xl bg-white text-[#46178f] px-6 py-3 font-bold transition-colors hover:bg-white/90"
       >
-        Select
+        {t("gameMode.select")}
       </button>
     </div>
   );

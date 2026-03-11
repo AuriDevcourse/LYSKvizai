@@ -3,11 +3,12 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Home, Users, PenLine } from "lucide-react";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 const NAV_ITEMS = [
-  { href: "/", icon: Home, label: "Home" },
-  { href: "/play", icon: Users, label: "Play" },
-  { href: "/editor", icon: PenLine, label: "Editor" },
+  { href: "/", icon: Home, labelKey: "nav.home" as const },
+  { href: "/play", icon: Users, labelKey: "nav.play" as const },
+  { href: "/editor", icon: PenLine, labelKey: "nav.editor" as const },
 ];
 
 /** Pages where the bottom nav should be hidden (active gameplay) */
@@ -15,6 +16,7 @@ const HIDDEN_PATTERNS = [/^\/quiz\//, /^\/play\/[A-Z0-9]/i, /^\/editor\//];
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   if (HIDDEN_PATTERNS.some((p) => p.test(pathname))) return null;
 
@@ -35,7 +37,7 @@ export default function BottomNav() {
               }`}
             >
               <Icon className="h-5 w-5" strokeWidth={isActive ? 2.5 : 2} />
-              <span className="text-[10px] font-bold">{item.label}</span>
+              <span className="text-[10px] font-bold">{t(item.labelKey)}</span>
             </Link>
           );
         })}

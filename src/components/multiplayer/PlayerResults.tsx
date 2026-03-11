@@ -3,6 +3,7 @@
 import { CheckCircle, XCircle, Clock, Flame, Hash, Skull, Zap, Coins, Shield, Sparkles, Calendar } from "lucide-react";
 import type { ResultsPayload } from "@/lib/multiplayer/types";
 import ReactionPicker from "./ReactionPicker";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface PlayerResultsProps {
   playerId: string;
@@ -12,6 +13,7 @@ interface PlayerResultsProps {
 }
 
 export default function PlayerResults({ playerId, results, onReact, children }: PlayerResultsProps) {
+  const { t } = useTranslation();
   const myResult = results.playerResults.find((r) => r.playerId === playerId);
 
   const myRank = results.leaderboard.find((e) => e.playerId === playerId)?.rank;
@@ -27,8 +29,8 @@ export default function PlayerResults({ playerId, results, onReact, children }: 
         <div className="flex items-center gap-3 rounded-xl border-2 border-red-400/30 bg-[#e21b3c]/20 px-6 py-4">
           <Skull className="h-8 w-8 text-red-400" />
           <div>
-            <p className="text-lg font-bold text-red-100">Eliminated!</p>
-            <p className="text-sm text-red-200/60">You can watch the game</p>
+            <p className="text-lg font-bold text-red-100">{t("playerResults.eliminated")}</p>
+            <p className="text-sm text-red-200/60">{t("playerResults.canWatch")}</p>
           </div>
         </div>
       )}
@@ -46,22 +48,22 @@ export default function PlayerResults({ playerId, results, onReact, children }: 
             </div>
           )}
           <h2 className="text-2xl font-bold text-white">
-            {myResult.correct ? "Correct!" : "Incorrect"}
+            {myResult.correct ? t("playerResults.correct") : t("playerResults.incorrect")}
           </h2>
           {myResult.correct && myResult.points > 0 && (
             <p className="text-lg font-bold text-emerald-300">
-              +{myResult.points} pts
+              +{myResult.points} {t("playerResults.pts")}
             </p>
           )}
           {myResult.streak >= 3 ? (
             <div className="flex items-center gap-1.5 text-sm font-bold text-orange-300">
               <Flame className="h-4 w-4 text-orange-400" />
-              <span>Streak: {myResult.streak} in a row! +{Math.min((myResult.streak - 2) * 100, 500)} bonus</span>
+              <span>{t("playerResults.streak")} {myResult.streak} {t("playerResults.inARow")} +{Math.min((myResult.streak - 2) * 100, 500)} {t("playerResults.bonus")}</span>
             </div>
           ) : myResult.streak > 1 ? (
             <div className="flex items-center gap-1.5 text-sm text-white/60">
               <Flame className="h-4 w-4 text-orange-400" />
-              <span>Streak: {myResult.streak} in a row!</span>
+              <span>{t("playerResults.streak")} {myResult.streak} {t("playerResults.inARow")}</span>
             </div>
           ) : null}
         </div>
@@ -70,7 +72,7 @@ export default function PlayerResults({ playerId, results, onReact, children }: 
           <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/10">
             <Clock className="h-10 w-10 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-white">No answer</h2>
+          <h2 className="text-2xl font-bold text-white">{t("playerResults.noAnswer")}</h2>
         </div>
       )}
 
@@ -79,7 +81,7 @@ export default function PlayerResults({ playerId, results, onReact, children }: 
         <div className="flex items-center gap-2 rounded-xl bg-[#d89e00]/20 px-5 py-3 animate-bounce-in">
           <Sparkles className="h-5 w-5 text-[#d89e00]" />
           <span className="text-lg font-extrabold text-[#d89e00]">
-            Mystery x{results.mysteryMultiplier}!
+            {t("playerResults.mystery")} x{results.mysteryMultiplier}!
           </span>
           {myResult?.correct && myResult.basePoints != null && (
             <span className="text-sm font-bold text-[#d89e00]/70">
@@ -101,7 +103,7 @@ export default function PlayerResults({ playerId, results, onReact, children }: 
       {fellForBluff && (
         <div className="flex items-center gap-2 rounded-lg bg-purple-500/15 px-4 py-2 text-sm font-medium text-purple-300">
           <Zap className="h-4 w-4" />
-          You fell for the bluff!
+          {t("playerResults.fellForBluff")}
         </div>
       )}
 
@@ -114,7 +116,7 @@ export default function PlayerResults({ playerId, results, onReact, children }: 
         }`}>
           <Zap className="h-5 w-5 text-[#d89e00]" />
           <span className="text-base font-extrabold text-[#d89e00]">
-            Fastest Finger: {results.fastestFinger.playerName} +{results.fastestFinger.bonusPoints} pts
+            {t("playerResults.fastestFinger")} {results.fastestFinger.playerName} +{results.fastestFinger.bonusPoints} {t("playerResults.pts")}
           </span>
         </div>
       )}
@@ -126,28 +128,28 @@ export default function PlayerResults({ playerId, results, onReact, children }: 
           <div className="w-full rounded-xl glass px-5 py-4">
             <div className="flex items-center justify-center gap-2 text-sm font-extrabold text-white/60 mb-2">
               <Calendar className="h-4 w-4" />
-              Year Guesser
+              {t("playerResults.yearGuesser")}
             </div>
             <p className="text-center text-2xl font-extrabold text-[#26890c]">
               {results.yearGuesses![0].correctYear}
             </p>
-            <p className="text-center text-xs font-bold text-white/50 mb-3">Correct year</p>
+            <p className="text-center text-xs font-bold text-white/50 mb-3">{t("playerResults.correctYear")}</p>
             {myGuess ? (
               <div className="text-center">
                 <p className="text-lg font-extrabold text-white">
-                  Your guess: {myGuess.guessedYear}
+                  {t("playerResults.yourGuess")} {myGuess.guessedYear}
                 </p>
                 <p className="text-sm font-bold text-white/60">
                   {Math.abs(myGuess.guessedYear - myGuess.correctYear) === 0
-                    ? "Exact!"
-                    : `${Math.abs(myGuess.guessedYear - myGuess.correctYear)} year${Math.abs(myGuess.guessedYear - myGuess.correctYear) === 1 ? "" : "s"} off`}
+                    ? t("hostResults.exact")
+                    : `${Math.abs(myGuess.guessedYear - myGuess.correctYear)} ${Math.abs(myGuess.guessedYear - myGuess.correctYear) === 1 ? t("playerResults.yearOff") : t("playerResults.yearsOff")}`}
                 </p>
                 <p className="text-base font-extrabold text-emerald-300 mt-1">
-                  +{myGuess.points} pts
+                  +{myGuess.points} {t("playerResults.pts")}
                 </p>
               </div>
             ) : (
-              <p className="text-center text-sm font-bold text-white/50">No guess submitted</p>
+              <p className="text-center text-sm font-bold text-white/50">{t("playerResults.noGuess")}</p>
             )}
           </div>
         );
@@ -160,8 +162,8 @@ export default function PlayerResults({ playerId, results, onReact, children }: 
         }`}>
           <Coins className="h-4 w-4" />
           {myWager.won
-            ? `Won the wager! +${myWager.netPoints} pts (wagered ${myWager.wager})`
-            : `Lost the wager: ${myWager.netPoints} pts (wagered ${myWager.wager})`
+            ? `${t("playerResults.wonWager")} +${myWager.netPoints} ${t("playerResults.pts")} (${t("playerResults.wagered")} ${myWager.wager})`
+            : `${t("playerResults.lostWager")} ${myWager.netPoints} ${t("playerResults.pts")} (${t("playerResults.wagered")} ${myWager.wager})`
           }
         </div>
       )}
@@ -171,7 +173,7 @@ export default function PlayerResults({ playerId, results, onReact, children }: 
         <div className="rounded-xl border-2 border-white/20 bg-white/5 px-8 py-4 text-center">
           <div className="flex items-center justify-center gap-1.5 text-sm text-white/50">
             <Hash className="h-3.5 w-3.5" />
-            <span>Your rank</span>
+            <span>{t("playerResults.yourRank")}</span>
           </div>
           <p className="mt-1 text-3xl font-bold text-white">
             #{myRank}
@@ -180,7 +182,7 @@ export default function PlayerResults({ playerId, results, onReact, children }: 
             </span>
           </p>
           <p className="mt-1 text-sm font-medium text-white/80">
-            {myResult?.totalScore ?? 0} pts
+            {myResult?.totalScore ?? 0} {t("playerResults.pts")}
           </p>
         </div>
       )}
@@ -192,7 +194,7 @@ export default function PlayerResults({ playerId, results, onReact, children }: 
       {!children && (
         <div className="flex items-center gap-2 text-sm text-white/40">
           <Clock className="h-3.5 w-3.5" />
-          <span>Waiting for next question...</span>
+          <span>{t("playerResults.waitingForNext")}</span>
         </div>
       )}
     </div>

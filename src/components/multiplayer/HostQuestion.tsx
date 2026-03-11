@@ -8,6 +8,7 @@ import ProgressiveText from "./ProgressiveText";
 import ProgressiveImage from "./ProgressiveImage";
 import AudioPlayer from "./AudioPlayer";
 import VideoPlayer from "./VideoPlayer";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 const OPTION_BG = [
   "bg-[#e21b3c]",
@@ -31,6 +32,7 @@ export default function HostQuestion({
   onTimerExpire,
   powerUpEvent,
 }: HostQuestionProps) {
+  const { t } = useTranslation();
   const count = answerCount?.count ?? 0;
   const isProgressive = question.progressiveReveal ?? false;
   const words = question.question.split(/\s+/);
@@ -59,12 +61,12 @@ export default function HostQuestion({
           </div>
           {question.isWagerRound && (
             <span className="rounded-lg bg-[#d89e00]/20 px-2 py-1 text-xs font-extrabold text-[#d89e00]">
-              WAGER
+              {t("hostQuestion.wager")}
             </span>
           )}
           {question.type && question.type !== "standard" && (
             <span className="rounded-lg bg-purple-500/20 px-2 py-1 text-xs font-extrabold text-purple-300">
-              {question.type === "bluff" ? "BLUFF" : question.type === "audio" ? "AUDIO" : "VIDEO"}
+              {question.type === "bluff" ? t("hostQuestion.bluff") : question.type === "audio" ? t("hostQuestion.audio") : t("hostQuestion.video")}
             </span>
           )}
         </div>
@@ -87,8 +89,8 @@ export default function HostQuestion({
         <div className="mb-3 flex items-center justify-center gap-2 rounded-xl bg-white/10 px-4 py-2 text-sm font-bold text-white animate-fade-in">
           <Snowflake className="h-4 w-4" />
           <span>{powerUpEvent.playerEmoji} {powerUpEvent.playerName} used {
-            powerUpEvent.powerUp === "freeze" ? "Freeze" :
-            powerUpEvent.powerUp === "shield" ? "Shield" : "Double"
+            powerUpEvent.powerUp === "freeze" ? t("hostQuestion.freeze") :
+            powerUpEvent.powerUp === "shield" ? t("hostQuestion.shield") : t("hostQuestion.double")
           }!</span>
         </div>
       )}
@@ -153,7 +155,7 @@ export default function HostQuestion({
             {count}
           </span>
           <span className="text-xs font-bold text-white/50 sm:text-sm">
-            Answered
+            {t("hostQuestion.answered")}
           </span>
         </div>
       </div>

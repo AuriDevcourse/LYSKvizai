@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Montserrat } from "next/font/google";
 import { Agentation } from "agentation";
 import BottomNav from "@/components/BottomNav";
+import LanguageToggle from "@/components/LanguageToggle";
+import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -29,10 +31,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${montserrat.variable} font-[Montserrat] antialiased`}>
+        <LanguageProvider>
+          <div className="fixed right-3 top-3 z-50">
+            <LanguageToggle />
+          </div>
           {children}
           <BottomNav />
-          {process.env.NODE_ENV === "development" && <Agentation />}
-        </body>
+        </LanguageProvider>
+        {process.env.NODE_ENV === "development" && <Agentation />}
+      </body>
     </html>
   );
 }

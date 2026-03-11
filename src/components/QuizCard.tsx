@@ -2,6 +2,7 @@
 
 import { Triangle, Diamond, Circle, Square, Check, X } from "lucide-react";
 import type { Question } from "@/data/types";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface QuizCardProps {
   question: Question;
@@ -27,6 +28,7 @@ export default function QuizCard({
   onNext,
   isLast,
 }: QuizCardProps) {
+  const { t } = useTranslation();
   const answered = selectedAnswer !== null;
   const isCorrect = selectedAnswer === question.correct;
 
@@ -101,7 +103,7 @@ export default function QuizCard({
             }`}
           >
             <p className="text-lg">
-              {isCorrect ? "Correct! ✓" : "Incorrect ✗"}
+              {isCorrect ? t("quizCard.correct") : t("quizCard.incorrect")}
             </p>
             <p className="mt-1 text-sm font-medium text-white/80">
               {question.explanation}
@@ -112,7 +114,7 @@ export default function QuizCard({
             onClick={onNext}
             className="btn-primary mt-4 w-full text-center"
           >
-            {isLast ? "Results" : "Next →"}
+            {isLast ? t("quizCard.results") : t("quizCard.next")}
           </button>
         </div>
       )}

@@ -8,6 +8,7 @@ import type { ResultsPayload, QuestionPayload, GameMode } from "@/lib/multiplaye
 import type { EmojiReactionWithId } from "@/hooks/useRoom";
 import EmojiReactions from "./EmojiReactions";
 import Avatar from "@/components/Avatar";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 const OPTION_STYLES = [
   { border: "border-[#e21b3c]", bg: "bg-[#e21b3c]", barBg: "bg-[#e21b3c]/30", iconBg: "bg-[#e21b3c]", icon: Triangle },
@@ -33,6 +34,7 @@ export default function HostResults({
   onNext,
   gameMode = "classic",
 }: HostResultsProps) {
+  const { t } = useTranslation();
   const totalAnswers = results.answerDistribution.reduce((a, b) => a + b, 0);
 
   return (
@@ -44,7 +46,7 @@ export default function HostResults({
         <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#e21b3c]/20 px-6 py-5">
           <Skull className="h-7 w-7 text-[#e21b3c]" />
           <div className="text-center">
-            <p className="text-sm font-bold text-white/60">Eliminated!</p>
+            <p className="text-sm font-bold text-white/60">{t("hostResults.eliminated")}</p>
             {results.eliminatedThisRound.map((el) => (
               <p key={el.playerId} className="inline-flex items-center gap-2 text-xl font-extrabold text-white">
                 <Avatar value={el.playerEmoji} size={28} /> {el.playerName}
@@ -59,14 +61,14 @@ export default function HostResults({
         <div className="rounded-2xl bg-purple-500/15 px-6 py-5">
           <div className="flex items-center gap-2 text-sm font-extrabold text-purple-300">
             <Zap className="h-5 w-5" />
-            Bluff!
+            {t("hostResults.bluff")}
           </div>
           <p className="mt-1 text-lg font-bold text-white">
-            Fake answer: <span className="text-purple-200">{results.bluffAnswer}</span>
+            {t("hostResults.fakeAnswer")} <span className="text-purple-200">{results.bluffAnswer}</span>
           </p>
           {results.bluffVictims && results.bluffVictims.length > 0 && (
             <p className="mt-1 text-sm font-bold text-purple-200/60">
-              Fell for it: {results.bluffVictims.join(", ")}
+              {t("hostResults.fellForIt")} {results.bluffVictims.join(", ")}
             </p>
           )}
         </div>
@@ -77,7 +79,7 @@ export default function HostResults({
         <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#d89e00]/20 px-6 py-5 animate-bounce-in">
           <Sparkles className="h-7 w-7 text-[#d89e00]" />
           <p className="text-2xl font-extrabold text-[#d89e00]">
-            Mystery x{results.mysteryMultiplier}!
+            {t("hostResults.mystery")} x{results.mysteryMultiplier}!
           </p>
           <Sparkles className="h-7 w-7 text-[#d89e00]" />
         </div>
@@ -88,7 +90,7 @@ export default function HostResults({
         <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#d89e00]/20 px-6 py-5 animate-bounce-in">
           <Zap className="h-7 w-7 text-[#d89e00]" />
           <p className="text-2xl font-extrabold text-[#d89e00]">
-            Fastest Finger: {results.fastestFinger.playerName}
+            {t("hostResults.fastestFinger")} {results.fastestFinger.playerName}
           </p>
           <Zap className="h-7 w-7 text-[#d89e00]" />
         </div>
@@ -100,7 +102,7 @@ export default function HostResults({
           <div className="flex items-center gap-3">
             <Calendar className="h-8 w-8 shrink-0 text-white" />
             <div>
-              <p className="text-sm font-bold text-white/70">Correct year</p>
+              <p className="text-sm font-bold text-white/70">{t("hostResults.correctYear")}</p>
               <p className="text-4xl font-extrabold text-white">
                 {results.yearGuesses[0].correctYear}
               </p>
@@ -115,7 +117,7 @@ export default function HostResults({
           <div className="flex items-center gap-3">
             <CheckCircle className="h-8 w-8 shrink-0 text-white" />
             <div>
-              <p className="text-sm font-bold text-white/70">Correct answer</p>
+              <p className="text-sm font-bold text-white/70">{t("hostResults.correctAnswer")}</p>
               <p className="text-2xl font-extrabold text-white">
                 {results.correctAnswerText ?? question?.options[results.correctAnswer]}
               </p>
@@ -132,7 +134,7 @@ export default function HostResults({
         <div className="rounded-2xl glass px-6 py-5">
           <div className="mb-3 flex items-center gap-2 font-extrabold text-[#d89e00]">
             <Coins className="h-5 w-5" />
-            Wager results
+            {t("hostResults.wagerResults")}
           </div>
           <div className="flex flex-col gap-1.5">
             {results.wagerResults.map((wr) => (
@@ -152,7 +154,7 @@ export default function HostResults({
         <div className="rounded-2xl glass px-6 py-5">
           <div className="mb-3 flex items-center gap-2 font-extrabold text-cyan-300">
             <Zap className="h-5 w-5" />
-            Power-up effects
+            {t("hostResults.powerUpEffects")}
           </div>
           <div className="flex flex-col gap-1">
             {results.powerUpEffects.map((pe, i) => (
@@ -172,7 +174,7 @@ export default function HostResults({
           <div className="rounded-2xl glass px-6 py-5">
             <div className="mb-4 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-white/60">
               <Calendar className="h-5 w-5" />
-              Guesses
+              {t("hostResults.guesses")}
             </div>
             <div className="flex flex-col gap-2">
               {guesses.map((g) => {
@@ -193,7 +195,7 @@ export default function HostResults({
                         {g.guessedYear}
                       </span>
                       <span className="text-sm font-bold text-white/50">
-                        {absDiff === 0 ? "Exact!" : `${diff > 0 ? "+" : ""}${diff}`}
+                        {absDiff === 0 ? t("hostResults.exact") : `${diff > 0 ? "+" : ""}${diff}`}
                       </span>
                       <span className="min-w-[4rem] text-right text-base font-extrabold text-emerald-300">
                         +{g.points}
@@ -212,7 +214,7 @@ export default function HostResults({
         <div className={results.yearGuesses && results.yearGuesses.length > 0 ? "hidden" : ""}>
           <div className="mb-4 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-white/60">
             <BarChart3 className="h-5 w-5" />
-            Answers
+            {t("hostResults.answers")}
           </div>
           <div className="flex flex-col gap-2.5">
             {question?.options.map((option, i) => {
@@ -267,7 +269,7 @@ export default function HostResults({
             <div className="mb-4">
               <div className="mb-3 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-white/60">
                 <Users className="h-5 w-5" />
-                Teams
+                {t("hostResults.teams")}
               </div>
               <div className="flex flex-col gap-1.5">
                 {results.teamScores.map((ts) => (
@@ -286,7 +288,7 @@ export default function HostResults({
           {/* Top 5 leaderboard */}
           <div className="mb-4 flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-white/60">
             <Trophy className="h-5 w-5" />
-            Leaders
+            {t("hostResults.leaders")}
           </div>
           <div className="flex flex-col gap-1.5">
             {results.leaderboard.slice(0, 5).map((entry) => (
@@ -324,11 +326,11 @@ export default function HostResults({
         {isLast ? (
           <>
             <Trophy className="h-5 w-5" />
-            Results
+            {t("game.results")}
           </>
         ) : (
           <>
-            Next question
+            {t("hostResults.nextQuestion")}
             <ArrowRight className="h-5 w-5" />
           </>
         )}

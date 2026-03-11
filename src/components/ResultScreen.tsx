@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface ResultScreenProps {
   score: number;
@@ -8,18 +9,30 @@ interface ResultScreenProps {
   onRestart: () => void;
 }
 
-function getMessage(score: number, total: number): { title: string; emoji: string } {
+function getEmoji(score: number, total: number): string {
   const pct = score / total;
-  if (pct === 1) return { title: "Perfect!", emoji: "🏆" };
-  if (pct >= 0.9) return { title: "Excellent!", emoji: "🔥" };
-  if (pct >= 0.7) return { title: "Great job!", emoji: "⭐" };
-  if (pct >= 0.5) return { title: "Not bad!", emoji: "👍" };
-  if (pct >= 0.3) return { title: "Could be better", emoji: "💪" };
-  return { title: "Try again!", emoji: "🎯" };
+  if (pct === 1) return "🏆";
+  if (pct >= 0.9) return "🔥";
+  if (pct >= 0.7) return "⭐";
+  if (pct >= 0.5) return "👍";
+  if (pct >= 0.3) return "💪";
+  return "🎯";
+}
+
+function getMessageKey(score: number, total: number): string {
+  const pct = score / total;
+  if (pct === 1) return "resultScreen.perfect";
+  if (pct >= 0.9) return "resultScreen.excellent";
+  if (pct >= 0.7) return "resultScreen.greatJob";
+  if (pct >= 0.5) return "resultScreen.notBad";
+  if (pct >= 0.3) return "resultScreen.couldBeBetter";
+  return "resultScreen.tryAgain";
 }
 
 export default function ResultScreen({ score, total, onRestart }: ResultScreenProps) {
-  const { title, emoji } = getMessage(score, total);
+  const { t } = useTranslation();
+  const emoji = getEmoji(score, total);
+  const title = t(getMessageKey(score, total) as any);
   const [displayScore, setDisplayScore] = useState(0);
 
   // Animate score counting up
@@ -73,7 +86,7 @@ export default function ResultScreen({ score, total, onRestart }: ResultScreenPr
       </h2>
 
       <button onClick={onRestart} className="btn-primary w-full max-w-xs text-center">
-        Play again
+        {t("resultScreen.playAgain")}
       </button>
     </div>
   );

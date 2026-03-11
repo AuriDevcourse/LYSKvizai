@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { Dices } from "lucide-react";
 import Avatar from "./Avatar";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 // --- SVG portrait data ---
 
@@ -113,6 +114,7 @@ interface AvatarBuilderProps {
 type Tab = "character" | "background";
 
 export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
+  const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState("");
   const [bgColor, setBgColor] = useState(BG_PALETTE[0]);
   const [tab, setTab] = useState<Tab>("character");
@@ -156,7 +158,7 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
             <Avatar value={currentPreview} size={72} />
           ) : (
             <div className="flex h-[72px] w-[72px] items-center justify-center text-[10px] font-bold text-white/30">
-              Pick
+              {t("avatar.pick")}
             </div>
           )}
         </div>
@@ -182,7 +184,7 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
                 : "text-white/50 hover:text-white"
             }`}
           >
-            Character
+            {t("avatar.character")}
           </button>
           <button
             type="button"
@@ -193,7 +195,7 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
                 : "text-white/50 hover:text-white"
             }`}
           >
-            Background
+            {t("avatar.background")}
           </button>
         </div>
 

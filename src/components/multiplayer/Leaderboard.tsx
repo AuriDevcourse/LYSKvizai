@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Trophy, Crown, Award, Medal } from "lucide-react";
 import type { LeaderboardEntry } from "@/lib/multiplayer/types";
 import Avatar from "@/components/Avatar";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface LeaderboardProps {
   leaderboard: LeaderboardEntry[];
@@ -11,6 +12,7 @@ interface LeaderboardProps {
 }
 
 export default function Leaderboard({ leaderboard, currentPlayerId }: LeaderboardProps) {
+  const { t } = useTranslation();
   const top3 = leaderboard.slice(0, 3);
   const rest = leaderboard.slice(3);
 
@@ -39,7 +41,7 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
       {/* Trophy icon */}
       <Trophy className="h-12 w-12 text-[#d89e00] animate-bounce-in" />
       <h2 className="text-3xl font-extrabold text-white sm:text-4xl animate-fade-in-up">
-        Final Results
+        {t("leaderboard.finalResults")}
       </h2>
 
       {/* Podium */}

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Loader2, Check } from "lucide-react";
 import type { QuizMeta } from "@/data/types";
 import { getQuizTheme } from "@/lib/quiz-theme";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface QuizPickerProps {
   onSelect: (quizIds: string[]) => void;
@@ -12,6 +13,7 @@ interface QuizPickerProps {
 }
 
 export default function QuizPicker({ onSelect, selectedIds = [], multi = true }: QuizPickerProps) {
+  const { t } = useTranslation();
   const [quizzes, setQuizzes] = useState<QuizMeta[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -34,8 +36,8 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
   if (quizzes.length === 0) {
     return (
       <div className="py-12 text-center text-white/60">
-        <p className="text-lg font-bold">No quizzes</p>
-        <p className="mt-1 text-sm">Create one in the editor</p>
+        <p className="text-lg font-bold">{t("quizPicker.noQuizzes")}</p>
+        <p className="mt-1 text-sm">{t("quizPicker.createInEditor")}</p>
       </div>
     );
   }
@@ -60,10 +62,10 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
       {multi && selectedIds.length > 0 && (
         <div className="mb-3 flex items-center justify-between rounded-xl bg-white/10 px-4 py-2">
           <span className="text-sm font-bold text-white/70">
-            {selectedIds.length} {selectedIds.length === 1 ? "quiz" : "quizzes"} selected
+            {selectedIds.length} {selectedIds.length === 1 ? t("quizPicker.quiz") : t("quizPicker.quizzes")} {t("quizPicker.selected")}
           </span>
           <span className="text-sm font-bold text-white/50">
-            {totalQuestions} questions
+            {totalQuestions} {t("quizPicker.questions")}
           </span>
         </div>
       )}
@@ -92,7 +94,7 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
               </div>
               <h3 className="text-sm font-extrabold leading-tight text-white">{quiz.title}</h3>
               <p className="text-[11px] font-bold text-white/40">
-                {quiz.questionCount} q.
+                {quiz.questionCount} {t("quizPicker.q")}
               </p>
             </button>
           );

@@ -6,9 +6,11 @@ import Link from "next/link";
 import { Plus, Trash2, Pencil, ArrowLeft, Loader2 } from "lucide-react";
 import type { QuizMeta } from "@/data/types";
 import { getQuizTheme } from "@/lib/quiz-theme";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 export default function EditorPage() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [quizzes, setQuizzes] = useState<QuizMeta[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
@@ -51,15 +53,15 @@ export default function EditorPage() {
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white">Editor</h1>
-            <p className="text-sm text-white/50">Quiz library</p>
+            <h1 className="text-2xl font-bold text-white">{t("editor.title")}</h1>
+            <p className="text-sm text-white/50">{t("editor.quizLibrary")}</p>
           </div>
           <button
             onClick={handleCreate}
             className="flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 font-semibold text-[#46178f] transition-colors hover:bg-white/90"
           >
             <Plus className="h-4 w-4" />
-            Create
+            {t("editor.create")}
           </button>
         </div>
 
@@ -71,9 +73,9 @@ export default function EditorPage() {
         ) : quizzes.length === 0 ? (
           <div className="py-16 text-center">
             <div className="mb-4 text-5xl">📝</div>
-            <p className="text-lg text-white/50">No quizzes yet</p>
+            <p className="text-lg text-white/50">{t("editor.noQuizzes")}</p>
             <p className="mt-1 text-sm text-white/30">
-              Press &quot;Create&quot; to get started!
+              {t("editor.getStarted")}
             </p>
           </div>
         ) : (
@@ -128,7 +130,7 @@ export default function EditorPage() {
           className="mt-8 flex items-center gap-1.5 self-center text-sm text-white/40 hover:text-white/60"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
-          Back to home
+          {t("nav.backToHome")}
         </Link>
       </main>
     </div>

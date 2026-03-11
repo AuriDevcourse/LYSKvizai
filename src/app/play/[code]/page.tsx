@@ -17,6 +17,7 @@ import Leaderboard from "@/components/multiplayer/Leaderboard";
 import WagerScreen from "@/components/multiplayer/WagerScreen";
 import HostWager from "@/components/multiplayer/HostWager";
 import type { PowerUpType } from "@/lib/multiplayer/types";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface PageProps {
   params: Promise<{ code: string }>;
@@ -25,6 +26,7 @@ interface PageProps {
 export default function GamePage({ params }: PageProps) {
   const { code } = use(params);
   const router = useRouter();
+  const { t } = useTranslation();
 
   const [playerId] = useState(() => {
     if (typeof window === "undefined") return "";
@@ -236,7 +238,7 @@ export default function GamePage({ params }: PageProps) {
             onClick={() => router.push("/play")}
             className="btn-primary"
           >
-            Back
+            {t("nav.back")}
           </button>
         </div>
       </div>
@@ -249,7 +251,7 @@ export default function GamePage({ params }: PageProps) {
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="h-10 w-10 animate-spin text-white" />
           <p className="font-bold text-white/50">
-            {connected ? "Loading..." : "Connecting..."}
+            {connected ? t("game.loading") : t("game.connecting")}
           </p>
         </div>
       </div>
@@ -399,7 +401,7 @@ export default function GamePage({ params }: PageProps) {
               onClick={handleNext}
               className="btn-primary flex items-center justify-center gap-2 w-full text-lg mt-4"
             >
-              {isLastQuestion ? "Results" : "Next question →"}
+              {isLastQuestion ? t("game.results") : t("game.nextQuestion")}
             </button>
           </PlayerResults>
         )}
@@ -418,7 +420,7 @@ export default function GamePage({ params }: PageProps) {
               onClick={() => router.push("/play")}
               className="btn-secondary mt-8"
             >
-              Play again
+              {t("game.playAgain")}
             </button>
           </div>
         )}

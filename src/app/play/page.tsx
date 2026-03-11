@@ -9,6 +9,7 @@ import QuizPicker from "@/components/QuizPicker";
 import GameModeSelector from "@/components/multiplayer/GameModeSelector";
 import AvatarBuilder from "@/components/AvatarBuilder";
 import type { GameMode } from "@/lib/multiplayer/types";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 function generateId() {
   return Math.random().toString(36).slice(2, 10);
@@ -17,6 +18,7 @@ function generateId() {
 function PlayPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t } = useTranslation();
   const codeFromUrl = searchParams.get("code") ?? "";
 
   const [mode, setMode] = useState<"menu" | "pick-quiz" | "pick-mode" | "host-join" | "join" | "creating">(
@@ -109,7 +111,7 @@ function PlayPageInner() {
       {mode === "menu" && (
         <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
           <h1 className="text-3xl font-extrabold text-white sm:text-4xl">
-            Play with friends
+            {t("play.playWithFriends")}
           </h1>
 
           {error && (
@@ -124,14 +126,14 @@ function PlayPageInner() {
               className="btn-primary flex items-center justify-center gap-2 w-full"
             >
               <Plus className="h-5 w-5" />
-              Create game
+              {t("play.createGame")}
             </button>
             <button
               onClick={() => setMode("join")}
               className="btn-secondary flex items-center justify-center gap-2 w-full"
             >
               <LogIn className="h-5 w-5" />
-              Join
+              {t("play.join")}
             </button>
           </div>
 
@@ -140,15 +142,15 @@ function PlayPageInner() {
             className="mt-2 flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            Home
+            {t("nav.home")}
           </button>
         </div>
       )}
 
       {mode === "pick-quiz" && (
         <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
-          <h1 className="text-2xl font-extrabold text-white">Pick quizzes</h1>
-          <p className="text-sm font-bold text-white/50">Pick multiple — questions will be shuffled</p>
+          <h1 className="text-2xl font-extrabold text-white">{t("play.pickQuizzes")}</h1>
+          <p className="text-sm font-bold text-white/50">{t("play.pickMultiple")}</p>
 
           {error && (
             <p className="w-full rounded-xl bg-[#e21b3c]/20 px-4 py-3 text-center text-sm font-bold text-white">
@@ -165,7 +167,7 @@ function PlayPageInner() {
             disabled={selectedQuizIds.length === 0}
             className="btn-primary w-full text-center disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            Next →{selectedQuizIds.length > 1 ? ` (${selectedQuizIds.length} quizzes)` : ""}
+            {t("play.next")}{selectedQuizIds.length > 1 ? ` (${selectedQuizIds.length} quizzes)` : ""}
           </button>
 
           <button
@@ -173,14 +175,14 @@ function PlayPageInner() {
             className="flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            Back
+            {t("play.back")}
           </button>
         </div>
       )}
 
       {mode === "pick-mode" && (
         <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
-          <h1 className="text-2xl font-extrabold text-white">Pick mode</h1>
+          <h1 className="text-2xl font-extrabold text-white">{t("play.pickMode")}</h1>
 
           {error && (
             <p className="w-full rounded-xl bg-[#e21b3c]/20 px-4 py-3 text-center text-sm font-bold text-white">
@@ -197,14 +199,14 @@ function PlayPageInner() {
             className="flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            Back
+            {t("play.back")}
           </button>
         </div>
       )}
 
       {mode === "host-join" && (
         <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
-          <h1 className="text-2xl font-extrabold text-white">How will you play?</h1>
+          <h1 className="text-2xl font-extrabold text-white">{t("play.howWillYouPlay")}</h1>
 
           {error && (
             <p className="w-full rounded-xl bg-[#e21b3c]/20 px-4 py-3 text-center text-sm font-bold text-white">
@@ -225,8 +227,8 @@ function PlayPageInner() {
                 <Monitor className="h-6 w-6 text-white" />
               </div>
               <div>
-                <p className="text-base font-extrabold text-white">Big screen</p>
-                <p className="text-xs font-bold text-white/50">Show questions on screen, players join on phones</p>
+                <p className="text-base font-extrabold text-white">{t("play.bigScreen")}</p>
+                <p className="text-xs font-bold text-white/50">{t("play.bigScreenDesc")}</p>
               </div>
             </button>
 
@@ -245,8 +247,8 @@ function PlayPageInner() {
                 <Smartphone className="h-6 w-6 text-white" />
               </div>
               <div>
-                <p className="text-base font-extrabold text-white">I'll play too</p>
-                <p className="text-xs font-bold text-white/50">Everyone plays on phones — you answer too</p>
+                <p className="text-base font-extrabold text-white">{t("play.illPlayToo")}</p>
+                <p className="text-xs font-bold text-white/50">{t("play.illPlayTooDesc")}</p>
               </div>
             </button>
           </div>
@@ -256,13 +258,13 @@ function PlayPageInner() {
             <div className="flex w-full flex-col gap-4 animate-fade-in-up">
               <div>
                 <label className="mb-1.5 block text-sm font-bold text-white/60">
-                  Name
+                  {t("play.name")}
                 </label>
                 <input
                   type="text"
                   value={hostName}
                   onChange={(e) => setHostName(e.target.value)}
-                  placeholder="e.g. John"
+                  placeholder={t("play.namePlaceholder")}
                   maxLength={20}
                   className="w-full rounded-xl border-2 border-white/15 bg-white/5 px-4 py-3 text-lg text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
                   autoFocus
@@ -270,7 +272,7 @@ function PlayPageInner() {
               </div>
               <div>
                 <label className="mb-1.5 block text-sm font-bold text-white/60">
-                  Avatar
+                  {t("play.avatar")}
                 </label>
                 <AvatarBuilder onChange={setHostAvatar} />
               </div>
@@ -279,7 +281,7 @@ function PlayPageInner() {
                 disabled={!hostName.trim()}
                 className="btn-primary w-full disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                Create game
+                {t("play.createGame")}
               </button>
             </div>
           )}
@@ -289,14 +291,14 @@ function PlayPageInner() {
             className="flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            Back
+            {t("play.back")}
           </button>
         </div>
       )}
 
       {mode === "join" && (
         <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
-          <h1 className="text-2xl font-extrabold text-white">Join</h1>
+          <h1 className="text-2xl font-extrabold text-white">{t("play.join")}</h1>
 
           <JoinForm
             initialCode={codeFromUrl}
@@ -310,7 +312,7 @@ function PlayPageInner() {
             className="flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            Back
+            {t("play.back")}
           </button>
         </div>
       )}
@@ -318,7 +320,7 @@ function PlayPageInner() {
       {mode === "creating" && (
         <div className="flex flex-col items-center gap-4 animate-fade-in">
           <Loader2 className="h-12 w-12 animate-spin text-white" />
-          <p className="text-lg font-bold text-white/60">Creating room...</p>
+          <p className="text-lg font-bold text-white/60">{t("play.creatingRoom")}</p>
         </div>
       )}
     </main>

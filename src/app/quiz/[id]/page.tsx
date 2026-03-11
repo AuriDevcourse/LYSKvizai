@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Loader2, ArrowLeft } from "lucide-react";
 import type { Question } from "@/data/types";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 import ProgressBar from "@/components/ProgressBar";
 import QuizCard from "@/components/QuizCard";
 import ResultScreen from "@/components/ResultScreen";
@@ -25,6 +26,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 export default function SinglePlayerQuiz({ params }: PageProps) {
   const { id } = use(params);
   const searchParams = useSearchParams();
+  const { t } = useTranslation();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [quizTitle, setQuizTitle] = useState("");
   const [loading, setLoading] = useState(true);
@@ -53,13 +55,13 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
         .then((results) => {
           const validQuizzes = results.filter(Boolean);
           if (validQuizzes.length === 0) {
-            setError("Quizzes not found");
+            setError(t("quiz.notFound"));
             return;
           }
           const allQuestions: Question[] = validQuizzes.flatMap((q: { questions: Question[] }) => q.questions);
           setQuestions(shuffleArray(allQuestions));
           const titles = validQuizzes.map((q: { title: string }) => q.title);
-          setQuizTitle(`Mix: ${titles.join(" + ")}`);
+          setQuizTitle(`${t("quiz.mix")}${titles.join(" + ")}`);
         })
         .catch(() => setError("Error loading quizzes"))
         .finally(() => setLoading(false));
@@ -67,7 +69,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
       // Single quiz mode
       fetch(`/api/quizzes/${id}`)
         .then((res) => {
-          if (!res.ok) throw new Error("Quiz not found");
+          if (!res.ok) throw new Error(t("quiz.notFound"));
           return res.json();
         })
         .then((quiz) => {
@@ -118,9 +120,9 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
     return (
       <div className="flex min-h-svh items-center justify-center bg-[#46178f]">
         <div className="flex flex-col items-center gap-4 text-center">
-          <p className="text-lg font-bold text-white">{error || "Quiz is empty"}</p>
+          <p className="text-lg font-bold text-white">{error || t("quiz.empty")}</p>
           <Link href="/" className="btn-primary">
-            Back
+            {t("quiz.home")}
           </Link>
         </div>
       </div>
@@ -142,7 +144,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
               className="mt-6 flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
-              Home
+              {t("quiz.home")}
             </Link>
           </div>
         ) : (

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Plus, Save, Loader2 } from "lucide-react";
 import type { Question, Quiz } from "@/data/types";
 import QuestionEditor from "@/components/editor/QuestionEditor";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 const EMPTY_QUESTION: Question = {
   question: "",
@@ -22,6 +23,7 @@ interface PageProps {
 export default function QuizEditorPage({ params }: PageProps) {
   const { id } = use(params);
   const router = useRouter();
+  const { t } = useTranslation();
   const isNew = id === "new";
 
   const [quizId, setQuizId] = useState(isNew ? "" : id);
@@ -56,7 +58,7 @@ export default function QuizEditorPage({ params }: PageProps) {
   const handleSave = useCallback(async () => {
     // Validation
     if (!title.trim()) {
-      setError("Enter a title");
+      setError(t("editor.enterTitle"));
       return;
     }
     const finalId = isNew
@@ -72,7 +74,7 @@ export default function QuizEditorPage({ params }: PageProps) {
       : quizId;
 
     if (!finalId) {
-      setError("Invalid title for ID generation");
+      setError(t("editor.invalidTitle"));
       return;
     }
 
@@ -81,7 +83,7 @@ export default function QuizEditorPage({ params }: PageProps) {
       (q) => q.question.trim() && q.options.some((o) => o.trim())
     );
     if (validQuestions.length === 0) {
-      setError("Add at least one question");
+      setError(t("editor.addOneQuestion"));
       return;
     }
 
@@ -161,7 +163,7 @@ export default function QuizEditorPage({ params }: PageProps) {
             onClick={() => router.push("/editor")}
             className="rounded-xl bg-white px-6 py-3 font-semibold text-[#46178f] hover:bg-white/90"
           >
-            Back
+            {t("nav.back")}
           </button>
         </div>
       </div>
@@ -183,7 +185,7 @@ export default function QuizEditorPage({ params }: PageProps) {
             className="flex items-center gap-1.5 text-sm text-white/40 hover:text-white/60"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back
+            {t("nav.back")}
           </button>
           <button
             onClick={handleSave}
@@ -195,7 +197,7 @@ export default function QuizEditorPage({ params }: PageProps) {
             ) : (
               <Save className="h-4 w-4" />
             )}
-            {saved ? "Saved!" : "Save"}
+            {saved ? t("editor.saved") : t("editor.save")}
           </button>
         </div>
 
@@ -209,33 +211,33 @@ export default function QuizEditorPage({ params }: PageProps) {
         <div className="mb-6 space-y-4 rounded-2xl border-2 border-white/15 bg-white/5 p-5">
           <div>
             <label className="mb-1 block text-xs font-medium text-white/50">
-              Title
+              {t("editor.quizTitle")}
             </label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-lg font-bold text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
-              placeholder="Quiz title"
+              placeholder={t("editor.quizTitlePlaceholder")}
             />
           </div>
 
           <div>
             <label className="mb-1 block text-xs font-medium text-white/50">
-              Description
+              {t("editor.description")}
             </label>
             <input
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="w-full rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
-              placeholder="Short description..."
+              placeholder={t("editor.descriptionPlaceholder")}
             />
           </div>
 
           <div>
             <label className="mb-1 block text-xs font-medium text-white/50">
-              Emoji
+              {t("editor.emoji")}
             </label>
             <div className="flex flex-wrap gap-2">
               {EMOJI_OPTIONS.map((e) => (
@@ -258,7 +260,7 @@ export default function QuizEditorPage({ params }: PageProps) {
 
         {/* Questions */}
         <h2 className="mb-4 text-lg font-bold text-white">
-          Questions ({questions.length})
+          {t("editor.questions")} ({questions.length})
         </h2>
 
         <div className="space-y-4">
@@ -282,7 +284,7 @@ export default function QuizEditorPage({ params }: PageProps) {
           className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-white/15 py-4 text-white/50 transition-colors hover:border-white/30 hover:bg-white/5 hover:text-white/80"
         >
           <Plus className="h-5 w-5" />
-          Add question
+          {t("editor.addQuestion")}
         </button>
 
         {/* Bottom save */}
@@ -297,7 +299,7 @@ export default function QuizEditorPage({ params }: PageProps) {
             ) : (
               <Save className="h-4 w-4" />
             )}
-            {saved ? "Saved!" : "Save quiz"}
+            {saved ? t("editor.saved") : t("editor.saveQuiz")}
           </button>
         </div>
       </main>

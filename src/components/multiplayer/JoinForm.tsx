@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { LogIn } from "lucide-react";
 import AvatarBuilder from "@/components/AvatarBuilder";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface JoinFormProps {
   initialCode?: string;
@@ -12,6 +13,7 @@ interface JoinFormProps {
 }
 
 export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFormProps) {
+  const { t } = useTranslation();
   const [code, setCode] = useState(initialCode ?? "");
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
@@ -26,7 +28,7 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
     <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">
       <div>
         <label className="mb-1.5 block text-sm font-bold text-white/60">
-          Room code
+          {t("joinForm.roomCode")}
         </label>
         <input
           type="text"
@@ -41,13 +43,13 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
 
       <div>
         <label className="mb-1.5 block text-sm font-bold text-white/60">
-          Name
+          {t("joinForm.name")}
         </label>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="e.g. John"
+          placeholder={t("joinForm.namePlaceholder")}
           maxLength={20}
           className="w-full rounded-xl border-2 border-white/15 bg-white/5 px-4 py-3 text-lg text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
           autoFocus={!!initialCode}
@@ -57,7 +59,7 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
       {/* Avatar builder */}
       <div>
         <label className="mb-1.5 block text-sm font-bold text-white/60">
-          Avatar
+          {t("joinForm.avatar")}
         </label>
         <AvatarBuilder onChange={setAvatar} />
       </div>
@@ -74,7 +76,7 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
         className="btn-primary flex items-center justify-center gap-2 w-full disabled:opacity-50"
       >
         <LogIn className="h-5 w-5" />
-        {loading ? "Joining..." : "Join"}
+        {loading ? t("joinForm.joining") : t("joinForm.join")}
       </button>
     </form>
   );

@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Play, Pause, Volume2 } from "lucide-react";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface AudioPlayerProps {
   src: string;
@@ -9,6 +10,7 @@ interface AudioPlayerProps {
 }
 
 export default function AudioPlayer({ src, autoplay = true }: AudioPlayerProps) {
+  const { t } = useTranslation();
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -58,7 +60,7 @@ export default function AudioPlayer({ src, autoplay = true }: AudioPlayerProps) 
           ))}
         </div>
       </div>
-      <span className="text-sm font-medium text-cyan-200">Audio klausimas</span>
+      <span className="text-sm font-medium text-cyan-200">{t("audio.question")}</span>
     </div>
   );
 }

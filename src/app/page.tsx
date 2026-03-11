@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Users, Zap, Play } from "lucide-react";
 import QuizPicker from "@/components/QuizPicker";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 export default function Home() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const handleStart = () => {
@@ -47,11 +49,11 @@ export default function Home() {
         <div className="mt-6 hidden sm:flex sm:flex-row sm:justify-center gap-3 animate-fade-in-up" style={{ animationDelay: "200ms", animationFillMode: "backwards" }}>
           <Link href="/play" className="btn-secondary flex items-center gap-2">
             <Users className="h-5 w-5" />
-            Play with friends
+            {t("home.playWithFriends")}
           </Link>
           <Link href="/editor" className="btn-secondary flex items-center gap-2">
             <Zap className="h-4 w-4" />
-            Editor
+            {t("home.editor")}
           </Link>
         </div>
       </main>

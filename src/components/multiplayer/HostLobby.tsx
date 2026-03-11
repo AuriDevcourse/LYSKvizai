@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Users, Play, QrCode, Swords, Skull } from "lucide-react";
 import type { PlayerInfo, GameMode } from "@/lib/multiplayer/types";
 import { useSound } from "@/hooks/useSound";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 import QRCodeComponent from "./QRCode";
 import RoomCodeDisplay from "./RoomCodeDisplay";
 import Avatar from "@/components/Avatar";
@@ -19,6 +20,7 @@ interface HostLobbyProps {
 export default function HostLobby({ code, players, onStart, gameMode = "classic", teamNames = [] }: HostLobbyProps) {
   const [joinUrl, setJoinUrl] = useState("");
   const { playLobby, stopLobby } = useSound();
+  const { t } = useTranslation();
 
   useEffect(() => {
     playLobby();
@@ -48,7 +50,7 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
             : "bg-blue-500/20 text-blue-300"
         }`}>
           {gameMode === "elimination" ? <Skull className="h-4 w-4" /> : <Users className="h-4 w-4" />}
-          {gameMode === "elimination" ? "Elimination" : `Team (${teamNames.length} teams)`}
+          {gameMode === "elimination" ? t("lobby.elimination") : `${t("lobby.team")} (${teamNames.length} ${t("lobby.teams")})`}
         </div>
       )}
 
@@ -59,7 +61,7 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
           {joinUrl && <QRCodeComponent url={joinUrl} size={200} />}
           <div className="flex items-center gap-1.5 text-sm text-white/40">
             <QrCode className="h-3.5 w-3.5" />
-            <span>Scan QR or enter code</span>
+            <span>{t("lobby.scanQR")}</span>
           </div>
           {joinUrl && (
             <p className="max-w-xs break-all text-center font-mono text-xs text-white/30">
@@ -72,13 +74,13 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
         <div className="flex min-w-[240px] flex-col items-center gap-4">
           <div className="flex items-center gap-2 text-sm uppercase tracking-wider text-white/50">
             <Users className="h-4 w-4" />
-            <span>Players ({players.length})</span>
+            <span>{t("lobby.players")} ({players.length})</span>
           </div>
 
           {players.length === 0 ? (
             <div className="flex flex-col items-center gap-2 py-8 text-white/30">
               <Users className="h-8 w-8" />
-              <p>Waiting for players...</p>
+              <p>{t("lobby.waitingForPlayers")}</p>
             </div>
           ) : (
             <div className="flex flex-col gap-2">
@@ -100,7 +102,7 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
             className="flex w-full items-center justify-center gap-2 rounded-xl bg-white text-[#46178f] px-10 py-4 text-xl font-bold transition-colors hover:bg-white/90 disabled:opacity-50"
           >
             <Play className="h-6 w-6" />
-            Start!
+            {t("lobby.start")}
           </button>
         </div>
       </div>

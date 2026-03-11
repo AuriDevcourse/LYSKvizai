@@ -1,6 +1,7 @@
 import { Users, Loader2 } from "lucide-react";
 import type { PlayerInfo } from "@/lib/multiplayer/types";
 import Avatar from "@/components/Avatar";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface PlayerLobbyProps {
   code: string;
@@ -10,28 +11,29 @@ interface PlayerLobbyProps {
 }
 
 export default function PlayerLobby({ code, players, playerName, playerEmoji }: PlayerLobbyProps) {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-6">
       <Avatar value={playerEmoji} size={64} />
 
-      <h1 className="text-2xl font-bold text-white">You're in!</h1>
+      <h1 className="text-2xl font-bold text-white">{t("playerLobby.youreIn")}</h1>
 
       <p className="text-white/60">
-        Room <span className="font-bold text-white/80">{code}</span>
+        {t("playerLobby.room")} <span className="font-bold text-white/80">{code}</span>
       </p>
 
       <div className="rounded-xl border-2 border-white/20 bg-white/5 px-6 py-4 text-center">
         <p className="text-lg font-bold text-white">{playerName}</p>
         <div className="mt-2 flex items-center justify-center gap-2 text-sm text-white/50">
           <Loader2 className="h-3.5 w-3.5 animate-spin" />
-          <span>Waiting to start...</span>
+          <span>{t("playerLobby.waitingToStart")}</span>
         </div>
       </div>
 
       <div className="w-full max-w-xs">
         <div className="mb-3 flex items-center justify-center gap-2 text-sm uppercase tracking-wider text-white/50">
           <Users className="h-4 w-4" />
-          <span>Players ({players.length})</span>
+          <span>{t("lobby.players")} ({players.length})</span>
         </div>
         <div className="flex flex-wrap justify-center gap-2">
           {players.map((p) => (

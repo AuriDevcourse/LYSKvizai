@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Check, ChevronUp, ChevronDown, Calendar } from "lucide-react";
 import type { QuestionPayload } from "@/lib/multiplayer/types";
 import Timer from "./Timer";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface YearGuesserInputProps {
   question: QuestionPayload;
@@ -20,6 +21,7 @@ export default function YearGuesserInput({
   timerReduction = 0,
   eliminated = false,
 }: YearGuesserInputProps) {
+  const { t } = useTranslation();
   const [year, setYear] = useState(2000);
   const [submitted, setSubmitted] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -72,7 +74,7 @@ export default function YearGuesserInput({
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
         <Calendar className="h-10 w-10 text-white/40" />
-        <p className="text-lg font-extrabold text-white/60">Spectator mode</p>
+        <p className="text-lg font-extrabold text-white/60">{t("playerQuestion.spectatorMode")}</p>
       </div>
     );
   }
@@ -83,9 +85,9 @@ export default function YearGuesserInput({
         <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/15">
           <Check className="h-10 w-10 text-white" />
         </div>
-        <p className="text-xl font-extrabold text-white">Locked in!</p>
+        <p className="text-xl font-extrabold text-white">{t("yearGuesser.lockedIn")}</p>
         <p className="text-4xl font-extrabold text-white">{year}</p>
-        <p className="font-bold text-white/50">Waiting for others...</p>
+        <p className="font-bold text-white/50">{t("yearGuesser.waitingForOthers")}</p>
       </div>
     );
   }
@@ -107,7 +109,7 @@ export default function YearGuesserInput({
       <div className="glass rounded-2xl px-5 py-4 text-center">
         <div className="mb-1 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider text-white/50">
           <Calendar className="h-3.5 w-3.5" />
-          Year Guesser
+          {t("yearGuesser.title")}
         </div>
         <h2 className="text-lg font-extrabold text-white">
           {question.question}
@@ -177,7 +179,7 @@ export default function YearGuesserInput({
           onClick={handleSubmit}
           className="btn-primary mt-2 w-full max-w-xs text-lg"
         >
-          Lock in {year}
+          {t("yearGuesser.lockIn")} {year}
         </button>
       </div>
     </div>
