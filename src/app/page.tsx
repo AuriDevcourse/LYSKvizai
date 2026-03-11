@@ -43,8 +43,8 @@ export default function Home() {
           </button>
         )}
 
-        {/* Action links */}
-        <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center animate-fade-in-up" style={{ animationDelay: "200ms", animationFillMode: "backwards" }}>
+        {/* Action links — hidden on mobile (bottom nav handles it) */}
+        <div className="mt-6 hidden sm:flex sm:flex-row sm:justify-center gap-3 animate-fade-in-up" style={{ animationDelay: "200ms", animationFillMode: "backwards" }}>
           <Link href="/play" className="btn-secondary flex items-center gap-2">
             <Users className="h-5 w-5" />
             Žaisti su draugais
@@ -56,7 +56,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="relative z-10 pb-4 text-center text-xs text-white/30">
+      <footer className="relative z-10 pb-20 sm:pb-4 text-center text-xs text-white/30">
         Quizmo &copy; {new Date().getFullYear()}
       </footer>
     </div>

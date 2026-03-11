@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Montserrat } from "next/font/google";
 import { Agentation } from "agentation";
+import BottomNav from "@/components/BottomNav";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -29,6 +30,7 @@ export default function RootLayout({
     <html lang="lt">
       <body className={`${geistSans.variable} ${montserrat.variable} font-[Montserrat] antialiased`}>
           {children}
+          <BottomNav />
           {process.env.NODE_ENV === "development" && <Agentation />}
         </body>
     </html>
