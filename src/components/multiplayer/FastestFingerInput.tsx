@@ -5,7 +5,6 @@ import { Check, Eye, Zap } from "lucide-react";
 import type { QuestionPayload } from "@/lib/multiplayer/types";
 import Timer from "./Timer";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
-import { useContentTranslationSingle } from "@/hooks/useContentTranslation";
 
 interface FastestFingerInputProps {
   question: QuestionPayload;
@@ -22,8 +21,8 @@ export default function FastestFingerInput({
   timerReduction = 0,
   eliminated = false,
 }: FastestFingerInputProps) {
-  const { t } = useTranslation();
-  const qText = useContentTranslationSingle(question.question);
+  const { t, lang } = useTranslation();
+  const qText = lang !== "lt" && question.en ? question.en.question : question.question;
   const [text, setText] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);

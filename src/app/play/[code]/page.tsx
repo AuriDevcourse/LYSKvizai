@@ -18,7 +18,6 @@ import WagerScreen from "@/components/multiplayer/WagerScreen";
 import HostWager from "@/components/multiplayer/HostWager";
 import type { PowerUpType } from "@/lib/multiplayer/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
-import { preTranslateContent } from "@/hooks/useContentTranslation";
 
 interface PageProps {
   params: Promise<{ code: string }>;
@@ -27,7 +26,7 @@ interface PageProps {
 export default function GamePage({ params }: PageProps) {
   const { code } = use(params);
   const router = useRouter();
-  const { t, lang } = useTranslation();
+  const { t } = useTranslation();
 
   const [playerId] = useState(() => {
     if (typeof window === "undefined") return "";
@@ -86,24 +85,6 @@ export default function GamePage({ params }: PageProps) {
   useEffect(() => {
     if (question) setLastQuestion(question);
   }, [question]);
-
-  // Pre-translate question content as soon as it arrives
-  useEffect(() => {
-    if (!question || lang === "lt") return;
-    const texts = [question.question, ...question.options];
-    preTranslateContent(texts, lang);
-  }, [question, lang]);
-
-  // Pre-translate results content
-  useEffect(() => {
-    if (!results || lang === "lt") return;
-    const texts: string[] = [];
-    if (results.correctAnswerText) texts.push(results.correctAnswerText);
-    if (results.explanation) texts.push(results.explanation);
-    // Also translate the options from the last question
-    if (lastQuestion) texts.push(...lastQuestion.options);
-    preTranslateContent(texts, lang);
-  }, [results, lang, lastQuestion]);
 
   const handleStart = useCallback(async () => {
     try {

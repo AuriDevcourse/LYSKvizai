@@ -9,7 +9,6 @@ import type { EmojiReactionWithId } from "@/hooks/useRoom";
 import EmojiReactions from "./EmojiReactions";
 import Avatar from "@/components/Avatar";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
-import { useContentTranslation } from "@/hooks/useContentTranslation";
 
 const OPTION_STYLES = [
   { border: "border-[#e21b3c]", bg: "bg-[#e21b3c]", barBg: "bg-[#e21b3c]/30", iconBg: "bg-[#e21b3c]", icon: Triangle },
@@ -35,15 +34,12 @@ export default function HostResults({
   onNext,
   gameMode = "classic",
 }: HostResultsProps) {
-  const { t } = useTranslation();
-  // Translate quiz content: correct answer text, explanation, and all options
+  const { t, lang } = useTranslation();
+  const useEn = lang !== "lt" && results.en;
   const correctText = results.correctAnswerText ?? question?.options[results.correctAnswer] ?? "";
-  const optionTexts = question?.options ?? ["", "", "", ""];
-  const contentToTranslate = [correctText, results.explanation ?? "", ...optionTexts];
-  const translated = useContentTranslation(contentToTranslate);
-  const tCorrectAnswer = translated[0];
-  const tExplanation = translated[1];
-  const tOptions = translated.slice(2) as string[];
+  const tCorrectAnswer = useEn && results.en?.correctAnswerText ? results.en.correctAnswerText : (useEn && results.en?.options ? results.en.options[results.correctAnswer] : correctText);
+  const tExplanation = useEn && results.en?.explanation ? results.en.explanation : (results.explanation ?? "");
+  const tOptions = useEn && results.en?.options ? results.en.options : (question?.options ?? ["", "", "", ""]);
   const totalAnswers = results.answerDistribution.reduce((a, b) => a + b, 0);
 
   return (

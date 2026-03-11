@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
     }
 
     case "start": {
-      const result = startGame(body.code, body.hostId);
+      const result = await startGame(body.code, body.hostId);
       if (result.error) return json({ error: result.error }, 400);
       return json({ ok: true });
     }

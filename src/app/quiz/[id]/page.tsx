@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Loader2, ArrowLeft } from "lucide-react";
 import type { Question } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
-import { preTranslateContent } from "@/hooks/useContentTranslation";
 import ProgressBar from "@/components/ProgressBar";
 import QuizCard from "@/components/QuizCard";
 import ResultScreen from "@/components/ResultScreen";
@@ -42,51 +41,38 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
     const isMix = id === "mix";
     const idsParam = searchParams.get("ids");
 
-    /** Collect all translatable strings from questions and pre-translate them */
-    async function preTranslateQuestions(qs: Question[], title: string) {
-      const allTexts: string[] = [title];
-      for (const q of qs) {
-        allTexts.push(q.question, ...q.options, q.explanation);
-      }
-      await preTranslateContent(allTexts, lang);
-    }
-
     if (isMix && idsParam) {
       // Multi-quiz mode: fetch all quizzes and merge
       const quizIds = idsParam.split(",").filter(Boolean);
       Promise.all(
         quizIds.map((qid) =>
-          fetch(`/api/quizzes/${qid}`).then((res) => {
+          fetch(`/api/quizzes/${qid}?lang=${lang}`).then((res) => {
             if (!res.ok) return null;
             return res.json();
           })
         )
       )
-        .then(async (results) => {
+        .then((results) => {
           const validQuizzes = results.filter(Boolean);
           if (validQuizzes.length === 0) {
             setError(t("quiz.notFound"));
             return;
           }
           const allQuestions: Question[] = validQuizzes.flatMap((q: { questions: Question[] }) => q.questions);
-          const shuffled = shuffleArray(allQuestions);
+          setQuestions(shuffleArray(allQuestions));
           const titles = validQuizzes.map((q: { title: string }) => q.title);
-          const title = `${t("quiz.mix")}${titles.join(" + ")}`;
-          await preTranslateQuestions(shuffled, title);
-          setQuestions(shuffled);
-          setQuizTitle(title);
+          setQuizTitle(`${t("quiz.mix")}${titles.join(" + ")}`);
         })
         .catch(() => setError("Error loading quizzes"))
         .finally(() => setLoading(false));
     } else {
       // Single quiz mode
-      fetch(`/api/quizzes/${id}`)
+      fetch(`/api/quizzes/${id}?lang=${lang}`)
         .then((res) => {
           if (!res.ok) throw new Error(t("quiz.notFound"));
           return res.json();
         })
-        .then(async (quiz) => {
-          await preTranslateQuestions(quiz.questions, quiz.title);
+        .then((quiz) => {
           setQuestions(quiz.questions);
           setQuizTitle(quiz.title);
         })

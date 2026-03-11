@@ -16,6 +16,7 @@ import type {
 import { generateRoomCode } from "./room-code";
 import { calculateScore } from "./scoring";
 import { broadcast, removeRoomConnections } from "./sse-manager";
+import { translateBatch } from "@/lib/translate";
 import { getQuiz } from "@/lib/quiz-store";
 import type { Question } from "@/data/types";
 
@@ -132,6 +133,21 @@ function getQuestionPayload(room: Room): QuestionPayload {
   // Team mode: include who can answer
   if (room.gameMode === "team") {
     payload.currentTeamAnswerers = [...room.currentTeamAnswerer.values()];
+  }
+
+  // Include English translations if available
+  const enT = room.enTranslations.get(qIndex);
+  if (enT) {
+    const enShuffledOptions = optShuffle.map((origIdx) => {
+      if (q.type === "bluff" && q.bluffAnswer && room.bluffReplacedOriginalIndex === origIdx) {
+        return q.bluffAnswer; // bluff answer stays as-is
+      }
+      return enT.options[origIdx];
+    }) as [string, string, string, string];
+    payload.en = {
+      question: enT.question,
+      options: enShuffledOptions,
+    };
   }
 
   return payload;
@@ -328,6 +344,19 @@ function getResultsPayload(room: Room): ResultsPayload {
     result.powerUpEffects = powerUpEffects;
   }
 
+  // Include English translations for results
+  const enT = room.enTranslations.get(qIndex);
+  if (enT) {
+    const optShuffle = room.optionShuffles[room.currentQuestionIndex];
+    result.en = {
+      correctAnswerText: result.correctAnswerText
+        ? enT.options[q.correct]
+        : undefined,
+      explanation: enT.explanation,
+      options: optShuffle.map((origIdx) => enT.options[origIdx]),
+    };
+  }
+
   return result;
 }
 
@@ -491,6 +520,7 @@ export async function createRoom(
     bluffReplacedOriginalIndex: null,
 
     mysteryMultipliers: new Map(),
+    enTranslations: new Map(),
   };
 
   rooms.set(code, room);
@@ -548,7 +578,7 @@ export function joinRoom(
   return { room, player };
 }
 
-export function startGame(code: string, hostId: string): { error?: string } {
+export async function startGame(code: string, hostId: string): Promise<{ error?: string }> {
   const room = rooms.get(code);
   if (!room) return { error: "Room not found" };
   if (room.hostId !== hostId) return { error: "Only the host can start" };
@@ -580,6 +610,25 @@ export function startGame(code: string, hostId: string): { error?: string } {
     if (Math.random() < 0.25) {
       room.mysteryMultipliers.set(i, Math.floor(Math.random() * 4) + 2); // 2-5
     }
+  }
+
+  // Pre-translate all questions to English
+  try {
+    const allTexts: string[] = [];
+    for (const idx of room.questionIndices) {
+      const q = room.questions[idx];
+      allTexts.push(q.question, ...q.options, q.explanation);
+    }
+    const translated = await translateBatch(allTexts, "lt", "en");
+    let ti = 0;
+    for (const idx of room.questionIndices) {
+      const tQuestion = translated[ti++];
+      const tOptions = [translated[ti++], translated[ti++], translated[ti++], translated[ti++]];
+      const tExplanation = translated[ti++];
+      room.enTranslations.set(idx, { question: tQuestion, options: tOptions, explanation: tExplanation });
+    }
+  } catch {
+    // Translation failed — multiplayer will fall back to Lithuanian
   }
 
   room.state = "question";

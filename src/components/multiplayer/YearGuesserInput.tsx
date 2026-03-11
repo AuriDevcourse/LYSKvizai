@@ -5,7 +5,6 @@ import { Check, ChevronUp, ChevronDown, Calendar } from "lucide-react";
 import type { QuestionPayload } from "@/lib/multiplayer/types";
 import Timer from "./Timer";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
-import { useContentTranslationSingle } from "@/hooks/useContentTranslation";
 
 interface YearGuesserInputProps {
   question: QuestionPayload;
@@ -22,8 +21,8 @@ export default function YearGuesserInput({
   timerReduction = 0,
   eliminated = false,
 }: YearGuesserInputProps) {
-  const { t } = useTranslation();
-  const qText = useContentTranslationSingle(question.question);
+  const { t, lang } = useTranslation();
+  const qText = lang !== "lt" && question.en ? question.en.question : question.question;
   const [year, setYear] = useState(2000);
   const [submitted, setSubmitted] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);

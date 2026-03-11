@@ -83,6 +83,10 @@ export interface Room {
   // --- Mystery Multiplier ---
   /** Mystery multiplier: questionIndex -> multiplier (2-5) */
   mysteryMultipliers: Map<number, number>;
+
+  // --- Pre-translated content ---
+  /** English translations of questions, keyed by question index */
+  enTranslations: Map<number, { question: string; options: string[]; explanation: string }>;
 }
 
 // --- Server → Client Events (SSE) ---
@@ -158,6 +162,11 @@ export interface QuestionPayload {
   canAnswer?: boolean;
   /** Player IDs who can answer this round (team mode) */
   currentTeamAnswerers?: string[];
+  /** Pre-translated content (English). Client uses these when lang !== "lt". */
+  en?: {
+    question: string;
+    options: [string, string, string, string];
+  };
 }
 
 export interface AnswerResult {
@@ -198,6 +207,12 @@ export interface ResultsPayload {
   correctAnswerText?: string;
   /** Year guesser results */
   yearGuesses?: { playerId: string; playerName: string; guessedYear: number; correctYear: number; points: number }[];
+  /** Pre-translated content (English) */
+  en?: {
+    correctAnswerText?: string;
+    explanation?: string;
+    options?: string[];
+  };
 }
 
 export interface LeaderboardEntry {

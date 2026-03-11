@@ -3,7 +3,6 @@
 import { Triangle, Diamond, Circle, Square, Check, X } from "lucide-react";
 import type { Question } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
-import { useContentTranslation } from "@/hooks/useContentTranslation";
 
 interface QuizCardProps {
   question: Question;
@@ -30,10 +29,10 @@ export default function QuizCard({
   isLast,
 }: QuizCardProps) {
   const { t } = useTranslation();
-  const translated = useContentTranslation([question.question, ...question.options, question.explanation]);
-  const qText = translated[0];
-  const qOptions = translated.slice(1, 5);
-  const qExplanation = translated[5];
+  // Content is already translated server-side via /api/quizzes/[id]?lang=
+  const qText = question.question;
+  const qOptions = question.options;
+  const qExplanation = question.explanation;
   const answered = selectedAnswer !== null;
   const isCorrect = selectedAnswer === question.correct;
 

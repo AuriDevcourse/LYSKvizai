@@ -9,7 +9,6 @@ import ProgressiveImage from "./ProgressiveImage";
 import AudioPlayer from "./AudioPlayer";
 import VideoPlayer from "./VideoPlayer";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
-import { useContentTranslation } from "@/hooks/useContentTranslation";
 
 const OPTION_BG = [
   "bg-[#e21b3c]",
@@ -33,10 +32,9 @@ export default function HostQuestion({
   onTimerExpire,
   powerUpEvent,
 }: HostQuestionProps) {
-  const { t } = useTranslation();
-  const translatedContent = useContentTranslation([question.question, ...question.options]);
-  const qText = translatedContent[0];
-  const qOptions = translatedContent.slice(1) as string[];
+  const { t, lang } = useTranslation();
+  const qText = lang !== "lt" && question.en ? question.en.question : question.question;
+  const qOptions = lang !== "lt" && question.en ? question.en.options : question.options;
   const count = answerCount?.count ?? 0;
   const isProgressive = question.progressiveReveal ?? false;
   const words = qText.split(/\s+/);

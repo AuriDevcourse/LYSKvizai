@@ -11,7 +11,6 @@ import ProgressiveImage from "./ProgressiveImage";
 import AudioPlayer from "./AudioPlayer";
 import VideoPlayer from "./VideoPlayer";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
-import { useContentTranslation } from "@/hooks/useContentTranslation";
 
 const BUTTON_COLORS = [
   "bg-[#e21b3c] hover:brightness-110 active:brightness-90",
@@ -52,10 +51,9 @@ export default function PlayerQuestion({
   canAnswer = true,
   waitingPlayerName,
 }: PlayerQuestionProps) {
-  const { t } = useTranslation();
-  const translatedContent = useContentTranslation([question.question, ...question.options]);
-  const qText = translatedContent[0];
-  const qOptions = translatedContent.slice(1) as string[];
+  const { t, lang } = useTranslation();
+  const qText = lang !== "lt" && question.en ? question.en.question : question.question;
+  const qOptions = lang !== "lt" && question.en ? question.en.options : question.options;
   const [selected, setSelected] = useState<number | null>(null);
   const isProgressive = question.progressiveReveal ?? false;
   const words = qText.split(/\s+/);

@@ -7,25 +7,24 @@ import { Plus, Trash2, Pencil, ArrowLeft, Loader2 } from "lucide-react";
 import type { QuizMeta } from "@/data/types";
 import { getQuizTheme } from "@/lib/quiz-theme";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
-import { useContentTranslation } from "@/hooks/useContentTranslation";
 
 export default function EditorPage() {
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   const [quizzes, setQuizzes] = useState<QuizMeta[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
-  const quizTitles = useContentTranslation(quizzes.map((q) => q.title));
+  const quizTitles = quizzes.map((q) => q.title);
 
   const fetchQuizzes = () => {
-    fetch("/api/quizzes")
+    fetch(`/api/quizzes?lang=${lang}`)
       .then((res) => res.json())
       .then((data) => setQuizzes(data))
       .catch(() => {})
       .finally(() => setLoading(false));
   };
 
-  useEffect(fetchQuizzes, []);
+  useEffect(fetchQuizzes, [lang]);
 
   const handleDelete = async (id: string, title: string) => {
     if (!confirm(`Are you sure you want to delete "${title}"?`)) return;

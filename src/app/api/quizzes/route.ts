@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { listQuizzes, saveQuiz } from "@/lib/quiz-store";
+import { translateBatch } from "@/lib/translate";
 import type { Quiz } from "@/data/types";
 
 function json(data: unknown, status = 200) {
@@ -7,8 +8,16 @@ function json(data: unknown, status = 200) {
 }
 
 /** GET /api/quizzes — list all quiz metadata */
-export async function GET() {
+export async function GET(req: NextRequest) {
   const quizzes = await listQuizzes();
+
+  const lang = req.nextUrl.searchParams.get("lang");
+  if (lang && lang !== "lt") {
+    const titles = quizzes.map((q) => q.title);
+    const translated = await translateBatch(titles, "lt", lang);
+    return json(quizzes.map((q, i) => ({ ...q, title: translated[i] })));
+  }
+
   return json(quizzes);
 }
 
