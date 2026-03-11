@@ -187,26 +187,32 @@ export async function translateBatch(
 
   if (toTranslate.length === 0) return results;
 
-  // Protect proper nouns in each text, then batch
+  // Protect proper nouns in each text
   const protectedItems = toTranslate.map((t) => protectProperNouns(t.text));
 
-  const separator = "\n||||\n";
-  const batchText = protectedItems.map((p) => p.protected).join(separator);
+  // Chunk into small batches to avoid Google Translate's character limit
+  const CHUNK_SIZE = 5;
+  for (let c = 0; c < toTranslate.length; c += CHUNK_SIZE) {
+    const chunkIndices = toTranslate.slice(c, c + CHUNK_SIZE);
+    const chunkProtected = protectedItems.slice(c, c + CHUNK_SIZE);
 
-  try {
-    const translated = await callTranslate(batchText, from, to);
-    const parts = translated.split(/\n?\|{4}\n?/);
+    const separator = "\n||||\n";
+    const batchText = chunkProtected.map((p) => p.protected).join(separator);
 
-    for (let i = 0; i < toTranslate.length; i++) {
-      const raw = (parts[i] ?? toTranslate[i].text).trim();
-      const final = restoreProperNouns(raw, protectedItems[i].replacements);
-      results[toTranslate[i].index] = final;
-      cache.set(cacheKey(toTranslate[i].text, from, to), final);
-    }
-  } catch {
-    // Fill in untranslated with originals
-    for (const item of toTranslate) {
-      if (!results[item.index]) results[item.index] = item.text;
+    try {
+      const translated = await callTranslate(batchText, from, to);
+      const parts = translated.split(/\n?\|{4}\n?/);
+
+      for (let i = 0; i < chunkIndices.length; i++) {
+        const raw = (parts[i] ?? chunkIndices[i].text).trim();
+        const final = restoreProperNouns(raw, chunkProtected[i].replacements);
+        results[chunkIndices[i].index] = final;
+        cache.set(cacheKey(chunkIndices[i].text, from, to), final);
+      }
+    } catch {
+      for (const item of chunkIndices) {
+        if (!results[item.index]) results[item.index] = item.text;
+      }
     }
   }
 
