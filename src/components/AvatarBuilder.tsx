@@ -97,12 +97,6 @@ const ALL_PORTRAITS = [
 
 const SKIN_TOKENS = ["asian", "black", "white", "african", "caucasian"] as const;
 
-const SKIN_COLORS = [
-  { id: "light", tokens: ["white", "caucasian"], swatch: "#f5d0a9" },
-  { id: "medium", tokens: ["asian"], swatch: "#c68642" },
-  { id: "dark", tokens: ["black", "african"], swatch: "#8d5524" },
-];
-
 interface AvatarGroup {
   base: string;
   variants: { skin: string; file: string }[];
@@ -147,11 +141,24 @@ function buildGroups(): AvatarGroup[] {
   return groups;
 }
 
-const BG_COLORS = [
-  "#46178f", "#e21b3c", "#1368ce", "#26890c", "#d89e00",
-  "#7b2ff2", "#e84393", "#00b894", "#e17055", "#0ea5e9",
-  "#6c5ce7", "#fdcb6e", "#2d3436", "#00cec9", "#ff7675",
-  "#a29bfe",
+// 20 skin / tint colors — fun, not realistic
+const SKIN_PALETTE = [
+  "", // none (original)
+  "#f5d0a9", "#c68642", "#8d5524",
+  "#e21b3c", "#ff6b6b", "#e84393", "#fd79a8",
+  "#1368ce", "#74b9ff", "#0ea5e9", "#00cec9",
+  "#26890c", "#00b894", "#55efc4",
+  "#d89e00", "#fdcb6e", "#ffeaa7",
+  "#7b2ff2", "#a29bfe",
+];
+
+// 20 background colors
+const BG_PALETTE = [
+  "#46178f", "#7b2ff2", "#6c5ce7", "#a29bfe",
+  "#e21b3c", "#ff7675", "#e84393", "#fd79a8",
+  "#1368ce", "#0ea5e9", "#74b9ff", "#00cec9",
+  "#26890c", "#00b894", "#55efc4", "#badc58",
+  "#d89e00", "#fdcb6e", "#e17055", "#2d3436",
 ];
 
 // --- Component ---
@@ -165,35 +172,43 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
 
   const [selectedGroup, setSelectedGroup] = useState<AvatarGroup | null>(null);
   const [selectedFile, setSelectedFile] = useState("");
-  const [bgColor, setBgColor] = useState(BG_COLORS[0]);
+  const [bgColor, setBgColor] = useState(BG_PALETTE[0]);
+  const [tintColor, setTintColor] = useState("");
 
-  // Fire initial empty value
   useState(() => {
     onChange("");
   });
 
-  const encode = (file: string, bg: string) => `svg:${file}:${bg}`;
+  const encode = (file: string, bg: string, tint: string) =>
+    tint ? `svg:${file}:${bg}:${tint}` : `svg:${file}:${bg}`;
+
+  const emit = (file: string, bg: string, tint: string) => {
+    onChange(encode(file, bg, tint));
+  };
 
   const selectGroup = (group: AvatarGroup) => {
     setSelectedGroup(group);
     const file = group.defaultFile;
     setSelectedFile(file);
-    onChange(encode(file, bgColor));
+    emit(file, bgColor, tintColor);
   };
 
-  const selectSkin = (file: string) => {
+  const selectVariant = (file: string) => {
     setSelectedFile(file);
-    onChange(encode(file, bgColor));
+    emit(file, bgColor, tintColor);
   };
 
-  const selectBgColor = (color: string) => {
+  const selectBg = (color: string) => {
     setBgColor(color);
-    if (selectedFile) {
-      onChange(encode(selectedFile, color));
-    }
+    if (selectedFile) emit(selectedFile, color, tintColor);
   };
 
-  const currentPreview = selectedFile ? encode(selectedFile, bgColor) : "";
+  const selectTint = (color: string) => {
+    setTintColor(color);
+    if (selectedFile) emit(selectedFile, bgColor, color);
+  };
+
+  const currentPreview = selectedFile ? encode(selectedFile, bgColor, tintColor) : "";
 
   return (
     <div className="flex flex-col items-center gap-3">
@@ -208,17 +223,35 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
         )}
       </div>
 
+      {/* Skin color */}
+      <div className="w-full">
+        <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/40">Skin color</p>
+        <div className="flex flex-wrap gap-1.5">
+          {SKIN_PALETTE.map((c, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => selectTint(c)}
+              className={`h-6 w-6 rounded-full transition-all ${
+                tintColor === c ? "ring-2 ring-white scale-110" : "hover:scale-105"
+              } ${!c ? "bg-gradient-to-br from-white/40 to-white/10 border border-white/20" : ""}`}
+              style={c ? { backgroundColor: c } : undefined}
+            />
+          ))}
+        </div>
+      </div>
+
       {/* Background color */}
       <div className="w-full">
         <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/40">Background</p>
         <div className="flex flex-wrap gap-1.5">
-          {BG_COLORS.map((c) => (
+          {BG_PALETTE.map((c) => (
             <button
               key={c}
               type="button"
-              onClick={() => selectBgColor(c)}
-              className={`h-7 w-7 rounded-full transition-all ${
-                bgColor === c ? "ring-2 ring-white scale-110" : "hover:scale-110"
+              onClick={() => selectBg(c)}
+              className={`h-6 w-6 rounded-full transition-all ${
+                bgColor === c ? "ring-2 ring-white scale-110" : "hover:scale-105"
               }`}
               style={{ backgroundColor: c }}
             />
@@ -226,30 +259,25 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
         </div>
       </div>
 
-      {/* Skin tone (when group with variants is selected) */}
+      {/* Variant picker (file-based skin variants) */}
       {selectedGroup && selectedGroup.variants.length > 1 && (
         <div className="w-full">
-          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/40">Skin tone</p>
+          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/40">Variant</p>
           <div className="flex gap-2">
-            {SKIN_COLORS.map((sc) => {
-              const match = selectedGroup.variants.find((v) =>
-                sc.tokens.includes(v.skin)
-              );
-              if (!match) return null;
-              return (
-                <button
-                  key={sc.id}
-                  type="button"
-                  onClick={() => selectSkin(match.file)}
-                  className={`h-8 w-8 rounded-full border-2 transition-all ${
-                    selectedFile === match.file
-                      ? "border-white scale-110"
-                      : "border-transparent hover:scale-110"
-                  }`}
-                  style={{ backgroundColor: sc.swatch }}
-                />
-              );
-            })}
+            {selectedGroup.variants.map((v) => (
+              <button
+                key={v.file}
+                type="button"
+                onClick={() => selectVariant(v.file)}
+                className={`rounded-xl p-1 transition-all ${
+                  selectedFile === v.file
+                    ? "bg-white/20 ring-2 ring-white"
+                    : "bg-white/5 hover:bg-white/10"
+                }`}
+              >
+                <Avatar value={encode(v.file, bgColor, tintColor)} size={36} />
+              </button>
+            ))}
           </div>
         </div>
       )}
@@ -274,7 +302,7 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
                     : "bg-white/5 hover:bg-white/10"
                 }`}
               >
-                <Avatar value={encode(previewFile, bgColor)} size={44} />
+                <Avatar value={encode(previewFile, bgColor, tintColor)} size={44} />
               </button>
             );
           })}
