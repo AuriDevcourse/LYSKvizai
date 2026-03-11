@@ -218,7 +218,7 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
         )}
 
         {tab === "background" && (
-          <div className="grid grid-cols-10 gap-1.5">
+          <div className="grid grid-cols-5 gap-2">
             {BG_PALETTE.map((c) => (
               <button
                 key={c}
