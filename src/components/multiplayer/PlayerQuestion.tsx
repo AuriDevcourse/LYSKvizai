@@ -11,6 +11,7 @@ import ProgressiveImage from "./ProgressiveImage";
 import AudioPlayer from "./AudioPlayer";
 import VideoPlayer from "./VideoPlayer";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { useContentTranslation } from "@/hooks/useContentTranslation";
 
 const BUTTON_COLORS = [
   "bg-[#e21b3c] hover:brightness-110 active:brightness-90",
@@ -52,9 +53,12 @@ export default function PlayerQuestion({
   waitingPlayerName,
 }: PlayerQuestionProps) {
   const { t } = useTranslation();
+  const translatedContent = useContentTranslation([question.question, ...question.options]);
+  const qText = translatedContent[0];
+  const qOptions = translatedContent.slice(1) as string[];
   const [selected, setSelected] = useState<number | null>(null);
   const isProgressive = question.progressiveReveal ?? false;
-  const words = question.question.split(/\s+/);
+  const words = qText.split(/\s+/);
 
   useEffect(() => {
     setSelected(null);
@@ -88,11 +92,11 @@ export default function PlayerQuestion({
         </div>
 
         <h2 className="text-center text-lg font-extrabold text-white/60">
-          {question.question}
+          {qText}
         </h2>
 
         <div className="grid flex-1 grid-cols-2 gap-3 opacity-40">
-          {question.options.map((option, i) => (
+          {qOptions.map((option, i) => (
             <div
               key={i}
               className={`flex flex-col items-center justify-center gap-2 rounded-2xl px-3 py-6 text-center font-bold text-white ${BUTTON_COLORS[i].split(" ")[0]}`}
@@ -163,9 +167,9 @@ export default function PlayerQuestion({
       <div className="glass rounded-2xl px-5 py-4 text-center">
         <h2 className="text-lg font-extrabold text-white">
           {isProgressive ? (
-            <ProgressiveText text={question.question} visibleWordCount={visibleWordCount} />
+            <ProgressiveText text={qText} visibleWordCount={visibleWordCount} />
           ) : (
-            question.question
+            qText
           )}
         </h2>
       </div>
@@ -201,7 +205,7 @@ export default function PlayerQuestion({
 
       {/* Big answer buttons */}
       <div className="grid flex-1 grid-cols-2 gap-3 stagger-children">
-        {question.options.map((option, i) => (
+        {qOptions.map((option, i) => (
           <button
             key={i}
             onClick={() => handleSelect(i)}

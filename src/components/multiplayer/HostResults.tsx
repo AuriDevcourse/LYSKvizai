@@ -9,6 +9,7 @@ import type { EmojiReactionWithId } from "@/hooks/useRoom";
 import EmojiReactions from "./EmojiReactions";
 import Avatar from "@/components/Avatar";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { useContentTranslation } from "@/hooks/useContentTranslation";
 
 const OPTION_STYLES = [
   { border: "border-[#e21b3c]", bg: "bg-[#e21b3c]", barBg: "bg-[#e21b3c]/30", iconBg: "bg-[#e21b3c]", icon: Triangle },
@@ -35,6 +36,14 @@ export default function HostResults({
   gameMode = "classic",
 }: HostResultsProps) {
   const { t } = useTranslation();
+  // Translate quiz content: correct answer text, explanation, and all options
+  const correctText = results.correctAnswerText ?? question?.options[results.correctAnswer] ?? "";
+  const optionTexts = question?.options ?? ["", "", "", ""];
+  const contentToTranslate = [correctText, results.explanation, ...optionTexts];
+  const translated = useContentTranslation(contentToTranslate);
+  const tCorrectAnswer = translated[0];
+  const tExplanation = translated[1];
+  const tOptions = translated.slice(2) as string[];
   const totalAnswers = results.answerDistribution.reduce((a, b) => a + b, 0);
 
   return (
@@ -109,7 +118,7 @@ export default function HostResults({
             </div>
           </div>
           {results.explanation && (
-            <p className="mt-3 text-base font-medium text-white/80">{results.explanation}</p>
+            <p className="mt-3 text-base font-medium text-white/80">{tExplanation}</p>
           )}
         </div>
       ) : (
@@ -119,12 +128,12 @@ export default function HostResults({
             <div>
               <p className="text-sm font-bold text-white/70">{t("hostResults.correctAnswer")}</p>
               <p className="text-2xl font-extrabold text-white">
-                {results.correctAnswerText ?? question?.options[results.correctAnswer]}
+                {tCorrectAnswer}
               </p>
             </div>
           </div>
           {results.explanation && (
-            <p className="mt-3 text-base font-medium text-white/80">{results.explanation}</p>
+            <p className="mt-3 text-base font-medium text-white/80">{tExplanation}</p>
           )}
         </div>
       )}
@@ -217,7 +226,7 @@ export default function HostResults({
             {t("hostResults.answers")}
           </div>
           <div className="flex flex-col gap-2.5">
-            {question?.options.map((option, i) => {
+            {tOptions.map((option, i) => {
               const count = results.answerDistribution[i];
               const pct = totalAnswers > 0 ? (count / totalAnswers) * 100 : 0;
               const isCorrect = i === results.correctAnswer;

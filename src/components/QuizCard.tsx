@@ -3,6 +3,7 @@
 import { Triangle, Diamond, Circle, Square, Check, X } from "lucide-react";
 import type { Question } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { useContentTranslation } from "@/hooks/useContentTranslation";
 
 interface QuizCardProps {
   question: Question;
@@ -29,6 +30,10 @@ export default function QuizCard({
   isLast,
 }: QuizCardProps) {
   const { t } = useTranslation();
+  const translated = useContentTranslation([question.question, ...question.options, question.explanation]);
+  const qText = translated[0];
+  const qOptions = translated.slice(1, 5);
+  const qExplanation = translated[5];
   const answered = selectedAnswer !== null;
   const isCorrect = selectedAnswer === question.correct;
 
@@ -37,7 +42,7 @@ export default function QuizCard({
       {/* Question */}
       <div className="glass mb-6 rounded-2xl px-6 py-5 text-center">
         <h2 className="text-xl font-extrabold leading-relaxed text-white sm:text-2xl">
-          {question.question}
+          {qText}
         </h2>
       </div>
 
@@ -53,7 +58,7 @@ export default function QuizCard({
 
       {/* 2x2 Answer Grid */}
       <div className="grid grid-cols-2 gap-3 stagger-children">
-        {question.options.map((option, i) => {
+        {qOptions.map((option, i) => {
           const { bg, hover, icon: Icon } = COLORS[i];
           const isThis = i === selectedAnswer;
           const isCorrectAnswer = i === question.correct;
@@ -106,7 +111,7 @@ export default function QuizCard({
               {isCorrect ? t("quizCard.correct") : t("quizCard.incorrect")}
             </p>
             <p className="mt-1 text-sm font-medium text-white/80">
-              {question.explanation}
+              {qExplanation}
             </p>
           </div>
 

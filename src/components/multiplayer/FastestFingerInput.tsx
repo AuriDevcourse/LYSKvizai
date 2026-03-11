@@ -5,6 +5,7 @@ import { Check, Eye, Zap } from "lucide-react";
 import type { QuestionPayload } from "@/lib/multiplayer/types";
 import Timer from "./Timer";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { useContentTranslationSingle } from "@/hooks/useContentTranslation";
 
 interface FastestFingerInputProps {
   question: QuestionPayload;
@@ -22,6 +23,7 @@ export default function FastestFingerInput({
   eliminated = false,
 }: FastestFingerInputProps) {
   const { t } = useTranslation();
+  const qText = useContentTranslationSingle(question.question);
   const [text, setText] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -63,7 +65,7 @@ export default function FastestFingerInput({
           {question.index + 1} / {question.total}
         </div>
         <div className="glass rounded-2xl px-5 py-4 text-center">
-          <h2 className="text-lg font-extrabold text-white">{question.question}</h2>
+          <h2 className="text-lg font-extrabold text-white">{qText}</h2>
         </div>
         <div className="flex items-center justify-center gap-2 rounded-xl bg-[#d89e00]/20 px-4 py-2 text-sm font-bold text-[#d89e00]">
           <Zap className="h-4 w-4" />
@@ -106,7 +108,7 @@ export default function FastestFingerInput({
 
       {/* Question text */}
       <div className="glass rounded-2xl px-5 py-4 text-center">
-        <h2 className="text-lg font-extrabold text-white">{question.question}</h2>
+        <h2 className="text-lg font-extrabold text-white">{qText}</h2>
       </div>
 
       {/* Image */}

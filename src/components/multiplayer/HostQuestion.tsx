@@ -9,6 +9,7 @@ import ProgressiveImage from "./ProgressiveImage";
 import AudioPlayer from "./AudioPlayer";
 import VideoPlayer from "./VideoPlayer";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { useContentTranslation } from "@/hooks/useContentTranslation";
 
 const OPTION_BG = [
   "bg-[#e21b3c]",
@@ -33,9 +34,12 @@ export default function HostQuestion({
   powerUpEvent,
 }: HostQuestionProps) {
   const { t } = useTranslation();
+  const translatedContent = useContentTranslation([question.question, ...question.options]);
+  const qText = translatedContent[0];
+  const qOptions = translatedContent.slice(1) as string[];
   const count = answerCount?.count ?? 0;
   const isProgressive = question.progressiveReveal ?? false;
-  const words = question.question.split(/\s+/);
+  const words = qText.split(/\s+/);
 
   const { fraction, displaySeconds } = useCountdown(
     question.timerDuration,
@@ -115,9 +119,9 @@ export default function HostQuestion({
           <div className="glass max-w-3xl rounded-2xl px-8 py-6">
             <h2 className="text-center text-2xl font-extrabold leading-snug text-white sm:text-3xl lg:text-4xl">
               {isProgressive ? (
-                <ProgressiveText text={question.question} visibleWordCount={visibleWordCount} />
+                <ProgressiveText text={qText} visibleWordCount={visibleWordCount} />
               ) : (
-                question.question
+                qText
               )}
             </h2>
           </div>
@@ -162,10 +166,10 @@ export default function HostQuestion({
 
       {/* BOTTOM: answer blocks (2×2 grid) */}
       <div className={`grid min-h-[30vh] grid-cols-2 gap-2 pt-4 sm:gap-3 ${
-        question.options.filter(Boolean).length <= 2 ? "grid-rows-1" : "grid-rows-2"
+        qOptions.filter(Boolean).length <= 2 ? "grid-rows-1" : "grid-rows-2"
       } stagger-children`}>
-        {question.options.map((option, i) => {
-          if (!option && question.options.filter(Boolean).length <= 2) return null;
+        {qOptions.map((option, i) => {
+          if (!option && qOptions.filter(Boolean).length <= 2) return null;
           const Icon = OPTION_ICONS[i];
           return (
             <div

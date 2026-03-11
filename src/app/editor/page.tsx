@@ -7,6 +7,7 @@ import { Plus, Trash2, Pencil, ArrowLeft, Loader2 } from "lucide-react";
 import type { QuizMeta } from "@/data/types";
 import { getQuizTheme } from "@/lib/quiz-theme";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { useContentTranslation } from "@/hooks/useContentTranslation";
 
 export default function EditorPage() {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function EditorPage() {
   const [quizzes, setQuizzes] = useState<QuizMeta[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const quizTitles = useContentTranslation(quizzes.map((q) => q.title));
 
   const fetchQuizzes = () => {
     fetch("/api/quizzes")
@@ -95,7 +97,7 @@ export default function EditorPage() {
                   );
                 })()}
                 <div className="min-w-0 flex-1">
-                  <h3 className="font-bold text-white">{quiz.title}</h3>
+                  <h3 className="font-bold text-white">{quizTitles[quizzes.indexOf(quiz)]}</h3>
                   <p className="text-sm text-white/40">
                     {quiz.questionCount} questions
                   </p>

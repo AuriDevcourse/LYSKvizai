@@ -5,6 +5,7 @@ import { Loader2, Check } from "lucide-react";
 import type { QuizMeta } from "@/data/types";
 import { getQuizTheme } from "@/lib/quiz-theme";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { useContentTranslation } from "@/hooks/useContentTranslation";
 
 interface QuizPickerProps {
   onSelect: (quizIds: string[]) => void;
@@ -53,6 +54,8 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
     }
   };
 
+  const quizTitles = useContentTranslation(quizzes.map((q) => q.title));
+
   const totalQuestions = quizzes
     .filter((q) => selectedIds.includes(q.id))
     .reduce((sum, q) => sum + q.questionCount, 0);
@@ -92,7 +95,7 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
               <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${theme.bg}`}>
                 <Icon className="h-6 w-6 text-white" />
               </div>
-              <h3 className="text-sm font-extrabold leading-tight text-white">{quiz.title}</h3>
+              <h3 className="text-sm font-extrabold leading-tight text-white">{quizTitles[quizzes.indexOf(quiz)]}</h3>
               <p className="text-[11px] font-bold text-white/40">
                 {quiz.questionCount} {t("quizPicker.q")}
               </p>
