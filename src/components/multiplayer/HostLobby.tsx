@@ -37,7 +37,7 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-8">
       <h1 className="text-3xl font-bold text-white sm:text-4xl">
-        LYS Kvizai
+        Quizmo
       </h1>
 
       {/* Game mode badge */}

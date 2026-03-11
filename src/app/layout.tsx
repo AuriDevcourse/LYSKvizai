@@ -15,9 +15,9 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "LYS Kvizai",
+  title: "Quizmo",
   description:
-    "Interaktyvūs kvizai. Žaisk vienas arba su draugais!",
+    "Interactive quizzes. Play solo or with friends!",
 };
 
 export default function RootLayout({

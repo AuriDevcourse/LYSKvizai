@@ -25,8 +25,7 @@ export default function Home() {
         {/* Logo */}
         <div className="mb-10 text-center animate-fade-in-up">
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-6xl">
-            LYS
-            <span className="ml-1 text-yellow-300">Kvizai</span>
+            Quiz<span className="text-yellow-300">mo</span>
           </h1>
         </div>
 
@@ -58,7 +57,7 @@ export default function Home() {
       </main>
 
       <footer className="relative z-10 pb-4 text-center text-xs text-white/30">
-        LYS Kvizai &copy; {new Date().getFullYear()}
+        Quizmo &copy; {new Date().getFullYear()}
       </footer>
     </div>
   );

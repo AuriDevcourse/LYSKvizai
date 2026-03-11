@@ -1,7 +1,7 @@
-# LYS Kvizai — Project Guidelines
+# Quizmo — Project Guidelines
 
 ## Design Philosophy: Kahoot Clone
-This is a Lithuanian quiz platform modeled after Kahoot. Every change MUST follow these principles:
+This is a quiz platform modeled after Kahoot. Every change MUST follow these principles:
 
 ### UI/UX Rules (STRICT)
 1. **Minimal text** — if it can be understood without words, remove the words
