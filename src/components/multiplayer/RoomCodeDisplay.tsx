@@ -1,12 +1,17 @@
+"use client";
+
+import { useTranslation } from "@/lib/i18n/LanguageContext";
+
 interface RoomCodeDisplayProps {
   code: string;
 }
 
 export default function RoomCodeDisplay({ code }: RoomCodeDisplayProps) {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col items-center gap-2">
       <span className="text-sm uppercase tracking-wider text-white/50">
-        Kambario kodas
+        {t("lobby.roomCode")}
       </span>
       <div className="flex gap-2">
         {code.split("").map((char, i) => (

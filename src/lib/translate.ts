@@ -9,6 +9,111 @@ function cacheKey(text: string, from: string, to: string): string {
   return `${from}:${to}:${text}`;
 }
 
+// Lithuanian proper nouns: maps every case form → base (nominative) form.
+// When translating, case forms are replaced with placeholders and restored as the base form.
+function buildNounMap(entries: [string, ...string[]][]): Map<string, string> {
+  const m = new Map<string, string>();
+  for (const [base, ...forms] of entries) {
+    m.set(base, base);
+    for (const f of forms) m.set(f, base);
+  }
+  return m;
+}
+
+const PROPER_NOUNS = buildNounMap([
+  // Cities & towns
+  ["Vilnius", "Vilniaus", "Vilnių", "Vilniuje"],
+  ["Kaunas", "Kauno", "Kauną", "Kaune"],
+  ["Klaipėda", "Klaipėdos", "Klaipėdą", "Klaipėdoje"],
+  ["Šiauliai", "Šiaulių", "Šiauliuose"],
+  ["Panevėžys", "Panevėžio", "Panevėžyje"],
+  ["Trakai", "Trakų", "Trakuose", "Trakais"],
+  ["Druskininkai", "Druskininkų", "Druskininkuose"],
+  ["Palanga", "Palangos", "Palangoje"],
+  ["Marijampolė", "Marijampolės"],
+  ["Alytus", "Alytaus"],
+  ["Utena", "Utenos"],
+  ["Telšiai", "Telšių"],
+  ["Tauragė", "Tauragės"],
+  ["Varėna", "Varėnos", "Varėnoje"],
+  ["Birštonas", "Birštono"],
+  ["Nida", "Nidos"],
+  ["Neringa", "Neringos"],
+  ["Kernavė", "Kernavės"],
+  ["Anykščiai", "Anykščių"],
+  // Historical figures
+  ["Mindaugas", "Mindaugo", "Mindaugą", "Mindaugui"],
+  ["Gediminas", "Gedimino", "Gediminą", "Gediminui"],
+  ["Vytautas", "Vytauto", "Vytautą"],
+  ["Kęstutis", "Kęstučio"],
+  ["Jogaila", "Jogailos"],
+  ["Algirdas", "Algirdo"],
+  ["Traidenis", "Traidenio"],
+  ["Žygimantas", "Žygimanto"],
+  ["Barbora", "Barboros"],
+  ["Čiurlionis", "Čiurlionio"],
+  ["Basanavičius", "Basanavičiaus"],
+  ["Kudirka", "Kudirkos"],
+  ["Maironis", "Maironio"],
+  ["Smetona", "Smetonos"],
+  ["Daukantas", "Daukanto"],
+  // Rivers & lakes
+  ["Nemunas", "Nemuno", "Nemune"],
+  ["Neris", "Neries"],
+  ["Nevėžis", "Nevėžio"],
+  ["Šventoji", "Šventosios"],
+  ["Dubysa", "Dubysos"],
+  ["Merkys", "Merkio"],
+  ["Drūkšiai", "Drūkšių"],
+  ["Tauragnas", "Tauragno"],
+  ["Galvė", "Galvės"],
+  ["Plateliai", "Platelių"],
+  // Regions & landmarks
+  ["Žemaitija", "Žemaitijos"],
+  ["Aukštaitija", "Aukštaitijos"],
+  ["Dzūkija", "Dzūkijos"],
+  ["Suvalkija", "Suvalkijos"],
+  ["Kuršiai", "Kuršių"],
+  ["Baltija", "Baltijos"],
+  // Countries — map to English name
+  ["Lithuania", "Lietuva", "Lietuvos", "Lietuvą", "Lietuvoje"],
+  ["Poland", "Lenkija", "Lenkijos", "Lenkiją"],
+  ["Russia", "Rusija", "Rusijos"],
+  ["Germany", "Vokietija", "Vokietijos"],
+]);
+
+const PLACEHOLDER_PREFIX = "XPNX";
+
+function protectProperNouns(text: string): { protected: string; replacements: Map<string, string> } {
+  const replacements = new Map<string, string>();
+  let counter = 0;
+
+  // Match words (including Lithuanian chars) that start with uppercase
+  const protected_ = text.replace(/[A-ZĄČĘĖĮŠŲŪŽ][a-ząčęėįšųūž]+/g, (match) => {
+    const base = PROPER_NOUNS.get(match);
+    if (base) {
+      const placeholder = `${PLACEHOLDER_PREFIX}${counter}${PLACEHOLDER_PREFIX}`;
+      replacements.set(placeholder, base); // always restore to base/nominative form
+      counter++;
+      return placeholder;
+    }
+    return match;
+  });
+
+  return { protected: protected_, replacements };
+}
+
+function restoreProperNouns(text: string, replacements: Map<string, string>): string {
+  let result = text;
+  for (const [placeholder, original] of replacements) {
+    result = result.replaceAll(placeholder, original);
+    // Also handle case where translator added spaces around placeholder
+    const spaced = placeholder.split("").join(" ");
+    result = result.replaceAll(spaced, original);
+  }
+  return result;
+}
+
 /**
  * Translate text using dynamic import of google-translate-api-x.
  * Falls back to returning original text if the library fails.
@@ -42,11 +147,14 @@ export async function translateText(
   const cached = cache.get(key);
   if (cached) return cached;
 
-  const translated = await callTranslate(text, from, to);
-  if (translated !== text) {
-    cache.set(key, translated);
+  const { protected: protectedText, replacements } = protectProperNouns(text);
+  const translated = await callTranslate(protectedText, from, to);
+  const final = restoreProperNouns(translated, replacements);
+
+  if (final !== text) {
+    cache.set(key, final);
   }
-  return translated;
+  return final;
 }
 
 /**
@@ -79,18 +187,21 @@ export async function translateBatch(
 
   if (toTranslate.length === 0) return results;
 
-  // Batch translate using separator
+  // Protect proper nouns in each text, then batch
+  const protectedItems = toTranslate.map((t) => protectProperNouns(t.text));
+
   const separator = "\n||||\n";
-  const batchText = toTranslate.map((t) => t.text).join(separator);
+  const batchText = protectedItems.map((p) => p.protected).join(separator);
 
   try {
     const translated = await callTranslate(batchText, from, to);
     const parts = translated.split(/\n?\|{4}\n?/);
 
     for (let i = 0; i < toTranslate.length; i++) {
-      const result = (parts[i] ?? toTranslate[i].text).trim();
-      results[toTranslate[i].index] = result;
-      cache.set(cacheKey(toTranslate[i].text, from, to), result);
+      const raw = (parts[i] ?? toTranslate[i].text).trim();
+      const final = restoreProperNouns(raw, protectedItems[i].replacements);
+      results[toTranslate[i].index] = final;
+      cache.set(cacheKey(toTranslate[i].text, from, to), final);
     }
   } catch {
     // Fill in untranslated with originals

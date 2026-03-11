@@ -50,6 +50,7 @@ export const translations = {
     "playerLobby.youreIn": "You're in!",
     "playerLobby.room": "Room",
     "playerLobby.waitingToStart": "Waiting to start...",
+    "lobby.roomCode": "Room code",
 
     // Host Question
     "hostQuestion.wager": "WAGER",
@@ -288,6 +289,7 @@ export const translations = {
     "playerLobby.youreIn": "Prisijungėte!",
     "playerLobby.room": "Kambarys",
     "playerLobby.waitingToStart": "Laukiama pradžios...",
+    "lobby.roomCode": "Kambario kodas",
 
     // Host Question
     "hostQuestion.wager": "STATYMAS",
