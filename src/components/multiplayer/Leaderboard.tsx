@@ -59,7 +59,7 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
               >
                 <div className="text-2xl font-extrabold text-gray-300 mb-1">2</div>
                 <Avatar value={top3[1].emoji} size={40} />
-                <p className="mt-1.5 text-sm font-extrabold text-white text-center">{top3[1].name}</p>
+                <p className="mt-1.5 text-sm font-extrabold text-white text-center truncate w-full">{top3[1].name}</p>
                 <p className="text-lg font-extrabold text-white/70">{top3[1].score}</p>
               </div>
             </>
@@ -79,7 +79,7 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
               >
                 <div className="text-3xl font-extrabold text-[#d89e00] mb-1">1</div>
                 <Avatar value={top3[0].emoji} size={52} />
-                <p className="mt-1.5 text-base font-extrabold text-white text-center">{top3[0].name}</p>
+                <p className="mt-1.5 text-base font-extrabold text-white text-center truncate w-full">{top3[0].name}</p>
                 <p className="text-xl font-extrabold text-[#d89e00]">{top3[0].score}</p>
               </div>
             </>
@@ -99,7 +99,7 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
               >
                 <div className="text-xl font-extrabold text-amber-700 mb-1">3</div>
                 <Avatar value={top3[2].emoji} size={36} />
-                <p className="mt-1 text-sm font-extrabold text-white text-center">{top3[2].name}</p>
+                <p className="mt-1 text-sm font-extrabold text-white text-center truncate w-full">{top3[2].name}</p>
                 <p className="text-sm font-bold text-white/60">{top3[2].score}</p>
               </div>
             </>
@@ -122,12 +122,12 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
                   : "glass"
               }`}
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 min-w-0">
                 <span className="min-w-[2ch] text-right text-sm font-extrabold text-white/50">
                   {entry.rank}.
                 </span>
                 <Avatar value={entry.emoji} size={28} />
-                <span className="font-bold text-white">{entry.name}</span>
+                <span className="font-bold text-white truncate">{entry.name}</span>
               </div>
               <span className="font-extrabold text-white">{entry.score}</span>
             </div>

@@ -234,6 +234,15 @@ function getQuestionPayload(room) {
     payload.en = { question: enT.question, options: enShuffledOptions };
   }
 
+  const ltT = room.ltTranslations.get(qIndex);
+  if (ltT) {
+    const ltShuffledOptions = optShuffle.map((origIdx) => {
+      if (q.type === "bluff" && q.bluffAnswer && room.bluffReplacedOriginalIndex === origIdx) return q.bluffAnswer;
+      return ltT.options[origIdx];
+    });
+    payload.lt = { question: ltT.question, options: ltShuffledOptions };
+  }
+
   return payload;
 }
 
@@ -368,6 +377,16 @@ function getResultsPayload(room) {
     };
   }
 
+  const ltT = room.ltTranslations.get(qIndex);
+  if (ltT) {
+    const optShuffle = room.optionShuffles[room.currentQuestionIndex];
+    result.lt = {
+      correctAnswerText: result.correctAnswerText ? ltT.options[q.correct] : undefined,
+      explanation: ltT.explanation,
+      options: optShuffle.map((origIdx) => ltT.options[origIdx]),
+    };
+  }
+
   return result;
 }
 
@@ -424,12 +443,29 @@ function scheduleQuestionTimer(room) {
   }, ms);
 }
 
-function startQuestionRound(room) {
-  room.questionStartTime = Date.now();
+async function translateQuestionIfNeeded(room, questionIdx) {
+  const qIndex = room.questionIndices[questionIdx];
+  const q = room.questions[qIndex];
+  const lang = room.quizLanguages[qIndex] || "lt";
+  const texts = [q.question, ...q.options, q.explanation];
+  try {
+    if (lang === "en" && !room.ltTranslations.has(qIndex)) {
+      const translated = await translateBatch(texts, "en", "lt");
+      room.ltTranslations.set(qIndex, { question: translated[0], options: translated.slice(1, 5), explanation: translated[5] });
+    } else if (lang !== "en" && !room.enTranslations.has(qIndex)) {
+      const translated = await translateBatch(texts, "lt", "en");
+      room.enTranslations.set(qIndex, { question: translated[0], options: translated.slice(1, 5), explanation: translated[5] });
+    }
+  } catch {}
+}
+
+async function startQuestionRound(room) {
   room.state = "question";
   for (const p of room.players.values()) { p.currentAnswer = null; p.answerTime = null; p.currentTextAnswer = null; }
   setupBluffQuestion(room, room.currentQuestionIndex);
   if (room.gameMode === "team") rotateTeamAnswerers(room);
+  await translateQuestionIfNeeded(room, room.currentQuestionIndex);
+  room.questionStartTime = Date.now();
   broadcast(room.code, { type: "question-start", data: getQuestionPayload(room) });
   scheduleQuestionTimer(room);
 }
@@ -469,10 +505,15 @@ async function createRoom(hostId, quizIds, questionCount, timerDuration, gameMod
   if (ids.length === 0) throw new Error("No quiz selected");
 
   const allQuestions = [];
+  const quizLanguages = [];
   for (const qid of ids) {
     const quiz = await getQuiz(qid);
     if (!quiz) throw new Error(`Quiz "${qid}" not found`);
-    allQuestions.push(...quiz.questions);
+    const lang = quiz.language || "lt";
+    for (const q of quiz.questions) {
+      allQuestions.push(q);
+      quizLanguages.push(lang);
+    }
   }
   if (allQuestions.length === 0) throw new Error("Quizzes have no questions");
 
@@ -495,7 +536,8 @@ async function createRoom(hostId, quizIds, questionCount, timerDuration, gameMod
     wagers: new Map(), wagerInterval: 3, isWagerRound: false,
     questionTimer: null, activePowerUps: new Map(), freezeActive: false,
     bluffDisplayIndex: null, bluffReplacedOriginalIndex: null,
-    mysteryMultipliers: new Map(), enTranslations: new Map(),
+    mysteryMultipliers: new Map(), enTranslations: new Map(), ltTranslations: new Map(),
+    quizLanguages,
   };
 
   rooms.set(code, room);
@@ -543,29 +585,8 @@ async function startGame(code, hostId) {
     if (Math.random() < 0.25) room.mysteryMultipliers.set(i, Math.floor(Math.random() * 4) + 2);
   }
 
-  // Pre-translate to English
-  try {
-    const allTexts = [];
-    for (const idx of room.questionIndices) {
-      const q = room.questions[idx];
-      allTexts.push(q.question, ...q.options, q.explanation);
-    }
-    const translated = await translateBatch(allTexts, "lt", "en");
-    let ti = 0;
-    for (const idx of room.questionIndices) {
-      const tQuestion = translated[ti++];
-      const tOptions = [translated[ti++], translated[ti++], translated[ti++], translated[ti++]];
-      const tExplanation = translated[ti++];
-      room.enTranslations.set(idx, { question: tQuestion, options: tOptions, explanation: tExplanation });
-    }
-  } catch {}
-
-  room.state = "question";
   room.currentQuestionIndex = 0;
-  room.questionStartTime = Date.now();
-  setupBluffQuestion(room, 0);
-  broadcast(code, { type: "question-start", data: getQuestionPayload(room) });
-  scheduleQuestionTimer(room);
+  await startQuestionRound(room);
   return {};
 }
 
@@ -708,7 +729,7 @@ function submitYearAnswer(code, playerId, year) {
   return {};
 }
 
-function nextQuestion(code, hostId) {
+async function nextQuestion(code, hostId) {
   const room = rooms.get(code);
   if (!room) return { error: "Room not found" };
   if (room.hostId !== hostId) return { error: "Only the host can continue" };
@@ -733,11 +754,11 @@ function nextQuestion(code, hostId) {
     return {};
   }
 
-  startQuestionRound(room);
+  await startQuestionRound(room);
   return {};
 }
 
-function submitWager(code, playerId, amount) {
+async function submitWager(code, playerId, amount) {
   const room = rooms.get(code);
   if (!room) return { error: "Room not found" };
   if (room.state !== "wager") return { error: "Can't wager right now" };
@@ -751,18 +772,18 @@ function submitWager(code, playerId, amount) {
   const activePlayers = getActivePlayers(room);
   if (activePlayers.every((p) => room.wagers.has(p.id))) {
     room.isWagerRound = true;
-    startQuestionRound(room);
+    await startQuestionRound(room);
   }
   return {};
 }
 
-function advanceFromWagerAction(code, hostId) {
+async function advanceFromWagerAction(code, hostId) {
   const room = rooms.get(code);
   if (!room) return { error: "Room not found" };
   if (room.hostId !== hostId) return { error: "Only the host can continue" };
   if (room.state !== "wager") return { error: "No wager phase" };
   room.isWagerRound = true;
-  startQuestionRound(room);
+  await startQuestionRound(room);
   return {};
 }
 
@@ -848,7 +869,7 @@ const server = createServer((req, res) => {
     const room = rooms.get(code.toUpperCase());
     if (!room) { res.writeHead(404, { "Content-Type": "application/json" }); res.end(JSON.stringify({ error: "Room not found" })); return; }
     res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ snapshot: getRoomSnapshot(room) }));
+    res.end(JSON.stringify({ hostId: room.hostId, snapshot: getRoomSnapshot(room) }));
     return;
   }
 

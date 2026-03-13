@@ -1,11 +1,11 @@
 {
   "id": "muzika-klasikine",
-  "title": "Klasikinė muzika",
-  "description": "Klausimai apie klasikinę muziką",
+  "title": "Classical music",
+  "description": "Questions about classical music",
   "emoji": "🎻",
   "questions": [
     {
-      "question": "Kas sukūrė Mėnulio sonatą?",
+      "question": "Who composed the Moon Sonata?",
       "options": [
         "Wolfgang Amadeus Mozart",
         "Frédéric Chopin",
@@ -13,32 +13,32 @@
         "Johann Sebastian Bach"
       ],
       "correct": 2,
-      "explanation": "Mėnulio sonata (Sonata Nr. 14) – tai Ludwig van Beethoven kūrinys, sukurtas 1801 m."
+      "explanation": "The Moon Sonata (Sonata No. 14) is a work by Ludwig van Beethoven composed in 1801."
     },
     {
-      "question": "Kas yra M. K. Čiurlionis?",
+      "question": "Who is M. K. Čiurlionis?",
       "options": [
-        "Lietuvių poetas",
-        "Lietuvių rašytojas",
-        "Lietuvių architektas",
-        "Lietuvių dailininkas ir kompozitorius"
+        "Lithuanian poet",
+        "Lithuanian writer",
+        "Lithuanian architect",
+        "Lithuanian painter and composer"
       ],
       "correct": 3,
-      "explanation": "M. K. Čiurlionis – garsus lietuvių dailininkas ir kompozitorius."
+      "explanation": "M. K. Čiurlionis is a famous Lithuanian painter and composer."
     },
     {
-      "question": "Kuris kompozitorius parašė Keturis metų laikus?",
+      "question": "Which composer wrote The Four Seasons?",
       "options": [
         "Antonio Vivaldi",
         "Johann Sebastian Bach",
-        "Georg Friedrich Händel",
+        "Georg Friedrich Handel",
         "Joseph Haydn"
       ],
       "correct": 0,
-      "explanation": "Keturi metų laikai – tai Antonio Vivaldi smuiko koncertų ciklas, sukurtas apie 1723 m."
+      "explanation": "The Four Seasons is a cycle of violin concertos by Antonio Vivaldi, composed around 1723."
     },
     {
-      "question": "Kuris kompozitorius tapo kurčias, bet toliau kūrė muziką?",
+      "question": "Which composer became deaf but continued to compose music?",
       "options": [
         "Mozart",
         "Schubert",
@@ -46,10 +46,10 @@
         "Brahms"
       ],
       "correct": 2,
-      "explanation": "Beethoven pradėjo kursti 1798 m., bet sukūrė savo geriausius kūrinius būdamas beveik visiškai kurčias."
+      "explanation": "Beethoven began composing in 1798, but produced his best works while almost completely deaf."
     },
     {
-      "question": "Kas sukūrė operą Kermošius?",
+      "question": "Who created the opera Kermoshius?",
       "options": [
         "Juozas Gruodis",
         "Stasys Šimkus",
@@ -57,10 +57,10 @@
         "Mikas Petrauskas"
       ],
       "correct": 3,
-      "explanation": "Kermošius – tai pirmoji lietuviška opera, sukurta Miko Petrausko 1906 m."
+      "explanation": "Kermošius is the first Lithuanian opera created by Miko Petrauskas in 1906."
     },
     {
-      "question": "Kiek stygų turi smuikas?",
+      "question": "How many strings does a violin have?",
       "options": [
         "3",
         "4",
@@ -68,32 +68,32 @@
         "6"
       ],
       "correct": 1,
-      "explanation": "Smuikas turi 4 stygas: G, D, A ir E."
+      "explanation": "A violin has 4 strings: G, D, A and E."
     },
     {
-      "question": "Kuris kompozitorius žinomas Gulbių ežeru ir Spragtuką?",
+      "question": "Which composer is known for Swan Lake and The Nutcracker?",
       "options": [
-        "Sergejus Rachmaninov",
-        "Piotras Čaikovskis",
-        "Igor Stravinskis",
-        "Dmitrijus Šostakovičius"
+        "Sergei Rachmaninov",
+        "Piotr Tchaikovsky",
+        "Igor Stravinsky",
+        "Dmitri Shostakovich"
       ],
       "correct": 1,
-      "explanation": "Piotras Čaikovskis sukūrė baletus Gulbių ežeras, Spragtuko ir Miegančioji gražuolė."
+      "explanation": "Piotr Tchaikovsky created the ballets Swan Lake, The Nutcracker and Sleeping Beauty."
     },
     {
-      "question": "Kas sukūrė Requiem, kurį baigė kitas kompozitorius po jo mirties?",
+      "question": "Who composed the Requiem, which was completed by another composer after his death?",
       "options": [
         "Beethoven",
         "Bach",
-        "Händel",
+        "Handel",
         "Mozart"
       ],
       "correct": 3,
-      "explanation": "Mozart pradėjo rašyti Requiem 1791 m., bet mirė jį nebaigęs. Kūrinį užbaigė jo mokinys Süssmayr."
+      "explanation": "Mozart began writing the Requiem in 1791, but died before completing it. The work was completed by his student Süssmayr."
     },
     {
-      "question": "Kiek natų yra vienoje oktavoje?",
+      "question": "How many notes are there in one octave?",
       "options": [
         "7",
         "12",
@@ -101,18 +101,19 @@
         "10"
       ],
       "correct": 1,
-      "explanation": "Oktavoje yra 12 pustonių (chromatinė gama)."
+      "explanation": "There are 12 semitones in an octave (chromatic scale)."
     },
     {
-      "question": "Kas yra Grammy apdovanojimas?",
+      "question": "What is the Grammy Award?",
       "options": [
-        "Kino premija",
-        "Mokslo premija",
-        "Literatūros premija",
-        "Muzikos premija"
+        "Movie bonus",
+        "Science prize",
+        "Literature prize",
+        "Music bonus"
       ],
       "correct": 3,
-      "explanation": "Grammy – tai prestižiškiausias muzikos apdovanojimas, teikiamas kasmet JAV."
+      "explanation": "Grammy is the most prestigious music award given annually in the United States."
     }
-  ]
+  ],
+  "language": "en"
 }

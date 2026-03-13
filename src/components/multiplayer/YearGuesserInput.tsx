@@ -22,7 +22,7 @@ export default function YearGuesserInput({
   eliminated = false,
 }: YearGuesserInputProps) {
   const { t, lang } = useTranslation();
-  const qText = lang !== "lt" && question.en ? question.en.question : question.question;
+  const qText = lang === "lt" && question.lt ? question.lt.question : lang !== "lt" && question.en ? question.en.question : question.question;
   const [year, setYear] = useState(2000);
   const [submitted, setSubmitted] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);

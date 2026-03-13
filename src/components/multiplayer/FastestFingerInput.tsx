@@ -22,7 +22,7 @@ export default function FastestFingerInput({
   eliminated = false,
 }: FastestFingerInputProps) {
   const { t, lang } = useTranslation();
-  const qText = lang !== "lt" && question.en ? question.en.question : question.question;
+  const qText = lang === "lt" && question.lt ? question.lt.question : lang !== "lt" && question.en ? question.en.question : question.question;
   const [text, setText] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);

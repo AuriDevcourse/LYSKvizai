@@ -1,11 +1,11 @@
 {
   "id": "muzika-pop",
-  "title": "Pop muzika",
-  "description": "Klausimai apie pop muzika",
+  "title": "Pop music",
+  "description": "Questions about pop music",
   "emoji": "🎤",
   "questions": [
     {
-      "question": "Kuri dainininkė išleido albumą 1989?",
+      "question": "Which singer released an album in 1989?",
       "options": [
         "Billie Eilish",
         "Adele",
@@ -13,10 +13,10 @@
         "Taylor Swift"
       ],
       "correct": 3,
-      "explanation": "Albumą 1989 išleido Taylor Swift 2014 m."
+      "explanation": "The album 1989 was released by Taylor Swift in 2014."
     },
     {
-      "question": "Kuri Billie Eilish daina tapo viena populiariausių 2019 m.?",
+      "question": "Which Billie Eilish song became one of the most popular songs of 2019?",
       "options": [
         "Bad Guy",
         "Lovely",
@@ -24,10 +24,10 @@
         "Happier Than Ever"
       ],
       "correct": 0,
-      "explanation": "Bad Guy tapo didžiausiu Billie Eilish hitu 2019 m., užėmusiu 1 vietą JAV."
+      "explanation": "Bad Guy became Billie Eilish's biggest hit of 2019, reaching number 1 in the US."
     },
     {
-      "question": "Kuris atlikėjas žinomas daina Blinding Lights?",
+      "question": "Which artist is known for the song Blinding Lights?",
       "options": [
         "Drake",
         "Ed Sheeran",
@@ -35,10 +35,10 @@
         "The Weeknd"
       ],
       "correct": 3,
-      "explanation": "Blinding Lights – tai The Weeknd hitas, išleistas 2019 m."
+      "explanation": "Blinding Lights is a hit by The Weeknd released in 2019."
     },
     {
-      "question": "Kuri dainininkė žinoma kaip Karalienė Bey?",
+      "question": "Which singer is known as Queen Bey?",
       "options": [
         "Rihanna",
         "Beyoncé",
@@ -46,10 +46,10 @@
         "Shakira"
       ],
       "correct": 1,
-      "explanation": "Beyoncé dažnai vadinama Queen Bey dėl savo įtakos pop kultūrai."
+      "explanation": "Beyoncé is often referred to as Queen Bey because of her influence on pop culture."
     },
     {
-      "question": "Kuris atlikėjas sukūrė hitą Shape of You?",
+      "question": "Which artist created the hit song Shape of You?",
       "options": [
         "Justin Bieber",
         "Sam Smith",
@@ -57,10 +57,10 @@
         "Ed Sheeran"
       ],
       "correct": 3,
-      "explanation": "Shape of You – tai Ed Sheeran megahitas iš 2017 m. albumo Divide."
+      "explanation": "Shape of You is Ed Sheeran's mega hit from 2017. album Divide."
     },
     {
-      "question": "Kuri dainininkė atliko dainą Rolling in the Deep?",
+      "question": "Which singer performed Rolling in the Deep?",
       "options": [
         "Amy Winehouse",
         "Adele",
@@ -68,21 +68,21 @@
         "Lana Del Rey"
       ],
       "correct": 1,
-      "explanation": "Rolling in the Deep – tai Adele hitas iš albumo 21, išleisto 2011 m."
+      "explanation": "Rolling in the Deep is a hit by Adele from her 2011 album 21."
     },
     {
-      "question": "Kuris Michaelo Jacksono albumas yra daugiausiai parduotas pasaulyje?",
+      "question": "Which Michael Jackson album is the best selling in the world?",
       "options": [
-        "Bad",
+        "hungry",
         "Thriller",
         "Dangerous",
         "Off the Wall"
       ],
       "correct": 1,
-      "explanation": "Thriller (1982) yra daugiausiai parduotas albumas pasaulio istorijoje – virš 70 mln. kopijų."
+      "explanation": "Thriller (1982) is the best-selling album in world history, selling over 70 million copies. copies."
     },
     {
-      "question": "Kuri grupė atliko hitą Dynamite 2020 m.?",
+      "question": "Which band performed the hit Dynamite in 2020?",
       "options": [
         "BTS",
         "BLACKPINK",
@@ -90,10 +90,10 @@
         "TWICE"
       ],
       "correct": 0,
-      "explanation": "Dynamite – tai BTS pirmasis angliškai įrašytas singlas, pasiekęs #1 JAV."
+      "explanation": "Dynamite is BTS' first English single to reach #1 in the US."
     },
     {
-      "question": "Kuris atlikėjas žinomas dainomis Umbrella ir Diamonds?",
+      "question": "Which artist is known for the songs Umbrella and Diamonds?",
       "options": [
         "Beyoncé",
         "Nicki Minaj",
@@ -101,10 +101,10 @@
         "Rihanna"
       ],
       "correct": 3,
-      "explanation": "Rihanna – Barbadoso kilmės dainininkė, atliekanti Umbrella ir Diamonds."
+      "explanation": "Rihanna is a Barbadian singer who performs for Umbrella and Diamonds."
     },
     {
-      "question": "Kuri dainininkė atliko Born This Way?",
+      "question": "Which singer performed Born This Way?",
       "options": [
         "Madonna",
         "Cher",
@@ -112,7 +112,8 @@
         "Cyndi Lauper"
       ],
       "correct": 2,
-      "explanation": "Born This Way – tai Lady Gaga hitas, tapęs LGBTQ+ himnu."
+      "explanation": "Born This Way is Lady Gaga's hit song that has become an LGBTQ+ anthem."
     }
-  ]
+  ],
+  "language": "en"
 }

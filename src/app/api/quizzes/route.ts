@@ -13,9 +13,31 @@ export async function GET(req: NextRequest) {
 
   const lang = req.nextUrl.searchParams.get("lang");
   if (lang && lang !== "lt") {
-    const titles = quizzes.map((q) => q.title);
-    const translated = await translateBatch(titles, "lt", lang);
-    return json(quizzes.map((q, i) => ({ ...q, title: translated[i] })));
+    // Only translate Lithuanian titles to target lang; English titles are already fine
+    const toTranslate: { idx: number; title: string }[] = [];
+    for (let i = 0; i < quizzes.length; i++) {
+      if (quizzes[i].language !== "en") toTranslate.push({ idx: i, title: quizzes[i].title });
+    }
+    if (toTranslate.length > 0) {
+      const translated = await translateBatch(toTranslate.map((t) => t.title), "lt", lang);
+      const result = quizzes.map((q) => ({ ...q }));
+      toTranslate.forEach((t, j) => { result[t.idx].title = translated[j]; });
+      return json(result);
+    }
+    return json(quizzes);
+  }
+  if (lang === "lt") {
+    // Translate English titles to Lithuanian
+    const toTranslate: { idx: number; title: string }[] = [];
+    for (let i = 0; i < quizzes.length; i++) {
+      if (quizzes[i].language === "en") toTranslate.push({ idx: i, title: quizzes[i].title });
+    }
+    if (toTranslate.length > 0) {
+      const translated = await translateBatch(toTranslate.map((t) => t.title), "en", "lt");
+      const result = quizzes.map((q) => ({ ...q }));
+      toTranslate.forEach((t, j) => { result[t.idx].title = translated[j]; });
+      return json(result);
+    }
   }
 
   return json(quizzes);

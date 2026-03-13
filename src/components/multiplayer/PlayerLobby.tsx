@@ -13,41 +13,45 @@ interface PlayerLobbyProps {
 export default function PlayerLobby({ code, players, playerName, playerEmoji }: PlayerLobbyProps) {
   const { t } = useTranslation();
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-6">
-      <Avatar value={playerEmoji} size={64} />
+    <div className="flex flex-1 flex-col items-center justify-center gap-8">
+      {/* Your avatar + name hero */}
+      <div className="flex flex-col items-center gap-3 animate-bounce-in">
+        <div className="rounded-full bg-white/15 p-1.5">
+          <Avatar value={playerEmoji} size={88} />
+        </div>
+        <h1 className="text-3xl font-extrabold text-white">{playerName}</h1>
+      </div>
 
-      <h1 className="text-2xl font-bold text-white">{t("playerLobby.youreIn")}</h1>
-
-      <p className="text-white/60">
-        {t("playerLobby.room")} <span className="font-bold text-white/80">{code}</span>
-      </p>
-
-      <div className="rounded-xl border-2 border-white/20 bg-white/5 px-6 py-4 text-center">
-        <p className="text-lg font-bold text-white">{playerName}</p>
-        <div className="mt-2 flex items-center justify-center gap-2 text-sm text-white/50">
-          <Loader2 className="h-3.5 w-3.5 animate-spin" />
-          <span>{t("playerLobby.waitingToStart")}</span>
+      {/* Status */}
+      <div className="flex flex-col items-center gap-2">
+        <p className="text-lg font-extrabold text-white/80">{t("playerLobby.youreIn")}</p>
+        <div className="flex items-center gap-2 text-white/50">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          <span className="text-sm font-bold">{t("playerLobby.waitingToStart")}</span>
         </div>
       </div>
 
-      <div className="w-full max-w-xs">
-        <div className="mb-3 flex items-center justify-center gap-2 text-sm uppercase tracking-wider text-white/50">
+      {/* Player list */}
+      <div className="w-full max-w-sm">
+        <div className="mb-4 flex items-center justify-center gap-2 text-sm font-extrabold uppercase tracking-wider text-white/50">
           <Users className="h-4 w-4" />
           <span>{t("lobby.players")} ({players.length})</span>
         </div>
-        <div className="flex flex-wrap justify-center gap-2">
+        <div className="flex flex-wrap justify-center gap-3">
           {players.map((p) => (
-            <span
+            <div
               key={p.id}
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium ${
-                p.name === playerName
-                  ? "bg-white/20 text-white"
-                  : "bg-white/5 text-white/60"
+              className={`flex flex-col items-center gap-1 animate-fade-in-up ${
+                p.name === playerName ? "opacity-100" : "opacity-70"
               }`}
             >
-              <Avatar value={p.emoji} size={24} />
-              {p.name}
-            </span>
+              <div className={`rounded-full p-0.5 ${p.name === playerName ? "ring-2 ring-white" : ""}`}>
+                <Avatar value={p.emoji} size={40} />
+              </div>
+              <span className="max-w-[72px] text-center text-xs font-extrabold text-white truncate">
+                {p.name}
+              </span>
+            </div>
           ))}
         </div>
       </div>

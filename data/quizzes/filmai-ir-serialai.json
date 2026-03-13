@@ -1,11 +1,11 @@
 {
   "id": "filmai-ir-serialai",
-  "title": "Filmai ir serialai",
-  "description": "15 klausimų apie filmus ir serialus",
+  "title": "Movies and series",
+  "description": "15 questions about movies and series",
   "emoji": "🎬",
   "questions": [
     {
-      "question": "Kuris aktorius vaidina Geležinį Žmogų (Iron Man) Marvel filmuose?",
+      "question": "Which actor plays Iron Man in the Marvel movies?",
       "options": [
         "Chris Evans",
         "Mark Ruffalo",
@@ -13,161 +13,162 @@
         "Robert Downey Jr."
       ],
       "correct": 3,
-      "explanation": "Robert Downey Jr. įkūnijo Tony Starką visuose Marvel Iron Man filmuose."
+      "explanation": "Robert Downey Jr. played Tony Stark in all of the Marvel Iron Man films."
     },
     {
-      "question": "Kaip vadinasi Pixar animacinis filmas apie žuvytę, kuri ieško savo sūnaus?",
+      "question": "What is the name of the Pixar cartoon about a fish looking for its son?",
       "options": [
-        "Žuvytė Dorė",
-        "Šamas",
+        "Dore the fish",
+        "Catfish",
         "Luca",
-        "Ieškant Nemo"
+        "Finding Nemo"
       ],
       "correct": 3,
-      "explanation": "„Ieškant Nemo“ (2003) pasakoja apie klouninę žuvytę Marliną, ieškantį savo sūnaus Nemo."
+      "explanation": "Finding Nemo (2003) tells the story of Marlin the clownfish in search of his son Nemo."
     },
     {
-      "question": "Kuriame seriale vaikai kovoja su padarais iš „Apversto pasaulio“ (Upside Down)?",
+      "question": "In which series do children fight creatures from the Upside Down?",
       "options": [
-        "Tamsioji materija",
+        "Dark matter",
         "Westworld",
         "Stranger Things",
-        "Lokis"
+        "The bear"
       ],
       "correct": 2,
-      "explanation": "„Stranger Things“ veiksmas vyksta Hokinse, kur vaikai susiduria su padarais iš Apversto pasaulio."
+      "explanation": "Stranger Things takes place in Hawkins, where children encounter creatures from the Upside Down world."
     },
     {
-      "question": "Kas režisavo filmą „Pradžia“ (Inception)?",
+      "question": "Who directed the movie Inception?",
       "options": [
-        "Christopheris Nolanas",
-        "Stevenas Spielbergas",
-        "Quentinas Tarantino",
-        "Jamesas Cameronas"
+        "Christopher Nolan",
+        "Steven Spielberg",
+        "Quentin Tarantino",
+        "James Cameron"
       ],
       "correct": 0,
-      "explanation": "Christopheris Nolanas režisavo „Pradžią“ (2010) su Leonardo DiCaprio pagrindiniame vaidmenyje."
+      "explanation": "Christopher Nolan directed Inception (2010) starring Leonardo DiCaprio."
     },
     {
-      "question": "Kuris filmas laimėjo geriausio filmo „Oskarą“ 2024 metais?",
+      "question": "Which movie won the best picture Oscar in 2024?",
       "options": [
-        "Oppenheimeris",
-        "Killeriai pagal žiedų mėnulį",
+        "Oppenheimer",
+        "Killers according to the ring moon",
         "Barbie",
-        "Vargšai daiktai"
+        "Poor things"
       ],
       "correct": 0,
-      "explanation": "„Oppenheimeris“ laimėjo geriausio filmo „Oskarą“ 2024 m. ceremonijoje."
+      "explanation": "Oppenheimer Wins Best Picture Oscar 2024 at the ceremony."
     },
     {
-      "question": "Kaip vadinasi dirbtinio intelekto robotas filme „Didysis šešetas“ (Big Hero 6)?",
+      "question": "What is the name of the AI ​​robot in Big Hero 6?",
       "options": [
-        "Volisas",
+        "Wallis",
         "Optimus",
-        "Beimaksas",
-        "Robis"
+        "Baymax",
+        "Robbie"
       ],
       "correct": 2,
-      "explanation": "Beimaksas yra pripučiamas sveikatos priežiūros robotas iš Disney filmo „Didysis šešetas“."
+      "explanation": "Baymax is an inflatable healthcare robot from the Disney film The Big Six."
     },
     {
-      "question": "Kas pasakė garsiąją frazę „Aš esu tavo tėvas“ Žvaigždžių karuose?",
+      "question": "Who said the famous line \"I am your father\" in Star Wars?",
       "options": [
         "Obi-Wan Kenobi",
-        "Lukas Skywalkeris",
-        "Imperatorius Palpatinas",
-        "Dartas Veideris"
+        "Luke Skywalker",
+        "Emperor Palpatine",
+        "Darth Vader"
       ],
       "correct": 3,
-      "explanation": "Dartas Veideris ištarė šią frazę Lukui Skywalkeriui filme „Imperija smūgiuoja atgal“."
+      "explanation": "Darth Vader uttered this phrase to Luke Skywalker in The Empire Strikes Back."
     },
     {
-      "question": "Kuris Disney filmas pasakoja apie dviejų seserų – Elzos ir Anos – istoriją?",
+      "question": "Which Disney movie tells the story of two sisters, Elsa and Anna?",
       "options": [
-        "Ledo šalis",
-        "Vaiana",
-        "Rapuncelė",
-        "Pelenė"
+        "Ice country",
+        "Wayana",
+        "Rapunzel",
+        "Cinderella"
       ],
       "correct": 0,
-      "explanation": "„Ledo šalis“ (Frozen, 2013) pasakoja apie seseris Elzą ir Aną iš Arendelio karalystės."
+      "explanation": "\"Frozen\" (Frozen, 2013) tells the story of sisters Elsa and Anna from the kingdom of Arendelle."
     },
     {
-      "question": "Kuris režisierius sukūrė filmą „Iškrypėlių aštuonetas“ ir „Pulp Fiction“?",
+      "question": "Which director made The Freaky Eight and Pulp Fiction?",
       "options": [
-        "Quentinas Tarantino",
-        "Davidas Fincheris",
-        "Ridlis Skotas",
-        "Martinas Scorsese"
+        "Quentin Tarantino",
+        "David Fincher",
+        "Ridley Scott",
+        "Martin Scorsese"
       ],
       "correct": 0,
-      "explanation": "Quentinas Tarantino režisavo abu šiuos filmus ir yra žinomas dėl savo unikalaus stiliaus."
+      "explanation": "Quentin Tarantino directed both of these films and is known for his unique style."
     },
     {
-      "question": "Kaip vadinasi serialas apie septynių karalysčių kovą dėl Geležinio sosto?",
+      "question": "What is the name of the show about the seven kingdoms fighting for the Iron Throne?",
       "options": [
-        "Sostų karai",
-        "Vikingai",
-        "Žiedų valdovas: Galios žiedai",
-        "Vedlys"
+        "wars of thrones",
+        "Vikings",
+        "The Lord of the Rings: The Rings of Power",
+        "Wizard"
       ],
       "correct": 0,
-      "explanation": "„Sostų karai“ (Game of Thrones) yra HBO serialas pagal George'o R.R. Martino knygas."
+      "explanation": "Game of Thrones is an HBO series based on George R.R. Martin's books."
     },
     {
-      "question": "Kuris aktorius vaidina Betmeną filme „Betmenas“ (2022)?",
+      "question": "Which actor plays Batman in The Batman (2022)?",
       "options": [
-        "Benas Affleckas",
-        "Robertas Pattinsonas",
-        "Christianas Bale'as",
-        "George'as Clooney"
+        "Ben Affleck",
+        "Robert Pattinson",
+        "Christian Bale",
+        "George Clooney"
       ],
       "correct": 1,
-      "explanation": "Robertas Pattinsonas suvaidino Betmeną Matto Reeveso režisuotame 2022 m. filme."
+      "explanation": "Robert Pattinson played Batman in the 2022 film directed by Matt Reeves. in the movie."
     },
     {
-      "question": "Kokį gyvūną Simba yra animaciniame filme „Liūtas karalius“?",
+      "question": "What animal is Simba in The Lion King cartoon?",
       "options": [
-        "Leopardas",
-        "Liūtas",
-        "Tigras",
-        "Gepardas"
+        "Leopard",
+        "Leo",
+        "Tiger",
+        "Cheetah"
       ],
       "correct": 1,
-      "explanation": "Simba yra liūtas, kuris tampa Padidės žemių karaliumi Disney filme „Liūtas karalius“."
+      "explanation": "Simba is a lion who becomes the king of the Lands of the Rise in Disney's The Lion King."
     },
     {
-      "question": "Kuris Netflix serialas pasakoja apie šachmatų geniję Beth Harmon?",
+      "question": "Which Netflix series is about chess genius Beth Harmon?",
       "options": [
         "Ozark",
-        "Karalienės gambitas",
-        "Popieriaus namas",
-        "Bridžertonai"
+        "Queen's Gambit",
+        "Paper house",
+        "The Bridgertons"
       ],
       "correct": 1,
-      "explanation": "„Karalienės gambitas“ (The Queen's Gambit) — Netflix miniserialas apie šachmatų geniję Beth Harmon."
+      "explanation": "\"The Queen's Gambit\" (The Queen's Gambit) is a Netflix miniseries about chess genius Beth Harmon."
     },
     {
-      "question": "Kuris Steveno Spielbergo filmas pasakoja apie dinozaurų parką?",
+      "question": "Which Steven Spielberg movie is about Dinosaur Park?",
       "options": [
         "E.T.",
-        "Gelbstint eilinį Rajaną",
-        "Jūros periodo parkas",
-        "Ateivių pasaulis"
+        "Saving Private Ryan",
+        "Sea period park",
+        "Alien world"
       ],
       "correct": 2,
-      "explanation": "„Jūros periodo parkas“ (Jurassic Park, 1993) — Spielbergo filmas apie atgaivintus dinozaurus."
+      "explanation": "\"Jurassic Park\" (Jurassic Park, 1993), Spielberg's film about revived dinosaurs."
     },
     {
-      "question": "Kuris animacinis filmas pasakoja apie emocijas – Džiaugsmą, Liūdesį, Pyktį – gyvenančias mergaitės galvoje?",
+      "question": "Which cartoon tells about the emotions - Joy, Sadness, Anger - that live in a girl's head?",
       "options": [
         "Luca",
-        "Šaunuolis Superis",
+        "Cool Super",
         "Coco",
-        "Susijaukę"
+        "Messed up"
       ],
       "correct": 3,
-      "explanation": "Pixar filmas „Susijaukę“ (Inside Out, 2015) vaizduoja emocijas, gyvenančias mergaitės Railės galvoje."
+      "explanation": "The Pixar film \"Inside Out\" (2015) depicts the emotions that live in the head of a girl named Riley."
     }
-  ]
+  ],
+  "language": "en"
 }

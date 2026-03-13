@@ -1,7 +1,7 @@
 {
   "id": "lietuvos-tradicijos",
   "title": "Lietuvos tradicijos ir kultūra",
-  "description": "Klausimai apie lietuvišką kultūrą — šventės, simboliai, tautodailė, dainos ir papročiai.",
+  "description": "Klausimai apie lietuvišką kultūrą, šventės, simboliai, tautodailė, dainos ir papročiai.",
   "emoji": "🇱🇹",
   "questions": [
     {
@@ -35,7 +35,7 @@
         "Daugiabalsės lietuvių raudų melodijos"
       ],
       "correct": 0,
-      "explanation": "Sutartinės — tai unikalios senovinės lietuvių polifoninės dainos, kuriose du ar daugiau balsų dainuoja skirtingas melodijas vienu metu. 2010 m. UNESCO jas pripažino nematerialiu paveldu."
+      "explanation": "Sutartinės, tai unikalios senovinės lietuvių polifoninės dainos, kuriose du ar daugiau balsų dainuoja skirtingas melodijas vienu metu. 2010 m. UNESCO jas pripažino nematerialiu paveldu."
     },
     {
       "question": "Kokia Lietuvos tradicija, susijusi su medienos meistrais, yra UNESCO saugoma?",
@@ -46,7 +46,7 @@
         "Koplytstulpių tapyba"
       ],
       "correct": 0,
-      "explanation": "Lietuvių kryždirbystė ir jos simbolika — unikalus medinių kryžių, koplytstulpių ir stogastulpių statymo menas — 2001 m. buvo pirmoji Lietuvos tradicija, patekusi į UNESCO nematerialaus paveldo sąrašą."
+      "explanation": "Lietuvių kryždirbystė ir jos simbolika, unikalus medinių kryžių, koplytstulpių ir stogastulpių statymo menas, 2001 m. buvo pirmoji Lietuvos tradicija, patekusi į UNESCO nematerialaus paveldo sąrašą."
     },
     {
       "question": "Kaip vadinasi tradicinė lietuvių juosta, kuri naudojama tautiniuose rūbuose?",
@@ -57,7 +57,7 @@
         "Austinė juosta"
       ],
       "correct": 3,
-      "explanation": "Austinė juosta — tai tradiciniu būdu audžiama juosta su raštais, naudojama kaip tautinio kostiumo dalis ar dovanų elementas. Juostų audimas yra svarbi lietuvių tautodailės šaka."
+      "explanation": "Austinė juosta, tai tradiciniu būdu audžiama juosta su raštais, naudojama kaip tautinio kostiumo dalis ar dovanų elementas. Juostų audimas yra svarbi lietuvių tautodailės šaka."
     },
     {
       "question": "Kas yra margučiai?",
@@ -68,7 +68,7 @@
         "Velykų duonelės su cinamonu"
       ],
       "correct": 1,
-      "explanation": "Margučiai — tai per Velykas natūraliais dažais (dažniausiai svogūnų lukštais) marginami kiaušiniai. Jie puošiami vašku, skutinėjami ar kitais būdais dekoruojami."
+      "explanation": "Margučiai, tai per Velykas natūraliais dažais (dažniausiai svogūnų lukštais) marginami kiaušiniai. Jie puošiami vašku, skutinėjami ar kitais būdais dekoruojami."
     },
     {
       "question": "Koks pagrindinis Velykų žaidimas su kiaušiniais Lietuvoje?",
@@ -79,7 +79,7 @@
         "Margučių ridenimas ir mušimas"
       ],
       "correct": 3,
-      "explanation": "Per Velykas lietuviai ridena margučius nuo kalniuko ir muša juos — kieno kiaušinis neįtrūksta, tas laimi. Tai vienas seniausių velykinių žaidimų."
+      "explanation": "Per Velykas lietuviai ridena margučius nuo kalniuko ir muša juos, kieno kiaušinis neįtrūksta, tas laimi. Tai vienas seniausių velykinių žaidimų."
     },
     {
       "question": "Kas minima lapkričio 1-ąją Lietuvoje?",
@@ -90,7 +90,7 @@
         "Vėlių naktis (Helouvinas)"
       ],
       "correct": 1,
-      "explanation": "Lapkričio 1-oji — Visų Šventųjų diena, o lapkričio 2-oji — Vėlinės (Mirusiųjų atminimo diena). Tačiau Lietuvoje jau nuo lapkričio 1-osios žmonės lanko kapines ir uždega žvakes."
+      "explanation": "Lapkričio 1-oji, Visų Šventųjų diena, o lapkričio 2-oji, Vėlinės (Mirusiųjų atminimo diena). Tačiau Lietuvoje jau nuo lapkričio 1-osios žmonės lanko kapines ir uždega žvakes."
     },
     {
       "question": "Ką lietuviai daro per Vėlines?",
@@ -112,7 +112,7 @@
         "Lietuvos valstybės atkūrimo dieną (1918 m.)"
       ],
       "correct": 3,
-      "explanation": "Vasario 16-oji — Lietuvos valstybės atkūrimo diena. 1918 m. vasario 16 d. Lietuvos Taryba pasirašė Nepriklausomybės Aktą, paskelbusį nepriklausomos Lietuvos valstybės atkūrimą."
+      "explanation": "Vasario 16-oji, Lietuvos valstybės atkūrimo diena. 1918 m. vasario 16 d. Lietuvos Taryba pasirašė Nepriklausomybės Aktą, paskelbusį nepriklausomos Lietuvos valstybės atkūrimą."
     },
     {
       "question": "Ką švenčiame kovo 11-ąją?",
@@ -123,7 +123,7 @@
         "Lietuvos įstojimo į NATO dieną"
       ],
       "correct": 2,
-      "explanation": "Kovo 11-oji — Lietuvos Nepriklausomybės atkūrimo diena. 1990 m. kovo 11 d. Aukščiausioji Taryba paskelbė Lietuvos nepriklausomybės atkūrimą nuo Sovietų Sąjungos."
+      "explanation": "Kovo 11-oji, Lietuvos Nepriklausomybės atkūrimo diena. 1990 m. kovo 11 d. Aukščiausioji Taryba paskelbė Lietuvos nepriklausomybės atkūrimą nuo Sovietų Sąjungos."
     },
     {
       "question": "Ką minime liepos 6-ąją?",
@@ -134,10 +134,10 @@
         "Mindaugo karūnavimo dieną (Valstybės dieną)"
       ],
       "correct": 3,
-      "explanation": "Liepos 6-oji — Valstybės (Karaliaus Mindaugo karūnavimo) diena. 1253 m. liepos 6 d. Mindaugas buvo karūnuotas pirmuoju ir vieninteliu Lietuvos karaliumi."
+      "explanation": "Liepos 6-oji, Valstybės (Karaliaus Mindaugo karūnavimo) diena. 1253 m. liepos 6 d. Mindaugas buvo karūnuotas pirmuoju ir vieninteliu Lietuvos karaliumi."
     },
     {
-      "question": "Kas pavaizduotas Lietuvos herbe — Vytyje?",
+      "question": "Kas pavaizduotas Lietuvos herbe, Vytyje?",
       "options": [
         "Šarvuotas raitelis ant žirgo su skydu ir ietimi",
         "Šarvuotas raitelis ant žirgo su iškelta kardu",
@@ -145,7 +145,7 @@
         "Riteris ant žirgo su dvigubu kryžiumi rankoje"
       ],
       "correct": 1,
-      "explanation": "Vytis — Lietuvos herbas, kuriame pavaizduotas šarvuotas raitelis ant balto žirgo, rankoje laikantis iškeltą kalaviją ir skydą su dvigubu kryžiumi. Tai vienas seniausių Europos herbų."
+      "explanation": "Vytis, Lietuvos herbas, kuriame pavaizduotas šarvuotas raitelis ant balto žirgo, rankoje laikantis iškeltą kalaviją ir skydą su dvigubu kryžiumi. Tai vienas seniausių Europos herbų."
     },
     {
       "question": "Kokios spalvos yra Lietuvos trispalvė vėliava (iš viršaus į apačią)?",
@@ -156,7 +156,7 @@
         "Raudona, geltona, žalia"
       ],
       "correct": 2,
-      "explanation": "Lietuvos trispalvė vėliava — geltona (viršuje), žalia (viduryje), raudona (apačioje). Geltona simbolizuoja saulę, šviesą ir gerovę, žalia — gamtą ir viltį, raudona — kraują, paaukotą už Tėvynę."
+      "explanation": "Lietuvos trispalvė vėliava, geltona (viršuje), žalia (viduryje), raudona (apačioje). Geltona simbolizuoja saulę, šviesą ir gerovę, žalia, gamtą ir viltį, raudona, kraują, paaukotą už Tėvynę."
     },
     {
       "question": "Kaip vadinasi tradicinis lietuviškas patiekalas iš tarkuotų bulvių, įdarytas mėsa?",
@@ -167,7 +167,7 @@
         "Cepelinai (didžkukuliai)"
       ],
       "correct": 3,
-      "explanation": "Cepelinai (arba didžkukuliai) — tai tarkuotos bulvių masės kukuliai su mėsos, varškės ar grybų įdaru. Pavadinimas kilo nuo panašumo į cepelinus — dirižablius."
+      "explanation": "Cepelinai (arba didžkukuliai), tai tarkuotos bulvių masės kukuliai su mėsos, varškės ar grybų įdaru. Pavadinimas kilo nuo panašumo į cepelinus, dirižablius."
     },
     {
       "question": "Iš ko gaminami šaltibarščiai?",
@@ -178,7 +178,7 @@
         "Burokėlių ir kefyro"
       ],
       "correct": 3,
-      "explanation": "Šaltibarščiai — šalta rožinė sriuba iš burokėlių, kefyro, agurkų, krapų ir kiaušinių. Patiekiama su karštomis bulvėmis. Tai ikoniškas lietuviškas vasaros patiekalas."
+      "explanation": "Šaltibarščiai, šalta rožinė sriuba iš burokėlių, kefyro, agurkų, krapų ir kiaušinių. Patiekiama su karštomis bulvėmis. Tai ikoniškas lietuviškas vasaros patiekalas."
     },
     {
       "question": "Kaip vadinamas tradicinis lietuviškas šakotasis pyragas, kepamas ant iešmo?",
@@ -189,7 +189,7 @@
         "Spurgos ant iešmo"
       ],
       "correct": 0,
-      "explanation": "Šakotis — tai tradicinis lietuviškas pyragas, kepamas ant besisukančio iešmo, todėl tešla suformuoja šakas primenančias ataugas. Jis neatsiejamas nuo vestuvių ir švenčių."
+      "explanation": "Šakotis, tai tradicinis lietuviškas pyragas, kepamas ant besisukančio iešmo, todėl tešla suformuoja šakas primenančias ataugas. Jis neatsiejamas nuo vestuvių ir švenčių."
     },
     {
       "question": "Kaip vadinamas seniausias lietuvių liaudies styginių instrumentas?",
@@ -200,7 +200,7 @@
         "Kanklės"
       ],
       "correct": 3,
-      "explanation": "Kanklės — tai seniausias lietuvių liaudies styginių instrumentas, panašus į citerą. Kanklių muzika neatskiriama nuo lietuvių folklorinės tradicijos. Instrumentas turi nuo 5 iki 30 stygų."
+      "explanation": "Kanklės, tai seniausias lietuvių liaudies styginių instrumentas, panašus į citerą. Kanklių muzika neatskiriama nuo lietuvių folklorinės tradicijos. Instrumentas turi nuo 5 iki 30 stygų."
     },
     {
       "question": "Kas yra skudučiai?",
@@ -211,7 +211,7 @@
         "Rago formos pučiamieji, naudojami piemenų signalams"
       ],
       "correct": 1,
-      "explanation": "Skudučiai — tai lietuvių liaudies pučiamieji instrumentai, sudaryti iš skirtingo ilgio medinių ar nendrių vamzdelių. Kiekvienas grojėjas pučia vieną vamzdelį, todėl melodijai reikia kelių žmonių."
+      "explanation": "Skudučiai, tai lietuvių liaudies pučiamieji instrumentai, sudaryti iš skirtingo ilgio medinių ar nendrių vamzdelių. Kiekvienas grojėjas pučia vieną vamzdelį, todėl melodijai reikia kelių žmonių."
     },
     {
       "question": "Kas vyksta Kaziuko mugėje, tradiciškai rengiamoje Vilniuje kovo mėnesį?",
@@ -222,9 +222,10 @@
         "Organizuojama tautinių valgių degustacijos šventė"
       ],
       "correct": 2,
-      "explanation": "Kaziuko mugė — tai sena vilnietiška tradicija, švenčiama kovo pradžioje Šv. Kazimiero garbei. Mugėje prekiaujama verbomis, medžio drožiniais, keramika, medumi ir kitais tautodailės dirbiniais."
+      "explanation": "Kaziuko mugė, tai sena vilnietiška tradicija, švenčiama kovo pradžioje Šv. Kazimiero garbei. Mugėje prekiaujama verbomis, medžio drožiniais, keramika, medumi ir kitais tautodailės dirbiniais."
     }
   ],
   "createdAt": "2026-02-17T00:00:00.000Z",
-  "updatedAt": "2026-02-17T00:00:00.000Z"
+  "updatedAt": "2026-02-17T00:00:00.000Z",
+  "language": "lt"
 }

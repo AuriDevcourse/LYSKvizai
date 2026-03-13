@@ -221,13 +221,13 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
         )}
 
         {tab === "background" && (
-          <div className="grid grid-cols-5 gap-2">
+          <div className="grid grid-cols-5 gap-2 max-h-44 overflow-y-auto pr-0.5">
             {BG_PALETTE.map((c) => (
               <button
                 key={c}
                 type="button"
                 onClick={() => selectBg(c)}
-                className={`aspect-square rounded-full transition-all ${
+                className={`h-10 w-10 rounded-full transition-all ${
                   bgColor === c ? "ring-2 ring-white scale-110" : "hover:scale-110"
                 }`}
                 style={{ backgroundColor: c }}

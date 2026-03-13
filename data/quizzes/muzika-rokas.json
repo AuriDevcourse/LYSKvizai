@@ -1,11 +1,11 @@
 {
   "id": "muzika-rokas",
-  "title": "Roko muzika",
-  "description": "Klausimai apie roko muziką",
+  "title": "Rock music",
+  "description": "Questions about rock music",
   "emoji": "🎸",
   "questions": [
     {
-      "question": "Kuri grupė atliko legendinę dainą Bohemian Rhapsody?",
+      "question": "Which band performed the legendary song Bohemian Rhapsody?",
       "options": [
         "Queen",
         "Led Zeppelin",
@@ -13,10 +13,10 @@
         "Pink Floyd"
       ],
       "correct": 0,
-      "explanation": "Bohemian Rhapsody – tai Queen grupės daina, išleista 1975 m."
+      "explanation": "Bohemian Rhapsody is a song by Queen, released in 1975."
     },
     {
-      "question": "Kuri grupė atliko dainą Stairway to Heaven?",
+      "question": "Which band performed the song Stairway to Heaven?",
       "options": [
         "Deep Purple",
         "Black Sabbath",
@@ -24,10 +24,10 @@
         "The Rolling Stones"
       ],
       "correct": 2,
-      "explanation": "Stairway to Heaven – tai legendinė Led Zeppelin daina iš 1971 m."
+      "explanation": "Stairway to Heaven is a legendary Led Zeppelin song from 1971."
     },
     {
-      "question": "Kuris The Beatles narys buvo nužudytas 1980 m.?",
+      "question": "Which member of The Beatles was murdered in 1980?",
       "options": [
         "John Lennon",
         "Ringo Starr",
@@ -35,10 +35,10 @@
         "Paul McCartney"
       ],
       "correct": 0,
-      "explanation": "John Lennon buvo nušautas 1980 m. gruodžio 8 d. Niujorke."
+      "explanation": "John Lennon was shot in 1980. December 8 in New York."
     },
     {
-      "question": "Kuri grupė atliko Smells Like Teen Spirit?",
+      "question": "Which band performed Smells Like Teen Spirit?",
       "options": [
         "Pearl Jam",
         "Alice in Chains",
@@ -46,10 +46,10 @@
         "Nirvana"
       ],
       "correct": 3,
-      "explanation": "Smells Like Teen Spirit – tai Nirvana hitas, tapęs grunge judėjimo himnu."
+      "explanation": "Smells Like Teen Spirit is a Nirvana hit that became an anthem of the grunge movement."
     },
     {
-      "question": "Kas buvo The Rolling Stones vokalistas?",
+      "question": "Who was the lead singer of The Rolling Stones?",
       "options": [
         "Keith Richards",
         "Robert Plant",
@@ -57,10 +57,10 @@
         "Mick Jagger"
       ],
       "correct": 3,
-      "explanation": "Mick Jagger – The Rolling Stones vokalistas nuo grupės įkūrimo 1962 m."
+      "explanation": "Mick Jagger - The Rolling Stones vocalist since the band's formation in 1962."
     },
     {
-      "question": "Kuri grupė sukūrė albumą The Dark Side of the Moon?",
+      "question": "Which band made the album The Dark Side of the Moon?",
       "options": [
         "Pink Floyd",
         "Yes",
@@ -68,10 +68,10 @@
         "King Crimson"
       ],
       "correct": 0,
-      "explanation": "The Dark Side of the Moon (1973) – vienas geriausiai parduodamų Pink Floyd albumų."
+      "explanation": "The Dark Side of the Moon (1973) is one of Pink Floyd's best-selling albums."
     },
     {
-      "question": "Kuris gitaristas laikomas vienu geriausių visų laikų ir grojo kairiarankiu gitara?",
+      "question": "Which guitarist is considered one of the greatest of all time and played the guitar left-handed?",
       "options": [
         "Jimi Hendrix",
         "Jimmy Page",
@@ -79,10 +79,10 @@
         "Chuck Berry"
       ],
       "correct": 0,
-      "explanation": "Jimi Hendrix – legendinis kairiarankis gitaristas, pakeitęs roko muziką."
+      "explanation": "Jimi Hendrix is ​​the legendary left-handed guitarist who changed rock music."
     },
     {
-      "question": "Kuri grupė atliko Back in Black?",
+      "question": "Which band performed Back in Black?",
       "options": [
         "AC/DC",
         "Metallica",
@@ -90,10 +90,10 @@
         "Guns N' Roses"
       ],
       "correct": 0,
-      "explanation": "Back in Black – tai AC/DC albumas ir daina, išleisti 1980 m."
+      "explanation": "Back in Black is a 1980 album and song by AC/DC."
     },
     {
-      "question": "Kuri grupė atliko Hotel California?",
+      "question": "Which band performed Hotel California?",
       "options": [
         "Fleetwood Mac",
         "The Eagles",
@@ -101,18 +101,19 @@
         "Creedence Clearwater Revival"
       ],
       "correct": 1,
-      "explanation": "Hotel California – tai The Eagles klasikinė daina iš 1977 m."
+      "explanation": "Hotel California is a classic song by The Eagles from 1977."
     },
     {
-      "question": "Kuris Freddie Mercury buvo pagal tautybę?",
+      "question": "Which nationality was freddie mercury?",
       "options": [
-        "Zanzibaro kilmės parsas",
-        "Indas",
-        "Britas",
-        "Australas"
+        "A Parsi of Zanzibar origin",
+        "Indian",
+        "British",
+        "Australian"
       ],
       "correct": 0,
-      "explanation": "Freddie Mercury gimė Zanzibare (dabar Tanzanija) parsų šeimoje, vėliau gyveno Didžiojoje Britanijoje."
+      "explanation": "Freddie Mercury was born in Zanzibar (now Tanzania) to a Parsi family, then lived in Great Britain."
     }
-  ]
+  ],
+  "language": "en"
 }

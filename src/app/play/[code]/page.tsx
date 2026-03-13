@@ -54,7 +54,25 @@ export default function GamePage({ params }: PageProps) {
     return sessionStorage.getItem("quiz-host-playing") === "true";
   });
 
-  const isHost = !!hostId && hostId === playerId;
+  // Verify host status against server on mount
+  const [verifiedHost, setVerifiedHost] = useState(false);
+  useEffect(() => {
+    if (!hostId || hostId !== playerId) return;
+    fetch(`${MP_API_URL}/rooms?code=${code}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.hostId === hostId) {
+          setVerifiedHost(true);
+        } else {
+          // Stale host flag from a previous game
+          sessionStorage.removeItem("quiz-host-id");
+          sessionStorage.removeItem("quiz-host-playing");
+        }
+      })
+      .catch(() => {});
+  }, [code, hostId, playerId]);
+
+  const isHost = !!hostId && hostId === playerId && verifiedHost;
   const isHostPlayer = isHost && hostPlaying;
 
   const {
@@ -386,6 +404,7 @@ export default function GamePage({ params }: PageProps) {
 
         {state === "results" && results && isHost && !isHostPlayer && (
           <HostResults
+            key={currentIndex}
             question={lastQuestion}
             results={results}
             reactions={reactions}

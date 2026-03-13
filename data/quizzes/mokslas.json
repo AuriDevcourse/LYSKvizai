@@ -1,66 +1,66 @@
 {
   "id": "mokslas",
-  "title": "Mokslas",
-  "description": "15 klausimų apie mokslą ir gamtą",
+  "title": "Science",
+  "description": "15 questions about science and nature",
   "emoji": "🔬",
   "questions": [
     {
-      "question": "Koks yra didžiausias žmogaus kūno organas?",
+      "question": "What is the largest organ in the human body?",
       "options": [
-        "Kepenys",
-        "Smegenys",
-        "Širdis",
-        "Oda"
+        "Liver",
+        "The brain",
+        "Heart",
+        "Skin"
       ],
       "correct": 3,
-      "explanation": "Oda yra didžiausias žmogaus kūno organas, kurio plotas siekia apie 1,5–2 kvadratinius metrus."
+      "explanation": "The skin is the largest organ of the human body, covering an area of ​​about 1.5 to 2 square meters."
     },
     {
-      "question": "Koks cheminis elementas turi simbolį 'O'?",
+      "question": "What chemical element has the symbol 'O'?",
       "options": [
-        "Auksis",
-        "Osmiumas",
-        "Deguonis",
-        "Ozonas"
+        "Gold",
+        "Osmium",
+        "Oxygen",
+        "Ozone"
       ],
       "correct": 2,
-      "explanation": "Deguonis žymimas cheminiu simboliu O ir yra gyvybei būtinas elementas."
+      "explanation": "Oxygen is denoted by the chemical symbol O and is an essential element for life."
     },
     {
-      "question": "Kuri planeta yra arčiausiai Saulės?",
+      "question": "Which planet is closest to the Sun?",
       "options": [
-        "Venera",
-        "Žemė",
-        "Merkurijus",
-        "Marsas"
+        "Venus",
+        "Earth",
+        "Mercury",
+        "Mars"
       ],
       "correct": 2,
-      "explanation": "Merkurijus yra pirmoji ir arčiausiai Saulės esanti Saulės sistemos planeta."
+      "explanation": "Mercury is the first and closest planet to the Sun in the Solar System."
     },
     {
-      "question": "Kokia yra šviesos greičio reikšmė vakuume?",
+      "question": "What is the value of the speed of light in a vacuum?",
       "options": [
-        "150 000 km/s",
-        "1 000 000 km/s",
-        "500 000 km/s",
-        "300 000 km/s"
+        "150,000 km/s",
+        "1,000,000 km/s",
+        "500,000 km/s",
+        "300,000 km/s"
       ],
       "correct": 3,
-      "explanation": "Šviesos greitis vakuume yra apie 300 000 km/s (tiksliau 299 792 km/s)."
+      "explanation": "The speed of light in a vacuum is about 300,000 km/s (299,792 km/s to be exact)."
     },
     {
-      "question": "Kuris dujų sluoksnis apsaugo Žemę nuo ultravioletinių spindulių?",
+      "question": "Which layer of gas protects the Earth from ultraviolet rays?",
       "options": [
-        "Ozono sluoksnis",
-        "Mezosfera",
-        "Troposfera",
-        "Termosfera"
+        "Ozone layer",
+        "Mesosphere",
+        "Troposphere",
+        "Thermosphere"
       ],
       "correct": 0,
-      "explanation": "Ozono sluoksnis stratoferoje sugeria didžiąją dalį kenksmingų Saulės ultravioletinių spindulių."
+      "explanation": "The ozone layer in the stratosphere absorbs most of the Sun's harmful ultraviolet rays."
     },
     {
-      "question": "Kiek kaulų turi suaugusio žmogaus skeletas?",
+      "question": "How many bones does an adult skeleton have?",
       "options": [
         "206",
         "106",
@@ -68,76 +68,76 @@
         "156"
       ],
       "correct": 0,
-      "explanation": "Suaugusio žmogaus skeletą sudaro 206 kaulai."
+      "explanation": "The adult human skeleton consists of 206 bones."
     },
     {
-      "question": "Kas yra H₂O cheminė formulė?",
+      "question": "What is the chemical formula of H₂O?",
       "options": [
-        "Vanduo",
-        "Anglies dioksidas",
-        "Vandenilio peroksidas",
-        "Druskos rūgštis"
+        "Water",
+        "Carbon dioxide",
+        "Hydrogen peroxide",
+        "Hydrochloric acid"
       ],
       "correct": 0,
-      "explanation": "H₂O yra vandens cheminė formulė, sudaryta iš dviejų vandenilio ir vieno deguonies atomo."
+      "explanation": "H₂O is the chemical formula for water, consisting of two hydrogen atoms and one oxygen atom."
     },
     {
-      "question": "Kuri planeta Saulės sistemoje yra didžiausia?",
+      "question": "Which planet is the largest in the solar system?",
       "options": [
-        "Jupiteris",
-        "Saturnas",
-        "Neptūnas",
-        "Uranas"
+        "Jupiter",
+        "Saturn",
+        "Neptune",
+        "Uranus"
       ],
       "correct": 0,
-      "explanation": "Jupiteris yra didžiausia Saulės sistemos planeta, kurios skersmuo yra apie 11 kartų didesnis nei Žemės."
+      "explanation": "Jupiter is the largest planet in the Solar System, with a diameter about 11 times that of Earth."
     },
     {
-      "question": "Koks procesas leidžia augalams gaminti maistą iš saulės šviesos?",
+      "question": "What process allows plants to make food from sunlight?",
       "options": [
-        "Fermentacija",
-        "Osmosas",
-        "Fotosintezė",
-        "Difuzija"
+        "Fermentation",
+        "Osmosis",
+        "Photosynthesis",
+        "Diffusion"
       ],
       "correct": 2,
-      "explanation": "Fotosintezės metu augalai, naudodami saulės šviesą, anglies dioksidą ir vandenį, gamina gliukozę ir deguonį."
+      "explanation": "During photosynthesis, plants use sunlight, carbon dioxide and water to produce glucose and oxygen."
     },
     {
-      "question": "Kokia jėga pritraukia daiktus prie Žemės paviršiaus?",
+      "question": "What force attracts objects to the Earth's surface?",
       "options": [
-        "Magnetinė jėga",
-        "Gravitacija",
-        "Trinties jėga",
-        "Elektrostatinė jėga"
+        "Magnetic force",
+        "Gravity",
+        "Frictional force",
+        "Electrostatic force"
       ],
       "correct": 1,
-      "explanation": "Gravitacija yra jėga, kuri pritraukia visus kūnus turinčius masę vienas prie kito, įskaitant daiktus prie Žemės."
+      "explanation": "Gravity is the force that attracts all bodies with mass to each other, including objects near the Earth."
     },
     {
-      "question": "Koks cheminis elementas turi didžiausią dalį Saulėje?",
+      "question": "What chemical element has the largest proportion in the Sun?",
       "options": [
-        "Helis",
-        "Anglis",
-        "Deguonis",
-        "Vandenilis"
+        "Helium",
+        "Coal",
+        "Oxygen",
+        "Hydrogen"
       ],
       "correct": 3,
-      "explanation": "Vandenilis sudaro apie 73% Saulės masės ir yra pagrindinis branduolių sintezės kuras."
+      "explanation": "Hydrogen makes up about 73% of the Sun's mass and is the main fuel for nuclear fusion."
     },
     {
-      "question": "Kaip vadinamas išsiveržęs ugnikalnis, kurio krateris užpildytas vandeniu?",
+      "question": "What is the name of an erupting volcano whose crater is filled with water?",
       "options": [
-        "Geizeris",
-        "Kaldera",
-        "Lagūna",
-        "Riftas"
+        "Geyser",
+        "caldera",
+        "Lagoon",
+        "Rift"
       ],
       "correct": 1,
-      "explanation": "Kaldera yra didelis duburys, susidaręs ugnikalnio viršūnei įgriuvus, kuris dažnai užsipildo vandeniu."
+      "explanation": "A caldera is a large depression formed by the collapse of the top of a volcano, which often fills with water."
     },
     {
-      "question": "Kiek planetų yra Saulės sistemoje?",
+      "question": "How many planets are there in the solar system?",
       "options": [
         "7",
         "9",
@@ -145,21 +145,21 @@
         "10"
       ],
       "correct": 2,
-      "explanation": "Saulės sistemoje yra 8 planetos, nes Plutonas nuo 2006 m. laikomas nykštukine planeta."
+      "explanation": "There are 8 planets in the solar system, since Pluto since 2006. considered a dwarf planet."
     },
     {
-      "question": "Kuris gyvūnas yra didžiausias kada nors gyvenęs Žemėje?",
+      "question": "Which animal is the largest that ever lived on Earth?",
       "options": [
-        "Afrikinis dramblys",
-        "Mėlynasis banginis",
-        "Tiranozauras reksas",
-        "Megalodontas"
+        "African elephant",
+        "Blue whale",
+        "Tyrannosaurus rex",
+        "Megalodon"
       ],
       "correct": 1,
-      "explanation": "Mėlynasis banginis, siekiantis iki 30 metrų ilgio, yra didžiausias gyvūnas, kada nors gyvenęs Žemėje."
+      "explanation": "The blue whale, which can reach up to 30 meters in length, is the largest animal to have ever lived on Earth."
     },
     {
-      "question": "Kokia periodinės lentelės elemento atominio numerio reikšmė atitinka geležį?",
+      "question": "What atomic number value of the periodic table element corresponds to iron?",
       "options": [
         "12",
         "30",
@@ -167,7 +167,8 @@
         "26"
       ],
       "correct": 3,
-      "explanation": "Geležis (Fe) periodinėje lentelėje turi atominį numerį 26."
+      "explanation": "Iron (Fe) has atomic number 26 in the periodic table."
     }
-  ]
+  ],
+  "language": "en"
 }

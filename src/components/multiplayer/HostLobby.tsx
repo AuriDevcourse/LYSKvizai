@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Users, Play, QrCode, Swords, Skull } from "lucide-react";
+import { Users, Play, QrCode, Swords, Skull, Volume2, VolumeX } from "lucide-react";
 import type { PlayerInfo, GameMode } from "@/lib/multiplayer/types";
 import { useSound } from "@/hooks/useSound";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
@@ -19,6 +19,7 @@ interface HostLobbyProps {
 
 export default function HostLobby({ code, players, onStart, gameMode = "classic", teamNames = [] }: HostLobbyProps) {
   const [joinUrl, setJoinUrl] = useState("");
+  const [muted, setMuted] = useState(false);
   const { playLobby, stopLobby } = useSound();
   const { t } = useTranslation();
 
@@ -26,6 +27,15 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
     playLobby();
     return () => stopLobby();
   }, [playLobby, stopLobby]);
+
+  const toggleMute = () => {
+    if (muted) {
+      playLobby();
+    } else {
+      stopLobby();
+    }
+    setMuted(!muted);
+  };
 
   useEffect(() => {
     fetch("/api/network-url")
@@ -38,9 +48,17 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-8">
-      <h1 className="text-3xl font-bold text-white sm:text-4xl">
-        Quizmo
-      </h1>
+      <div className="flex items-center gap-3">
+        <h1 className="text-3xl font-bold text-white sm:text-4xl">
+          Quizmo
+        </h1>
+        <button
+          onClick={toggleMute}
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
+        >
+          {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+        </button>
+      </div>
 
       {/* Game mode badge */}
       {gameMode !== "classic" && (
@@ -71,26 +89,28 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
         </div>
 
         {/* Right: player list */}
-        <div className="flex min-w-[240px] flex-col items-center gap-4">
-          <div className="flex items-center gap-2 text-sm uppercase tracking-wider text-white/50">
-            <Users className="h-4 w-4" />
+        <div className="flex min-w-[260px] flex-col gap-4 rounded-2xl border border-white/10 bg-white/5 p-5">
+          <div className="flex items-center justify-center gap-2 text-sm font-extrabold uppercase tracking-wider text-white/60">
+            <Users className="h-5 w-5" />
             <span>{t("lobby.players")} ({players.length})</span>
           </div>
 
           {players.length === 0 ? (
-            <div className="flex flex-col items-center gap-2 py-8 text-white/30">
+            <div className="flex flex-col items-center gap-2 py-6 text-white/40">
               <Users className="h-8 w-8" />
-              <p>{t("lobby.waitingForPlayers")}</p>
+              <p className="font-bold">{t("lobby.waitingForPlayers")}</p>
             </div>
           ) : (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-wrap gap-3 justify-center">
               {players.map((p) => (
                 <div
                   key={p.id}
-                  className="flex items-center gap-2.5 rounded-lg bg-white/10 px-4 py-2"
+                  className="flex flex-col items-center gap-1.5 animate-bounce-in"
                 >
-                  <Avatar value={p.emoji} size={32} />
-                  <span className="font-medium text-white">{p.name}</span>
+                  <div className="rounded-full bg-white/15 p-1">
+                    <Avatar value={p.emoji} size={48} />
+                  </div>
+                  <span className="max-w-[80px] text-center text-sm font-extrabold text-white truncate">{p.name}</span>
                 </div>
               ))}
             </div>

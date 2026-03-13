@@ -167,6 +167,11 @@ export interface QuestionPayload {
     question: string;
     options: [string, string, string, string];
   };
+  /** Pre-translated content (Lithuanian). Client uses these when lang === "lt" and quiz is English. */
+  lt?: {
+    question: string;
+    options: [string, string, string, string];
+  };
 }
 
 export interface AnswerResult {
@@ -209,6 +214,12 @@ export interface ResultsPayload {
   yearGuesses?: { playerId: string; playerName: string; guessedYear: number; correctYear: number; points: number }[];
   /** Pre-translated content (English) */
   en?: {
+    correctAnswerText?: string;
+    explanation?: string;
+    options?: string[];
+  };
+  /** Pre-translated content (Lithuanian) */
+  lt?: {
     correctAnswerText?: string;
     explanation?: string;
     options?: string[];

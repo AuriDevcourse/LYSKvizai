@@ -1,173 +1,174 @@
 {
   "id": "pasaulio-istorija",
-  "title": "Pasaulio istorija",
-  "description": "15 klausimų apie pasaulio istoriją",
+  "title": "World history",
+  "description": "15 questions about world history",
   "emoji": "📜",
   "questions": [
     {
-      "question": "Kuriais metais buvo pastatyta Didžioji Cheopsо piramidė Egipte?",
+      "question": "In what year was the Great Pyramid of Cheops built in Egypt?",
       "options": [
-        "Apie 2560 m. pr. Kr.",
-        "Apie 1500 m. pr. Kr.",
-        "Apie 3500 m. pr. Kr.",
-        "Apie 800 m. pr. Kr."
+        "Around 2560 Ave. Cr.",
+        "Around 1500 Ave. Cr.",
+        "Around 3500 Ave. Cr.",
+        "Around 800 Ave. Cr."
       ],
       "correct": 0,
-      "explanation": "Didžioji Cheopso piramidė buvo pastatyta apie 2560 m. pr. Kr. ir yra vienintelis išlikęs senovės pasaulio stebuklas."
+      "explanation": "The Great Pyramid of Cheops was built around 2560 BC. Ave. Cr. and is the only surviving wonder of the ancient world."
     },
     {
-      "question": "Kas buvo pirmasis Romos imperatorius?",
+      "question": "Who was the first Roman emperor?",
       "options": [
-        "Augustas",
-        "Neronas",
-        "Julijus Cezaris",
-        "Trajanas"
+        "August",
+        "Nero",
+        "Julius Caesar",
+        "Trajan"
       ],
       "correct": 0,
-      "explanation": "Augustas (Oktavianas) tapo pirmuoju Romos imperatoriumi 27 m. pr. Kr."
+      "explanation": "Augustus (Octavian) became the first Roman emperor in 27 AD. Ave. Cr."
     },
     {
-      "question": "Kuriame mieste vyko pirmosios Olimpinės žaidynės senovės Graikijoje?",
+      "question": "In which city was the first Olympic Games held in ancient Greece?",
       "options": [
-        "Atėnuose",
-        "Olimpijoje",
-        "Spartoje",
-        "Korinte"
+        "in Athens",
+        "in Olympia",
+        "In Sparta",
+        "in Corinth"
       ],
       "correct": 1,
-      "explanation": "Pirmosios Olimpinės žaidynės vyko Olimpijoje 776 m. pr. Kr."
+      "explanation": "The first Olympic Games were held in Olympia in 776. Ave. Cr."
     },
     {
-      "question": "Kuriais metais Kristupas Kolumbas atrado Ameriką?",
+      "question": "In what year did Christopher Columbus discover America?",
       "options": [
-        "1492 m.",
-        "1512 m.",
-        "1475 m.",
-        "1488 m."
+        "in 1492",
+        "in 1512",
+        "1475",
+        "in 1488"
       ],
       "correct": 0,
-      "explanation": "Kristupas Kolumbas pasiekė Ameriką 1492 m. spalio 12 d."
+      "explanation": "Christopher Columbus reached America in 1492. October 12"
     },
     {
-      "question": "Kas išrado spausdinimo presą Europoje?",
+      "question": "Who invented the printing press in Europe?",
       "options": [
-        "Leonardas da Vinčis",
-        "Johanas Gutenbergas",
-        "Galilėjus Galilėjus",
-        "Nikolas Kopernikus"
+        "Leonardo da Vinci",
+        "Johann Gutenberg",
+        "Galileo Galilei",
+        "Nicolas Copernicus"
       ],
       "correct": 1,
-      "explanation": "Johanas Gutenbergas apie 1440 m. išrado spausdinimo presą su judančiomis raidėmis."
+      "explanation": "Johannes Gutenberg around 1440 invented the printing press with moving letters."
     },
     {
-      "question": "Kuriais metais prasidėjo Pirmasis pasaulinis karas?",
+      "question": "In what year did the First World War begin?",
       "options": [
-        "1918 m.",
-        "1914 m.",
-        "1912 m.",
-        "1916 m."
+        "in 1918",
+        "in 1914",
+        "in 1912",
+        "in 1916"
       ],
       "correct": 1,
-      "explanation": "Pirmasis pasaulinis karas prasidėjo 1914 m. liepos 28 d."
+      "explanation": "The First World War began in 1914. July 28"
     },
     {
-      "question": "Kas vadovavo nacistinei Vokietijai Antrojo pasaulinio karo metu?",
+      "question": "Who led Nazi Germany during World War II?",
       "options": [
-        "Adolfas Hitleris",
-        "Vilhelmas II",
-        "Heinrichas Himleris",
-        "Oto fon Bismarkas"
+        "Adolf Hitler",
+        "William II",
+        "Heinrich Himmler",
+        "Otto von Bismarck"
       ],
       "correct": 0,
-      "explanation": "Adolfas Hitleris buvo nacistinės Vokietijos fiureris nuo 1933 iki 1945 m."
+      "explanation": "Adolf Hitler was the Führer of Nazi Germany from 1933 to 1945."
     },
     {
-      "question": "Kuriais metais baigėsi Antrasis pasaulinis karas Europoje?",
+      "question": "In which year did World War II end in Europe?",
       "options": [
-        "1945 m.",
-        "1944 m.",
-        "1943 m.",
-        "1946 m."
+        "in 1945",
+        "in 1944",
+        "in 1943",
+        "in 1946"
       ],
       "correct": 0,
-      "explanation": "Antrasis pasaulinis karas Europoje baigėsi 1945 m. gegužės 8 d., Vokietijai kapituliavus."
+      "explanation": "The Second World War in Europe ended in 1945. May 8, after Germany capitulated."
     },
     {
-      "question": "Kas buvo pirmasis žmogus, išskridęs į kosmosą?",
+      "question": "Who was the first person to fly into space?",
       "options": [
-        "Nilas Armstrongas",
-        "Džonas Glenas",
-        "Jurijus Gagarinas",
-        "Valentina Tereškova"
+        "Neil Armstrong",
+        "John Glenn",
+        "Yuri Gagarin",
+        "Valentina Tereshkova"
       ],
       "correct": 2,
-      "explanation": "Jurijus Gagarinas 1961 m. balandžio 12 d. tapo pirmuoju žmogumi kosmose."
+      "explanation": "Yuri Gagarin in 1961 April 12 became the first man in space."
     },
     {
-      "question": "Kuriais metais žmogus pirmą kartą išsilaipino Mėnulyje?",
+      "question": "In which year did man first land on the moon?",
       "options": [
-        "1965 m.",
-        "1972 m.",
-        "1975 m.",
-        "1969 m."
+        "in 1965",
+        "in 1972",
+        "in 1975",
+        "in 1969"
       ],
       "correct": 3,
-      "explanation": "Nilas Armstrongas ir Bazas Oldrinas išsilaipino Mėnulyje 1969 m. liepos 20 d."
+      "explanation": "Neil Armstrong and Buzz Aldrin landed on the moon in 1969. July 20"
     },
     {
-      "question": "Kuriais metais griuvo Berlyno siena?",
+      "question": "What year did the Berlin Wall fall?",
       "options": [
-        "1987 m.",
-        "1991 m.",
-        "1989 m.",
-        "1985 m."
+        "in 1987",
+        "in 1991",
+        "in 1989",
+        "in 1985"
       ],
       "correct": 2,
-      "explanation": "Berlyno siena griuvo 1989 m. lapkričio 9 d., simbolizuodama Šaltojo karo pabaigą."
+      "explanation": "The Berlin Wall fell in 1989. on November 9, symbolizing the end of the Cold War."
     },
     {
-      "question": "Kas sukūrė pirmąjį telefono aparatą?",
+      "question": "Who invented the first telephone?",
       "options": [
-        "Tomas Edisonas",
+        "Thomas Edison",
         "Nikola Tesla",
-        "Samuelis Morzė",
-        "Aleksandras Grahamas Belas"
+        "Samuel Morse",
+        "Alexander Graham Bell"
       ],
       "correct": 3,
-      "explanation": "Aleksandras Grahamas Belas 1876 m. užpatentavo pirmąjį praktinį telefoną."
+      "explanation": "Alexander Graham Bell 1876 patented the first practical telephone."
     },
     {
-      "question": "Kuris viduramžių įvykis 1347–1353 m. nusinešė trečdalį Europos gyventojų?",
+      "question": "Which medieval event between 1347 and 1353 carried off a third of Europe's population?",
       "options": [
-        "Juodoji mirtis",
-        "Kryžiaus žygiai",
-        "Šimtametis karas",
-        "Didysis badas"
+        "The Black Death",
+        "Crusades",
+        "The Hundred Years War",
+        "The Great Famine"
       ],
       "correct": 0,
-      "explanation": "Juodoji mirtis (maro pandemija) 1347–1353 m. nusinešė apie trečdalį Europos gyventojų."
+      "explanation": "Black Death (plague pandemic) 1347-1353 took away about a third of Europe's population."
     },
     {
-      "question": "Kuriais metais įvyko Prancūzijos revoliucija?",
+      "question": "In what year did the French Revolution take place?",
       "options": [
-        "1776 m.",
-        "1789 m.",
-        "1815 m.",
-        "1804 m."
+        "in 1776",
+        "in 1789",
+        "in 1815",
+        "in 1804"
       ],
       "correct": 1,
-      "explanation": "Prancūzijos revoliucija prasidėjo 1789 m., kai buvo užimta Bastilija liepos 14 d."
+      "explanation": "The French Revolution began in 1789 with the storming of the Bastille on July 14."
     },
     {
-      "question": "Kas buvo Didžiosios Britanijos premjerė, pravardžiuojama „Geležine ledi“?",
+      "question": "Who was the British Prime Minister nicknamed the \"Iron Lady\"?",
       "options": [
-        "Karalienė Viktorija",
-        "Margaretė Tečer",
-        "Teresa Mėjus",
-        "Indira Gandi"
+        "Queen Victoria",
+        "Margaret Thatcher",
+        "Theresa May",
+        "Indira Gandhi"
       ],
       "correct": 1,
-      "explanation": "Margaretė Tečer buvo Britanijos premjerė 1979–1990 m. ir gavo „Geležinės ledi“ pravardę dėl savo ryžtingumo."
+      "explanation": "Margaret Thatcher was the British Prime Minister from 1979 to 1990. and earned the nickname \"The Iron Lady\" for her determination."
     }
-  ]
+  ],
+  "language": "en"
 }

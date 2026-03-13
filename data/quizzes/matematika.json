@@ -1,22 +1,22 @@
 {
   "id": "matematika",
-  "title": "Matematika",
-  "description": "15 klausimų apie matematiką",
+  "title": "Mathematics",
+  "description": "15 questions about mathematics",
   "emoji": "🧮",
   "questions": [
     {
-      "question": "Kiek yra 111 × 111?",
+      "question": "How much is 111 × 111?",
       "options": [
-        "12 321",
-        "12 221",
-        "11 211",
+        "12,321",
+        "12,221",
+        "11,211",
         "12 111"
       ],
       "correct": 0,
-      "explanation": "111 × 111 = 12 321."
+      "explanation": "111 × 111 = 12,321."
     },
     {
-      "question": "Koks yra trikampio vidaus kampų suma?",
+      "question": "What is the sum of the interior angles of the triangle?",
       "options": [
         "270°",
         "180°",
@@ -24,21 +24,21 @@
         "360°"
       ],
       "correct": 1,
-      "explanation": "Bet kurio trikampio vidaus kampų suma visada lygi 180°."
+      "explanation": "The sum of the interior angles of any triangle is always 180°."
     },
     {
-      "question": "Koks yra apytikslis skaičiaus π (pi) reikšmė?",
+      "question": "What is the approximate value of the number π (pi)?",
       "options": [
-        "2,72",
-        "3,14",
-        "3,17",
-        "3,41"
+        "2.72",
+        "3.14",
+        "3.17",
+        "3.41"
       ],
       "correct": 1,
-      "explanation": "Skaičius π apytiksliai lygus 3,14159..."
+      "explanation": "The number π is approximately equal to 3.14159..."
     },
     {
-      "question": "Koks skaičius eina po 1, 1, 2, 3, 5, 8 Fibonačio sekoje?",
+      "question": "What number comes after 1, 1, 2, 3, 5, 8 in the Fibonacci sequence?",
       "options": [
         "11",
         "14",
@@ -46,10 +46,10 @@
         "13"
       ],
       "correct": 3,
-      "explanation": "Fibonačio sekoje kiekvienas skaičius yra dviejų ankstesnių suma: 5 + 8 = 13."
+      "explanation": "In the Fibonacci sequence, each number is the sum of the previous two: 5 + 8 = 13."
     },
     {
-      "question": "Išspręskite: 2x + 6 = 20. Kiek yra x?",
+      "question": "Solve: 2x + 6 = 20. What is x?",
       "options": [
         "8",
         "6",
@@ -57,10 +57,10 @@
         "10"
       ],
       "correct": 2,
-      "explanation": "2x = 20 − 6 = 14, todėl x = 7."
+      "explanation": "2x = 20 − 6 = 14, so x = 7."
     },
     {
-      "question": "Koks yra stačiakampio plotas, jei jo kraštinės yra 7 cm ir 9 cm?",
+      "question": "What is the area of ​​a rectangle if its sides are 7 cm and 9 cm?",
       "options": [
         "56 cm²",
         "32 cm²",
@@ -68,21 +68,21 @@
         "63 cm²"
       ],
       "correct": 3,
-      "explanation": "Stačiakampio plotas = 7 × 9 = 63 cm²."
+      "explanation": "Area of ​​rectangle = 7 × 9 = 63 cm²."
     },
     {
-      "question": "Traukinys važiuoja 120 km/h greičiu. Per kiek valandų jis nuvažiuos 360 km?",
+      "question": "The train travels at a speed of 120 km/h. In how many hours will he travel 360 km?",
       "options": [
-        "3 val.",
-        "2 val.",
-        "4 val.",
-        "2,5 val."
+        "3 o'clock",
+        "2 hours",
+        "4 hours",
+        "2.5 hours"
       ],
       "correct": 0,
-      "explanation": "360 ÷ 120 = 3 valandos."
+      "explanation": "360 ÷ 120 = 3 hours."
     },
     {
-      "question": "Kiek yra 25% nuo 200?",
+      "question": "What is 25% of 200?",
       "options": [
         "75",
         "25",
@@ -90,10 +90,10 @@
         "40"
       ],
       "correct": 2,
-      "explanation": "25% nuo 200 = 200 × 0,25 = 50."
+      "explanation": "25% of 200 = 200 × 0.25 = 50."
     },
     {
-      "question": "Koks skaičius pakeltas bet kokiu laipsniu visada lygus 1?",
+      "question": "What number raised to any power is always 1?",
       "options": [
         "0",
         "1",
@@ -101,10 +101,10 @@
         "2"
       ],
       "correct": 1,
-      "explanation": "1 pakeltas bet kokiu laipsniu visada lygus 1."
+      "explanation": "1 raised to any power is always 1."
     },
     {
-      "question": "Kiek kraštinių turi šešiakampis?",
+      "question": "How many sides does a hexagon have?",
       "options": [
         "6",
         "8",
@@ -112,10 +112,10 @@
         "5"
       ],
       "correct": 0,
-      "explanation": "Šešiakampis (heksagonas) turi 6 kraštines."
+      "explanation": "A hexagon has 6 sides."
     },
     {
-      "question": "Kiek yra √144?",
+      "question": "How much is √144?",
       "options": [
         "14",
         "11",
@@ -123,43 +123,43 @@
         "12"
       ],
       "correct": 3,
-      "explanation": "12 × 12 = 144, todėl √144 = 12."
+      "explanation": "12 × 12 = 144, so √144 = 12."
     },
     {
-      "question": "Jei pirksiu 3 sąsiuvinius po 1,50 € ir 2 pieštukus po 0,75 €, kiek mokėsiu iš viso?",
+      "question": "If I buy 3 notebooks for €1.50 and 2 pencils for €0.75, how much will I pay in total?",
       "options": [
-        "5,50 €",
-        "5,25 €",
-        "6,50 €",
-        "6,00 €"
+        "€5.50",
+        "€5.25",
+        "€6.50",
+        "€6.00"
       ],
       "correct": 3,
-      "explanation": "3 × 1,50 + 2 × 0,75 = 4,50 + 1,50 = 6,00 €."
+      "explanation": "3 × 1.50 + 2 × 0.75 = 4.50 + 1.50 = €6.00."
     },
     {
-      "question": "Koks yra apskritimo perimetras (ilgis), jei jo spindulys 5 cm? (π ≈ 3,14)",
+      "question": "What is the circumference (length) of a circle if its radius is 5 cm? (π ≈ 3.14)",
       "options": [
-        "15,70 cm",
-        "31,40 cm",
-        "78,50 cm",
-        "25,12 cm"
+        "15.70 cm",
+        "31.40 cm",
+        "78.50 cm",
+        "25.12 cm"
       ],
       "correct": 1,
-      "explanation": "Apskritimo ilgis = 2πr = 2 × 3,14 × 5 = 31,40 cm."
+      "explanation": "Length of circle = 2πr = 2 × 3.14 × 5 = 31.40 cm."
     },
     {
-      "question": "Kiek yra 7! (7 faktorialas)?",
+      "question": "How much is 7! (factorial of 7)?",
       "options": [
-        "5 040",
-        "40 320",
+        "5,040",
+        "40,320",
         "720",
-        "362 880"
+        "362,880"
       ],
       "correct": 0,
-      "explanation": "7! = 7 × 6 × 5 × 4 × 3 × 2 × 1 = 5 040."
+      "explanation": "7! = 7 × 6 × 5 × 4 × 3 × 2 × 1 = 5,040."
     },
     {
-      "question": "Stačiakampio trikampio statiniai yra 3 cm ir 4 cm. Koks yra įžambinės ilgis?",
+      "question": "The sides of a right triangle are 3 cm and 4 cm. What is the length of the bib?",
       "options": [
         "7 cm",
         "5 cm",
@@ -167,7 +167,8 @@
         "6 cm"
       ],
       "correct": 1,
-      "explanation": "Pagal Pitagoro teoremą: √(3² + 4²) = √(9 + 16) = √25 = 5 cm."
+      "explanation": "According to the Pythagorean theorem: √(3² + 4²) = √(9 + 16) = √25 = 5 cm."
     }
-  ]
+  ],
+  "language": "en"
 }

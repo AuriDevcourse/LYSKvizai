@@ -234,7 +234,7 @@ function SurvivalInner() {
         ) : (
           <div className="flex w-full flex-col">
             {/* HUD: lives, score, streak, timer */}
-            <div className="mb-4 flex items-center justify-between">
+            <div className="relative z-10 mb-4 flex items-center justify-between">
               <div className={`flex gap-1 ${shakeLife ? "animate-wiggle" : ""}`}>
                 {Array.from({ length: MAX_LIVES }).map((_, i) => (
                   <Heart
@@ -261,7 +261,7 @@ function SurvivalInner() {
             </div>
 
             {/* Timer bar */}
-            <div className="mb-1 h-2 w-full overflow-hidden rounded-full bg-white/10">
+            <div className="relative z-10 mb-1 h-2 w-full overflow-hidden rounded-full bg-white/10">
               <div
                 className={`h-full rounded-full transition-all duration-1000 ease-linear ${
                   timerCritical ? "bg-red-500 timer-critical" : "bg-green-500"
@@ -269,7 +269,7 @@ function SurvivalInner() {
                 style={{ width: `${timerPct}%` }}
               />
             </div>
-            <p className="mb-4 text-center text-xs font-bold text-white/30">
+            <p className="relative z-10 mb-4 text-center text-xs font-bold text-white/30">
               Q{currentIndex + 1} · {timeLeft}s
             </p>
 

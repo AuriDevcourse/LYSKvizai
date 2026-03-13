@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Plus, LogIn, ArrowLeft, Loader2, Smartphone, Monitor } from "lucide-react";
+import { Plus, LogIn, ArrowLeft, Loader2, Smartphone, Monitor, X } from "lucide-react";
 import { useRoomActions } from "@/hooks/useRoomActions";
 import JoinForm from "@/components/multiplayer/JoinForm";
 import TopicPicker from "@/components/TopicPicker";
@@ -20,9 +20,11 @@ function PlayPageInner() {
   const searchParams = useSearchParams();
   const { t } = useTranslation();
   const codeFromUrl = searchParams.get("code") ?? "";
+  const joinFromUrl = searchParams.get("join") === "1";
+  const createFromUrl = searchParams.get("create") === "1";
 
   const [mode, setMode] = useState<"menu" | "pick-quiz" | "pick-mode" | "host-join" | "join" | "creating">(
-    codeFromUrl ? "join" : "menu"
+    codeFromUrl || joinFromUrl ? "join" : createFromUrl ? "pick-quiz" : "menu"
   );
   const [selectedQuizIds, setSelectedQuizIds] = useState<string[]>([]);
   const [selectedGameMode, setSelectedGameMode] = useState<GameMode>("classic");
@@ -98,6 +100,7 @@ function PlayPageInner() {
       sessionStorage.setItem("quiz-player-name", name);
       sessionStorage.setItem("quiz-player-emoji", emoji);
       sessionStorage.removeItem("quiz-host-id");
+      sessionStorage.removeItem("quiz-host-playing");
       router.push(`/play/${code}`);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Error joining");
@@ -297,8 +300,13 @@ function PlayPageInner() {
       )}
 
       {mode === "join" && (
-        <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
-          <h1 className="text-2xl font-extrabold text-white">{t("play.join")}</h1>
+        <div className="relative flex w-full flex-col items-center gap-6 animate-fade-in-up self-start -mt-8 sm:self-center sm:mt-0">
+          <button
+            onClick={() => { setMode("menu"); setError(null); }}
+            className="fixed right-3 top-3 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white sm:hidden"
+          >
+            <X className="h-5 w-5" />
+          </button>
 
           <JoinForm
             initialCode={codeFromUrl}
@@ -309,7 +317,7 @@ function PlayPageInner() {
 
           <button
             onClick={() => { setMode("menu"); setError(null); }}
-            className="flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
+            className="hidden sm:flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             {t("play.back")}

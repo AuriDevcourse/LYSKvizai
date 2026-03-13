@@ -33,8 +33,8 @@ export default function HostQuestion({
   powerUpEvent,
 }: HostQuestionProps) {
   const { t, lang } = useTranslation();
-  const qText = lang !== "lt" && question.en ? question.en.question : question.question;
-  const qOptions = lang !== "lt" && question.en ? question.en.options : question.options;
+  const qText = lang === "lt" && question.lt ? question.lt.question : lang !== "lt" && question.en ? question.en.question : question.question;
+  const qOptions = lang === "lt" && question.lt ? question.lt.options : lang !== "lt" && question.en ? question.en.options : question.options;
   const count = answerCount?.count ?? 0;
   const isProgressive = question.progressiveReveal ?? false;
   const words = qText.split(/\s+/);

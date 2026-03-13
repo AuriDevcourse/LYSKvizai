@@ -1,22 +1,22 @@
 {
   "id": "technologijos",
-  "title": "Technologijos",
-  "description": "15 klausimu apie technologijas",
+  "title": "Technologies",
+  "description": "15 questions about technology",
   "emoji": "💻",
   "questions": [
     {
-      "question": "Kuriais metais buvo išleistas pirmasis iPhone telefonas?",
+      "question": "What year was the first iPhone released?",
       "options": [
-        "2007 m.",
-        "2009 m.",
-        "2005 m.",
-        "2011 m."
+        "in 2007",
+        "in 2009",
+        "in 2005",
+        "in 2011"
       ],
       "correct": 0,
-      "explanation": "Pirmasis iPhone buvo pristatytas 2007 metais Steve'o Jobs'o."
+      "explanation": "The first iPhone was introduced in 2007 by Steve Jobs."
     },
     {
-      "question": "Kas sukūrė socialinį tinklą Facebook?",
+      "question": "Who created the social network Facebook?",
       "options": [
         "Elon Musk",
         "Mark Zuckerberg",
@@ -24,10 +24,10 @@
         "Bill Gates"
       ],
       "correct": 1,
-      "explanation": "Mark Zuckerberg sukūrė Facebook 2004 metais, būdamas Harvardo universiteto studentu."
+      "explanation": "Mark Zuckerberg created Facebook in 2004 while a student at Harvard University."
     },
     {
-      "question": "Ką reiškia santrumpa HTML?",
+      "question": "What does the abbreviation HTML mean?",
       "options": [
         "High Tech Modern Language",
         "Hyper Text Markup Language",
@@ -35,21 +35,21 @@
         "Hyper Transfer Mail Language"
       ],
       "correct": 1,
-      "explanation": "HTML reiškia „Hyper Text Markup Language“ — tai pagrindinė interneto puslapių kūrimo kalba."
+      "explanation": "HTML stands for Hyper Text Markup Language and is the basic language for creating web pages."
     },
     {
-      "question": "Kuriais metais buvo įkurta Instagram platforma?",
+      "question": "In what year was the Instagram platform founded?",
       "options": [
-        "2012 m.",
-        "2008 m.",
-        "2010 m.",
-        "2014 m."
+        "in 2012",
+        "in 2008",
+        "in 2010",
+        "in 2014"
       ],
       "correct": 2,
-      "explanation": "Instagram buvo paleista 2010 metų spalį ir per pirmą dieną sulaukė 25 000 vartotojų."
+      "explanation": "Instagram was launched in October 2010 and gained 25,000 users on its first day."
     },
     {
-      "question": "Kuris žaidimas tapo populiariausiu pasaulyje pagal parduotų kopijų skaičių?",
+      "question": "Which game became the most popular game in the world in terms of the number of copies sold?",
       "options": [
         "Fortnite",
         "Roblox",
@@ -57,10 +57,10 @@
         "Grand Theft Auto V"
       ],
       "correct": 2,
-      "explanation": "Minecraft yra daugiausiai kopijų parduotas žaidimas pasaulyje — daugiau nei 300 milijonų."
+      "explanation": "Minecraft is the best-selling game in the world, with over 300 million copies sold."
     },
     {
-      "question": "Kuri kompanija sukūrė PlayStation žaidimų konsolę?",
+      "question": "Which company created the PlayStation game console?",
       "options": [
         "Microsoft",
         "Nintendo",
@@ -68,21 +68,21 @@
         "Sony"
       ],
       "correct": 3,
-      "explanation": "PlayStation konsolę sukūrė Japonijos kompanija Sony, pirmoji versija pasirodė 1994 metais."
+      "explanation": "The PlayStation console was created by the Japanese company Sony, the first version appeared in 1994."
     },
     {
-      "question": "Kuriais metais buvo sukurta pirmoji interneto svetainė?",
+      "question": "In what year was the first website created?",
       "options": [
-        "1995 m.",
-        "1991 m.",
-        "1985 m.",
-        "2000 m."
+        "in 1995",
+        "in 1991",
+        "in 1985",
+        "in 2000"
       ],
       "correct": 1,
-      "explanation": "Pirmąją interneto svetainę 1991 metais sukūrė Tim Berners-Lee CERN laboratorijoje."
+      "explanation": "The first website was created in 1991 by Tim Berners-Lee at the CERN laboratory."
     },
     {
-      "question": "Kas yra TikTok programėlės kūrėja kompanija?",
+      "question": "Who is the company behind the TikTok app?",
       "options": [
         "Alibaba",
         "Tencent",
@@ -90,32 +90,32 @@
         "ByteDance"
       ],
       "correct": 3,
-      "explanation": "TikTok sukūrė Kinijos kompanija ByteDance, o tarptautinė versija paleista 2017 metais."
+      "explanation": "TikTok was created by the Chinese company ByteDance, and the international version was launched in 2017."
     },
     {
-      "question": "Kuri operacinė sistema yra populiaresnė pasaulyje — Android ar iOS?",
+      "question": "Which operating system is more popular in the world, Android or iOS?",
       "options": [
-        "iOS turi daugiau vartotojų",
-        "Abi turi vienodai",
-        "Windows Phone turi daugiau",
-        "Android turi daugiau vartotojų"
+        "iOS has more users",
+        "Both have the same",
+        "Windows Phone has more",
+        "Android has more users"
       ],
       "correct": 3,
-      "explanation": "Android operacinė sistema užima apie 72% pasaulinės rinkos ir yra populiaresnė už iOS."
+      "explanation": "The Android operating system occupies about 72% of the global market and is more popular than iOS."
     },
     {
-      "question": "Kuriais metais buvo įkurta Google?",
+      "question": "What year was Google founded?",
       "options": [
-        "1998 m.",
-        "2001 m.",
-        "1995 m.",
-        "2003 m."
+        "in 1998",
+        "in 2001",
+        "in 1995",
+        "in 2003"
       ],
       "correct": 0,
-      "explanation": "Google įkūrė Larry Page ir Sergey Brin 1998 metais, būdami Stanfordo universiteto studentais."
+      "explanation": "Google was founded by Larry Page and Sergey Brin in 1998 while they were students at Stanford University."
     },
     {
-      "question": "Kas yra Fortnite žaidimo kūrėjai?",
+      "question": "Who are the developers of Fortnite?",
       "options": [
         "Mojang Studios",
         "Epic Games",
@@ -123,21 +123,21 @@
         "Activision"
       ],
       "correct": 1,
-      "explanation": "Fortnite sukūrė Epic Games kompanija, o žaidimas tapo itin populiarus 2018 metais."
+      "explanation": "Fortnite was created by the Epic Games company, and the game became extremely popular in 2018."
     },
     {
-      "question": "Ką daro dirbtinis intelektas (AI)?",
+      "question": "What does artificial intelligence (AI) do?",
       "options": [
-        "Taiso sugedusius telefonus",
-        "Gamina elektros energiją",
-        "Mokosi iš duomenų ir atlieka užduotis, kurias paprastai daro žmonės",
-        "Kuria naujus telefonus"
+        "Repairs broken phones",
+        "Produces electricity",
+        "Learns from data and performs tasks normally performed by humans",
+        "Builds new phones"
       ],
       "correct": 2,
-      "explanation": "Dirbtinis intelektas mokosi iš didelių duomenų kiekių ir gali atlikti sudėtingas užduotis."
+      "explanation": "Artificial intelligence learns from large amounts of data and can perform complex tasks."
     },
     {
-      "question": "Kas įkūrė kompaniją Tesla ir SpaceX?",
+      "question": "Who founded Tesla and SpaceX?",
       "options": [
         "Jeff Bezos",
         "Bill Gates",
@@ -145,10 +145,10 @@
         "Elon Musk"
       ],
       "correct": 3,
-      "explanation": "Elon Musk yra Tesla ir SpaceX kompanijų vadovas ir vienas iš įkūrėjų."
+      "explanation": "Elon Musk is the CEO and co-founder of Tesla and SpaceX."
     },
     {
-      "question": "Kuri programavimo kalba dažniausiai naudojama kuriant interneto svetaines?",
+      "question": "Which programming language is most commonly used to create websites?",
       "options": [
         "Python",
         "C++",
@@ -156,10 +156,10 @@
         "Swift"
       ],
       "correct": 2,
-      "explanation": "JavaScript yra populiariausia programavimo kalba interneto svetainėms kurti ir veikia visose naršyklėse."
+      "explanation": "JavaScript is the most popular programming language for creating websites and works in all browsers."
     },
     {
-      "question": "Koks robotas pirmasis nusileido ant Marso planetos ir atsiunte nuotraukų?",
+      "question": "What robot was the first to land on Mars and send pictures?",
       "options": [
         "Curiosity",
         "Voyager",
@@ -167,7 +167,8 @@
         "Sojourner"
       ],
       "correct": 3,
-      "explanation": "Sojourner buvo pirmasis roveris, sėkmingai nusileidęs ant Marso 1997 metais ir atsiuntes nuotraukų."
+      "explanation": "Sojourner was the first rover to successfully land on Mars in 1997 and send back pictures."
     }
-  ]
+  ],
+  "language": "en"
 }

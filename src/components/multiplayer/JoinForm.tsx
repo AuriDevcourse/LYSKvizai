@@ -50,7 +50,7 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder={t("joinForm.namePlaceholder")}
-          maxLength={20}
+          maxLength={16}
           className="w-full rounded-xl border-2 border-white/15 bg-white/5 px-4 py-3 text-lg text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
           autoFocus={!!initialCode}
         />

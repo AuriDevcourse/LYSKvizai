@@ -52,8 +52,8 @@ export default function PlayerQuestion({
   waitingPlayerName,
 }: PlayerQuestionProps) {
   const { t, lang } = useTranslation();
-  const qText = lang !== "lt" && question.en ? question.en.question : question.question;
-  const qOptions = lang !== "lt" && question.en ? question.en.options : question.options;
+  const qText = lang === "lt" && question.lt ? question.lt.question : lang !== "lt" && question.en ? question.en.question : question.question;
+  const qOptions = lang === "lt" && question.lt ? question.lt.options : lang !== "lt" && question.en ? question.en.options : question.options;
   const [selected, setSelected] = useState<number | null>(null);
   const isProgressive = question.progressiveReveal ?? false;
   const words = qText.split(/\s+/);
@@ -93,7 +93,7 @@ export default function PlayerQuestion({
           {qText}
         </h2>
 
-        <div className="grid flex-1 grid-cols-2 gap-3 opacity-40">
+        <div className="grid grid-cols-2 gap-3 opacity-40">
           {qOptions.map((option, i) => (
             <div
               key={i}
@@ -202,12 +202,12 @@ export default function PlayerQuestion({
       )}
 
       {/* Big answer buttons */}
-      <div className="grid flex-1 grid-cols-2 gap-3 stagger-children">
+      <div className="grid grid-cols-2 gap-3 stagger-children">
         {qOptions.map((option, i) => (
           <button
             key={i}
             onClick={() => handleSelect(i)}
-            className={`answer-btn flex flex-col items-center justify-center gap-2 rounded-2xl px-3 py-6 text-center font-bold text-white ${BUTTON_COLORS[i]}`}
+            className={`answer-btn flex flex-col items-center justify-center gap-2 rounded-2xl px-3 py-5 text-center font-bold text-white min-h-[4.5rem] ${BUTTON_COLORS[i]}`}
           >
             {BUTTON_ICONS[i]}
             <span className="text-sm leading-tight sm:text-base">{option}</span>

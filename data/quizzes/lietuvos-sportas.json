@@ -1,7 +1,7 @@
 {
   "id": "lietuvos-sportas",
   "title": "Lietuvos sportas",
-  "description": "30 klausimų apie Lietuvos sportą — krepšinį, lengvąją atletiką, plaukimą ir kitas disciplinas.",
+  "description": "30 klausimų apie Lietuvos sportą, krepšinį, lengvąją atletiką, plaukimą ir kitas disciplinas.",
   "emoji": "🏀",
   "questions": [
     {
@@ -35,7 +35,7 @@
         "Ieties metimą"
       ],
       "correct": 2,
-      "explanation": "Virgilijus Alekna — legendinis disko metikas, dvigubas olimpinis čempionas (2000 ir 2004 m.)."
+      "explanation": "Virgilijus Alekna, legendinis disko metikas, dvigubas olimpinis čempionas (2000 ir 2004 m.)."
     },
     {
       "question": "Kuriame mieste 2011 m. vyko Europos krepšinio čempionatas, kurio šeimininkė buvo Lietuva?",
@@ -46,7 +46,7 @@
         "Panevėžyje"
       ],
       "correct": 1,
-      "explanation": "2011 m. EuroBasket finalinis etapas vyko Vilniuje, Siemens arenoje (dabar — Twinsbet arena)."
+      "explanation": "2011 m. EuroBasket finalinis etapas vyko Vilniuje, Siemens arenoje (dabar, Twinsbet arena)."
     },
     {
       "question": "Rūta Meilutytė 2012 m. Londono olimpiadoje iškovojo aukso medalį. Kokia plaukimo rungtyje?",
@@ -79,7 +79,7 @@
         "Domantas Sabonis"
       ],
       "correct": 1,
-      "explanation": "Šarūnas Marčiulionis 1989 m. tapo pirmuoju lietuviu (ir vienu pirmųjų sovietų žaidėjų), žaidusiu NBA — jis atstovavo Golden State Warriors."
+      "explanation": "Šarūnas Marčiulionis 1989 m. tapo pirmuoju lietuviu (ir vienu pirmųjų sovietų žaidėjų), žaidusiu NBA, jis atstovavo Golden State Warriors."
     },
     {
       "question": "Kokį olimpinį medalį Lietuvos krepšinio rinktinė laimėjo 1992 m. Barselonos olimpiadoje?",
@@ -90,7 +90,7 @@
         "Nedalyvavo"
       ],
       "correct": 2,
-      "explanation": "1992 m. Barselonos olimpiadoje Lietuva laimėjo bronzos medalį — tai buvo pirmasis nepriklausomos Lietuvos pasirodymas olimpiadoje."
+      "explanation": "1992 m. Barselonos olimpiadoje Lietuva laimėjo bronzos medalį, tai buvo pirmasis nepriklausomos Lietuvos pasirodymas olimpiadoje."
     },
     {
       "question": "Kuris lietuvis dviratininkas yra laimėjęs Giro d'Italia etapų?",
@@ -112,7 +112,7 @@
         "Futbolas"
       ],
       "correct": 0,
-      "explanation": "Krepšinis Lietuvoje dažnai vadinamas antrąja religija — tai populiariausias ir sėkmingiausias sportas šalyje."
+      "explanation": "Krepšinis Lietuvoje dažnai vadinamas antrąja religija, tai populiariausias ir sėkmingiausias sportas šalyje."
     },
     {
       "question": "Kuriais metais Arvydas Sabonis debiutavo NBA?",
@@ -134,7 +134,7 @@
         "Futbolininkas, žaidžiantis Bundesligoje"
       ],
       "correct": 0,
-      "explanation": "Mykolas Alekna — disko metikas, legendinio Virgilijaus Aleknos sūnus. 2024 m. jis pagerino pasaulio rekordą disko metime (74,35 m) ir laimėjo olimpinį auksą Paryžiuje."
+      "explanation": "Mykolas Alekna, disko metikas, legendinio Virgilijaus Aleknos sūnus. 2024 m. jis pagerino pasaulio rekordą disko metime (74,35 m) ir laimėjo olimpinį auksą Paryžiuje."
     },
     {
       "question": "Kokiame sporte Diana Zagainova atstovauja Lietuvai?",
@@ -145,7 +145,7 @@
         "Šuoliai į vandenį"
       ],
       "correct": 1,
-      "explanation": "Diana Zagainova — talentinga Lietuvos dailiojo čiuožimo atstovė, dalyvavusi žiemos olimpinėse židynėse."
+      "explanation": "Diana Zagainova, talentinga Lietuvos dailiojo čiuožimo atstovė, dalyvavusi žiemos olimpinėse židynėse."
     },
     {
       "question": "Kuriame olimpiniame žaidyne Lietuva pirmą kartą dalyvavo kaip nepriklausoma valstybė (po nepriklausomybės atkūrimo)?",
@@ -167,7 +167,7 @@
         "Stepas Butautas"
       ],
       "correct": 1,
-      "explanation": "Pranas Lubinas laikomas Lietuvos krepšinio tėvu — jis 1922 m. pirmasis pristatė krepšinį Lietuvoje ir organizavo pirmąsias varžybas."
+      "explanation": "Pranas Lubinas laikomas Lietuvos krepšinio tėvu, jis 1922 m. pirmasis pristatė krepšinį Lietuvoje ir organizavo pirmąsias varžybas."
     },
     {
       "question": "Už kurią NBA komandą žaidžia Jonas Valančiūnas (2024-2025 sezonas)?",
@@ -211,7 +211,7 @@
         "Biatlonas"
       ],
       "correct": 0,
-      "explanation": "Tomas Kaukėnas — Lietuvos šiuolaikinės penkiakovės atstovas, dalyvavęs olimpinėse žaidynėse."
+      "explanation": "Tomas Kaukėnas, Lietuvos šiuolaikinės penkiakovės atstovas, dalyvavęs olimpinėse žaidynėse."
     },
     {
       "question": "Kas laimėjo pirmąjį Lietuvos olimpinį medalį po nepriklausomybės atkūrimo?",
@@ -233,7 +233,7 @@
         "Baidarės ir kanojos"
       ],
       "correct": 0,
-      "explanation": "Daina Gudzinevičiūtė 2000 m. Sidnėjaus olimpiadoje laimėjo auksą šaudymo trap rungtyje — tai buvo pirmasis Lietuvos individualus olimpinis auksas."
+      "explanation": "Daina Gudzinevičiūtė 2000 m. Sidnėjaus olimpiadoje laimėjo auksą šaudymo trap rungtyje, tai buvo pirmasis Lietuvos individualus olimpinis auksas."
     },
     {
       "question": "Kuris lietuvis futbolininkas žaidė Škotijos Hearts klube ir Lietuvos rinktinėje?",
@@ -255,7 +255,7 @@
         "Nė vienas Lietuvos klubas nėra laimėjęs Eurolygos"
       ],
       "correct": 0,
-      "explanation": "Kauno Žalgiris 1999 m. laimėjo Eurolygą (tuomet — FIBA SuproLiga) — tai vienintelis Lietuvos klubas, pasiekęs šį titulą."
+      "explanation": "Kauno Žalgiris 1999 m. laimėjo Eurolygą (tuomet, FIBA SuproLiga), tai vienintelis Lietuvos klubas, pasiekęs šį titulą."
     },
     {
       "question": "Kokiame sporte Lietuvai atstovauja Airinė Palšytė?",
@@ -266,7 +266,7 @@
         "Šuolis į aukštį"
       ],
       "correct": 3,
-      "explanation": "Airinė Palšytė — Lietuvos šuolininkė į aukštį, Europos čempionė (2017 m. Belgrade), peršokusi 2,01 m."
+      "explanation": "Airinė Palšytė, Lietuvos šuolininkė į aukštį, Europos čempionė (2017 m. Belgrade), peršokusi 2,01 m."
     },
     {
       "question": "Kuris lietuvis laimėjo 2023 m. pasaulio jėgos trikovės čempionatą?",
@@ -277,7 +277,7 @@
         "Sergej Fedosienko"
       ],
       "correct": 3,
-      "explanation": "Sergej Fedosienko — Lietuvos jėgos trikovės atstovas, daugiakartinis pasaulio čempionas savo svorio kategorijoje."
+      "explanation": "Sergej Fedosienko, Lietuvos jėgos trikovės atstovas, daugiakartinis pasaulio čempionas savo svorio kategorijoje."
     },
     {
       "question": "Kiek aukso medalių Žydrūnas Savickas laimėjo World's Strongest Man varžybose?",
@@ -310,7 +310,7 @@
         "Slidinėjimas (trasų)"
       ],
       "correct": 2,
-      "explanation": "Ieva Januškevičiūtė — Lietuvos kalnų slidininkė, atstovavusi šaliai žiemos olimpinėse žaidynėse."
+      "explanation": "Ieva Januškevičiūtė, Lietuvos kalnų slidininkė, atstovavusi šaliai žiemos olimpinėse žaidynėse."
     },
     {
       "question": "Kokia futbolo komanda daugiausia kartų laimėjo Lietuvos A lygą (iki 2024)?",
@@ -321,7 +321,7 @@
         "Vilniaus Žalgiris ir FBK Kaunas po lygiai"
       ],
       "correct": 1,
-      "explanation": "Vilniaus Žalgiris (anksčiau — VMFD Žalgiris) yra daugiausia kartų laimėjęs Lietuvos futbolo A lygą."
+      "explanation": "Vilniaus Žalgiris (anksčiau, VMFD Žalgiris) yra daugiausia kartų laimėjęs Lietuvos futbolo A lygą."
     },
     {
       "question": "Kuris lietuvis tapo Dakaro ralio čempionu (motociklų klasėje)?",
@@ -334,5 +334,6 @@
       "correct": 2,
       "explanation": "Nors Vaidotas Žala ir Benediktas Vanagas sėkmingai dalyvavo Dakaro ralyje, nė vienas lietuvis kol kas nėra laimėjęs bendros įskaitos (nei motociklų, nei automobilių klasėje)."
     }
-  ]
+  ],
+  "language": "lt"
 }

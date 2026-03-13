@@ -1,7 +1,7 @@
 {
   "id": "lietuvos-istorija",
   "title": "Lietuvos istorija",
-  "description": "30 klausimų apie Lietuvos istoriją — nuo senovės iki šių dienų.",
+  "description": "30 klausimų apie Lietuvos istoriją, nuo senovės iki šių dienų.",
   "emoji": "🏰",
   "questions": [
     {
@@ -24,10 +24,10 @@
         "Kęstutis"
       ],
       "correct": 2,
-      "explanation": "Pasak legendos, kunigaikštis Gediminas sapnavo geležinį vilką ant kalvos ir pastatė pilį toje vietoje — taip gimė Vilnius."
+      "explanation": "Pasak legendos, kunigaikštis Gediminas sapnavo geležinį vilką ant kalvos ir pastatė pilį toje vietoje, taip gimė Vilnius."
     },
     {
-      "question": "Koks gyvūnas vaizduojamas Lietuvos herbe — Vytyje?",
+      "question": "Koks gyvūnas vaizduojamas Lietuvos herbe, Vytyje?",
       "options": [
         "Erelis",
         "Raitelis ant žirgo",
@@ -35,7 +35,7 @@
         "Vilkas"
       ],
       "correct": 1,
-      "explanation": "Vytis — tai šarvuotas raitelis ant balto žirgo su kalaviju ir skydu. Tai vienas seniausių Europos herbų."
+      "explanation": "Vytis, tai šarvuotas raitelis ant balto žirgo su kalaviju ir skydu. Tai vienas seniausių Europos herbų."
     },
     {
       "question": "Žalgirio mūšis įvyko 1410 metais. Prieš ką kovojo jungtinė Lietuvos ir Lenkijos kariuomenė?",
@@ -46,7 +46,7 @@
         "Prieš Osmanų imperiją"
       ],
       "correct": 2,
-      "explanation": "Žalgirio mūšyje Lietuvos ir Lenkijos jungtinė kariuomenė sumušė Kryžiuočių (Vokiečių) ordiną — tai vienas didžiausių viduramžių mūšių Europoje."
+      "explanation": "Žalgirio mūšyje Lietuvos ir Lenkijos jungtinė kariuomenė sumušė Kryžiuočių (Vokiečių) ordiną, tai vienas didžiausių viduramžių mūšių Europoje."
     },
     {
       "question": "Kas vadovavo Lietuvos kariuomenei Žalgirio mūšyje?",
@@ -79,7 +79,7 @@
         "20"
       ],
       "correct": 3,
-      "explanation": "Vasario 16-osios Nepriklausomybės Aktą pasirašė 20 signatarų — Lietuvos Tarybos narių, tarp jų ir Jonas Basanavičius."
+      "explanation": "Vasario 16-osios Nepriklausomybės Aktą pasirašė 20 signatarų, Lietuvos Tarybos narių, tarp jų ir Jonas Basanavičius."
     },
     {
       "question": "Kas buvo Lietuvos Tarybos pirmininkas, pasirašęs Nepriklausomybės Aktą?",
@@ -137,7 +137,7 @@
       "explanation": "Lietuvos partizanai, kovoję miškuose prieš sovietų okupaciją 1944–1953 m., buvo vadinami miško broliais. Tai buvo vienas ilgiausių partizaninių pasipriešinimų Europoje."
     },
     {
-      "question": "Kada vyko Baltijos kelias — žmonių grandinė per tris Baltijos šalis?",
+      "question": "Kada vyko Baltijos kelias, žmonių grandinė per tris Baltijos šalis?",
       "options": [
         "1989 m. rugpjūčio 23 d.",
         "1990 m. kovo 11 d.",
@@ -156,7 +156,7 @@
         "Apie 1000 km"
       ],
       "correct": 2,
-      "explanation": "Baltijos kelias driekėsi apie 670 km — nuo Vilniaus Gedimino bokšto per Rygą iki Talino Tompea bokšto."
+      "explanation": "Baltijos kelias driekėsi apie 670 km, nuo Vilniaus Gedimino bokšto per Rygą iki Talino Tompea bokšto."
     },
     {
       "question": "Kada Lietuva atkūrė nepriklausomybę nuo Sovietų Sąjungos?",
@@ -170,7 +170,7 @@
       "explanation": "1990 m. kovo 11 d. Aukščiausioji Taryba paskelbė Lietuvos Nepriklausomybės Atkūrimo Aktą. Lietuva buvo pirmoji sovietinė respublika, paskelbusi nepriklausomybę."
     },
     {
-      "question": "Kas buvo pirmasis atkurtos Lietuvos vadovas — Aukščiausiosios Tarybos pirmininkas 1990 m.?",
+      "question": "Kas buvo pirmasis atkurtos Lietuvos vadovas, Aukščiausiosios Tarybos pirmininkas 1990 m.?",
       "options": [
         "Algirdas Brazauskas",
         "Valdas Adamkus",
@@ -211,7 +211,7 @@
         "2000 m."
       ],
       "correct": 1,
-      "explanation": "2004 m. Lietuva tapo NATO (kovo 29 d.) ir Europos Sąjungos (gegužės 1 d.) nare — tai buvo istorinis žingsnis integruojantis į Vakarų struktūras."
+      "explanation": "2004 m. Lietuva tapo NATO (kovo 29 d.) ir Europos Sąjungos (gegužės 1 d.) nare, tai buvo istorinis žingsnis integruojantis į Vakarų struktūras."
     },
     {
       "question": "Kokia buvo didžiausia Lietuvos Didžiosios Kunigaikštystės teritorija XV amžiuje?",
@@ -222,18 +222,18 @@
         "Tik dabartinės Lietuvos teritorija"
       ],
       "correct": 0,
-      "explanation": "XV a. Lietuvos Didžioji Kunigaikštystė buvo didžiausia Europos valstybė — jos teritorija driekėsi nuo Baltijos jūros iki Juodosios jūros."
+      "explanation": "XV a. Lietuvos Didžioji Kunigaikštystė buvo didžiausia Europos valstybė, jos teritorija driekėsi nuo Baltijos jūros iki Juodosios jūros."
     },
     {
       "question": "Kas yra Gedimino stulpai?",
       "options": [
-        "Lietuvos istorinis simbolis — trys stulpai",
+        "Lietuvos istorinis simbolis, trys stulpai",
         "Vilniaus katedros kolonos",
         "Gedimino pilies bokštai",
         "Senovės lietuvių ginklas"
       ],
       "correct": 0,
-      "explanation": "Gedimino stulpai — tai trys stulpai (kolonos), senas Lietuvos heraldinis simbolis, siejamas su Gediminaičių dinastija. Jie naudojami kaip valstybinis ženklas."
+      "explanation": "Gedimino stulpai, tai trys stulpai (kolonos), senas Lietuvos heraldinis simbolis, siejamas su Gediminaičių dinastija. Jie naudojami kaip valstybinis ženklas."
     },
     {
       "question": "Kuriais metais buvo sudaryta Liublino unija, sujungusi Lietuvą ir Lenkiją?",
@@ -244,7 +244,7 @@
         "1795 m."
       ],
       "correct": 2,
-      "explanation": "1569 m. Liublino unija sujungė Lietuvos Didžiąją Kunigaikštystę ir Lenkijos Karalystę į bendrą valstybę — Abiejų Tautų Respubliką."
+      "explanation": "1569 m. Liublino unija sujungė Lietuvos Didžiąją Kunigaikštystę ir Lenkijos Karalystę į bendrą valstybę, Abiejų Tautų Respubliką."
     },
     {
       "question": "Kas buvo Krėvos sutartis (1385 m.)?",
@@ -266,7 +266,7 @@
         "1236 m."
       ],
       "correct": 2,
-      "explanation": "Lietuva oficialiai krikštyta 1387 m. — ji buvo paskutinė pagonių valstybė Europoje. Nors Mindaugas buvo krikštytas 1251 m., po jo mirties šalis grįžo prie pagonybės."
+      "explanation": "Lietuva oficialiai krikštyta 1387 m., ji buvo paskutinė pagonių valstybė Europoje. Nors Mindaugas buvo krikštytas 1251 m., po jo mirties šalis grįžo prie pagonybės."
     },
     {
       "question": "Kas buvo paskutinis pagonių valdovas Europoje?",
@@ -277,7 +277,7 @@
         "Vytautas"
       ],
       "correct": 0,
-      "explanation": "Jogaila buvo paskutinis pagonių valdovas Europoje — jis priėmė krikštą 1386 m. ir tapo Lenkijos karaliumi Vladislovu II."
+      "explanation": "Jogaila buvo paskutinis pagonių valdovas Europoje, jis priėmė krikštą 1386 m. ir tapo Lenkijos karaliumi Vladislovu II."
     },
     {
       "question": "Koks mūšis 1236 m. sustabdė Kalavijuočių ordino veržimąsi į Lietuvą?",
@@ -313,7 +313,7 @@
       "explanation": "Prieš Vilnių Lietuvos sostinė buvo Trakai (Senieji Trakai). Gediminas perkėlė sostinę į Vilnių XIV a. pradžioje."
     },
     {
-      "question": "Kada buvo priimtas Lietuvos Statutas — vienas pirmųjų teisynų Europoje?",
+      "question": "Kada buvo priimtas Lietuvos Statutas, vienas pirmųjų teisynų Europoje?",
       "options": [
         "1253 m.",
         "1410 m.",
@@ -334,5 +334,6 @@
       "correct": 0,
       "explanation": "Lietuva eurą įsivedė 2015 m. sausio 1 d., tapdama 19-ąja euro zonos nare. Iki tol buvo naudojamas litas."
     }
-  ]
+  ],
+  "language": "lt"
 }

@@ -1,11 +1,11 @@
 {
   "id": "muzika",
-  "title": "Muzika",
-  "description": "15 klausimų apie muziką",
+  "title": "Music",
+  "description": "15 questions about music",
   "emoji": "🎵",
   "questions": [
     {
-      "question": "Kuri grupė atliko legendinę dainą „Bohemian Rhapsody“?",
+      "question": "Which band performed the legendary song 'Bohemian Rhapsody'?",
       "options": [
         "The Beatles",
         "Queen",
@@ -13,10 +13,10 @@
         "Pink Floyd"
       ],
       "correct": 1,
-      "explanation": "„Bohemian Rhapsody“ – tai Queen grupės daina, išleista 1975 m."
+      "explanation": "Bohemian Rhapsody is a 1975 song by Queen."
     },
     {
-      "question": "Kiek natų yra vienoje oktavoje?",
+      "question": "How many notes are there in one octave?",
       "options": [
         "7",
         "12",
@@ -24,10 +24,10 @@
         "10"
       ],
       "correct": 1,
-      "explanation": "Oktavoje yra 12 pustonių (chromatinė gama)."
+      "explanation": "There are 12 semitones in an octave (chromatic scale)."
     },
     {
-      "question": "Kuris lietuvių atlikėjas dainuoja hitą „Ant bangos“?",
+      "question": "Which Lithuanian artist sings the hit \"On the Wave\"?",
       "options": [
         "Jurga",
         "Marijonas Mikutavičius",
@@ -35,21 +35,21 @@
         "SEL"
       ],
       "correct": 3,
-      "explanation": "„Ant bangos“ – tai populiari SEL grupės daina."
+      "explanation": "\"On the Wave\" is a popular song by SEL."
     },
     {
-      "question": "Kokį instrumentą groja pianistas?",
+      "question": "What instrument does the pianist play?",
       "options": [
-        "Smuiką",
-        "Gitarą",
-        "Fortepijoną",
-        "Fleitą"
+        "Violin",
+        "Guitar",
+        "the piano",
+        "the flute"
       ],
       "correct": 2,
-      "explanation": "Pianistas groja fortepijonu (arba pianinu)."
+      "explanation": "A pianist plays the piano (or piano)."
     },
     {
-      "question": "Kuri dainininkė išleido albumą „1989“?",
+      "question": "Which singer released the album 1989?",
       "options": [
         "Billie Eilish",
         "Adele",
@@ -57,10 +57,10 @@
         "Taylor Swift"
       ],
       "correct": 3,
-      "explanation": "Albumą „1989“ 2014 m. išleido Taylor Swift."
+      "explanation": "Album \"1989\" in 2014. released by Taylor Swift."
     },
     {
-      "question": "Kuris „The Beatles“ narys buvo nužudytas 1980 m.?",
+      "question": "Which member of The Beatles was murdered in 1980?",
       "options": [
         "Paul McCartney",
         "Ringo Starr",
@@ -68,10 +68,10 @@
         "John Lennon"
       ],
       "correct": 3,
-      "explanation": "John Lennon buvo nušautas 1980 m. gruodžio 8 d. Niujorke."
+      "explanation": "John Lennon was shot in 1980. December 8 in New York."
     },
     {
-      "question": "Kas sukūrė himną „Tautiška giesmė“?",
+      "question": "Who composed the National Anthem?",
       "options": [
         "Vincas Kudirka",
         "Mikalojus Konstantinas Čiurlionis",
@@ -79,10 +79,10 @@
         "Antanas Smetona"
       ],
       "correct": 0,
-      "explanation": "Lietuvos himną „Tautiška giesmė“ sukūrė Vincas Kudirka 1898 m."
+      "explanation": "The national anthem of Lithuania \"Tautiška giesmė\" was composed by Vincas Kudirka in 1898."
     },
     {
-      "question": "Kuri Billie Eilish daina tapo viena populiariausių 2019 m.?",
+      "question": "Which Billie Eilish song became one of the most popular songs of 2019?",
       "options": [
         "Lovely",
         "Happier Than Ever",
@@ -90,10 +90,10 @@
         "Bad Guy"
       ],
       "correct": 3,
-      "explanation": "„Bad Guy“ tapo didžiausiu Billie Eilish hitu 2019 m., užėmusiu 1 vietą JAV."
+      "explanation": "\"Bad Guy\" became Billie Eilish's biggest hit of 2019, reaching No. 1 in the US."
     },
     {
-      "question": "Kiek stygų turi standartinė gitara?",
+      "question": "How many strings does a standard guitar have?",
       "options": [
         "4",
         "5",
@@ -101,10 +101,10 @@
         "6"
       ],
       "correct": 3,
-      "explanation": "Standartinė akustinė ar elektrinė gitara turi 6 stygas."
+      "explanation": "A standard acoustic or electric guitar has 6 strings."
     },
     {
-      "question": "Kuris atlikėjas žinomas daina „Blinding Lights“?",
+      "question": "Which artist is famous for the song \"Blinding Lights\"?",
       "options": [
         "Drake",
         "Post Malone",
@@ -112,21 +112,21 @@
         "Ed Sheeran"
       ],
       "correct": 2,
-      "explanation": "„Blinding Lights“ – tai The Weeknd hitas, išleistas 2019 m."
+      "explanation": "\"Blinding Lights\" is a hit single by The Weeknd released in 2019."
     },
     {
-      "question": "Kas yra M. K. Čiurlionis?",
+      "question": "Who is M. K. Čiurlionis?",
       "options": [
-        "Lietuvių poetas",
-        "Lietuvių rašytojas",
-        "Lietuvių architektas",
-        "Lietuvių dailininkas ir kompozitorius"
+        "Lithuanian poet",
+        "Lithuanian writer",
+        "Lithuanian architect",
+        "Lithuanian painter and composer"
       ],
       "correct": 3,
-      "explanation": "M. K. Čiurlionis – garsus lietuvių dailininkas ir kompozitorius."
+      "explanation": "M. K. Čiurlionis is a famous Lithuanian painter and composer."
     },
     {
-      "question": "Kuri grupė atliko dainą „Stairway to Heaven“?",
+      "question": "Which band performed the song 'Stairway to Heaven'?",
       "options": [
         "Deep Purple",
         "Black Sabbath",
@@ -134,40 +134,41 @@
         "Led Zeppelin"
       ],
       "correct": 3,
-      "explanation": "„Stairway to Heaven“ – tai legendinė Led Zeppelin daina iš 1971 m."
+      "explanation": "\"Stairway to Heaven\" is a legendary Led Zeppelin song from 1971."
     },
     {
-      "question": "Kas yra Grammy apdovanojimas?",
+      "question": "What is the Grammy Award?",
       "options": [
-        "Muzikos premija",
-        "Kino premija",
-        "Literatūros premija",
-        "Mokslo premija"
+        "Music bonus",
+        "Movie bonus",
+        "Literature prize",
+        "Science prize"
       ],
       "correct": 0,
-      "explanation": "Grammy – tai prestižiškiausias muzikos apdovanojimas, teikiamas kasmet JAV."
+      "explanation": "Grammy is the most prestigious music award given annually in the United States."
     },
     {
-      "question": "Kurį instrumentą naudoja didžėjus (DJ)?",
+      "question": "What instrument does a DJ use?",
       "options": [
-        "Smuiką",
-        "Obojų",
-        "Arfą",
-        "Patefoną / grotuvo įrangą"
+        "Violin",
+        "Oboe",
+        "Harp",
+        "Turntable/player equipment"
       ],
       "correct": 3,
-      "explanation": "DJ naudoja grotuvo įrangą (turntables) ir mikšerius muzikai groti."
+      "explanation": "A DJ uses turntables and mixers to play music."
     },
     {
-      "question": "Kuris lietuvių atlikėjas atstovavo Lietuvai „Eurovizijoje“ su daina „We Are the Winners“?",
+      "question": "Which Lithuanian artist represented Lithuania at Eurovision with the song \"We Are the Winners\"?",
       "options": [
         "Jurga",
-        "InCulto",
+        "InCult",
         "LT United",
         "Donatas Montvydas"
       ],
       "correct": 2,
-      "explanation": "LT United su daina „We Are the Winners“ atstovavo Lietuvai 2006 m. Eurovizijoje."
+      "explanation": "LT United represented Lithuania with the song \"We Are the Winners\" in 2006. in Eurovision."
     }
-  ]
+  ],
+  "language": "en"
 }

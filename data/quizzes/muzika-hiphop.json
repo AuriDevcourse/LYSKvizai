@@ -1,11 +1,11 @@
 {
   "id": "muzika-hiphop",
-  "title": "Hip-Hop ir R&B",
-  "description": "Klausimai apie hip-hop ir R&B muziką",
+  "title": "Hip-Hop and R&B",
+  "description": "Questions about hip-hop and R&B music",
   "emoji": "🎧",
   "questions": [
     {
-      "question": "Kuris reperis žinomas kaip Slim Shady?",
+      "question": "Which rapper is known as Slim Shady?",
       "options": [
         "50 Cent",
         "Eminem",
@@ -13,21 +13,21 @@
         "Snoop Dogg"
       ],
       "correct": 1,
-      "explanation": "Eminem – amerikiečių reperis, kurio alter ego yra Slim Shady."
+      "explanation": "Eminem is an American rapper whose alter ego is Slim Shady."
     },
     {
-      "question": "Kuris reperis išleido albumą The College Dropout 2004 m.?",
+      "question": "Which rapper released the album The College Dropout in 2004?",
       "options": [
         "Jay-Z",
         "Lil Wayne",
         "Kanye West",
-        "Nas"
+        "Us"
       ],
       "correct": 2,
-      "explanation": "The College Dropout – tai Kanye West debiutinis albumas, išleistas 2004 m."
+      "explanation": "The College Dropout is Kanye West's debut album, released in 2004."
     },
     {
-      "question": "Kuris atlikėjas dainuoja Hotline Bling?",
+      "question": "Which artist sings Hotline Bling?",
       "options": [
         "Travis Scott",
         "Kendrick Lamar",
@@ -35,21 +35,21 @@
         "J. Cole"
       ],
       "correct": 2,
-      "explanation": "Hotline Bling – tai Drake hitas iš 2015 m., tapęs viraliniu memu."
+      "explanation": "Hotline Bling is Drake's 2015 hit that has become a viral meme."
     },
     {
-      "question": "Iš kurio miesto kilo hip-hop muzika?",
+      "question": "What city did hip-hop music originate from?",
       "options": [
-        "Niujorkas",
+        "New York",
         "Chicago",
         "Los Angeles",
         "Atlanta"
       ],
       "correct": 0,
-      "explanation": "Hip-hop gimė Niujorko Bronkso rajone 1970-aisiais."
+      "explanation": "Hip-hop was born in the Bronx area of ​​New York in the 1970s."
     },
     {
-      "question": "Kuris reperis žinomas kaip King of Rap ir mirė 1996 m.?",
+      "question": "Which rapper is known as the King of Rap and died in 1996?",
       "options": [
         "Tupac Shakur",
         "Eazy-E",
@@ -57,10 +57,10 @@
         "Ol' Dirty Bastard"
       ],
       "correct": 0,
-      "explanation": "Tupac Shakur buvo nušautas 1996 m. Las Vegase. Jis laikomas vienu įtakingiausių reperių."
+      "explanation": "Tupac Shakur was shot in 1996. in Las Vegas. He is considered one of the most influential rappers."
     },
     {
-      "question": "Kuris atlikėjas sukūrė albumą To Pimp a Butterfly?",
+      "question": "Which artist produced the album To Pimp a Butterfly?",
       "options": [
         "J. Cole",
         "Tyler, the Creator",
@@ -68,21 +68,21 @@
         "Childish Gambino"
       ],
       "correct": 2,
-      "explanation": "To Pimp a Butterfly (2015) – Kendrick Lamar albumas, laikomas vienu geriausių hip-hop albumų."
+      "explanation": "To Pimp a Butterfly (2015) - Kendrick Lamar's album, considered one of the best hip-hop albums."
     },
     {
-      "question": "Kas yra DJ hip-hop muzikoje?",
+      "question": "Who is a DJ in hip-hop music?",
       "options": [
-        "Muzikantas, grojantis grotuvo įranga",
-        "Vokalistas",
-        "Šokėjas",
-        "Prodiuseris"
+        "A musician playing a record player",
+        "Vocalist",
+        "Dancer",
+        "Producer"
       ],
       "correct": 0,
-      "explanation": "DJ naudoja grotuvo įrangą (turntables) ir mikšerius muzikai groti ir kurti bitus."
+      "explanation": "A DJ uses turntables and mixers to play music and create beats."
     },
     {
-      "question": "Kuris reperis žinomas daina Lose Yourself iš filmo 8 Mile?",
+      "question": "Which rapper is famous for the song Lose Yourself from the movie 8 Mile?",
       "options": [
         "50 Cent",
         "Eminem",
@@ -90,10 +90,10 @@
         "Lil Wayne"
       ],
       "correct": 1,
-      "explanation": "Lose Yourself – Eminem daina iš filmo 8 Mile, laimėjusi Oskarą."
+      "explanation": "Lose Yourself - Eminem's Oscar-winning song from the movie 8 Mile."
     },
     {
-      "question": "Kuri atlikėja žinoma kaip Queen of R&B?",
+      "question": "Which artist is known as the Queen of R&B?",
       "options": [
         "Alicia Keys",
         "Whitney Houston",
@@ -101,10 +101,10 @@
         "Mary J. Blige"
       ],
       "correct": 3,
-      "explanation": "Mary J. Blige dažnai vadinama Queen of R&B dėl savo įtakos žanrui."
+      "explanation": "Mary J. Blige is often referred to as the Queen of R&B due to her influence on the genre."
     },
     {
-      "question": "Kuris reperis įkūrė muzikos leidyklą Aftermath Entertainment?",
+      "question": "Which rapper founded the music label Aftermath Entertainment?",
       "options": [
         "Dr. Dre",
         "Ice Cube",
@@ -112,7 +112,8 @@
         "Suge Knight"
       ],
       "correct": 0,
-      "explanation": "Dr. Dre įkūrė Aftermath Entertainment 1996 m., kur debiutavo Eminem ir 50 Cent."
+      "explanation": "Dr. Dre founded Aftermath Entertainment in 1996, where Eminem and 50 Cent debuted."
     }
-  ]
+  ],
+  "language": "en"
 }

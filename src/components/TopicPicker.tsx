@@ -25,6 +25,19 @@ function getQuizRegion(quiz: QuizMeta): "lt" | "intl" {
   return "intl";
 }
 
+/** Extract date from news quiz ID like "news-business-2026-03-11" */
+function getNewsDate(quizId: string): string | null {
+  const match = quizId.match(/(\d{4}-\d{2}-\d{2})$/);
+  return match ? match[1] : null;
+}
+
+/** Format date as short string: "Mar 11" */
+function formatNewsDate(dateStr: string): string {
+  const [y, m, d] = dateStr.split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
 /** Get quiz IDs belonging to a topic, including dynamic prefix matches */
 function getTopicQuizIds(topic: Topic, allQuizzes: QuizMeta[]): string[] {
   if (topic.dynamicPrefix) {
@@ -103,6 +116,7 @@ export default function TopicPicker({ onSelect, selectedIds }: TopicPickerProps)
               const theme = getQuizTheme(quiz.id);
               const SubIcon = theme.icon;
               const region = getQuizRegion(quiz);
+              const newsDate = getNewsDate(quiz.id);
               return (
                 <button
                   key={quiz.id}
@@ -127,6 +141,7 @@ export default function TopicPicker({ onSelect, selectedIds }: TopicPickerProps)
                     </div>
                     <p className="text-[11px] font-bold text-white/40">
                       {quiz.questionCount} {t("quizPicker.q")}
+                      {newsDate && <span className="ml-1.5 text-white/30">· {formatNewsDate(newsDate)}</span>}
                     </p>
                   </div>
                   {isSelected && (
@@ -147,7 +162,8 @@ export default function TopicPicker({ onSelect, selectedIds }: TopicPickerProps)
 
   // Topic grid view
   return (
-    <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3 stagger-children">
+    <div className="relative">
+    <div className="max-h-[60svh] overflow-y-auto sm:max-h-none grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3 stagger-children">
       {TOPICS.map((topic) => {
         const Icon = topic.icon;
         const topicIds = getTopicQuizIds(topic, allQuizzes);
@@ -180,6 +196,8 @@ export default function TopicPicker({ onSelect, selectedIds }: TopicPickerProps)
           </button>
         );
       })}
+    </div>
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#46178f] to-transparent sm:hidden" />
     </div>
   );
 }

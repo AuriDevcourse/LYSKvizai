@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Montserrat } from "next/font/google";
 import BottomNav from "@/components/BottomNav";
+import TopNav from "@/components/TopNav";
 import LanguageToggle from "@/components/LanguageToggle";
 import DevAgentation from "@/components/DevAgentation";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
@@ -42,7 +43,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${montserrat.variable} font-[Montserrat] antialiased`}>
         <LanguageProvider>
-          <div className="fixed left-3 top-3 z-50">
+          <TopNav />
+          <div className="fixed left-3 top-3 z-50 sm:hidden">
             <LanguageToggle />
           </div>
           {children}
