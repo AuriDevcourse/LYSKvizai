@@ -91,6 +91,13 @@ export default function PlayerResults({ playerId, results, question, onReact, ch
               x{results.mysteryMultiplier}
             </div>
           )}
+          {/* Power-up effect */}
+          {myResult.powerUpEffect && (
+            <div className="flex items-center gap-1.5 text-sm font-bold text-cyan-300">
+              <Zap className="h-4 w-4" />
+              <span>{myResult.powerUpEffect}</span>
+            </div>
+          )}
         </div>
       ) : (
         <div className="flex flex-col items-center gap-2">

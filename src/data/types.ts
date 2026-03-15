@@ -1,4 +1,4 @@
-export type QuestionType = "standard" | "bluff" | "audio" | "video" | "fastest-finger" | "year-guesser";
+export type QuestionType = "standard" | "bluff" | "audio" | "video" | "fastest-finger" | "year-guesser" | "true-false" | "zoom-out";
 
 export interface Question {
   question: string;

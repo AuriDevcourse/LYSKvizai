@@ -12,7 +12,9 @@ import type {
   WagerResult,
   PowerUpEffect,
   WagerPayload,
+  WagerType,
 } from "./types";
+import { ALL_POWER_UPS } from "./types";
 import { generateRoomCode } from "./room-code";
 import { calculateScore } from "./scoring";
 import { broadcast, removeRoomConnections } from "./sse-manager";
@@ -64,20 +66,24 @@ function playerToInfo(p: Player): PlayerInfo {
     connected: p.connected,
     eliminated: p.eliminated || undefined,
     teamIndex: p.teamIndex,
-    powerUpUses: p.powerUpUses,
-    usedPowerUpTypes: [...p.usedPowerUpTypes],
   };
 }
 
 function getLeaderboard(room: Room): LeaderboardEntry[] {
   const sorted = [...room.players.values()].sort((a, b) => b.score - a.score);
-  return sorted.map((p, i) => ({
-    playerId: p.id,
-    name: p.name,
-    emoji: p.emoji,
-    score: p.score,
-    rank: i + 1,
-  }));
+  const prev = room.previousLeaderboard ?? [];
+  return sorted.map((p, i) => {
+    const prevEntry = prev.find((e) => e.playerId === p.id);
+    return {
+      playerId: p.id,
+      name: p.name,
+      emoji: p.emoji,
+      score: p.score,
+      rank: i + 1,
+      previousRank: prevEntry?.rank,
+      previousScore: prevEntry?.score,
+    };
+  });
 }
 
 /** Get active (non-eliminated) players */
@@ -150,6 +156,14 @@ function getQuestionPayload(room: Room): QuestionPayload {
     };
   }
 
+  // Include randomly assigned power-ups
+  if (room.activePowerUps.size > 0) {
+    payload.roundPowerUps = [...room.activePowerUps.entries()].map(([pid, pu]) => ({
+      playerId: pid,
+      powerUp: pu,
+    }));
+  }
+
   return payload;
 }
 
@@ -216,13 +230,7 @@ function getResultsPayload(room: Room): ResultsPayload {
       bluffVictims.push(player.name);
     }
 
-    // Collect power-up effects
-    const activePU = room.activePowerUps.get(player.id);
-    if (activePU === "double" && correct) {
-      powerUpEffects.push({ playerId: player.id, playerName: player.name, powerUp: "double", effect: "Double points!" });
-    } else if (activePU === "shield" && !correct) {
-      powerUpEffects.push({ playerId: player.id, playerName: player.name, powerUp: "shield", effect: "Shield protected your streak!" });
-    }
+    // Power-up effects are collected after the loop
 
     // Wager results
     if (room.isWagerRound && room.wagers.has(player.id)) {
@@ -307,6 +315,66 @@ function getResultsPayload(room: Room): ResultsPayload {
           slowestResult.slowPenalty = SLOW_PENALTY;
         }
       }
+    }
+  }
+
+  // --- Power-up effects (thief, bomb, gamble, double, shield) ---
+  for (const [pid, pu] of room.activePowerUps) {
+    const pr = playerResults.find((r) => r.playerId === pid);
+    if (!pr) continue;
+    const player = room.players.get(pid);
+    if (!player) continue;
+    pr.powerUp = pu;
+
+    if (pu === "thief" && pr.correct) {
+      // Steal 300 from 1st place (or 2nd if thief IS 1st)
+      const sorted = [...room.players.values()].filter((p) => !p.eliminated).sort((a, b) => b.score - a.score);
+      const target = sorted.find((p) => p.id !== pid) ?? sorted[0];
+      if (target && target.id !== pid) {
+        const steal = Math.min(300, target.score);
+        target.score -= steal;
+        player.score += steal;
+        pr.points += steal;
+        pr.totalScore = player.score;
+        pr.powerUpEffect = `Stole ${steal} from ${target.name}!`;
+        const targetResult = playerResults.find((r) => r.playerId === target.id);
+        if (targetResult) { targetResult.totalScore = target.score; }
+        powerUpEffects.push({ playerId: pid, playerName: player.name, powerUp: "thief", effect: `Stole ${steal} pts from ${target.name}` });
+      }
+    }
+
+    if (pu === "bomb" && pr.correct) {
+      // Last place player loses 250
+      const sorted = [...room.players.values()].filter((p) => !p.eliminated && p.id !== pid).sort((a, b) => a.score - b.score);
+      const target = sorted[0];
+      if (target) {
+        const damage = Math.min(250, target.score);
+        target.score -= damage;
+        const targetResult = playerResults.find((r) => r.playerId === target.id);
+        if (targetResult) { targetResult.totalScore = target.score; targetResult.points -= damage; }
+        pr.powerUpEffect = `Bombed ${target.name}! -${damage}`;
+        powerUpEffects.push({ playerId: pid, playerName: player.name, powerUp: "bomb", effect: `${target.name} lost ${damage} pts` });
+      }
+    }
+
+    if (pu === "gamble") {
+      pr.powerUpEffect = player.gambleWon ? "Gamble: 3x!" : "Gamble: 0!";
+      powerUpEffects.push({ playerId: pid, playerName: player.name, powerUp: "gamble", effect: player.gambleWon ? "3x points!" : "Lost it all!" });
+    }
+
+    if (pu === "double" && pr.correct) {
+      pr.powerUpEffect = "Double points!";
+      powerUpEffects.push({ playerId: pid, playerName: player.name, powerUp: "double", effect: "2x points!" });
+    }
+
+    if (pu === "shield" && !pr.correct) {
+      pr.powerUpEffect = "Shield saved streak!";
+      powerUpEffects.push({ playerId: pid, playerName: player.name, powerUp: "shield", effect: "Streak protected!" });
+    }
+
+    if (pu === "freeze") {
+      pr.powerUpEffect = "Froze the timer!";
+      powerUpEffects.push({ playerId: pid, playerName: player.name, powerUp: "freeze", effect: "Timer -3s!" });
     }
   }
 
@@ -438,6 +506,7 @@ function getWagerPayload(room: Room): WagerPayload {
   return {
     questionIndex: room.currentQuestionIndex,
     maxWager: 0, // per-player max is sent client-side from their own score
+    wagerType: room.wagerType,
   };
 }
 
@@ -528,7 +597,12 @@ export async function createRoom(
   const questionIndices = allIndices.slice(0, count);
 
   // Generate shuffled option orders for each selected question
-  const optionShuffles = questionIndices.map(() => shuffle([0, 1, 2, 3]));
+  // Skip shuffling for true-false questions (only 2 options)
+  const optionShuffles = questionIndices.map((qIdx) => {
+    const q = questions[qIdx];
+    if (q.type === "true-false") return [0, 1, 2, 3];
+    return shuffle([0, 1, 2, 3]);
+  });
 
   const DEFAULT_TEAM_NAMES = ["Alpha", "Bravo", "Charlie", "Delta"];
 
@@ -557,6 +631,8 @@ export async function createRoom(
     wagers: new Map(),
     wagerInterval: 3,
     isWagerRound: false,
+    wagerType: "regular" as WagerType,
+    wagerCount: 0,
 
     questionTimer: null,
 
@@ -568,6 +644,7 @@ export async function createRoom(
 
     mysteryMultipliers: new Map(),
     enTranslations: new Map(),
+    previousLeaderboard: [],
   };
 
   rooms.set(code, room);
@@ -612,8 +689,6 @@ export function joinRoom(
       currentAnswer: null,
       answerTime: null,
       connected: true,
-      powerUpUses: 3,
-      usedPowerUpTypes: new Set(),
       eliminated: false,
       teamIndex: null,
       currentTextAnswer: null,
@@ -635,8 +710,6 @@ export async function startGame(code: string, hostId: string): Promise<{ error?:
 
   // Init power-up uses for all players
   for (const p of room.players.values()) {
-    p.powerUpUses = 3;
-    p.usedPowerUpTypes = new Set();
     p.eliminated = false;
     p.currentAnswer = null;
     p.answerTime = null;
@@ -680,15 +753,8 @@ export async function startGame(code: string, hostId: string): Promise<{ error?:
     // Translation failed — multiplayer will fall back to Lithuanian
   }
 
-  room.state = "question";
   room.currentQuestionIndex = 0;
-  room.questionStartTime = Date.now();
-
-  // Setup bluff if needed
-  setupBluffQuestion(room, 0);
-
-  broadcast(code, { type: "question-start", data: getQuestionPayload(room) });
-  scheduleQuestionTimer(room);
+  startQuestionRound(room);
   return {};
 }
 
@@ -741,6 +807,12 @@ export function submitAnswer(
     if (activePU === "double") {
       finalPoints = points * 2;
     }
+    // Gamble power-up: 50/50 chance of 3x or 0
+    if (activePU === "gamble") {
+      const won = Math.random() < 0.5;
+      player.gambleWon = won;
+      finalPoints = won ? points * 3 : 0;
+    }
     // Wager round: add wager * 2
     if (room.isWagerRound && room.wagers.has(playerId)) {
       finalPoints += room.wagers.get(playerId)! * 2;
@@ -753,7 +825,6 @@ export function submitAnswer(
     // Wrong answer
     if (activePU === "shield") {
       // Shield: keep streak, still 0 points
-      // streak stays the same
     } else {
       player.streak = 0;
     }
@@ -1012,6 +1083,9 @@ export function nextQuestion(code: string, hostId: string): { error?: string } {
   // Check if this is a wager round (every Nth question, 1-indexed)
   const questionNum = room.currentQuestionIndex + 1;
   if (questionNum > 1 && questionNum % room.wagerInterval === 0) {
+    // Alternate: odd wager rounds = regular, even = super
+    room.wagerCount++;
+    room.wagerType = room.wagerCount % 2 === 1 ? "regular" : "super";
     // Start wager phase
     room.state = "wager";
     broadcast(code, { type: "wager-start", data: getWagerPayload(room) });
@@ -1042,6 +1116,9 @@ function scheduleQuestionTimer(room: Room): void {
 }
 
 function startQuestionRound(room: Room): void {
+  // Capture leaderboard before this round (for animated transitions)
+  room.previousLeaderboard = getLeaderboard(room);
+
   room.questionStartTime = Date.now();
   room.state = "question";
 
@@ -1050,6 +1127,23 @@ function startQuestionRound(room: Room): void {
     p.currentAnswer = null;
     p.answerTime = null;
     p.currentTextAnswer = null;
+    p.gambleWon = undefined;
+  }
+
+  // Randomly assign power-ups (~35% chance per player)
+  room.activePowerUps.clear();
+  room.freezeActive = false;
+  const activePlayers = getActivePlayers(room);
+  for (const p of activePlayers) {
+    if (Math.random() < 0.35) {
+      const randomPU = ALL_POWER_UPS[Math.floor(Math.random() * ALL_POWER_UPS.length)];
+      room.activePowerUps.set(p.id, randomPU);
+      // Freeze auto-applies immediately
+      if (randomPU === "freeze" && !room.freezeActive) {
+        room.freezeActive = true;
+        broadcast(room.code, { type: "timer-reduced", data: { seconds: 3 } });
+      }
+    }
   }
 
   // Setup bluff if needed
@@ -1105,49 +1199,6 @@ export function advanceFromWagerAction(code: string, hostId: string): { error?: 
 function advanceFromWager(room: Room): void {
   room.isWagerRound = true;
   startQuestionRound(room);
-}
-
-export function usePowerUp(
-  code: string,
-  playerId: string,
-  powerUp: PowerUpType
-): { error?: string } {
-  const room = rooms.get(code);
-  if (!room) return { error: "Room not found" };
-  if (room.state !== "question") return { error: "Can't use powers right now" };
-
-  const player = room.players.get(playerId);
-  if (!player) return { error: "Player not found" };
-  if (player.eliminated) return { error: "You are eliminated" };
-  if (player.powerUpUses <= 0) return { error: "No powers left" };
-  if (room.activePowerUps.has(playerId)) return { error: "Already used a power this round" };
-  if (player.usedPowerUpTypes.has(powerUp)) return { error: "Already used this power" };
-
-  player.powerUpUses--;
-  player.usedPowerUpTypes.add(powerUp);
-  room.activePowerUps.set(playerId, powerUp);
-
-  // Broadcast power-up usage
-  broadcast(code, {
-    type: "powerup-used",
-    data: {
-      playerId: player.id,
-      playerName: player.name,
-      playerEmoji: player.emoji,
-      powerUp,
-    },
-  });
-
-  // Freeze: broadcast timer reduction to other players
-  if (powerUp === "freeze") {
-    room.freezeActive = true;
-    broadcast(code, {
-      type: "timer-reduced",
-      data: { seconds: 3 },
-    });
-  }
-
-  return {};
 }
 
 export function disconnectPlayer(code: string, playerId: string): void {

@@ -10,7 +10,6 @@ import type {
   RoomState,
   EmojiReaction,
   GameMode,
-  PowerUpUsedPayload,
   WagerPayload,
 } from "@/lib/multiplayer/types";
 import { MP_SSE_URL } from "@/lib/multiplayer/config";
@@ -33,7 +32,7 @@ interface UseRoomReturn {
   teamNames: string[];
   wager: WagerPayload | null;
   timerReduction: number;
-  powerUpEvent: PowerUpUsedPayload | null;
+  powerUpEvent: null;
   eliminatedEvent: { playerId: string; playerName: string; playerEmoji: string } | null;
 }
 
@@ -53,7 +52,7 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
   const [teamNames, setTeamNames] = useState<string[]>([]);
   const [wager, setWager] = useState<WagerPayload | null>(null);
   const [timerReduction, setTimerReduction] = useState(0);
-  const [powerUpEvent, setPowerUpEvent] = useState<PowerUpUsedPayload | null>(null);
+  const [powerUpEvent] = useState<null>(null);
   const [eliminatedEvent, setEliminatedEvent] = useState<{ playerId: string; playerName: string; playerEmoji: string } | null>(null);
 
   const esRef = useRef<EventSource | null>(null);
@@ -158,23 +157,6 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
       setTimeout(() => {
         setReactions((prev) => prev.filter((r) => r.id !== id));
       }, 3000);
-    });
-
-    es.addEventListener("powerup-used", (e) => {
-      const data: PowerUpUsedPayload = JSON.parse(e.data);
-      setPowerUpEvent(data);
-      setPlayers((prev) =>
-        prev.map((p) =>
-          p.id === data.playerId
-            ? {
-                ...p,
-                powerUpUses: Math.max(0, (p.powerUpUses ?? 0) - 1),
-                usedPowerUpTypes: [...(p.usedPowerUpTypes ?? []), data.powerUp],
-              }
-            : p
-        )
-      );
-      setTimeout(() => setPowerUpEvent(null), 3000);
     });
 
     es.addEventListener("wager-start", (e) => {

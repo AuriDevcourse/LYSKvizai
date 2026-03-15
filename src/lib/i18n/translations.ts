@@ -158,6 +158,7 @@ export const translations = {
     "wager.yourPoints": "Your points",
     "wager.wagerBtn": "Wager!",
     "wager.skip": "Don't wager",
+    "wager.wager": "Wager",
     "wager.pts": "pts",
 
     // Host Wager
@@ -439,6 +440,7 @@ export const translations = {
     "wager.yourPoints": "Jūsų taškai",
     "wager.wagerBtn": "Statyti!",
     "wager.skip": "Nestatyti",
+    "wager.wager": "Statyti",
     "wager.pts": "tšk",
 
     // Host Wager

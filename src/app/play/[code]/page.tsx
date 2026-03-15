@@ -16,7 +16,6 @@ import PlayerResults from "@/components/multiplayer/PlayerResults";
 import Leaderboard from "@/components/multiplayer/Leaderboard";
 import WagerScreen from "@/components/multiplayer/WagerScreen";
 import HostWager from "@/components/multiplayer/HostWager";
-import type { PowerUpType } from "@/lib/multiplayer/types";
 import { MP_API_URL } from "@/lib/multiplayer/config";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
@@ -89,11 +88,10 @@ export default function GamePage({ params }: PageProps) {
     teamNames,
     wager,
     timerReduction,
-    powerUpEvent,
     eliminatedEvent,
   } = useRoom(code, playerId);
 
-  const { startGame, submitAnswer, nextQuestion, sendReaction, usePowerUp, submitWager } = useRoomActions();
+  const { startGame, submitAnswer, nextQuestion, sendReaction, submitWager } = useRoomActions();
 
   const currentPlayer = useMemo(
     () => players.find((p) => p.id === playerId),
@@ -173,17 +171,6 @@ export default function GamePage({ params }: PageProps) {
       }
     },
     [code, playerId, sendReaction]
-  );
-
-  const handlePowerUp = useCallback(
-    async (powerUp: PowerUpType) => {
-      try {
-        await usePowerUp(code, playerId, powerUp);
-      } catch (e) {
-        console.error("Failed to use power-up:", e);
-      }
-    },
-    [code, playerId, usePowerUp]
   );
 
   const handleWager = useCallback(
@@ -291,7 +278,7 @@ export default function GamePage({ params }: PageProps) {
         <X className="h-5 w-5" />
       </button>
 
-      <main className="relative z-10 mx-auto flex w-[92%] max-w-5xl flex-1 flex-col px-4 py-6 sm:px-8">
+      <main className="relative z-10 mx-auto flex w-[92%] max-w-5xl flex-1 flex-col px-2 py-3 sm:px-8 sm:py-6">
         {state === "lobby" && isHost && (
           <HostLobby
             code={code}
@@ -317,6 +304,7 @@ export default function GamePage({ params }: PageProps) {
           <WagerScreen
             currentScore={currentPlayer?.score ?? 0}
             onSubmit={handleWager}
+            wagerType={wager?.wagerType}
           />
         )}
 
@@ -324,6 +312,7 @@ export default function GamePage({ params }: PageProps) {
           <WagerScreen
             currentScore={currentPlayer?.score ?? 0}
             onSubmit={handleWager}
+            wagerType={wager?.wagerType}
           />
         )}
 
@@ -332,7 +321,6 @@ export default function GamePage({ params }: PageProps) {
             question={question}
             answerCount={answerCount}
             onTimerExpire={handleTimerExpire}
-            powerUpEvent={powerUpEvent}
           />
         )}
 
@@ -359,9 +347,7 @@ export default function GamePage({ params }: PageProps) {
               onAnswer={handleAnswer}
               onTimerExpire={handleTimerExpire}
               timerReduction={timerReduction}
-              powerUpUses={currentPlayer?.powerUpUses ?? 0}
-              usedPowerUpTypes={currentPlayer?.usedPowerUpTypes ?? []}
-              onUsePowerUp={handlePowerUp}
+              playerId={playerId}
               eliminated={currentPlayer?.eliminated ?? false}
               canAnswer={canAnswer}
               waitingPlayerName={waitingPlayerName}
@@ -392,9 +378,7 @@ export default function GamePage({ params }: PageProps) {
               onAnswer={handleAnswer}
               onTimerExpire={handleTimerExpire}
               timerReduction={timerReduction}
-              powerUpUses={currentPlayer?.powerUpUses ?? 0}
-              usedPowerUpTypes={currentPlayer?.usedPowerUpTypes ?? []}
-              onUsePowerUp={handlePowerUp}
+              playerId={playerId}
               eliminated={currentPlayer?.eliminated ?? false}
               canAnswer={canAnswer}
               waitingPlayerName={waitingPlayerName}

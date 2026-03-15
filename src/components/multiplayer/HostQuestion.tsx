@@ -1,7 +1,7 @@
 "use client";
 
-import { Triangle, Square, Circle, Diamond, Snowflake } from "lucide-react";
-import type { QuestionPayload, PowerUpUsedPayload } from "@/lib/multiplayer/types";
+import { Triangle, Square, Circle, Diamond } from "lucide-react";
+import type { QuestionPayload } from "@/lib/multiplayer/types";
 import { useCountdown } from "@/hooks/useCountdown";
 import { useProgressiveReveal } from "@/hooks/useProgressiveReveal";
 import ProgressiveText from "./ProgressiveText";
@@ -23,14 +23,12 @@ interface HostQuestionProps {
   question: QuestionPayload;
   answerCount: { count: number; total: number } | null;
   onTimerExpire: () => void;
-  powerUpEvent?: PowerUpUsedPayload | null;
 }
 
 export default function HostQuestion({
   question,
   answerCount,
   onTimerExpire,
-  powerUpEvent,
 }: HostQuestionProps) {
   const { t, lang } = useTranslation();
   const qText = lang === "lt" && question.lt ? question.lt.question : lang !== "lt" && question.en ? question.en.question : question.question;
@@ -68,7 +66,7 @@ export default function HostQuestion({
           )}
           {question.type && question.type !== "standard" && (
             <span className="rounded-lg bg-purple-500/20 px-2 py-1 text-xs font-extrabold text-purple-300">
-              {question.type === "bluff" ? t("hostQuestion.bluff") : question.type === "audio" ? t("hostQuestion.audio") : t("hostQuestion.video")}
+              {question.type === "bluff" ? t("hostQuestion.bluff") : question.type === "audio" ? t("hostQuestion.audio") : question.type === "true-false" ? "TRUE / FALSE" : question.type === "zoom-out" ? "ZOOM OUT" : t("hostQuestion.video")}
             </span>
           )}
         </div>
@@ -85,17 +83,6 @@ export default function HostQuestion({
           />
         </div>
       </div>
-
-      {/* Power-up toast */}
-      {powerUpEvent && (
-        <div className="mb-3 flex items-center justify-center gap-2 rounded-xl bg-white/10 px-4 py-2 text-sm font-bold text-white animate-fade-in">
-          <Snowflake className="h-4 w-4" />
-          <span>{powerUpEvent.playerEmoji} {powerUpEvent.playerName} used {
-            powerUpEvent.powerUp === "freeze" ? t("hostQuestion.freeze") :
-            powerUpEvent.powerUp === "shield" ? t("hostQuestion.shield") : t("hostQuestion.double")
-          }!</span>
-        </div>
-      )}
 
       {/* CENTER: Timer | Question + Media | Answer count */}
       <div className="flex flex-1 items-center gap-4 sm:gap-8">
@@ -134,7 +121,14 @@ export default function HostQuestion({
 
           {question.image && (
             <div className="max-w-md overflow-hidden rounded-xl">
-              {isProgressive ? (
+              {question.type === "zoom-out" ? (
+                <img
+                  src={question.image}
+                  alt=""
+                  className="h-40 w-full object-cover sm:h-52 transition-transform duration-300 ease-out"
+                  style={{ transform: `scale(${1 + 5 * fraction})` }}
+                />
+              ) : isProgressive ? (
                 <ProgressiveImage
                   src={question.image}
                   blurAmount={blurAmount}

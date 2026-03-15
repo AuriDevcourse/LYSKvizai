@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import type { GameMode, PowerUpType } from "@/lib/multiplayer/types";
+import type { GameMode } from "@/lib/multiplayer/types";
 import { MP_API_URL } from "@/lib/multiplayer/config";
 
 async function postAction(body: Record<string, unknown>) {
@@ -72,13 +72,6 @@ export function useRoomActions() {
     []
   );
 
-  const usePowerUp = useCallback(
-    async (code: string, playerId: string, powerUp: PowerUpType) => {
-      return postAction({ action: "use-powerup", code, playerId, powerUp });
-    },
-    []
-  );
-
   const submitWager = useCallback(
     async (code: string, playerId: string, amount: number) => {
       return postAction({ action: "submit-wager", code, playerId, amount });
@@ -88,6 +81,6 @@ export function useRoomActions() {
 
   return {
     createRoom, joinRoom, startGame, submitAnswer, nextQuestion,
-    forceResults, sendReaction, usePowerUp, submitWager,
+    forceResults, sendReaction, submitWager,
   };
 }

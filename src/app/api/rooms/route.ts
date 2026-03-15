@@ -12,7 +12,6 @@ import {
   disconnectPlayer,
   getRoomSnapshot,
   forceShowResults,
-  usePowerUp,
   submitWager,
   advanceFromWagerAction,
 } from "@/lib/multiplayer/room-store";
@@ -81,12 +80,6 @@ export async function POST(req: NextRequest) {
 
     case "force-results": {
       const result = forceShowResults(body.code, body.hostId);
-      if (result.error) return json({ error: result.error }, 400);
-      return json({ ok: true });
-    }
-
-    case "use-powerup": {
-      const result = usePowerUp(body.code, body.playerId, body.powerUp);
       if (result.error) return json({ error: result.error }, 400);
       return json({ ok: true });
     }

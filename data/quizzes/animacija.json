@@ -30,7 +30,7 @@
       "explanation": "Spirited Away won the Oscar for Best Animated Feature in 2003."
     },
     {
-      "question": "What is the name of the clownfish in 'Finding Nemo'?",
+      "question": "What is the name of the young clownfish who gets captured by divers in a popular Pixar film?",
       "options": ["Marlin", "Nemo", "Dory", "Gill"],
       "correct": 1,
       "explanation": "Nemo is the young clownfish who gets captured by divers."
@@ -72,7 +72,7 @@
       "explanation": "My Hero Academia is set in a world where 80% of people have Quirks."
     },
     {
-      "question": "What animal is Simba in 'The Lion King'?",
+      "question": "What animal is Simba in the classic Disney film about an African savanna prince?",
       "options": ["Tiger", "Lion", "Leopard", "Cheetah"],
       "correct": 1,
       "explanation": "Simba is a lion and the main character of The Lion King."

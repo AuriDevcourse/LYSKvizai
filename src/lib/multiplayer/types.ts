@@ -4,7 +4,9 @@ import type { Question, QuestionType } from "@/data/types";
 
 export type RoomState = "lobby" | "question" | "results" | "wager" | "finished";
 export type GameMode = "classic" | "elimination" | "team" | "survival";
-export type PowerUpType = "freeze" | "shield" | "double";
+export type PowerUpType = "freeze" | "shield" | "double" | "thief" | "bomb" | "gamble";
+
+export const ALL_POWER_UPS: PowerUpType[] = ["freeze", "shield", "double", "thief", "bomb", "gamble"];
 
 export interface Player {
   id: string;
@@ -12,23 +14,15 @@ export interface Player {
   emoji: string;
   score: number;
   streak: number;
-  /** Answer index for current question, null if not answered yet */
   currentAnswer: number | null;
-  /** Timestamp when answer was submitted */
   answerTime: number | null;
   connected: boolean;
-  /** Power-up uses remaining (starts at 3) */
-  powerUpUses: number;
-  /** Which power-up types have been used (each type can only be used once) */
-  usedPowerUpTypes: Set<PowerUpType>;
-  /** Whether player is eliminated (elimination mode) */
   eliminated: boolean;
-  /** Team index (team mode), null if not in team mode */
   teamIndex: number | null;
-  /** Text answer for fastest-finger questions */
   currentTextAnswer: string | null;
-  /** How many consecutive times this player was the slowest correct answerer */
   slowestStreak: number;
+  /** Gamble result for this round (if assigned gamble power-up) */
+  gambleWon?: boolean;
 }
 
 export interface Room {
@@ -36,59 +30,52 @@ export interface Room {
   hostId: string;
   state: RoomState;
   players: Map<string, Player>;
-  /** The actual questions for this game (loaded from a quiz) */
   questions: Question[];
-  /** Indices into the questions array (shuffled subset or full) */
   questionIndices: number[];
-  /** Per-question option shuffle: optionShuffles[qIdx] = [2,0,3,1] means
-   *  displayed option 0 = original option 2, etc. */
   optionShuffles: number[][];
   currentQuestionIndex: number;
-  /** Timestamp when the current question was shown */
   questionStartTime: number;
-  /** Seconds per question */
   timerDuration: number;
   createdAt: number;
 
-  // --- Game mode ---
   gameMode: GameMode;
 
-  // --- Elimination mode ---
+  // Elimination
   eliminatedPlayers: Set<string>;
-  eliminationInterval: number; // eliminate every N rounds (default 3)
+  eliminationInterval: number;
 
-  // --- Team mode ---
+  // Team
   teamCount: number;
   teamNames: string[];
-  /** Per-team: which player index is currently answering */
-  currentTeamAnswerer: Map<number, string>; // teamIndex -> playerId
+  currentTeamAnswerer: Map<number, string>;
   teamRotationIndex: number;
 
-  // --- Wager ---
-  wagers: Map<string, number>; // playerId -> wager amount
-  wagerInterval: number; // wager every N questions (default 3)
+  // Wager
+  wagers: Map<string, number>;
+  wagerInterval: number;
   isWagerRound: boolean;
+  wagerType: WagerType;
+  wagerCount: number;
 
-  // --- Server-side timer ---
+  // Timer
   questionTimer: ReturnType<typeof setTimeout> | null;
 
-  // --- Power-ups ---
-  activePowerUps: Map<string, PowerUpType>; // playerId -> active power-up this question
-  freezeActive: boolean; // whether freeze was used this question
+  // Power-ups (randomly assigned each round)
+  activePowerUps: Map<string, PowerUpType>;
+  freezeActive: boolean;
 
-  // --- Bluff ---
-  /** For bluff questions: which display index has the bluff answer */
+  // Bluff
   bluffDisplayIndex: number | null;
-  /** Original option that was replaced by bluff */
   bluffReplacedOriginalIndex: number | null;
 
-  // --- Mystery Multiplier ---
-  /** Mystery multiplier: questionIndex -> multiplier (2-5) */
+  // Mystery Multiplier
   mysteryMultipliers: Map<number, number>;
 
-  // --- Pre-translated content ---
-  /** English translations of questions, keyed by question index */
+  // Translations
   enTranslations: Map<number, { question: string; options: string[]; explanation: string }>;
+
+  // Leaderboard snapshot (captured at question start, before answers)
+  previousLeaderboard: LeaderboardEntry[];
 }
 
 // --- Server → Client Events (SSE) ---
@@ -109,7 +96,6 @@ export type ServerEvent =
   | { type: "results"; data: ResultsPayload }
   | { type: "finished"; data: { leaderboard: LeaderboardEntry[] } }
   | { type: "emoji-reaction"; data: EmojiReaction }
-  | { type: "powerup-used"; data: PowerUpUsedPayload }
   | { type: "wager-start"; data: WagerPayload }
   | { type: "player-eliminated"; data: { playerId: string; playerName: string; playerEmoji: string } }
   | { type: "timer-reduced"; data: { seconds: number } }
@@ -123,8 +109,6 @@ export interface PlayerInfo {
   connected: boolean;
   eliminated?: boolean;
   teamIndex?: number | null;
-  powerUpUses?: number;
-  usedPowerUpTypes?: string[];
 }
 
 export interface RoomSnapshot {
@@ -135,13 +119,9 @@ export interface RoomSnapshot {
   totalQuestions: number;
   gameMode: GameMode;
   teamNames?: string[];
-  /** Only present during "question" state */
   question?: QuestionPayload;
-  /** Only present during "results" state */
   results?: ResultsPayload;
-  /** Only present during "finished" state */
   leaderboard?: LeaderboardEntry[];
-  /** Only present during "wager" state */
   wager?: WagerPayload;
 }
 
@@ -152,7 +132,6 @@ export interface QuestionPayload {
   options: [string, string, string, string];
   timerDuration: number;
   startTime: number;
-  /** Server's Date.now() at time of sending — lets clients correct for clock skew */
   serverNow: number;
   image?: string;
   type?: QuestionType;
@@ -160,20 +139,12 @@ export interface QuestionPayload {
   videoUrl?: string;
   progressiveReveal?: boolean;
   isWagerRound?: boolean;
-  /** Whether this player can answer (team mode: only designated answerer) */
   canAnswer?: boolean;
-  /** Player IDs who can answer this round (team mode) */
   currentTeamAnswerers?: string[];
-  /** Pre-translated content (English). Client uses these when lang !== "lt". */
-  en?: {
-    question: string;
-    options: [string, string, string, string];
-  };
-  /** Pre-translated content (Lithuanian). Client uses these when lang === "lt" and quiz is English. */
-  lt?: {
-    question: string;
-    options: [string, string, string, string];
-  };
+  /** Power-ups randomly assigned this round: playerId -> powerUpType */
+  roundPowerUps?: { playerId: string; powerUp: PowerUpType }[];
+  en?: { question: string; options: [string, string, string, string] };
+  lt?: { question: string; options: [string, string, string, string] };
 }
 
 export interface AnswerResult {
@@ -184,12 +155,13 @@ export interface AnswerResult {
   points: number;
   totalScore: number;
   streak: number;
-  /** Points before mystery multiplier (for display) */
   basePoints?: number;
-  /** Bonus for being the fastest correct answerer */
   speedBonus?: number;
-  /** Penalty for being the slowest 2+ times in a row */
   slowPenalty?: number;
+  /** Power-up effect description */
+  powerUpEffect?: string;
+  /** Power-up type assigned this round */
+  powerUp?: PowerUpType;
 }
 
 export interface ResultsPayload {
@@ -198,38 +170,19 @@ export interface ResultsPayload {
   answerDistribution: number[];
   playerResults: AnswerResult[];
   leaderboard: LeaderboardEntry[];
-  // Bluff
   bluffAnswer?: string;
   bluffIndex?: number;
-  bluffVictims?: string[]; // player names who picked the bluff
-  // Elimination
+  bluffVictims?: string[];
   eliminatedThisRound?: { playerId: string; playerName: string; playerEmoji: string }[];
-  // Team
   teamScores?: TeamScore[];
-  // Wager
   wagerResults?: WagerResult[];
-  // Power-ups
   powerUpEffects?: PowerUpEffect[];
-  // Mystery Multiplier
   mysteryMultiplier?: number;
-  // Fastest Finger
   fastestFinger?: { playerId: string; playerName: string; bonusPoints: number };
-  /** The correct answer text (for fastest-finger questions) */
   correctAnswerText?: string;
-  /** Year guesser results */
   yearGuesses?: { playerId: string; playerName: string; guessedYear: number; correctYear: number; points: number }[];
-  /** Pre-translated content (English) */
-  en?: {
-    correctAnswerText?: string;
-    explanation?: string;
-    options?: string[];
-  };
-  /** Pre-translated content (Lithuanian) */
-  lt?: {
-    correctAnswerText?: string;
-    explanation?: string;
-    options?: string[];
-  };
+  en?: { correctAnswerText?: string; explanation?: string; options?: string[] };
+  lt?: { correctAnswerText?: string; explanation?: string; options?: string[] };
 }
 
 export interface LeaderboardEntry {
@@ -238,13 +191,18 @@ export interface LeaderboardEntry {
   emoji: string;
   score: number;
   rank: number;
+  previousRank?: number;
+  previousScore?: number;
 }
 
-// --- New payload types ---
+// --- Payload types ---
+
+export type WagerType = "regular" | "super";
 
 export interface WagerPayload {
   questionIndex: number;
-  maxWager: number; // player's current score (all-in allowed)
+  maxWager: number;
+  wagerType: WagerType;
 }
 
 export interface TeamScore {
@@ -258,21 +216,14 @@ export interface WagerResult {
   playerName: string;
   wager: number;
   won: boolean;
-  netPoints: number; // positive if won, negative if lost
-}
-
-export interface PowerUpUsedPayload {
-  playerId: string;
-  playerName: string;
-  playerEmoji: string;
-  powerUp: PowerUpType;
+  netPoints: number;
 }
 
 export interface PowerUpEffect {
   playerId: string;
   playerName: string;
   powerUp: PowerUpType;
-  effect: string; // description like "Dvigubi taškai!"
+  effect: string;
 }
 
 // --- Client → Server Actions (POST) ---
@@ -286,7 +237,6 @@ export type ClientAction =
   | { action: "force-results"; code: string; hostId: string }
   | { action: "react"; code: string; playerId: string; emoji: string }
   | { action: "disconnect"; code: string; playerId: string }
-  | { action: "use-powerup"; code: string; playerId: string; powerUp: PowerUpType }
   | { action: "submit-wager"; code: string; playerId: string; amount: number }
   | { action: "advance-wager"; code: string; hostId: string }
   | { action: "answer-text"; code: string; playerId: string; answer: string }
