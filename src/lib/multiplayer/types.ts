@@ -27,6 +27,8 @@ export interface Player {
   teamIndex: number | null;
   /** Text answer for fastest-finger questions */
   currentTextAnswer: string | null;
+  /** How many consecutive times this player was the slowest correct answerer */
+  slowestStreak: number;
 }
 
 export interface Room {
@@ -184,6 +186,10 @@ export interface AnswerResult {
   streak: number;
   /** Points before mystery multiplier (for display) */
   basePoints?: number;
+  /** Bonus for being the fastest correct answerer */
+  speedBonus?: number;
+  /** Penalty for being the slowest 2+ times in a row */
+  slowPenalty?: number;
 }
 
 export interface ResultsPayload {
@@ -238,7 +244,7 @@ export interface LeaderboardEntry {
 
 export interface WagerPayload {
   questionIndex: number;
-  maxWager: number; // min(500, player's score)
+  maxWager: number; // player's current score (all-in allowed)
 }
 
 export interface TeamScore {

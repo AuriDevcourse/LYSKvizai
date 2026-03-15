@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle, XCircle, Clock, Flame, Hash, Skull, Sparkles } from "lucide-react";
+import { CheckCircle, XCircle, Clock, Flame, Skull, Sparkles, Zap, TrendingDown } from "lucide-react";
 import type { ResultsPayload, QuestionPayload } from "@/lib/multiplayer/types";
 import ReactionPicker from "./ReactionPicker";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
@@ -23,7 +23,6 @@ interface PlayerResultsProps {
 export default function PlayerResults({ playerId, results, question, onReact, children }: PlayerResultsProps) {
   const { t, lang } = useTranslation();
   const myResult = results.playerResults.find((r) => r.playerId === playerId);
-  const myRank = results.leaderboard.find((e) => e.playerId === playerId)?.rank;
   const wasEliminated = results.eliminatedThisRound?.some((el) => el.playerId === playerId);
 
   // Get translated options from question or results
@@ -58,13 +57,25 @@ export default function PlayerResults({ playerId, results, question, onReact, ch
               <XCircle className="h-9 w-9 text-red-400" />
             </div>
           )}
-          <h2 className="text-xl font-extrabold text-white">
-            {myResult.correct ? t("playerResults.correct") : t("playerResults.incorrect")}
-          </h2>
-          {myResult.correct && myResult.points > 0 && (
-            <p className="text-2xl font-extrabold text-emerald-300 animate-bounce-in">
-              +{myResult.points} {t("playerResults.pts")}
-            </p>
+          {/* Points earned */}
+          <p className={`text-3xl font-extrabold animate-bounce-in ${
+            myResult.points > 0 ? "text-emerald-300" : myResult.points < 0 ? "text-red-400" : "text-white/50"
+          }`}>
+            {myResult.points > 0 ? "+" : ""}{myResult.points} {t("playerResults.pts")}
+          </p>
+          {/* Fastest bonus */}
+          {myResult.speedBonus && myResult.speedBonus > 0 && (
+            <div className="flex items-center gap-1.5 text-sm font-bold text-[#d89e00]">
+              <Zap className="h-4 w-4" />
+              <span>{t("playerResults.fastest")} +{myResult.speedBonus}</span>
+            </div>
+          )}
+          {/* Slowest penalty */}
+          {myResult.slowPenalty && myResult.slowPenalty < 0 && (
+            <div className="flex items-center gap-1.5 text-sm font-bold text-red-400">
+              <TrendingDown className="h-4 w-4" />
+              <span>{myResult.slowPenalty}</span>
+            </div>
           )}
           {/* Streak */}
           {myResult.streak >= 2 && (
@@ -110,25 +121,6 @@ export default function PlayerResults({ playerId, results, question, onReact, ch
               );
             })}
           </div>
-        </div>
-      )}
-
-      {/* Rank + total score */}
-      {myRank && (
-        <div className="rounded-xl border-2 border-white/20 bg-white/5 px-8 py-3 text-center">
-          <div className="flex items-center justify-center gap-1.5 text-xs text-white/50">
-            <Hash className="h-3 w-3" />
-            <span>{t("playerResults.yourRank")}</span>
-          </div>
-          <p className="text-2xl font-extrabold text-white">
-            #{myRank}
-            <span className="ml-1.5 text-base text-white/50">
-              / {results.leaderboard.length}
-            </span>
-          </p>
-          <p className="text-sm font-bold text-white/60">
-            {myResult?.totalScore ?? 0} {t("playerResults.pts")}
-          </p>
         </div>
       )}
 

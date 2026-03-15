@@ -119,6 +119,7 @@ export const translations = {
     "playerResults.yourRank": "Your rank",
     "playerResults.waitingForNext": "Waiting for next question...",
     "playerResults.pts": "pts",
+    "playerResults.fastest": "Fastest!",
 
     // Leaderboard
     "leaderboard.finalResults": "Final Results",
@@ -156,6 +157,7 @@ export const translations = {
     "wager.instruction": "How much will you wager? Correct = wager ×2, incorrect = you lose it.",
     "wager.yourPoints": "Your points",
     "wager.wagerBtn": "Wager!",
+    "wager.skip": "Don't wager",
     "wager.pts": "pts",
 
     // Host Wager
@@ -398,6 +400,7 @@ export const translations = {
     "playerResults.yourRank": "Jūsų vieta",
     "playerResults.waitingForNext": "Laukiama kito klausimo...",
     "playerResults.pts": "tšk",
+    "playerResults.fastest": "Greičiausias!",
 
     // Leaderboard
     "leaderboard.finalResults": "Galutiniai rezultatai",
@@ -435,6 +438,7 @@ export const translations = {
     "wager.instruction": "Kiek statysite? Teisingai = statymas ×2, neteisingai = prarandate.",
     "wager.yourPoints": "Jūsų taškai",
     "wager.wagerBtn": "Statyti!",
+    "wager.skip": "Nestatyti",
     "wager.pts": "tšk",
 
     // Host Wager

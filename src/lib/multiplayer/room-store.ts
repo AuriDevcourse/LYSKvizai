@@ -263,6 +263,53 @@ function getResultsPayload(room: Room): ResultsPayload {
     });
   }
 
+  // --- Fastest / Slowest logic (only for standard multiple-choice) ---
+  if (q.type !== "fastest-finger" && q.type !== "year-guesser") {
+    const correctAnswerers = [...room.players.values()]
+      .filter((p) => !p.eliminated && p.currentAnswer !== null && p.answerTime !== null)
+      .filter((p) => {
+        const origIdx = displayToOriginal(room, p.currentAnswer!);
+        return origIdx === q.correct;
+      })
+      .sort((a, b) => a.answerTime! - b.answerTime!);
+
+    if (correctAnswerers.length >= 2) {
+      // Fastest correct answerer gets +200 bonus
+      const fastest = correctAnswerers[0];
+      const SPEED_BONUS = 200;
+      fastest.score += SPEED_BONUS;
+      const fastestResult = playerResults.find((r) => r.playerId === fastest.id);
+      if (fastestResult) {
+        fastestResult.points += SPEED_BONUS;
+        fastestResult.totalScore = fastest.score;
+        fastestResult.speedBonus = SPEED_BONUS;
+      }
+
+      // Slowest correct answerer tracking
+      const slowest = correctAnswerers[correctAnswerers.length - 1];
+      // Update slowest streaks
+      for (const p of correctAnswerers) {
+        if (p.id === slowest.id) {
+          p.slowestStreak++;
+        } else {
+          p.slowestStreak = 0;
+        }
+      }
+
+      // Penalty if slowest 2+ times in a row: -150
+      if (slowest.slowestStreak >= 2) {
+        const SLOW_PENALTY = -150;
+        slowest.score = Math.max(0, slowest.score + SLOW_PENALTY);
+        const slowestResult = playerResults.find((r) => r.playerId === slowest.id);
+        if (slowestResult) {
+          slowestResult.points += SLOW_PENALTY;
+          slowestResult.totalScore = slowest.score;
+          slowestResult.slowPenalty = SLOW_PENALTY;
+        }
+      }
+    }
+  }
+
   const mysteryMultiplier = room.mysteryMultipliers.get(room.currentQuestionIndex);
 
   const result: ResultsPayload = {
@@ -390,7 +437,7 @@ export function getRoomSnapshot(room: Room): RoomSnapshot {
 function getWagerPayload(room: Room): WagerPayload {
   return {
     questionIndex: room.currentQuestionIndex,
-    maxWager: 500,
+    maxWager: 0, // per-player max is sent client-side from their own score
   };
 }
 
@@ -570,6 +617,7 @@ export function joinRoom(
       eliminated: false,
       teamIndex: null,
       currentTextAnswer: null,
+      slowestStreak: 0,
     };
     room.players.set(playerId, player);
   }
@@ -593,6 +641,7 @@ export async function startGame(code: string, hostId: string): Promise<{ error?:
     p.currentAnswer = null;
     p.answerTime = null;
     p.currentTextAnswer = null;
+    p.slowestStreak = 0;
   }
 
   // Team mode: assign players to teams
@@ -1028,8 +1077,8 @@ export function submitWager(
   if (!player) return { error: "Player not found" };
   if (player.eliminated) return { error: "You are eliminated" };
 
-  // Clamp wager to [0, min(500, score)]
-  const maxWager = Math.min(500, player.score);
+  // Clamp wager to [0, score] (all-in allowed)
+  const maxWager = player.score;
   const clamped = Math.max(0, Math.min(amount, maxWager));
   room.wagers.set(playerId, clamped);
 

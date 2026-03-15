@@ -69,7 +69,7 @@ export default function ReactionPicker({ onReact }: ReactionPickerProps) {
                 className="absolute bottom-0 animate-float-up"
                 style={{ left: `${f.x}%`, transform: "translateX(-50%)" }}
               >
-                <div className="max-w-[180px] truncate rounded-full bg-white/15 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm">
+                <div className="max-w-[280px] truncate rounded-full bg-white/20 px-6 py-3 text-xl font-extrabold text-white backdrop-blur-sm">
                   {f.content}
                 </div>
               </div>

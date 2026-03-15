@@ -37,7 +37,6 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
           placeholder="XXXXX"
           maxLength={5}
           className="w-full rounded-xl border-2 border-white/15 bg-white/5 px-4 py-3 text-center text-2xl font-bold uppercase tracking-widest text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
-          autoFocus={!initialCode}
         />
       </div>
 
@@ -52,7 +51,6 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
           placeholder={t("joinForm.namePlaceholder")}
           maxLength={16}
           className="w-full rounded-xl border-2 border-white/15 bg-white/5 px-4 py-3 text-lg text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
-          autoFocus={!!initialCode}
         />
       </div>
 
