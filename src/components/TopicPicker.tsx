@@ -10,6 +10,8 @@ import { useTranslation } from "@/lib/i18n/LanguageContext";
 interface TopicPickerProps {
   onSelect: (quizIds: string[]) => void;
   selectedIds: string[];
+  /** Called when quiz metadata is loaded, so parent can compute total questions */
+  onQuizMetaLoad?: (quizzes: QuizMeta[]) => void;
 }
 
 /** Lithuanian-content quiz IDs (about Lithuania specifically — hard for foreigners) */
@@ -30,7 +32,7 @@ function getTopicQuizIds(topic: Topic): string[] {
   return topic.quizIds;
 }
 
-export default function TopicPicker({ onSelect, selectedIds }: TopicPickerProps) {
+export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad }: TopicPickerProps) {
   const { t, lang } = useTranslation();
   const [activeTopic, setActiveTopic] = useState<Topic | null>(null);
   const [allQuizzes, setAllQuizzes] = useState<QuizMeta[]>([]);
@@ -41,7 +43,7 @@ export default function TopicPicker({ onSelect, selectedIds }: TopicPickerProps)
   useEffect(() => {
     fetch(`/api/quizzes?lang=${lang}`)
       .then((res) => res.json())
-      .then((data: QuizMeta[]) => setAllQuizzes(data))
+      .then((data: QuizMeta[]) => { setAllQuizzes(data); onQuizMetaLoad?.(data); })
       .catch(() => {})
       .finally(() => setInitialLoaded(true));
   }, [lang]);

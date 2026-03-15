@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Play, Heart, Swords, Home as HomeIcon, Users, PenLine, Plus, LogIn } from "lucide-react";
 import TopicPicker from "@/components/TopicPicker";
 import GameSettings from "@/components/GameSettings";
+import type { QuizMeta } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 type GameMode = "classic" | "survival";
@@ -18,6 +19,14 @@ export default function Home() {
   const [showSolo, setShowSolo] = useState(false);
   const [timer, setTimer] = useState(20);
   const [questionCount, setQuestionCount] = useState(0); // 0 = all
+  const [quizMeta, setQuizMeta] = useState<QuizMeta[]>([]);
+
+  const handleQuizMetaLoad = useCallback((data: QuizMeta[]) => setQuizMeta(data), []);
+
+  const totalQuestions = useMemo(
+    () => quizMeta.filter((q) => selectedIds.includes(q.id)).reduce((sum, q) => sum + q.questionCount, 0),
+    [quizMeta, selectedIds]
+  );
 
   const handleStart = () => {
     if (selectedIds.length === 0) return;
@@ -32,8 +41,8 @@ export default function Home() {
       return;
     }
 
-    // Classic
-    if (timer > 0) params.set("timer", String(timer));
+    // Classic — no timer by default for solo classic
+    // (timer param is only used if explicitly set; 0 means no timer)
     if (selectedIds.length === 1) {
       const qs = params.toString();
       router.push(`/quiz/${selectedIds[0]}${qs ? `?${qs}` : ""}`);
@@ -50,6 +59,7 @@ export default function Home() {
       onTimerChange={setTimer}
       onCountChange={setQuestionCount}
       showTimer={mode === "survival"}
+      totalQuestions={totalQuestions}
     />
   );
 
@@ -119,7 +129,7 @@ export default function Home() {
         {/* === MOBILE: Solo picker (shown after tapping "Practice alone") === */}
         {showSolo && (
           <div className="sm:hidden animate-fade-in-up">
-            <TopicPicker onSelect={setSelectedIds} selectedIds={selectedIds} />
+            <TopicPicker onSelect={setSelectedIds} selectedIds={selectedIds} onQuizMetaLoad={handleQuizMetaLoad} />
 
             {selectedIds.length > 0 && (
               <div className="mt-6 flex flex-col gap-3 animate-slide-up">
@@ -153,7 +163,7 @@ export default function Home() {
                   className="btn-primary flex w-full items-center justify-center gap-2"
                 >
                   <Play className="h-5 w-5" fill="currentColor" />
-                  Start
+                  {t("home.start")}
                 </button>
               </div>
             )}
@@ -162,7 +172,7 @@ export default function Home() {
 
         {/* === DESKTOP: Topic picker always visible === */}
         <div className="hidden sm:block">
-          <TopicPicker onSelect={setSelectedIds} selectedIds={selectedIds} />
+          <TopicPicker onSelect={setSelectedIds} selectedIds={selectedIds} onQuizMetaLoad={handleQuizMetaLoad} />
 
           {selectedIds.length > 0 && (
             <div className="mt-6 flex flex-col gap-3 animate-slide-up">

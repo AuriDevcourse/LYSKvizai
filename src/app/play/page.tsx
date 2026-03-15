@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useCallback, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Plus, LogIn, ArrowLeft, Loader2, Smartphone, Monitor, X } from "lucide-react";
 import { useRoomActions } from "@/hooks/useRoomActions";
@@ -10,6 +10,7 @@ import GameSettings from "@/components/GameSettings";
 import GameModeSelector from "@/components/multiplayer/GameModeSelector";
 import AvatarBuilder from "@/components/AvatarBuilder";
 import type { GameMode } from "@/lib/multiplayer/types";
+import type { QuizMeta } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 function generateId() {
@@ -32,6 +33,12 @@ function PlayPageInner() {
   const [gameModeOptions, setGameModeOptions] = useState<{ teamCount?: number; eliminationInterval?: number }>({});
   const [timer, setTimer] = useState(20);
   const [questionCount, setQuestionCount] = useState(15);
+  const [quizMeta, setQuizMeta] = useState<QuizMeta[]>([]);
+  const handleQuizMetaLoad = useCallback((data: QuizMeta[]) => setQuizMeta(data), []);
+  const totalQuestions = useMemo(
+    () => quizMeta.filter((q) => selectedQuizIds.includes(q.id)).reduce((sum, q) => sum + q.questionCount, 0),
+    [quizMeta, selectedQuizIds]
+  );
   const [hostName, setHostName] = useState("");
   const [hostAvatar, setHostAvatar] = useState("");
   const [hostPlaying, setHostPlaying] = useState(false);
@@ -165,7 +172,7 @@ function PlayPageInner() {
           )}
 
           <div className="w-full">
-            <TopicPicker onSelect={setSelectedQuizIds} selectedIds={selectedQuizIds} />
+            <TopicPicker onSelect={setSelectedQuizIds} selectedIds={selectedQuizIds} onQuizMetaLoad={handleQuizMetaLoad} />
           </div>
 
           {selectedQuizIds.length > 0 && (
@@ -174,6 +181,7 @@ function PlayPageInner() {
               questionCount={questionCount}
               onTimerChange={setTimer}
               onCountChange={setQuestionCount}
+              totalQuestions={totalQuestions}
             />
           )}
 

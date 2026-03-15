@@ -200,29 +200,29 @@ function SurvivalInner() {
       <main className="relative z-10 flex w-full max-w-xl flex-1 flex-col justify-center px-5 py-8 sm:px-8">
         {gameOver ? (
           <div className="flex flex-col items-center gap-6 animate-fade-in-up">
-            <h2 className="text-3xl font-extrabold text-white">Game Over</h2>
+            <h2 className="text-3xl font-extrabold text-white">{t("survival.gameOver")}</h2>
 
             <div className="flex flex-col items-center gap-1">
               <span className="text-6xl font-extrabold text-yellow-300 animate-bounce-in">
                 {score.toLocaleString()}
               </span>
-              <span className="text-sm font-bold text-white/50">points</span>
+              <span className="text-sm font-bold text-white/50">{t("survival.points")}</span>
             </div>
 
             <div className="flex gap-6 text-center">
               <div>
                 <p className="text-2xl font-extrabold text-white">{currentIndex}</p>
-                <p className="text-xs font-bold text-white/40">questions</p>
+                <p className="text-xs font-bold text-white/40">{t("survival.questions")}</p>
               </div>
               <div>
                 <p className="text-2xl font-extrabold text-white">{bestStreak}</p>
-                <p className="text-xs font-bold text-white/40">best streak</p>
+                <p className="text-xs font-bold text-white/40">{t("survival.bestStreak")}</p>
               </div>
             </div>
 
             <button onClick={handleRestart} className="btn-primary flex items-center gap-2">
               <Zap className="h-5 w-5" />
-              Play again
+              {t("survival.playAgain")}
             </button>
 
             <Link

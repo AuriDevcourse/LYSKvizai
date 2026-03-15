@@ -219,6 +219,16 @@ export const translations = {
     "quizPicker.questions": "questions",
     "quizPicker.q": "q.",
 
+    // Survival
+    "survival.gameOver": "Game Over",
+    "survival.points": "points",
+    "survival.questions": "questions",
+    "survival.bestStreak": "best streak",
+    "survival.playAgain": "Play again",
+
+    // Home
+    "home.start": "Start",
+
     // Quiz Card (single player)
     "quizCard.correct": "Correct! ✓",
     "quizCard.incorrect": "Incorrect ✗",
@@ -487,6 +497,16 @@ export const translations = {
     "quizPicker.selected": "pasirinkta",
     "quizPicker.questions": "klausimai",
     "quizPicker.q": "kl.",
+
+    // Survival
+    "survival.gameOver": "Žaidimas baigtas",
+    "survival.points": "taškai",
+    "survival.questions": "klausimai",
+    "survival.bestStreak": "geriausia serija",
+    "survival.playAgain": "Žaisti dar kartą",
+
+    // Home
+    "home.start": "Pradėti",
 
     // Quiz Card (single player)
     "quizCard.correct": "Teisingai! ✓",

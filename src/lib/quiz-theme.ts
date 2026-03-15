@@ -40,7 +40,6 @@ export const QUIZ_THEME: Record<string, { icon: LucideIcon; bg: string }> = {
   "animacija":           { icon: Film,          bg: "bg-[#ec4899]" },
 
   // Music
-  "muzika":              { icon: Music,         bg: "bg-[#ec4899]" },
   "muzika-pop":          { icon: Mic,           bg: "bg-[#ec4899]" },
   "muzika-rokas":        { icon: Guitar,        bg: "bg-[#e21b3c]" },
   "muzika-klasikine":    { icon: Music,         bg: "bg-[#a855f7]" },
