@@ -1,29 +1,40 @@
 "use client";
 
-import { CheckCircle, XCircle, Clock, Flame, Hash, Skull, Zap, Coins, Shield, Sparkles, Calendar } from "lucide-react";
-import type { ResultsPayload } from "@/lib/multiplayer/types";
+import { CheckCircle, XCircle, Clock, Flame, Hash, Skull, Sparkles } from "lucide-react";
+import type { ResultsPayload, QuestionPayload } from "@/lib/multiplayer/types";
 import ReactionPicker from "./ReactionPicker";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+
+const ANSWER_COLORS = [
+  "bg-[#e21b3c]",
+  "bg-[#1368ce]",
+  "bg-[#26890c]",
+  "bg-[#d89e00]",
+];
 
 interface PlayerResultsProps {
   playerId: string;
   results: ResultsPayload;
+  question?: QuestionPayload | null;
   onReact?: (emoji: string) => void;
   children?: React.ReactNode;
 }
 
-export default function PlayerResults({ playerId, results, onReact, children }: PlayerResultsProps) {
-  const { t } = useTranslation();
+export default function PlayerResults({ playerId, results, question, onReact, children }: PlayerResultsProps) {
+  const { t, lang } = useTranslation();
   const myResult = results.playerResults.find((r) => r.playerId === playerId);
-
   const myRank = results.leaderboard.find((e) => e.playerId === playerId)?.rank;
   const wasEliminated = results.eliminatedThisRound?.some((el) => el.playerId === playerId);
-  const fellForBluff = results.bluffVictims?.includes(myResult?.playerName ?? "");
-  const myWager = results.wagerResults?.find((wr) => wr.playerId === playerId);
-  const myPowerUp = results.powerUpEffects?.find((pe) => pe.playerId === playerId);
+
+  // Get translated options from question or results
+  const options = question
+    ? (lang === "lt" && question.lt ? question.lt.options : lang !== "lt" && question.en ? question.en.options : question.options)
+    : (lang === "lt" && results.lt?.options ? results.lt.options : lang !== "lt" && results.en?.options ? results.en.options : null);
+
+  const correctIndex = results.correctAnswer;
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-6 overflow-hidden w-full max-w-sm mx-auto px-4">
+    <div className="flex flex-1 flex-col items-center justify-center gap-5 overflow-hidden w-full max-w-sm mx-auto px-4">
       {/* Eliminated announcement */}
       {wasEliminated && (
         <div className="flex items-center gap-3 rounded-xl border-2 border-red-400/30 bg-[#e21b3c]/20 px-6 py-4">
@@ -35,153 +46,87 @@ export default function PlayerResults({ playerId, results, onReact, children }: 
         </div>
       )}
 
-      {/* Correct/Incorrect indicator */}
+      {/* Correct/Incorrect indicator + points */}
       {myResult ? (
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-2">
           {myResult.correct ? (
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#26890c]/20">
-              <CheckCircle className="h-10 w-10 text-[#26890c]" />
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#26890c]/20 animate-bounce-in">
+              <CheckCircle className="h-9 w-9 text-[#26890c]" />
             </div>
           ) : (
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-red-400/15">
-              <XCircle className="h-10 w-10 text-red-400" />
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-400/15 animate-bounce-in">
+              <XCircle className="h-9 w-9 text-red-400" />
             </div>
           )}
-          <h2 className="text-2xl font-bold text-white">
+          <h2 className="text-xl font-extrabold text-white">
             {myResult.correct ? t("playerResults.correct") : t("playerResults.incorrect")}
           </h2>
           {myResult.correct && myResult.points > 0 && (
-            <p className="text-lg font-bold text-emerald-300">
+            <p className="text-2xl font-extrabold text-emerald-300 animate-bounce-in">
               +{myResult.points} {t("playerResults.pts")}
             </p>
           )}
-          {myResult.streak >= 3 ? (
+          {/* Streak */}
+          {myResult.streak >= 2 && (
             <div className="flex items-center gap-1.5 text-sm font-bold text-orange-300">
               <Flame className="h-4 w-4 text-orange-400" />
-              <span>{t("playerResults.streak")} {myResult.streak} {t("playerResults.inARow")} +{Math.min((myResult.streak - 2) * 100, 500)} {t("playerResults.bonus")}</span>
+              <span>{myResult.streak} {t("playerResults.inARow")}</span>
             </div>
-          ) : myResult.streak > 1 ? (
-            <div className="flex items-center gap-1.5 text-sm text-white/60">
-              <Flame className="h-4 w-4 text-orange-400" />
-              <span>{t("playerResults.streak")} {myResult.streak} {t("playerResults.inARow")}</span>
+          )}
+          {/* Mystery multiplier */}
+          {results.mysteryMultiplier && results.mysteryMultiplier > 1 && myResult.correct && (
+            <div className="flex items-center gap-1.5 text-sm font-bold text-[#d89e00]">
+              <Sparkles className="h-4 w-4" />
+              x{results.mysteryMultiplier}
             </div>
-          ) : null}
-        </div>
-      ) : (
-        <div className="flex flex-col items-center gap-3">
-          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/10">
-            <Clock className="h-10 w-10 text-white" />
-          </div>
-          <h2 className="text-2xl font-bold text-white">{t("playerResults.noAnswer")}</h2>
-        </div>
-      )}
-
-      {/* Mystery Multiplier reveal */}
-      {results.mysteryMultiplier && results.mysteryMultiplier > 1 && (
-        <div className="flex items-center gap-2 rounded-xl bg-[#d89e00]/20 px-5 py-3 animate-bounce-in">
-          <Sparkles className="h-5 w-5 text-[#d89e00]" />
-          <span className="text-lg font-extrabold text-[#d89e00]">
-            {t("playerResults.mystery")} x{results.mysteryMultiplier}!
-          </span>
-          {myResult?.correct && myResult.basePoints != null && (
-            <span className="text-sm font-bold text-[#d89e00]/70">
-              {myResult.basePoints} x {results.mysteryMultiplier} = {myResult.points}
-            </span>
           )}
         </div>
-      )}
-
-      {/* Power-up effect */}
-      {myPowerUp && (
-        <div className="flex items-center gap-2 rounded-lg bg-cyan-500/15 px-4 py-2 text-sm font-medium text-cyan-300">
-          {myPowerUp.powerUp === "shield" ? <Shield className="h-4 w-4" /> : <Zap className="h-4 w-4" />}
-          {myPowerUp.effect}
-        </div>
-      )}
-
-      {/* Bluff victim */}
-      {fellForBluff && (
-        <div className="flex items-center gap-2 rounded-lg bg-purple-500/15 px-4 py-2 text-sm font-medium text-purple-300">
-          <Zap className="h-4 w-4" />
-          {t("playerResults.fellForBluff")}
-        </div>
-      )}
-
-      {/* Fastest Finger */}
-      {results.fastestFinger && (
-        <div className={`flex items-center gap-2 rounded-xl px-5 py-3 animate-bounce-in ${
-          results.fastestFinger.playerId === playerId
-            ? "border-2 border-[#d89e00] bg-[#d89e00]/20"
-            : "bg-[#d89e00]/10"
-        }`}>
-          <Zap className="h-5 w-5 text-[#d89e00]" />
-          <span className="text-base font-extrabold text-[#d89e00]">
-            {t("playerResults.fastestFinger")} {results.fastestFinger.playerName} +{results.fastestFinger.bonusPoints} {t("playerResults.pts")}
-          </span>
-        </div>
-      )}
-
-      {/* Year Guesser result */}
-      {results.yearGuesses && results.yearGuesses.length > 0 && (() => {
-        const myGuess = results.yearGuesses!.find((g) => g.playerId === playerId);
-        return (
-          <div className="w-full rounded-xl glass px-5 py-4">
-            <div className="flex items-center justify-center gap-2 text-sm font-extrabold text-white/60 mb-2">
-              <Calendar className="h-4 w-4" />
-              {t("playerResults.yearGuesser")}
-            </div>
-            <p className="text-center text-2xl font-extrabold text-[#26890c]">
-              {results.yearGuesses![0].correctYear}
-            </p>
-            <p className="text-center text-xs font-bold text-white/50 mb-3">{t("playerResults.correctYear")}</p>
-            {myGuess ? (
-              <div className="text-center">
-                <p className="text-lg font-extrabold text-white">
-                  {t("playerResults.yourGuess")} {myGuess.guessedYear}
-                </p>
-                <p className="text-sm font-bold text-white/60">
-                  {Math.abs(myGuess.guessedYear - myGuess.correctYear) === 0
-                    ? t("hostResults.exact")
-                    : `${Math.abs(myGuess.guessedYear - myGuess.correctYear)} ${Math.abs(myGuess.guessedYear - myGuess.correctYear) === 1 ? t("playerResults.yearOff") : t("playerResults.yearsOff")}`}
-                </p>
-                <p className="text-base font-extrabold text-emerald-300 mt-1">
-                  +{myGuess.points} {t("playerResults.pts")}
-                </p>
-              </div>
-            ) : (
-              <p className="text-center text-sm font-bold text-white/50">{t("playerResults.noGuess")}</p>
-            )}
+      ) : (
+        <div className="flex flex-col items-center gap-2">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/10">
+            <Clock className="h-9 w-9 text-white" />
           </div>
-        );
-      })()}
-
-      {/* Wager result */}
-      {myWager && (
-        <div className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${
-          myWager.won ? "bg-emerald-500/15 text-emerald-300" : "bg-red-500/15 text-white"
-        }`}>
-          <Coins className="h-4 w-4" />
-          {myWager.won
-            ? `${t("playerResults.wonWager")} +${myWager.netPoints} ${t("playerResults.pts")} (${t("playerResults.wagered")} ${myWager.wager})`
-            : `${t("playerResults.lostWager")} ${myWager.netPoints} ${t("playerResults.pts")} (${t("playerResults.wagered")} ${myWager.wager})`
-          }
+          <h2 className="text-xl font-extrabold text-white">{t("playerResults.noAnswer")}</h2>
         </div>
       )}
 
-      {/* Your rank */}
+      {/* Correct answer reveal */}
+      {options && (
+        <div className="w-full">
+          <div className="grid grid-cols-2 gap-2">
+            {options.map((option, i) => {
+              const isCorrect = i === correctIndex;
+              return (
+                <div
+                  key={i}
+                  className={`rounded-xl px-3 py-2.5 text-center text-sm font-bold transition-all ${
+                    isCorrect
+                      ? `${ANSWER_COLORS[i]} text-white ring-2 ring-white`
+                      : `${ANSWER_COLORS[i]} text-white/30 opacity-40`
+                  }`}
+                >
+                  {option}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Rank + total score */}
       {myRank && (
-        <div className="rounded-xl border-2 border-white/20 bg-white/5 px-8 py-4 text-center">
-          <div className="flex items-center justify-center gap-1.5 text-sm text-white/50">
-            <Hash className="h-3.5 w-3.5" />
+        <div className="rounded-xl border-2 border-white/20 bg-white/5 px-8 py-3 text-center">
+          <div className="flex items-center justify-center gap-1.5 text-xs text-white/50">
+            <Hash className="h-3 w-3" />
             <span>{t("playerResults.yourRank")}</span>
           </div>
-          <p className="mt-1 text-3xl font-bold text-white">
+          <p className="text-2xl font-extrabold text-white">
             #{myRank}
-            <span className="ml-2 text-lg text-white/60">
+            <span className="ml-1.5 text-base text-white/50">
               / {results.leaderboard.length}
             </span>
           </p>
-          <p className="mt-1 text-sm font-medium text-white/80">
+          <p className="text-sm font-bold text-white/60">
             {myResult?.totalScore ?? 0} {t("playerResults.pts")}
           </p>
         </div>

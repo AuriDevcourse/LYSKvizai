@@ -415,7 +415,7 @@ export default function GamePage({ params }: PageProps) {
         )}
 
         {state === "results" && results && isHost && isHostPlayer && (
-          <PlayerResults playerId={playerId} results={results} onReact={handleReact}>
+          <PlayerResults playerId={playerId} results={results} question={lastQuestion} onReact={handleReact}>
             <button
               onClick={handleNext}
               className="btn-primary flex items-center justify-center gap-2 w-full text-lg mt-4"
@@ -426,7 +426,7 @@ export default function GamePage({ params }: PageProps) {
         )}
 
         {state === "results" && results && !isHost && (
-          <PlayerResults playerId={playerId} results={results} onReact={handleReact} />
+          <PlayerResults playerId={playerId} results={results} question={lastQuestion} onReact={handleReact} />
         )}
 
         {state === "finished" && leaderboard && (
