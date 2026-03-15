@@ -25,26 +25,8 @@ function getQuizRegion(quiz: QuizMeta): "lt" | "intl" {
   return "intl";
 }
 
-/** Extract date from news quiz ID like "news-business-2026-03-11" */
-function getNewsDate(quizId: string): string | null {
-  const match = quizId.match(/(\d{4}-\d{2}-\d{2})$/);
-  return match ? match[1] : null;
-}
-
-/** Format date as short string: "Mar 11" */
-function formatNewsDate(dateStr: string): string {
-  const [y, m, d] = dateStr.split("-").map(Number);
-  const date = new Date(y, m - 1, d);
-  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-}
-
-/** Get quiz IDs belonging to a topic, including dynamic prefix matches */
-function getTopicQuizIds(topic: Topic, allQuizzes: QuizMeta[]): string[] {
-  if (topic.dynamicPrefix) {
-    return allQuizzes
-      .filter((q) => q.id.startsWith(topic.dynamicPrefix!))
-      .map((q) => q.id);
-  }
+/** Get quiz IDs belonging to a topic */
+function getTopicQuizIds(topic: Topic): string[] {
   return topic.quizIds;
 }
 
@@ -66,10 +48,7 @@ export default function TopicPicker({ onSelect, selectedIds }: TopicPickerProps)
 
   // Get filtered quizzes for active topic
   const topicQuizzes = activeTopic
-    ? allQuizzes.filter((q) => {
-        if (activeTopic.dynamicPrefix) return q.id.startsWith(activeTopic.dynamicPrefix);
-        return activeTopic.quizIds.includes(q.id);
-      })
+    ? allQuizzes.filter((q) => activeTopic.quizIds.includes(q.id))
     : [];
 
   const handleToggleQuiz = (quizId: string) => {
@@ -116,7 +95,6 @@ export default function TopicPicker({ onSelect, selectedIds }: TopicPickerProps)
               const theme = getQuizTheme(quiz.id);
               const SubIcon = theme.icon;
               const region = getQuizRegion(quiz);
-              const newsDate = getNewsDate(quiz.id);
               return (
                 <button
                   key={quiz.id}
@@ -141,7 +119,6 @@ export default function TopicPicker({ onSelect, selectedIds }: TopicPickerProps)
                     </div>
                     <p className="text-[11px] font-bold text-white/40">
                       {quiz.questionCount} {t("quizPicker.q")}
-                      {newsDate && <span className="ml-1.5 text-white/30">· {formatNewsDate(newsDate)}</span>}
                     </p>
                   </div>
                   {isSelected && (
@@ -166,7 +143,7 @@ export default function TopicPicker({ onSelect, selectedIds }: TopicPickerProps)
     <div className="max-h-[60svh] overflow-y-auto sm:max-h-none grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3 stagger-children">
       {TOPICS.map((topic) => {
         const Icon = topic.icon;
-        const topicIds = getTopicQuizIds(topic, allQuizzes);
+        const topicIds = getTopicQuizIds(topic);
         const selectedCount = topicIds.filter((id) => selectedIds.includes(id)).length;
         return (
           <button
@@ -178,15 +155,11 @@ export default function TopicPicker({ onSelect, selectedIds }: TopicPickerProps)
                 : "glass hover:bg-white/12"
             }`}
           >
-            {selectedCount > 0 ? (
+            {selectedCount > 0 && (
               <div className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-white">
                 <span className="text-[10px] font-extrabold text-[#46178f]">{selectedCount}</span>
               </div>
-            ) : topic.dynamicPrefix ? (
-              <span className="absolute right-1.5 top-1.5 rounded-md bg-[#e21b3c] px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-white">
-                NEW
-              </span>
-            ) : null}
+            )}
             <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${topic.bg}`}>
               <Icon className="h-6 w-6 text-white" />
             </div>

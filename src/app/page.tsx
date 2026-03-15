@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Play, Heart, Swords, Home as HomeIcon, Users, PenLine, Plus, LogIn } from "lucide-react";
 import TopicPicker from "@/components/TopicPicker";
+import GameSettings from "@/components/GameSettings";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 type GameMode = "classic" | "survival";
@@ -15,22 +16,42 @@ export default function Home() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [mode, setMode] = useState<GameMode>("classic");
   const [showSolo, setShowSolo] = useState(false);
+  const [timer, setTimer] = useState(20);
+  const [questionCount, setQuestionCount] = useState(0); // 0 = all
 
   const handleStart = () => {
     if (selectedIds.length === 0) return;
 
+    const params = new URLSearchParams();
+    if (questionCount > 0) params.set("count", String(questionCount));
+
     if (mode === "survival") {
-      router.push(`/survival?ids=${selectedIds.join(",")}`);
+      params.set("ids", selectedIds.join(","));
+      if (timer !== 15) params.set("timer", String(timer));
+      router.push(`/survival?${params.toString()}`);
       return;
     }
 
     // Classic
+    if (timer > 0) params.set("timer", String(timer));
     if (selectedIds.length === 1) {
-      router.push(`/quiz/${selectedIds[0]}`);
+      const qs = params.toString();
+      router.push(`/quiz/${selectedIds[0]}${qs ? `?${qs}` : ""}`);
     } else {
-      router.push(`/quiz/mix?ids=${selectedIds.join(",")}`);
+      params.set("ids", selectedIds.join(","));
+      router.push(`/quiz/mix?${params.toString()}`);
     }
   };
+
+  const settingsBlock = (
+    <GameSettings
+      timer={timer}
+      questionCount={questionCount}
+      onTimerChange={setTimer}
+      onCountChange={setQuestionCount}
+      showTimer={mode === "survival"}
+    />
+  );
 
   return (
     <div className="relative flex min-h-svh flex-col items-center bg-[#46178f] bg-pattern">
@@ -126,6 +147,7 @@ export default function Home() {
                     {t("home.survival")}
                   </button>
                 </div>
+                {settingsBlock}
                 <button
                   onClick={handleStart}
                   className="btn-primary flex w-full items-center justify-center gap-2"
@@ -168,6 +190,7 @@ export default function Home() {
                   {t("home.survival")}
                 </button>
               </div>
+              {settingsBlock}
               <button
                 onClick={handleStart}
                 className="btn-primary flex w-full items-center justify-center gap-2"

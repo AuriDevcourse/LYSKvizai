@@ -9,7 +9,7 @@ import { useTranslation } from "@/lib/i18n/LanguageContext";
 import QuizCard from "@/components/QuizCard";
 
 const MAX_LIVES = 3;
-const BASE_TIMER = 15; // seconds for first questions
+const DEFAULT_BASE_TIMER = 15; // seconds for first questions
 const MIN_TIMER = 5; // fastest timer
 const TIMER_DECREASE_EVERY = 5; // decrease timer every N questions
 
@@ -33,6 +33,7 @@ export default function SurvivalPage() {
 function SurvivalInner() {
   const searchParams = useSearchParams();
   const { t, lang } = useTranslation();
+  const baseTimer = Number(searchParams.get("timer")) || DEFAULT_BASE_TIMER;
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -42,15 +43,15 @@ function SurvivalInner() {
   const [streak, setStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
   const [gameOver, setGameOver] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(BASE_TIMER);
+  const [timeLeft, setTimeLeft] = useState(baseTimer);
   const [shakeLife, setShakeLife] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Calculate timer for current question
   const getTimer = useCallback((questionNum: number) => {
     const decrease = Math.floor(questionNum / TIMER_DECREASE_EVERY);
-    return Math.max(MIN_TIMER, BASE_TIMER - decrease * 2);
-  }, []);
+    return Math.max(MIN_TIMER, baseTimer - decrease * 2);
+  }, [baseTimer]);
 
   // Load questions from selected quizzes (or all if no ids param)
   useEffect(() => {
@@ -83,7 +84,7 @@ function SurvivalInner() {
           .filter(Boolean)
           .flatMap((q) => q!.questions);
         setQuestions(shuffleArray(all));
-        setTimeLeft(BASE_TIMER);
+        setTimeLeft(baseTimer);
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -172,7 +173,7 @@ function SurvivalInner() {
     setStreak(0);
     setBestStreak(0);
     setGameOver(false);
-    setTimeLeft(BASE_TIMER);
+    setTimeLeft(baseTimer);
   };
 
   if (loading) {

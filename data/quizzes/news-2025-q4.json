@@ -1,0 +1,71 @@
+{
+  "id": "news-2025-q4",
+  "title": "News: 2025 Q4",
+  "description": "10 questions about major events from October to December 2025",
+  "emoji": "📰",
+  "language": "en",
+  "questions": [
+    {
+      "question": "What annual UN climate conference (COP) was held in late 2025?",
+      "options": ["COP29", "COP30", "COP31", "COP32"],
+      "correct": 1,
+      "explanation": "COP30 was held in Belém, Brazil in November 2025, focusing on climate action and deforestation."
+    },
+    {
+      "question": "Where was COP30 held in 2025?",
+      "options": ["Dubai, UAE", "Belém, Brazil", "Bonn, Germany", "Nairobi, Kenya"],
+      "correct": 1,
+      "explanation": "COP30 was hosted in Belém, Brazil, in the heart of the Amazon region."
+    },
+    {
+      "question": "Which country was scheduled to host the 2026 FIFA World Cup, generating significant preparations in late 2025?",
+      "options": ["Qatar", "Saudi Arabia", "United States, Canada, and Mexico", "Australia"],
+      "correct": 2,
+      "explanation": "The 2026 FIFA World Cup, to be hosted jointly by the US, Canada, and Mexico, drove major preparations in late 2025."
+    },
+    {
+      "question": "What was a major concern for the global economy in Q4 2025?",
+      "options": ["Cryptocurrency collapse", "Ongoing trade war effects and tariff uncertainty", "Oil prices dropping to $10/barrel", "European Union dissolution"],
+      "correct": 1,
+      "explanation": "The economic effects of the US-initiated trade war and tariff policies continued to create global economic uncertainty."
+    },
+    {
+      "question": "Which tech trend dominated headlines toward the end of 2025?",
+      "options": ["The metaverse", "AI agents and autonomous AI systems", "Blockchain gaming", "5G expansion"],
+      "correct": 1,
+      "explanation": "AI agents capable of performing complex tasks autonomously became a dominant trend in tech toward the end of 2025."
+    },
+    {
+      "question": "What milestone did global EV sales approach by the end of 2025?",
+      "options": ["5 million annual sales", "10 million annual sales", "20 million annual sales", "50 million annual sales"],
+      "correct": 2,
+      "explanation": "Global electric vehicle sales continued their rapid growth, approaching 20 million units annually by end of 2025."
+    },
+    {
+      "question": "Which ongoing conflict continued to affect global energy and food markets through the end of 2025?",
+      "options": ["Syria civil war", "Russia-Ukraine war", "Yemen civil war", "Ethiopian civil war"],
+      "correct": 1,
+      "explanation": "The Russia-Ukraine war continued to impact global energy and food supply chains through 2025."
+    },
+    {
+      "question": "What was a significant development in the US-China relationship in late 2025?",
+      "options": ["Full diplomatic break", "Continued trade negotiations amid high tariffs", "Military alliance formed", "Joint space mission announced"],
+      "correct": 1,
+      "explanation": "The US and China continued tense trade negotiations amid historically high tariff levels in late 2025."
+    },
+    {
+      "question": "Which social media platform continued to grow rapidly as an alternative to X (formerly Twitter) in 2025?",
+      "options": ["Mastodon", "Bluesky", "Threads", "Truth Social"],
+      "correct": 1,
+      "explanation": "Bluesky saw continued rapid user growth throughout 2025 as users sought alternatives to X."
+    },
+    {
+      "question": "What major astronomical event occurred in 2025 that was visible from parts of the world?",
+      "options": ["Total solar eclipse", "Lunar eclipse and rare planetary alignment", "Halley's Comet return", "Meteor storm"],
+      "correct": 1,
+      "explanation": "2025 featured notable lunar eclipses and planetary alignments visible from various parts of the world."
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}

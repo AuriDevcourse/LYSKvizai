@@ -1,0 +1,101 @@
+{
+  "id": "news-2024-q1",
+  "title": "News: 2024 Q1",
+  "description": "15 questions about Jan-Mar 2024 events",
+  "emoji": "📰",
+  "language": "en",
+  "questions": [
+    {
+      "question": "Which country held a presidential election in January 2024 that resulted in a pro-independence candidate winning?",
+      "options": ["Hong Kong", "Taiwan", "Singapore", "South Korea"],
+      "correct": 1,
+      "explanation": "Lai Ching-te of the DPP won Taiwan's presidential election in January 2024."
+    },
+    {
+      "question": "Which social media platform was temporarily banned in the US in January 2024 before being restored?",
+      "options": ["WeChat", "TikTok", "Telegram", "None were banned"],
+      "correct": 3,
+      "explanation": "While TikTok faced legislative threats in 2024, no major platform was fully banned in Q1."
+    },
+    {
+      "question": "Who won the Super Bowl LVIII in February 2024?",
+      "options": ["San Francisco 49ers", "Kansas City Chiefs", "Baltimore Ravens", "Detroit Lions"],
+      "correct": 1,
+      "explanation": "The Kansas City Chiefs defeated the 49ers 25-22 in overtime."
+    },
+    {
+      "question": "Which country became the 4th to land a spacecraft on the Moon in January 2024?",
+      "options": ["Israel", "India", "Japan", "South Korea"],
+      "correct": 2,
+      "explanation": "Japan's SLIM lander successfully touched down on the Moon on January 19, 2024."
+    },
+    {
+      "question": "Which AI company's chatbot went viral for generating realistic video from text prompts in February 2024?",
+      "options": ["Google DeepMind", "OpenAI (Sora)", "Anthropic", "Meta"],
+      "correct": 1,
+      "explanation": "OpenAI's Sora AI model generated impressive videos from text prompts."
+    },
+    {
+      "question": "Who won the Republican primary in New Hampshire in January 2024?",
+      "options": ["Ron DeSantis", "Nikki Haley", "Donald Trump", "Vivek Ramaswamy"],
+      "correct": 2,
+      "explanation": "Donald Trump won the New Hampshire Republican primary."
+    },
+    {
+      "question": "Which European country's farmers staged massive protests blocking highways in early 2024?",
+      "options": ["Spain", "Germany", "France", "Italy"],
+      "correct": 2,
+      "explanation": "French farmers blocked roads protesting EU regulations and low prices in January-February 2024."
+    },
+    {
+      "question": "What was the main reason for the collapse of the Francis Scott Key Bridge in Baltimore?",
+      "options": ["Earthquake", "Container ship collision", "Structural failure", "Flooding"],
+      "correct": 1,
+      "explanation": "The container ship Dali struck the bridge on March 26, 2024, causing its collapse."
+    },
+    {
+      "question": "Which monarch was diagnosed with cancer in February 2024?",
+      "options": ["King Felipe VI", "King Charles III", "Queen Margrethe II", "King Willem-Alexander"],
+      "correct": 1,
+      "explanation": "King Charles III announced his cancer diagnosis on February 5, 2024."
+    },
+    {
+      "question": "Kate Middleton revealed what personal news in March 2024?",
+      "options": ["She was pregnant", "She was diagnosed with cancer", "She was stepping down from duties", "She was divorcing"],
+      "correct": 1,
+      "explanation": "The Princess of Wales announced she was undergoing cancer treatment in March 2024."
+    },
+    {
+      "question": "Which tech company became the first to reach a $3 trillion market cap in 2024?",
+      "options": ["Microsoft", "Apple", "Nvidia", "Amazon"],
+      "correct": 0,
+      "explanation": "Microsoft briefly surpassed Apple to become the most valuable company in early 2024."
+    },
+    {
+      "question": "Which country held a general election in February 2024 where the opposition party won?",
+      "options": ["Pakistan", "Indonesia", "Bangladesh", "Senegal"],
+      "correct": 1,
+      "explanation": "Indonesia held elections in February 2024, with Prabowo Subianto winning the presidency."
+    },
+    {
+      "question": "The Oscars 2024 Best Picture went to which film?",
+      "options": ["Barbie", "Oppenheimer", "Killers of the Flower Moon", "Poor Things"],
+      "correct": 1,
+      "explanation": "Oppenheimer won Best Picture at the 96th Academy Awards in March 2024."
+    },
+    {
+      "question": "Which country faced a major earthquake in January 2024 killing over 200 people?",
+      "options": ["Turkey", "Morocco", "Japan", "Afghanistan"],
+      "correct": 2,
+      "explanation": "A 7.6 magnitude earthquake struck Japan's Noto Peninsula on January 1, 2024."
+    },
+    {
+      "question": "Which tech company laid off approximately 12,000 employees in January 2024?",
+      "options": ["Meta", "Google", "Amazon", "Microsoft"],
+      "correct": 1,
+      "explanation": "Google laid off hundreds of employees across multiple divisions in January 2024."
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}

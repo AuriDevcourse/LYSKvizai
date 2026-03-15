@@ -1,6 +1,7 @@
 import {
   Globe, Clapperboard, Star, Landmark, FlaskConical,
   Calculator, Music, Cpu, Trophy, TreePine, Newspaper,
+  UtensilsCrossed, PawPrint, Gamepad2, Brain,
   type LucideIcon,
 } from "lucide-react";
 
@@ -12,8 +13,6 @@ export interface Topic {
   bg: string;
   /** Quiz IDs that belong to this topic */
   quizIds: string[];
-  /** If set, dynamically match quiz IDs starting with this prefix */
-  dynamicPrefix?: string;
 }
 
 export const TOPICS: Topic[] = [
@@ -22,22 +21,31 @@ export const TOPICS: Topic[] = [
     labelKey: "topics.news",
     icon: Newspaper,
     bg: "bg-[#ef4444]",
-    quizIds: [],
-    dynamicPrefix: "news-",
+    quizIds: [
+      "news-2024-q1", "news-2024-q2", "news-2024-q3", "news-2024-q4",
+      "news-2025-q1", "news-2025-q2", "news-2025-q3", "news-2025-q4",
+    ],
+  },
+  {
+    id: "general",
+    labelKey: "topics.general",
+    icon: Brain,
+    bg: "bg-[#8b5cf6]",
+    quizIds: ["bendros-zinios"],
   },
   {
     id: "geography",
     labelKey: "topics.geography",
     icon: Globe,
     bg: "bg-[#26890c]",
-    quizIds: ["geografija"],
+    quizIds: ["geografija", "pasaulio-sostines", "europos-geografija", "vandenynai-ir-kontinentai"],
   },
   {
     id: "movies",
     labelKey: "topics.movies",
     icon: Clapperboard,
     bg: "bg-[#a855f7]",
-    quizIds: ["filmai-ir-serialai"],
+    quizIds: ["filmai-ir-serialai", "tv-serialai", "animacija"],
   },
   {
     id: "celebrities",
@@ -58,14 +66,14 @@ export const TOPICS: Topic[] = [
     labelKey: "topics.science",
     icon: FlaskConical,
     bg: "bg-[#0ea5e9]",
-    quizIds: ["mokslas"],
+    quizIds: ["mokslas", "biologija", "fizika", "kosmosas"],
   },
   {
     id: "math",
     labelKey: "topics.math",
     icon: Calculator,
     bg: "bg-[#1368ce]",
-    quizIds: ["matematika"],
+    quizIds: ["matematika", "logikos-galvosukai"],
   },
   {
     id: "music",
@@ -79,14 +87,35 @@ export const TOPICS: Topic[] = [
     labelKey: "topics.technology",
     icon: Cpu,
     bg: "bg-[#14b8a6]",
-    quizIds: ["technologijos"],
+    quizIds: ["technologijos", "socialiniai-tinklai"],
   },
   {
     id: "sports",
     labelKey: "topics.sports",
     icon: Trophy,
     bg: "bg-[#eab308]",
-    quizIds: ["lietuvos-sportas"],
+    quizIds: ["lietuvos-sportas", "pasaulio-futbolas", "olimpiniai-zaidimai", "krepsinis"],
+  },
+  {
+    id: "food",
+    labelKey: "topics.food",
+    icon: UtensilsCrossed,
+    bg: "bg-[#f97316]",
+    quizIds: ["pasaulio-virtuve", "gerimai"],
+  },
+  {
+    id: "nature",
+    labelKey: "topics.nature",
+    icon: PawPrint,
+    bg: "bg-[#22c55e]",
+    quizIds: ["gyvunai", "gamta"],
+  },
+  {
+    id: "gaming",
+    labelKey: "topics.gaming",
+    icon: Gamepad2,
+    bg: "bg-[#6366f1]",
+    quizIds: ["video-zaidimai"],
   },
   {
     id: "holidays",

@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState, useCallback, useEffect } from "react";
+import { use, useState, useCallback, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Loader2, ArrowLeft, X } from "lucide-react";
@@ -32,10 +32,15 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const timerDuration = Number(searchParams.get("timer")) || 0; // 0 = no timer
+  const maxQuestions = Number(searchParams.get("count")) || 0; // 0 = all
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(timerDuration);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     const isMix = id === "mix";
@@ -58,8 +63,11 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
             setError(t("quiz.notFound"));
             return;
           }
-          const allQuestions: Question[] = validQuizzes.flatMap((q: { questions: Question[] }) => q.questions);
-          setQuestions(shuffleArray(allQuestions));
+          let allQuestions: Question[] = shuffleArray(validQuizzes.flatMap((q: { questions: Question[] }) => q.questions));
+          if (maxQuestions > 0 && maxQuestions < allQuestions.length) {
+            allQuestions = allQuestions.slice(0, maxQuestions);
+          }
+          setQuestions(allQuestions);
           const titles = validQuizzes.map((q: { title: string }) => q.title);
           setQuizTitle(`${t("quiz.mix")}${titles.join(" + ")}`);
         })
@@ -73,7 +81,11 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
           return res.json();
         })
         .then((quiz) => {
-          setQuestions(quiz.questions);
+          let qs: Question[] = shuffleArray(quiz.questions);
+          if (maxQuestions > 0 && maxQuestions < qs.length) {
+            qs = qs.slice(0, maxQuestions);
+          }
+          setQuestions(qs);
           setQuizTitle(quiz.title);
         })
         .catch((e) => setError(e.message))
@@ -81,8 +93,26 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
     }
   }, [id, searchParams, lang]);
 
+  // Timer countdown (only when timerDuration > 0)
+  useEffect(() => {
+    if (!timerDuration || loading || finished || selectedAnswer !== null || questions.length === 0) return;
+    setTimeLeft(timerDuration);
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timerRef.current!);
+          setSelectedAnswer(-1); // timed out
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [timerDuration, loading, finished, currentIndex, questions.length]);
+
   const handleSelect = useCallback(
     (index: number) => {
+      if (timerRef.current) clearInterval(timerRef.current);
       setSelectedAnswer(index);
       if (index === questions[currentIndex].correct) {
         setScore((s) => s + 1);
@@ -160,6 +190,16 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
               current={currentIndex + 1}
               total={questions.length}
             />
+            {timerDuration > 0 && (
+              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+                <div
+                  className={`h-full rounded-full transition-all duration-1000 ease-linear ${
+                    timeLeft <= 3 ? "bg-red-500" : "bg-green-500"
+                  }`}
+                  style={{ width: `${(timeLeft / timerDuration) * 100}%` }}
+                />
+              </div>
+            )}
             <div className="mt-6">
               <QuizCard
                 key={currentIndex}

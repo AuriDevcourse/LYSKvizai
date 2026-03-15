@@ -188,8 +188,14 @@ export const translations = {
     "yearGuesser.lockedIn": "Locked in!",
     "yearGuesser.waitingForOthers": "Waiting for others...",
 
+    // Settings
+    "settings.timePerQuestion": "Time per question",
+    "settings.questionCount": "Number of questions",
+    "settings.all": "All",
+
     // Topics
-    "topics.news": "Daily News",
+    "topics.news": "News",
+    "topics.general": "General",
     "topics.geography": "Geography",
     "topics.movies": "Movies & TV",
     "topics.celebrities": "Celebrities",
@@ -199,6 +205,9 @@ export const translations = {
     "topics.music": "Music",
     "topics.technology": "Technology",
     "topics.sports": "Sports",
+    "topics.food": "Food & Drink",
+    "topics.nature": "Animals & Nature",
+    "topics.gaming": "Gaming",
     "topics.holidays": "Holidays",
 
     // Quiz Picker
@@ -448,8 +457,14 @@ export const translations = {
     "yearGuesser.lockedIn": "Užfiksuota!",
     "yearGuesser.waitingForOthers": "Laukiama kitų...",
 
+    // Settings
+    "settings.timePerQuestion": "Laikas klausimui",
+    "settings.questionCount": "Klausimų skaičius",
+    "settings.all": "Visi",
+
     // Topics
-    "topics.news": "Dienos naujienos",
+    "topics.news": "Naujienos",
+    "topics.general": "Bendros žinios",
     "topics.geography": "Geografija",
     "topics.movies": "Filmai ir TV",
     "topics.celebrities": "Įžymybės",
@@ -459,6 +474,9 @@ export const translations = {
     "topics.music": "Muzika",
     "topics.technology": "Technologijos",
     "topics.sports": "Sportas",
+    "topics.food": "Maistas ir gėrimai",
+    "topics.nature": "Gyvūnai ir gamta",
+    "topics.gaming": "Žaidimai",
     "topics.holidays": "Šventės",
 
     // Quiz Picker

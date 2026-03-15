@@ -1,0 +1,101 @@
+{
+  "id": "pasaulio-futbolas",
+  "title": "World Football",
+  "description": "15 questions about World Cup history, legendary players, famous goals, and club records",
+  "emoji": "⚽",
+  "language": "en",
+  "questions": [
+    {
+      "question": "Which country has won the most FIFA World Cup titles?",
+      "options": ["Germany", "Italy", "Brazil", "Argentina"],
+      "correct": 2,
+      "explanation": "Brazil has won the FIFA World Cup a record 5 times (1958, 1962, 1970, 1994, 2002)."
+    },
+    {
+      "question": "Who holds the record for the most goals scored in a single World Cup tournament?",
+      "options": ["Gerd Muller", "Just Fontaine", "Ronaldo", "Miroslav Klose"],
+      "correct": 1,
+      "explanation": "Just Fontaine of France scored 13 goals in the 1958 World Cup, a record that still stands."
+    },
+    {
+      "question": "In which year was the first FIFA World Cup held?",
+      "options": ["1926", "1928", "1930", "1934"],
+      "correct": 2,
+      "explanation": "The first FIFA World Cup was held in Uruguay in 1930, with Uruguay winning the tournament."
+    },
+    {
+      "question": "Which player has scored the most goals in World Cup history (all tournaments combined)?",
+      "options": ["Ronaldo", "Miroslav Klose", "Pele", "Gerd Muller"],
+      "correct": 1,
+      "explanation": "Miroslav Klose of Germany scored 16 goals across four World Cups (2002-2014)."
+    },
+    {
+      "question": "What is known as the 'Hand of God' goal?",
+      "options": ["Pele's header in 1970", "Maradona's handball goal against England in 1986", "Zidane's penalty in 2006", "Hurst's controversial goal in 1966"],
+      "correct": 1,
+      "explanation": "Diego Maradona punched the ball into the net against England in the 1986 World Cup quarterfinal, later calling it 'the Hand of God.'"
+    },
+    {
+      "question": "Which club has won the most UEFA Champions League / European Cup titles?",
+      "options": ["AC Milan", "Barcelona", "Real Madrid", "Bayern Munich"],
+      "correct": 2,
+      "explanation": "Real Madrid has won the Champions League/European Cup a record 15 times."
+    },
+    {
+      "question": "Who is the all-time top scorer in UEFA Champions League history?",
+      "options": ["Lionel Messi", "Cristiano Ronaldo", "Raul", "Robert Lewandowski"],
+      "correct": 1,
+      "explanation": "Cristiano Ronaldo holds the record with 140 Champions League goals."
+    },
+    {
+      "question": "Which country won the 2022 FIFA World Cup in Qatar?",
+      "options": ["France", "Croatia", "Argentina", "Brazil"],
+      "correct": 2,
+      "explanation": "Argentina won the 2022 World Cup, defeating France in a dramatic penalty shootout in the final."
+    },
+    {
+      "question": "What was the 'Miracle of Bern'?",
+      "options": ["Brazil's 1970 World Cup victory", "West Germany's 1954 World Cup victory over Hungary", "Italy's comeback in the 1982 final", "England's 1966 World Cup win"],
+      "correct": 1,
+      "explanation": "West Germany's unexpected 3-2 victory over heavily favored Hungary in the 1954 World Cup final is known as the Miracle of Bern."
+    },
+    {
+      "question": "Which player has won the most Ballon d'Or awards?",
+      "options": ["Cristiano Ronaldo", "Johan Cruyff", "Lionel Messi", "Michel Platini"],
+      "correct": 2,
+      "explanation": "Lionel Messi has won the Ballon d'Or a record 8 times."
+    },
+    {
+      "question": "What was the final score of Brazil's infamous 2014 World Cup semifinal loss to Germany?",
+      "options": ["5-0", "6-1", "7-1", "4-0"],
+      "correct": 2,
+      "explanation": "Germany demolished host nation Brazil 7-1 in the 2014 World Cup semifinal, one of the most shocking results in football history."
+    },
+    {
+      "question": "Which English club became the first to win the treble (League, FA Cup, Champions League) in 1999?",
+      "options": ["Liverpool", "Arsenal", "Manchester United", "Chelsea"],
+      "correct": 2,
+      "explanation": "Manchester United won the Premier League, FA Cup, and Champions League in the 1998-99 season under Sir Alex Ferguson."
+    },
+    {
+      "question": "Who scored a hat-trick in the 2022 World Cup final?",
+      "options": ["Kylian Mbappe", "Lionel Messi", "Olivier Giroud", "Julian Alvarez"],
+      "correct": 0,
+      "explanation": "Kylian Mbappe scored a hat-trick in the 2022 World Cup final against Argentina, though France ultimately lost on penalties."
+    },
+    {
+      "question": "Which country hosted the World Cup in both 1986 and 1970?",
+      "options": ["Brazil", "Argentina", "Mexico", "Italy"],
+      "correct": 2,
+      "explanation": "Mexico hosted the World Cup in both 1970 and 1986, becoming the first country to host the tournament twice."
+    },
+    {
+      "question": "What is the record for the most Premier League titles won by a single club?",
+      "options": ["13 by Manchester United", "8 by Chelsea", "6 by Manchester City", "5 by Arsenal"],
+      "correct": 0,
+      "explanation": "Manchester United have won the Premier League 13 times (since its rebranding in 1992), all under Sir Alex Ferguson."
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}

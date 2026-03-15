@@ -1,0 +1,101 @@
+{
+  "id": "europos-geografija",
+  "title": "European Geography",
+  "description": "15 questions about European geography",
+  "emoji": "🇪🇺",
+  "language": "en",
+  "questions": [
+    {
+      "question": "Which is the longest river in Europe?",
+      "options": ["Danube", "Rhine", "Volga", "Elbe"],
+      "correct": 2,
+      "explanation": "The Volga is the longest river in Europe at 3,530 km."
+    },
+    {
+      "question": "Which European country has the most UNESCO World Heritage Sites?",
+      "options": ["France", "Spain", "Italy", "Germany"],
+      "correct": 2,
+      "explanation": "Italy has the most UNESCO World Heritage Sites in Europe."
+    },
+    {
+      "question": "What is the smallest country in Europe?",
+      "options": ["Monaco", "San Marino", "Vatican City", "Liechtenstein"],
+      "correct": 2,
+      "explanation": "Vatican City is the smallest country in both Europe and the world at 0.44 km²."
+    },
+    {
+      "question": "Which strait separates Europe from Asia?",
+      "options": ["Strait of Gibraltar", "Bosphorus", "English Channel", "Strait of Messina"],
+      "correct": 1,
+      "explanation": "The Bosphorus strait in Istanbul separates Europe from Asia."
+    },
+    {
+      "question": "Mount Elbrus, the highest peak in Europe, is located in which country?",
+      "options": ["Switzerland", "France", "Georgia", "Russia"],
+      "correct": 3,
+      "explanation": "Mount Elbrus (5,642 m) is in the Caucasus Mountains of Russia."
+    },
+    {
+      "question": "Which European country has the most islands?",
+      "options": ["Greece", "Norway", "Sweden", "Finland"],
+      "correct": 2,
+      "explanation": "Sweden has approximately 267,570 islands, the most of any European country."
+    },
+    {
+      "question": "Which two European countries are doubly landlocked?",
+      "options": ["Austria and Switzerland", "Liechtenstein and Uzbekistan", "Liechtenstein and Luxembourg", "Andorra and San Marino"],
+      "correct": 1,
+      "explanation": "Liechtenstein and Uzbekistan are the only doubly landlocked countries in the world."
+    },
+    {
+      "question": "What is the deepest lake in Europe?",
+      "options": ["Lake Geneva", "Lake Garda", "Hornindalsvatnet", "Lake Ladoga"],
+      "correct": 2,
+      "explanation": "Hornindalsvatnet in Norway is the deepest lake in Europe at 514 m."
+    },
+    {
+      "question": "Which European capital is located on two continents?",
+      "options": ["Athens", "Moscow", "Istanbul", "Tbilisi"],
+      "correct": 2,
+      "explanation": "Istanbul spans both Europe and Asia, divided by the Bosphorus."
+    },
+    {
+      "question": "Which country does NOT border France?",
+      "options": ["Belgium", "Luxembourg", "Netherlands", "Germany"],
+      "correct": 2,
+      "explanation": "The Netherlands does not share a land border with mainland France."
+    },
+    {
+      "question": "What is the largest island in the Mediterranean Sea?",
+      "options": ["Sardinia", "Corsica", "Sicily", "Crete"],
+      "correct": 2,
+      "explanation": "Sicily is the largest Mediterranean island at 25,711 km²."
+    },
+    {
+      "question": "Which European country has the highest population density?",
+      "options": ["Netherlands", "Belgium", "Monaco", "Malta"],
+      "correct": 2,
+      "explanation": "Monaco has the highest population density in Europe and the world."
+    },
+    {
+      "question": "The Danube River flows through how many capital cities?",
+      "options": ["2", "3", "4", "5"],
+      "correct": 2,
+      "explanation": "The Danube flows through Vienna, Bratislava, Budapest, and Belgrade."
+    },
+    {
+      "question": "Which Scandinavian country is NOT part of the European Union?",
+      "options": ["Denmark", "Sweden", "Norway", "Finland"],
+      "correct": 2,
+      "explanation": "Norway is not an EU member, though it participates in the EEA."
+    },
+    {
+      "question": "Which European country is home to the Plitvice Lakes?",
+      "options": ["Slovenia", "Croatia", "Bosnia", "Montenegro"],
+      "correct": 1,
+      "explanation": "Plitvice Lakes National Park is a UNESCO site in Croatia."
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}

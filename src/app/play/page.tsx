@@ -6,6 +6,7 @@ import { Plus, LogIn, ArrowLeft, Loader2, Smartphone, Monitor, X } from "lucide-
 import { useRoomActions } from "@/hooks/useRoomActions";
 import JoinForm from "@/components/multiplayer/JoinForm";
 import TopicPicker from "@/components/TopicPicker";
+import GameSettings from "@/components/GameSettings";
 import GameModeSelector from "@/components/multiplayer/GameModeSelector";
 import AvatarBuilder from "@/components/AvatarBuilder";
 import type { GameMode } from "@/lib/multiplayer/types";
@@ -29,6 +30,8 @@ function PlayPageInner() {
   const [selectedQuizIds, setSelectedQuizIds] = useState<string[]>([]);
   const [selectedGameMode, setSelectedGameMode] = useState<GameMode>("classic");
   const [gameModeOptions, setGameModeOptions] = useState<{ teamCount?: number; eliminationInterval?: number }>({});
+  const [timer, setTimer] = useState(20);
+  const [questionCount, setQuestionCount] = useState(15);
   const [hostName, setHostName] = useState("");
   const [hostAvatar, setHostAvatar] = useState("");
   const [hostPlaying, setHostPlaying] = useState(false);
@@ -67,8 +70,8 @@ function PlayPageInner() {
       const result = await createRoom(
         hostId,
         selectedQuizIds,
-        15,
-        20,
+        questionCount === 0 ? 999 : questionCount,
+        timer,
         selectedGameMode,
         gameModeOptions.teamCount,
         gameModeOptions.eliminationInterval
@@ -164,6 +167,15 @@ function PlayPageInner() {
           <div className="w-full">
             <TopicPicker onSelect={setSelectedQuizIds} selectedIds={selectedQuizIds} />
           </div>
+
+          {selectedQuizIds.length > 0 && (
+            <GameSettings
+              timer={timer}
+              questionCount={questionCount}
+              onTimerChange={setTimer}
+              onCountChange={setQuestionCount}
+            />
+          )}
 
           <button
             onClick={handleQuizNext}

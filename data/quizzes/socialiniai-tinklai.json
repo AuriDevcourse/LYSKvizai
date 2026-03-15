@@ -1,0 +1,101 @@
+{
+  "id": "socialiniai-tinklai",
+  "title": "Social Media & Internet",
+  "description": "15 questions about social media and internet",
+  "emoji": "📱",
+  "language": "en",
+  "questions": [
+    {
+      "question": "What year was Facebook launched?",
+      "options": ["2002", "2004", "2006", "2008"],
+      "correct": 1,
+      "explanation": "Facebook was launched by Mark Zuckerberg on February 4, 2004."
+    },
+    {
+      "question": "Which platform introduced the concept of 'Stories' that disappear after 24 hours?",
+      "options": ["Instagram", "Snapchat", "Facebook", "WhatsApp"],
+      "correct": 1,
+      "explanation": "Snapchat introduced Stories in 2013; Instagram later copied the feature."
+    },
+    {
+      "question": "What was the original name of Twitter (now X)?",
+      "options": ["Twttr", "Birdcall", "Status", "Chirp"],
+      "correct": 0,
+      "explanation": "Twitter was originally called 'twttr', inspired by Flickr."
+    },
+    {
+      "question": "Which social media platform is owned by ByteDance?",
+      "options": ["Instagram", "Snapchat", "TikTok", "Pinterest"],
+      "correct": 2,
+      "explanation": "TikTok is owned by the Chinese company ByteDance."
+    },
+    {
+      "question": "What was the most-liked Instagram post for several years?",
+      "options": ["Kylie Jenner's baby photo", "An egg", "Obama's election post", "Cristiano Ronaldo"],
+      "correct": 1,
+      "explanation": "The @world_record_egg became the most-liked Instagram post in 2019."
+    },
+    {
+      "question": "What does 'URL' stand for?",
+      "options": ["Universal Resource Locator", "Uniform Resource Locator", "Universal Reference Link", "Unified Resource Location"],
+      "correct": 1,
+      "explanation": "URL stands for Uniform Resource Locator."
+    },
+    {
+      "question": "Which company owns Instagram and WhatsApp?",
+      "options": ["Google", "Microsoft", "Meta", "Apple"],
+      "correct": 2,
+      "explanation": "Meta (formerly Facebook) owns Instagram, WhatsApp, and Threads."
+    },
+    {
+      "question": "What year was YouTube founded?",
+      "options": ["2003", "2005", "2007", "2009"],
+      "correct": 1,
+      "explanation": "YouTube was founded in February 2005 and bought by Google in 2006."
+    },
+    {
+      "question": "What is the most-watched YouTube video of all time?",
+      "options": ["Gangnam Style", "Despacito", "Baby Shark Dance", "See You Again"],
+      "correct": 2,
+      "explanation": "Baby Shark Dance has over 14 billion views."
+    },
+    {
+      "question": "What does 'SEO' stand for?",
+      "options": ["Social Engagement Optimization", "Search Engine Optimization", "Site Enhancement Operations", "Standard Email Output"],
+      "correct": 1,
+      "explanation": "SEO stands for Search Engine Optimization."
+    },
+    {
+      "question": "Which was the first social media platform to reach 1 billion users?",
+      "options": ["YouTube", "Facebook", "WhatsApp", "Instagram"],
+      "correct": 1,
+      "explanation": "Facebook reached 1 billion monthly active users in October 2012."
+    },
+    {
+      "question": "What is Reddit's content organized into?",
+      "options": ["Channels", "Boards", "Subreddits", "Groups"],
+      "correct": 2,
+      "explanation": "Reddit is organized into subreddits, each focused on a specific topic."
+    },
+    {
+      "question": "Who purchased Twitter in 2022 and renamed it to X?",
+      "options": ["Jeff Bezos", "Mark Zuckerberg", "Elon Musk", "Jack Dorsey"],
+      "correct": 2,
+      "explanation": "Elon Musk acquired Twitter for $44 billion in October 2022."
+    },
+    {
+      "question": "What was the first website ever created about?",
+      "options": ["News", "The World Wide Web itself", "E-commerce", "Email"],
+      "correct": 1,
+      "explanation": "The first website, created by Tim Berners-Lee at CERN, explained the WWW project."
+    },
+    {
+      "question": "Which AI chatbot went viral in late 2022?",
+      "options": ["Siri", "Alexa", "ChatGPT", "Bard"],
+      "correct": 2,
+      "explanation": "ChatGPT by OpenAI reached 100 million users in 2 months after its Nov 2022 launch."
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}

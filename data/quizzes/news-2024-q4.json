@@ -1,0 +1,101 @@
+{
+  "id": "news-2024-q4",
+  "title": "News: 2024 Q4",
+  "description": "15 questions about Oct-Dec 2024 events",
+  "emoji": "📰",
+  "language": "en",
+  "questions": [
+    {
+      "question": "Who won the 2024 US presidential election?",
+      "options": ["Kamala Harris", "Donald Trump", "Robert Kennedy Jr.", "It was contested"],
+      "correct": 1,
+      "explanation": "Donald Trump won the 2024 presidential election, defeating Kamala Harris."
+    },
+    {
+      "question": "Which hurricane struck Florida in October 2024, weeks after Hurricane Helene?",
+      "options": ["Hurricane Kirk", "Hurricane Leslie", "Hurricane Milton", "Hurricane Oscar"],
+      "correct": 2,
+      "explanation": "Hurricane Milton made landfall in Florida on October 9, 2024."
+    },
+    {
+      "question": "Which Nobel Prize in Literature was awarded to which author in 2024?",
+      "options": ["Salman Rushdie", "Han Kang", "Haruki Murakami", "Margaret Atwood"],
+      "correct": 1,
+      "explanation": "South Korean author Han Kang won the 2024 Nobel Prize in Literature."
+    },
+    {
+      "question": "Who did Trump select as his running mate for the 2024 election?",
+      "options": ["Marco Rubio", "J.D. Vance", "Vivek Ramaswamy", "Tim Scott"],
+      "correct": 1,
+      "explanation": "J.D. Vance, Ohio senator, was Trump's VP pick."
+    },
+    {
+      "question": "Which country's long-time rebel group toppled the Assad regime in December 2024?",
+      "options": ["Libya", "Iraq", "Syria", "Yemen"],
+      "correct": 2,
+      "explanation": "Syrian rebels led by HTS toppled Bashar al-Assad's regime in December 2024."
+    },
+    {
+      "question": "Where did Bashar al-Assad flee to after his regime fell?",
+      "options": ["Iran", "Russia", "China", "Lebanon"],
+      "correct": 1,
+      "explanation": "Assad fled to Russia after his government collapsed in December 2024."
+    },
+    {
+      "question": "Which major CEO stepped down from Intel in December 2024?",
+      "options": ["Tim Cook", "Satya Nadella", "Pat Gelsinger", "Jensen Huang"],
+      "correct": 2,
+      "explanation": "Pat Gelsinger resigned as Intel CEO in December 2024."
+    },
+    {
+      "question": "Which country elected its first female president in October 2024?",
+      "options": ["Japan", "Mexico", "Australia", "Italy"],
+      "correct": 1,
+      "explanation": "Claudia Sheinbaum took office as Mexico's first female president on October 1, 2024."
+    },
+    {
+      "question": "What was the global significance of December 2024 in terms of climate?",
+      "options": ["First year below 1°C warming", "2024 became the hottest year on record", "Arctic ice recovered", "CO₂ levels dropped"],
+      "correct": 1,
+      "explanation": "2024 was confirmed as the hottest year on record, surpassing 2023."
+    },
+    {
+      "question": "Which South Korean president declared martial law briefly in December 2024?",
+      "options": ["Moon Jae-in", "Yoon Suk-yeol", "Park Geun-hye", "Lee Jae-myung"],
+      "correct": 1,
+      "explanation": "President Yoon declared martial law on December 3, 2024, but it was overturned within hours."
+    },
+    {
+      "question": "The Republicans won control of which chamber of Congress in the 2024 elections?",
+      "options": ["House only", "Senate only", "Both House and Senate", "Neither"],
+      "correct": 2,
+      "explanation": "Republicans won both the House and Senate in the 2024 elections."
+    },
+    {
+      "question": "Which company launched the world's most powerful rocket, Starship, on its 6th test flight in November 2024?",
+      "options": ["Blue Origin", "SpaceX", "NASA", "Boeing"],
+      "correct": 1,
+      "explanation": "SpaceX's Starship completed increasingly successful test flights in 2024."
+    },
+    {
+      "question": "Which city was selected to host the 2036 Summer Olympics?",
+      "options": ["Istanbul", "No city was selected yet", "Brisbane", "Mumbai"],
+      "correct": 1,
+      "explanation": "As of late 2024, no host city for 2036 had been officially selected yet."
+    },
+    {
+      "question": "Google DeepMind and Demis Hassabis won the Nobel Prize in which field in 2024?",
+      "options": ["Physics", "Chemistry", "Medicine", "Peace"],
+      "correct": 1,
+      "explanation": "Demis Hassabis and John Jumper won the Nobel Prize in Chemistry for AlphaFold."
+    },
+    {
+      "question": "Which social media alternative gained significant traction as a Twitter/X competitor in 2024?",
+      "options": ["Mastodon", "Threads", "Bluesky", "Truth Social"],
+      "correct": 2,
+      "explanation": "Bluesky gained millions of users in 2024 as users migrated from X."
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}

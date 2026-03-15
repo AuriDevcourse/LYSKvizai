@@ -1,0 +1,101 @@
+{
+  "id": "tv-serialai",
+  "title": "TV Series",
+  "description": "15 questions about TV series",
+  "emoji": "📺",
+  "language": "en",
+  "questions": [
+    {
+      "question": "Which TV show holds the record for the most Emmy wins?",
+      "options": ["Friends", "Breaking Bad", "Game of Thrones", "The Simpsons"],
+      "correct": 2,
+      "explanation": "Game of Thrones won 59 Emmy Awards, the most for a drama series."
+    },
+    {
+      "question": "In 'Breaking Bad', what is Walter White's alter ego name?",
+      "options": ["Heisenberg", "The One Who Knocks", "Mr. White", "Cap'n Cook"],
+      "correct": 0,
+      "explanation": "Walter White uses the alias 'Heisenberg' in the drug trade."
+    },
+    {
+      "question": "Which show features the fictional town of Hawkins, Indiana?",
+      "options": ["Riverdale", "Stranger Things", "Twin Peaks", "Dark"],
+      "correct": 1,
+      "explanation": "Stranger Things is set in the fictional town of Hawkins."
+    },
+    {
+      "question": "How many seasons did 'Friends' run for?",
+      "options": ["8", "9", "10", "12"],
+      "correct": 2,
+      "explanation": "Friends ran for 10 seasons from 1994 to 2004."
+    },
+    {
+      "question": "Which series is based on George R.R. Martin's book series?",
+      "options": ["The Witcher", "Game of Thrones", "Lord of the Rings", "Wheel of Time"],
+      "correct": 1,
+      "explanation": "Game of Thrones is based on 'A Song of Ice and Fire' by George R.R. Martin."
+    },
+    {
+      "question": "In 'The Office' (US), what company do the characters work for?",
+      "options": ["Initech", "Dunder Mifflin", "Wernham Hogg", "Prestige Worldwide"],
+      "correct": 1,
+      "explanation": "The characters work at Dunder Mifflin Paper Company in Scranton, PA."
+    },
+    {
+      "question": "Which streaming service produced 'Squid Game'?",
+      "options": ["Amazon Prime", "Disney+", "Netflix", "HBO Max"],
+      "correct": 2,
+      "explanation": "Squid Game is a Netflix original South Korean series."
+    },
+    {
+      "question": "What is the longest-running animated TV show in the US?",
+      "options": ["South Park", "Family Guy", "The Simpsons", "SpongeBob"],
+      "correct": 2,
+      "explanation": "The Simpsons has been running since 1989, making it the longest-running."
+    },
+    {
+      "question": "Which show is set in a post-apocalyptic world with zombies called 'walkers'?",
+      "options": ["Z Nation", "The Last of Us", "The Walking Dead", "28 Days Later"],
+      "correct": 2,
+      "explanation": "The Walking Dead ran for 11 seasons on AMC."
+    },
+    {
+      "question": "In 'Succession', what is the family's media empire called?",
+      "options": ["Waystar Royco", "Pierce Media", "Goliath National", "Lumon Industries"],
+      "correct": 0,
+      "explanation": "The Roy family controls Waystar Royco in HBO's Succession."
+    },
+    {
+      "question": "Which British show features time travel in a phone box?",
+      "options": ["Black Mirror", "Torchwood", "Doctor Who", "Sherlock"],
+      "correct": 2,
+      "explanation": "Doctor Who features the TARDIS, disguised as a blue police box."
+    },
+    {
+      "question": "What is the highest-rated TV show on IMDb?",
+      "options": ["Game of Thrones", "Breaking Bad", "The Wire", "Planet Earth II"],
+      "correct": 1,
+      "explanation": "Breaking Bad is consistently rated as the highest-rated show on IMDb."
+    },
+    {
+      "question": "In 'Wednesday', who plays the title character?",
+      "options": ["Millie Bobby Brown", "Jenna Ortega", "Sadie Sink", "Emma Myers"],
+      "correct": 1,
+      "explanation": "Jenna Ortega stars as Wednesday Addams in the Netflix series."
+    },
+    {
+      "question": "Which show popularized the phrase 'Winter is coming'?",
+      "options": ["Vikings", "The Last Kingdom", "Game of Thrones", "The Witcher"],
+      "correct": 2,
+      "explanation": "\"Winter is Coming\" is the motto of House Stark in Game of Thrones."
+    },
+    {
+      "question": "What year did 'Seinfeld' premiere?",
+      "options": ["1987", "1989", "1991", "1993"],
+      "correct": 1,
+      "explanation": "Seinfeld premiered on July 5, 1989, initially as 'The Seinfeld Chronicles'."
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}
