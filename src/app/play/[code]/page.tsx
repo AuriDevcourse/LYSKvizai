@@ -321,6 +321,7 @@ export default function GamePage({ params }: PageProps) {
             question={question}
             answerCount={answerCount}
             onTimerExpire={handleTimerExpire}
+            players={players}
           />
         )}
 

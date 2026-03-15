@@ -1,7 +1,7 @@
 "use client";
 
-import { Triangle, Square, Circle, Diamond } from "lucide-react";
-import type { QuestionPayload } from "@/lib/multiplayer/types";
+import { Triangle, Square, Circle, Diamond, Snowflake, Shield, Repeat, Coins, Bomb, Zap } from "lucide-react";
+import type { QuestionPayload, PowerUpType } from "@/lib/multiplayer/types";
 import { useCountdown } from "@/hooks/useCountdown";
 import { useProgressiveReveal } from "@/hooks/useProgressiveReveal";
 import ProgressiveText from "./ProgressiveText";
@@ -19,16 +19,27 @@ const OPTION_BG = [
 
 const OPTION_ICONS = [Triangle, Diamond, Circle, Square];
 
+const PU_ICONS: Record<PowerUpType, { icon: typeof Snowflake; color: string }> = {
+  freeze: { icon: Snowflake, color: "text-cyan-300" },
+  shield: { icon: Shield, color: "text-blue-300" },
+  double: { icon: Repeat, color: "text-emerald-300" },
+  thief: { icon: Coins, color: "text-purple-300" },
+  bomb: { icon: Bomb, color: "text-red-300" },
+  gamble: { icon: Zap, color: "text-yellow-300" },
+};
+
 interface HostQuestionProps {
   question: QuestionPayload;
   answerCount: { count: number; total: number } | null;
   onTimerExpire: () => void;
+  players?: { id: string; name: string }[];
 }
 
 export default function HostQuestion({
   question,
   answerCount,
   onTimerExpire,
+  players = [],
 }: HostQuestionProps) {
   const { t, lang } = useTranslation();
   const qText = lang === "lt" && question.lt ? question.lt.question : lang !== "lt" && question.en ? question.en.question : question.question;
@@ -83,6 +94,23 @@ export default function HostQuestion({
           />
         </div>
       </div>
+
+      {/* Power-ups this round */}
+      {question.roundPowerUps && question.roundPowerUps.length > 0 && (
+        <div className="flex flex-wrap gap-2 pb-2">
+          {question.roundPowerUps.map(({ playerId, powerUp }) => {
+            const pu = PU_ICONS[powerUp];
+            const Icon = pu.icon;
+            const name = players.find((p) => p.id === playerId)?.name ?? "?";
+            return (
+              <div key={playerId} className="flex items-center gap-1.5 rounded-lg bg-white/5 px-2.5 py-1">
+                <Icon className={`h-4 w-4 ${pu.color}`} />
+                <span className="text-xs font-bold text-white/70">{name}</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       {/* CENTER: Timer | Question + Media | Answer count */}
       <div className="flex flex-1 items-center gap-4 sm:gap-8">

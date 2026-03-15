@@ -26,13 +26,13 @@ const BUTTON_ICONS = [
   <Square key="s" className="h-7 w-7" fill="currentColor" />,
 ];
 
-const POWER_UP_INFO: Record<PowerUpType, { icon: React.ReactNode; color: string; label: string }> = {
-  freeze: { icon: <Snowflake className="h-5 w-5" />, color: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30", label: "Freeze" },
-  shield: { icon: <Shield className="h-5 w-5" />, color: "bg-blue-500/20 text-blue-300 border-blue-500/30", label: "Shield" },
-  double: { icon: <Repeat className="h-5 w-5" />, color: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30", label: "x2" },
-  thief: { icon: <Coins className="h-5 w-5" />, color: "bg-purple-500/20 text-purple-300 border-purple-500/30", label: "Thief" },
-  bomb: { icon: <Bomb className="h-5 w-5" />, color: "bg-red-500/20 text-red-300 border-red-500/30", label: "Bomb" },
-  gamble: { icon: <Zap className="h-5 w-5" />, color: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30", label: "Gamble" },
+const POWER_UP_INFO: Record<PowerUpType, { icon: React.ReactNode; bigIcon: React.ReactNode; color: string; bg: string; label: string; desc: string }> = {
+  freeze: { icon: <Snowflake className="h-5 w-5" />, bigIcon: <Snowflake className="h-8 w-8" />, color: "text-cyan-300", bg: "bg-cyan-500/20 border-cyan-500/40", label: "FREEZE", desc: "Timer -3s for everyone!" },
+  shield: { icon: <Shield className="h-5 w-5" />, bigIcon: <Shield className="h-8 w-8" />, color: "text-blue-300", bg: "bg-blue-500/20 border-blue-500/40", label: "SHIELD", desc: "Keep your streak if wrong" },
+  double: { icon: <Repeat className="h-5 w-5" />, bigIcon: <Repeat className="h-8 w-8" />, color: "text-emerald-300", bg: "bg-emerald-500/20 border-emerald-500/40", label: "DOUBLE", desc: "2x points if correct!" },
+  thief: { icon: <Coins className="h-5 w-5" />, bigIcon: <Coins className="h-8 w-8" />, color: "text-purple-300", bg: "bg-purple-500/20 border-purple-500/40", label: "THIEF", desc: "Steal 300 from 1st place!" },
+  bomb: { icon: <Bomb className="h-5 w-5" />, bigIcon: <Bomb className="h-8 w-8" />, color: "text-red-300", bg: "bg-red-500/20 border-red-500/40", label: "BOMB", desc: "Last place loses 250!" },
+  gamble: { icon: <Zap className="h-5 w-5" />, bigIcon: <Zap className="h-8 w-8" />, color: "text-yellow-300", bg: "bg-yellow-500/20 border-yellow-500/40", label: "GAMBLE", desc: "50/50: 3x points or 0!" },
 };
 
 interface PlayerQuestionProps {
@@ -155,9 +155,14 @@ export default function PlayerQuestion({
         <p className="text-xl font-extrabold text-white">{t("playerQuestion.lockedIn")}</p>
         <p className="font-bold text-white/50">{t("playerQuestion.waitingForOthers")}</p>
         {myPowerUp && (
-          <div className={`flex items-center gap-2 rounded-xl border px-4 py-2 font-bold ${POWER_UP_INFO[myPowerUp].color}`}>
-            {POWER_UP_INFO[myPowerUp].icon}
-            <span>{POWER_UP_INFO[myPowerUp].label}</span>
+          <div className={`flex items-center gap-3 rounded-2xl border-2 px-5 py-3 ${POWER_UP_INFO[myPowerUp].bg}`}>
+            <div className={POWER_UP_INFO[myPowerUp].color}>
+              {POWER_UP_INFO[myPowerUp].icon}
+            </div>
+            <div className="flex flex-col">
+              <span className={`text-sm font-extrabold ${POWER_UP_INFO[myPowerUp].color}`}>{POWER_UP_INFO[myPowerUp].label}</span>
+              <span className="text-xs font-bold text-white/60">{POWER_UP_INFO[myPowerUp].desc}</span>
+            </div>
           </div>
         )}
       </div>
@@ -184,9 +189,14 @@ export default function PlayerQuestion({
 
       {/* Power-up indicator */}
       {myPowerUp && (
-        <div className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-2 font-bold animate-bounce-in ${POWER_UP_INFO[myPowerUp].color}`}>
-          {POWER_UP_INFO[myPowerUp].icon}
-          <span>{POWER_UP_INFO[myPowerUp].label}</span>
+        <div className={`flex items-center gap-3 rounded-2xl border-2 px-5 py-3 animate-bounce-in ${POWER_UP_INFO[myPowerUp].bg}`}>
+          <div className={POWER_UP_INFO[myPowerUp].color}>
+            {POWER_UP_INFO[myPowerUp].bigIcon}
+          </div>
+          <div className="flex flex-col">
+            <span className={`text-sm font-extrabold ${POWER_UP_INFO[myPowerUp].color}`}>{POWER_UP_INFO[myPowerUp].label}</span>
+            <span className="text-xs font-bold text-white/60">{POWER_UP_INFO[myPowerUp].desc}</span>
+          </div>
         </div>
       )}
 
