@@ -262,6 +262,7 @@ export const translations = {
     "gameTypes.charades": "Heads Up!",
     "gameTypes.charades.desc": "Hold & guess",
     "charades.landscape": "Landscape mode",
+    "charades.anyOrientation": "Works in portrait or landscape",
 
     // Quiz Card (single player)
     "quizCard.correct": "Correct! ✓",
@@ -578,6 +579,7 @@ export const translations = {
     "gameTypes.charades": "Heads Up!",
     "gameTypes.charades.desc": "Laikyk ir spėk",
     "charades.landscape": "Gulsčias režimas",
+    "charades.anyOrientation": "Veikia stačiai ir gulsčiai",
 
     // Quiz Card (single player)
     "quizCard.correct": "Teisingai! ✓",

@@ -157,14 +157,18 @@ function CharadesInner() {
     [words, currentIndex]
   );
 
-  // Lock to portrait (beta axis works correctly for forehead tilt detection)
+  // Detect orientation mode
+  const [isLandscape, setIsLandscape] = useState(false);
   useEffect(() => {
-    const so = screen.orientation as ScreenOrientation & { lock?: (o: string) => Promise<void> };
-    so.lock?.("portrait").catch(() => {});
-    return () => { so.unlock?.(); };
+    const check = () => setIsLandscape(window.innerWidth > window.innerHeight);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
   }, []);
 
   // Device orientation with debounce — must sustain tilt for 300ms
+  // Portrait: beta axis (90° = upright, >105° = tilt down, <75° = tilt up)
+  // Landscape: gamma axis (0° = upright, positive = tilt one way, negative = other)
   const tiltTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastTiltRef = useRef<"none" | "correct" | "skip">("none");
 
@@ -173,11 +177,24 @@ function CharadesInner() {
 
     const handler = (e: DeviceOrientationEvent) => {
       if (phase !== "playing" || cooldownRef.current) return;
-      const beta = e.beta ?? 90;
 
       let tiltDir: "none" | "correct" | "skip" = "none";
-      if (beta > 105) tiltDir = "correct";  // slight tilt down
-      else if (beta < 75) tiltDir = "skip"; // slight tilt up
+
+      if (isLandscape) {
+        // Landscape: use gamma axis
+        // Phone on forehead in landscape: gamma ≈ ±90
+        // Tilt forward (face down): gamma moves toward 0
+        // Tilt backward (face up): gamma moves past ±90
+        const gamma = e.gamma ?? 0;
+        const absGamma = Math.abs(gamma);
+        if (absGamma < 60) tiltDir = "correct";   // tilted forward (face down)
+        else if (absGamma > 90 || (e.beta !== null && Math.abs(e.beta) < 30)) tiltDir = "skip"; // tilted backward
+      } else {
+        // Portrait: use beta axis
+        const beta = e.beta ?? 90;
+        if (beta > 105) tiltDir = "correct";
+        else if (beta < 75) tiltDir = "skip";
+      }
 
       // If tilt direction changed, reset debounce timer
       if (tiltDir !== lastTiltRef.current) {
@@ -199,7 +216,7 @@ function CharadesInner() {
       window.removeEventListener("deviceorientation", handler);
       if (tiltTimerRef.current) clearTimeout(tiltTimerRef.current);
     };
-  }, [phase, nextWord]);
+  }, [phase, nextWord, isLandscape]);
 
   const handleStart = async () => {
     // Request gyro permission on iOS
@@ -243,7 +260,10 @@ function CharadesInner() {
   if (phase === "ready") {
     return (
       <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-[#46178f] bg-pattern px-6">
-        <Smartphone className="h-16 w-16 text-white animate-bounce" />
+        <div className="flex gap-4">
+          <Smartphone className="h-14 w-14 text-white/40" />
+          <Smartphone className="h-14 w-14 text-white rotate-90" />
+        </div>
         <h1 className="text-4xl font-extrabold text-white">
           {t("charades.title")}
         </h1>
@@ -251,13 +271,14 @@ function CharadesInner() {
           <p className="text-lg font-bold text-white/70">
             {t("charades.holdOnForehead")}
           </p>
+          <p className="text-xs font-bold text-white/40">
+            {t("charades.anyOrientation")}
+          </p>
           <div className="flex flex-col gap-1 rounded-2xl bg-white/10 px-5 py-3">
             <div className="flex items-center justify-center gap-2">
-              <span className="text-2xl">⬇️</span>
               <span className="text-sm font-extrabold text-[#26890c]">{t("charades.tiltDown")}</span>
             </div>
             <div className="flex items-center justify-center gap-2">
-              <span className="text-2xl">⬆️</span>
               <span className="text-sm font-extrabold text-[#e21b3c]">{t("charades.tiltUp")}</span>
             </div>
           </div>
