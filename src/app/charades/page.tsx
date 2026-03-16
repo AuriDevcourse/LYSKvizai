@@ -150,25 +150,55 @@ function CharadesInner() {
           setCurrentIndex(nextIdx);
           setPhase("playing");
         }
+        lastTiltRef.current = "none";
         cooldownRef.current = false;
-      }, 700);
+      }, 1200);
     },
     [words, currentIndex]
   );
 
-  // Device orientation
+  // Lock to landscape
+  useEffect(() => {
+    const so = screen.orientation as ScreenOrientation & { lock?: (o: string) => Promise<void> };
+    so.lock?.("landscape").catch(() => {});
+    return () => { so.unlock?.(); };
+  }, []);
+
+  // Device orientation with debounce — must sustain tilt for 300ms
+  const tiltTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastTiltRef = useRef<"none" | "correct" | "skip">("none");
+
   useEffect(() => {
     if (phase !== "playing" && phase !== "flash") return;
 
     const handler = (e: DeviceOrientationEvent) => {
       if (phase !== "playing" || cooldownRef.current) return;
       const beta = e.beta ?? 90;
-      if (beta > 140) nextWord(true); // tilt down = correct
-      if (beta < 40) nextWord(false); // tilt up = skip
+
+      let tiltDir: "none" | "correct" | "skip" = "none";
+      if (beta > 150) tiltDir = "correct";  // strong tilt down
+      else if (beta < 30) tiltDir = "skip"; // strong tilt up
+
+      // If tilt direction changed, reset debounce timer
+      if (tiltDir !== lastTiltRef.current) {
+        lastTiltRef.current = tiltDir;
+        if (tiltTimerRef.current) clearTimeout(tiltTimerRef.current);
+        tiltTimerRef.current = null;
+
+        if (tiltDir !== "none") {
+          // Start debounce — must hold for 300ms
+          tiltTimerRef.current = setTimeout(() => {
+            nextWord(tiltDir === "correct");
+          }, 300);
+        }
+      }
     };
 
     window.addEventListener("deviceorientation", handler);
-    return () => window.removeEventListener("deviceorientation", handler);
+    return () => {
+      window.removeEventListener("deviceorientation", handler);
+      if (tiltTimerRef.current) clearTimeout(tiltTimerRef.current);
+    };
   }, [phase, nextWord]);
 
   const handleStart = async () => {
@@ -213,14 +243,18 @@ function CharadesInner() {
   if (phase === "ready") {
     return (
       <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-[#46178f] bg-pattern px-6">
-        <Smartphone className="h-16 w-16 text-white animate-bounce" />
+        <Smartphone className="h-16 w-16 text-white animate-bounce rotate-90" />
         <h1 className="text-4xl font-extrabold text-white">
           {t("charades.title")}
         </h1>
-        <div className="flex flex-col items-center gap-2 text-center">
+        <div className="flex flex-col items-center gap-3 text-center">
           <p className="text-lg font-bold text-white/70">
             {t("charades.holdOnForehead")}
           </p>
+          <div className="flex items-center gap-3 rounded-2xl bg-white/10 px-5 py-3">
+            <Smartphone className="h-5 w-5 text-yellow-300 rotate-90" />
+            <span className="text-sm font-extrabold text-yellow-300">{t("charades.landscape")}</span>
+          </div>
           <p className="text-sm font-bold text-white/40">
             ↓ {t("charades.tiltDown")} &nbsp;·&nbsp; ↑ {t("charades.tiltUp")}
           </p>

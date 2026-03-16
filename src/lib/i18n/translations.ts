@@ -261,6 +261,7 @@ export const translations = {
     "charades.words": "words",
     "gameTypes.charades": "Heads Up!",
     "gameTypes.charades.desc": "Hold & guess",
+    "charades.landscape": "Landscape mode",
 
     // Quiz Card (single player)
     "quizCard.correct": "Correct! ✓",
@@ -576,6 +577,7 @@ export const translations = {
     "charades.words": "žodžiai",
     "gameTypes.charades": "Heads Up!",
     "gameTypes.charades.desc": "Laikyk ir spėk",
+    "charades.landscape": "Gulsčias režimas",
 
     // Quiz Card (single player)
     "quizCard.correct": "Teisingai! ✓",
