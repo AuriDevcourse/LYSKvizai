@@ -157,10 +157,10 @@ function CharadesInner() {
     [words, currentIndex]
   );
 
-  // Lock to landscape
+  // Lock to portrait (beta axis works correctly for forehead tilt detection)
   useEffect(() => {
     const so = screen.orientation as ScreenOrientation & { lock?: (o: string) => Promise<void> };
-    so.lock?.("landscape").catch(() => {});
+    so.lock?.("portrait").catch(() => {});
     return () => { so.unlock?.(); };
   }, []);
 
@@ -243,7 +243,7 @@ function CharadesInner() {
   if (phase === "ready") {
     return (
       <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-[#46178f] bg-pattern px-6">
-        <Smartphone className="h-16 w-16 text-white animate-bounce rotate-90" />
+        <Smartphone className="h-16 w-16 text-white animate-bounce" />
         <h1 className="text-4xl font-extrabold text-white">
           {t("charades.title")}
         </h1>
@@ -251,13 +251,16 @@ function CharadesInner() {
           <p className="text-lg font-bold text-white/70">
             {t("charades.holdOnForehead")}
           </p>
-          <div className="flex items-center gap-3 rounded-2xl bg-white/10 px-5 py-3">
-            <Smartphone className="h-5 w-5 text-yellow-300 rotate-90" />
-            <span className="text-sm font-extrabold text-yellow-300">{t("charades.landscape")}</span>
+          <div className="flex flex-col gap-1 rounded-2xl bg-white/10 px-5 py-3">
+            <div className="flex items-center justify-center gap-2">
+              <span className="text-2xl">⬇️</span>
+              <span className="text-sm font-extrabold text-[#26890c]">{t("charades.tiltDown")}</span>
+            </div>
+            <div className="flex items-center justify-center gap-2">
+              <span className="text-2xl">⬆️</span>
+              <span className="text-sm font-extrabold text-[#e21b3c]">{t("charades.tiltUp")}</span>
+            </div>
           </div>
-          <p className="text-sm font-bold text-white/40">
-            ↓ {t("charades.tiltDown")} &nbsp;·&nbsp; ↑ {t("charades.tiltUp")}
-          </p>
         </div>
         <p className="text-sm font-bold text-white/50">
           {words.length} {t("charades.words")} · {GAME_DURATION}s
