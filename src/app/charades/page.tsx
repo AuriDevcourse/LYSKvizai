@@ -176,8 +176,8 @@ function CharadesInner() {
       const beta = e.beta ?? 90;
 
       let tiltDir: "none" | "correct" | "skip" = "none";
-      if (beta > 120) tiltDir = "correct";  // tilt down
-      else if (beta < 60) tiltDir = "skip"; // tilt up
+      if (beta > 105) tiltDir = "correct";  // slight tilt down
+      else if (beta < 75) tiltDir = "skip"; // slight tilt up
 
       // If tilt direction changed, reset debounce timer
       if (tiltDir !== lastTiltRef.current) {
