@@ -157,18 +157,8 @@ function CharadesInner() {
     [words, currentIndex]
   );
 
-  // Detect orientation mode
-  const [isLandscape, setIsLandscape] = useState(false);
-  useEffect(() => {
-    const check = () => setIsLandscape(window.innerWidth > window.innerHeight);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
   // Device orientation with debounce — must sustain tilt for 300ms
-  // Portrait: beta axis (90° = upright, >105° = tilt down, <75° = tilt up)
-  // Landscape: gamma axis (0° = upright, positive = tilt one way, negative = other)
+  // Uses screen.orientation.angle to normalize tilt across portrait & landscape
   const tiltTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastTiltRef = useRef<"none" | "correct" | "skip">("none");
 
@@ -178,32 +168,30 @@ function CharadesInner() {
     const handler = (e: DeviceOrientationEvent) => {
       if (phase !== "playing" || cooldownRef.current) return;
 
-      let tiltDir: "none" | "correct" | "skip" = "none";
+      const beta = e.beta ?? 0;
+      const gamma = e.gamma ?? 0;
+      const angle = screen.orientation?.angle ?? 0;
 
-      if (isLandscape) {
-        // Landscape: use gamma axis
-        // Phone on forehead in landscape: gamma ≈ ±90
-        // Tilt forward (face down): gamma moves toward 0
-        // Tilt backward (face up): gamma moves past ±90
-        const gamma = e.gamma ?? 0;
-        const absGamma = Math.abs(gamma);
-        if (absGamma < 60) tiltDir = "correct";   // tilted forward (face down)
-        else if (absGamma > 90 || (e.beta !== null && Math.abs(e.beta) < 30)) tiltDir = "skip"; // tilted backward
-      } else {
-        // Portrait: use beta axis
-        const beta = e.beta ?? 90;
-        if (beta > 105) tiltDir = "correct";
-        else if (beta < 75) tiltDir = "skip";
+      // Compute normalized forward/back tilt:
+      // In portrait (angle=0): beta=90 is neutral, >90 = forward, <90 = backward
+      // In landscape: we use gamma, adjusted for rotation direction
+      let tilt: number;
+      switch (angle) {
+        case 90:  tilt = 90 + gamma + 90; break; // landscape-left
+        case 270: tilt = 90 - gamma + 90; break; // landscape-right (or -90)
+        default:  tilt = beta; break;             // portrait (0 or 180)
       }
 
-      // If tilt direction changed, reset debounce timer
+      let tiltDir: "none" | "correct" | "skip" = "none";
+      if (tilt > 105) tiltDir = "correct";
+      else if (tilt < 75) tiltDir = "skip";
+
       if (tiltDir !== lastTiltRef.current) {
         lastTiltRef.current = tiltDir;
         if (tiltTimerRef.current) clearTimeout(tiltTimerRef.current);
         tiltTimerRef.current = null;
 
         if (tiltDir !== "none") {
-          // Start debounce — must hold for 300ms
           tiltTimerRef.current = setTimeout(() => {
             nextWord(tiltDir === "correct");
           }, 300);
@@ -216,7 +204,7 @@ function CharadesInner() {
       window.removeEventListener("deviceorientation", handler);
       if (tiltTimerRef.current) clearTimeout(tiltTimerRef.current);
     };
-  }, [phase, nextWord, isLandscape]);
+  }, [phase, nextWord]);
 
   const handleStart = async () => {
     // Request gyro permission on iOS
