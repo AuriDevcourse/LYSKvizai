@@ -18,6 +18,10 @@ interface QuestionEditorProps {
 const QUESTION_TYPES: { value: QuestionType; label: string }[] = [
   { value: "standard", label: "Standartinis" },
   { value: "bluff", label: "Apgaulė" },
+  { value: "true-false", label: "Tiesa / Melas" },
+  { value: "zoom-out", label: "Zoom Out" },
+  { value: "fastest-finger", label: "Greičiausias" },
+  { value: "year-guesser", label: "Metų spėjimas" },
   { value: "audio", label: "Audio" },
   { value: "video", label: "Video" },
 ];
@@ -32,6 +36,25 @@ export default function QuestionEditor({
   onMoveDown,
 }: QuestionEditorProps) {
   const updateField = <K extends keyof Question>(key: K, value: Question[K]) => {
+    if (key === "type") {
+      const newType = value as QuestionType;
+      const updated = { ...question, type: newType };
+      // When switching to true-false, clear options C/D and ensure correct is 0 or 1
+      if (newType === "true-false") {
+        updated.options = [updated.options[0] || "Tiesa", updated.options[1] || "Melas", "", ""];
+        if (updated.correct > 1) updated.correct = 0;
+      }
+      // When switching to year-guesser, set a default correctYear
+      if (newType === "year-guesser" && !updated.correctYear) {
+        updated.correctYear = 2000;
+      }
+      // When switching to fastest-finger, init acceptedAnswers
+      if (newType === "fastest-finger" && !updated.acceptedAnswers) {
+        updated.acceptedAnswers = [];
+      }
+      onChange(updated);
+      return;
+    }
     onChange({ ...question, [key]: value });
   };
 
@@ -155,12 +178,60 @@ export default function QuestionEditor({
         </div>
       )}
 
+      {/* Year guesser: correct year */}
+      {questionType === "year-guesser" && (
+        <div className="mb-4">
+          <label className="mb-1 block text-xs font-medium text-amber-300/70">
+            Teisingi metai
+          </label>
+          <input
+            type="number"
+            value={question.correctYear ?? 2000}
+            onChange={(e) => updateField("correctYear", parseInt(e.target.value) || 0)}
+            className="w-40 rounded-lg border-2 border-amber-400/30 bg-amber-400/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-amber-400/50 focus:outline-none"
+            placeholder="pvz. 1990"
+          />
+        </div>
+      )}
+
+      {/* Fastest finger: accepted answers */}
+      {questionType === "fastest-finger" && (
+        <div className="mb-4">
+          <label className="mb-1 block text-xs font-medium text-orange-300/70">
+            Priimami atsakymai (po vieną eilutėje, be didžiųjų/mažųjų skirtumo)
+          </label>
+          <textarea
+            value={(question.acceptedAnswers ?? []).join("\n")}
+            onChange={(e) =>
+              updateField(
+                "acceptedAnswers",
+                e.target.value.split("\n").filter((s) => s.trim())
+              )
+            }
+            rows={3}
+            className="w-full rounded-lg border-2 border-orange-400/30 bg-orange-400/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-orange-400/50 focus:outline-none"
+            placeholder={"Vilnius\nvilnius city"}
+          />
+        </div>
+      )}
+
+      {/* Zoom-out hint */}
+      {questionType === "zoom-out" && !question.image && (
+        <div className="mb-4 rounded-lg border-2 border-yellow-400/30 bg-yellow-400/5 px-3 py-2 text-xs text-yellow-300/70">
+          ⚠ Zoom Out klausimui reikia nuotraukos — pridėk ją žemiau
+        </div>
+      )}
+
       {/* Options + correct answer */}
+      {questionType !== "year-guesser" && questionType !== "fastest-finger" && (
       <div className="mb-4 space-y-2">
         <label className="block text-xs font-medium text-white/50">
           Atsakymai (pasirink teisingą)
         </label>
-        {question.options.map((opt, i) => (
+        {question.options.map((opt, i) => {
+          // For true-false, only show 2 options
+          if (questionType === "true-false" && i > 1) return null;
+          return (
           <div key={i} className="flex items-center gap-2">
             <button
               type="button"
@@ -178,11 +249,13 @@ export default function QuestionEditor({
               value={opt}
               onChange={(e) => updateOption(i, e.target.value)}
               className="flex-1 rounded-lg border-2 border-white/15 bg-white/5 px-3 py-1.5 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
-              placeholder={`Atsakymas ${["A", "B", "C", "D"][i]}`}
+              placeholder={questionType === "true-false" ? (i === 0 ? "Tiesa" : "Melas") : `Atsakymas ${["A", "B", "C", "D"][i]}`}
             />
           </div>
-        ))}
+          );
+        })}
       </div>
+      )}
 
       {/* Explanation */}
       <div className="mb-4">

@@ -17,6 +17,7 @@ import type {
 import { ALL_POWER_UPS } from "./types";
 import { generateRoomCode } from "./room-code";
 import { calculateScore } from "./scoring";
+import { fuzzyMatch } from "../fuzzy-match";
 import { broadcast, removeRoomConnections } from "./sse-manager";
 import { translateBatch } from "@/lib/translate";
 import { getQuiz } from "@/lib/quiz-store";
@@ -207,9 +208,8 @@ function getResultsPayload(room: Room): ResultsPayload {
       if (!player.currentTextAnswer) {
         correct = false;
       } else {
-        const norm = player.currentTextAnswer.toLowerCase();
-        const accepted = q.acceptedAnswers ?? [q.options[q.correct].toLowerCase()];
-        correct = accepted.some(a => a.toLowerCase().trim() === norm);
+        const accepted = q.acceptedAnswers ?? [q.options[q.correct]];
+        correct = fuzzyMatch(player.currentTextAnswer, accepted);
       }
     } else if (q.type === "year-guesser") {
       if (!player.currentTextAnswer || q.correctYear == null) {

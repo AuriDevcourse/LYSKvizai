@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Loader2, ArrowLeft, X } from "lucide-react";
 import type { Question } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { transformQuestions } from "@/lib/question-transform";
 import ProgressBar from "@/components/ProgressBar";
 import QuizCard from "@/components/QuizCard";
 import ResultScreen from "@/components/ResultScreen";
@@ -34,6 +35,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
 
   const timerDuration = Number(searchParams.get("timer")) || 0; // 0 = no timer
   const maxQuestions = Number(searchParams.get("count")) || 0; // 0 = all
+  const gameType = searchParams.get("gameType") || "";
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -67,7 +69,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
           if (maxQuestions > 0 && maxQuestions < allQuestions.length) {
             allQuestions = allQuestions.slice(0, maxQuestions);
           }
-          setQuestions(allQuestions);
+          setQuestions(gameType ? transformQuestions(allQuestions, gameType) : allQuestions);
           const titles = validQuizzes.map((q: { title: string }) => q.title);
           setQuizTitle(`${t("quiz.mix")}${titles.join(" + ")}`);
         })
@@ -85,7 +87,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
           if (maxQuestions > 0 && maxQuestions < qs.length) {
             qs = qs.slice(0, maxQuestions);
           }
-          setQuestions(qs);
+          setQuestions(gameType ? transformQuestions(qs, gameType) : qs);
           setQuizTitle(quiz.title);
         })
         .catch((e) => setError(e.message))

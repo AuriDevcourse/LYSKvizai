@@ -68,6 +68,8 @@ export const QUIZ_THEME: Record<string, { icon: LucideIcon; bg: string }> = {
 
   // General Knowledge
   "bendros-zinios":      { icon: Brain,          bg: "bg-[#8b5cf6]" },
+  "misrus-testas":       { icon: Brain,          bg: "bg-[#6366f1]" },
+  "zoom-out-pictures":   { icon: Brain,          bg: "bg-[#0ea5e9]" },
 
   // Holidays
   "kucios-ir-kaledos":   { icon: TreePine,      bg: "bg-[#16a34a]" },

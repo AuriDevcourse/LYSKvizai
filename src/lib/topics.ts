@@ -31,7 +31,7 @@ export const TOPICS: Topic[] = [
     labelKey: "topics.general",
     icon: Brain,
     bg: "bg-[#8b5cf6]",
-    quizIds: ["bendros-zinios"],
+    quizIds: ["bendros-zinios", "misrus-testas", "zoom-out-pictures"],
   },
   {
     id: "geography",

@@ -156,6 +156,42 @@ h1, h2, h3 {
   transform: scale(0.97);
 }
 
+/* Year slider */
+.year-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 12px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.15);
+  outline: none;
+}
+.year-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.15s ease;
+}
+.year-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+.year-slider::-moz-range-thumb {
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  background: white;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+.year-slider:disabled {
+  opacity: 0.5;
+}
+
 /* Glass card effect */
 .glass {
   background: rgba(255, 255, 255, 0.08);

@@ -4,7 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Play, Heart, Swords, Home as HomeIcon, Users, PenLine, Plus, LogIn } from "lucide-react";
-import TopicPicker from "@/components/TopicPicker";
+import TopicPicker, { type SelectedGameType } from "@/components/TopicPicker";
 import GameSettings from "@/components/GameSettings";
 import type { QuizMeta } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
@@ -20,6 +20,7 @@ export default function Home() {
   const [timer, setTimer] = useState(20);
   const [questionCount, setQuestionCount] = useState(0); // 0 = all
   const [quizMeta, setQuizMeta] = useState<QuizMeta[]>([]);
+  const [gameType, setGameType] = useState<SelectedGameType | null>(null);
 
   const handleQuizMetaLoad = useCallback((data: QuizMeta[]) => setQuizMeta(data), []);
 
@@ -33,6 +34,12 @@ export default function Home() {
 
     const params = new URLSearchParams();
     if (questionCount > 0) params.set("count", String(questionCount));
+    if (gameType && gameType !== "standard") params.set("gameType", gameType);
+
+    if (gameType === "charades") {
+      router.push(`/charades?ids=${selectedIds.join(",")}`);
+      return;
+    }
 
     if (mode === "survival") {
       params.set("ids", selectedIds.join(","));
@@ -129,7 +136,7 @@ export default function Home() {
         {/* === MOBILE: Solo picker (shown after tapping "Practice alone") === */}
         {showSolo && (
           <div className="sm:hidden animate-fade-in-up">
-            <TopicPicker onSelect={setSelectedIds} selectedIds={selectedIds} onQuizMetaLoad={handleQuizMetaLoad} />
+            <TopicPicker onSelect={setSelectedIds} selectedIds={selectedIds} onQuizMetaLoad={handleQuizMetaLoad} onGameTypeChange={setGameType} />
 
             {selectedIds.length > 0 && (
               <div className="mt-6 flex flex-col gap-3 animate-slide-up">
@@ -172,7 +179,7 @@ export default function Home() {
 
         {/* === DESKTOP: Topic picker always visible === */}
         <div className="hidden sm:block">
-          <TopicPicker onSelect={setSelectedIds} selectedIds={selectedIds} onQuizMetaLoad={handleQuizMetaLoad} />
+          <TopicPicker onSelect={setSelectedIds} selectedIds={selectedIds} onQuizMetaLoad={handleQuizMetaLoad} onGameTypeChange={setGameType} />
 
           {selectedIds.length > 0 && (
             <div className="mt-6 flex flex-col gap-3 animate-slide-up">

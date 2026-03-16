@@ -196,6 +196,21 @@ export const translations = {
     "settings.questionCount": "Number of questions",
     "settings.all": "All",
 
+    // Game Types
+    "gameTypes.title": "Choose game type",
+    "gameTypes.standard": "Classic Quiz",
+    "gameTypes.standard.desc": "Multiple choice",
+    "gameTypes.true-false": "True / False",
+    "gameTypes.true-false.desc": "Two choices",
+    "gameTypes.year-guesser": "Year Guesser",
+    "gameTypes.year-guesser.desc": "Slide to the year",
+    "gameTypes.fastest-finger": "Fastest Finger",
+    "gameTypes.fastest-finger.desc": "Type the answer",
+    "gameTypes.zoom-out": "Zoom Out",
+    "gameTypes.zoom-out.desc": "Guess the picture",
+    "gameTypes.mixed": "Mixed Mode",
+    "gameTypes.mixed.desc": "All types combined",
+
     // Topics
     "topics.news": "News",
     "topics.general": "General",
@@ -232,11 +247,29 @@ export const translations = {
     // Home
     "home.start": "Start",
 
+    // Charades
+    "charades.title": "Heads Up!",
+    "charades.holdOnForehead": "Hold the phone on your forehead",
+    "charades.tiltDown": "Tilt DOWN = correct",
+    "charades.tiltUp": "Tilt UP = skip",
+    "charades.start": "Start",
+    "charades.correct": "Correct",
+    "charades.skipped": "Skipped",
+    "charades.skip": "Skip",
+    "charades.timeUp": "Time's up!",
+    "charades.playAgain": "Play again",
+    "charades.words": "words",
+    "gameTypes.charades": "Heads Up!",
+    "gameTypes.charades.desc": "Hold & guess",
+
     // Quiz Card (single player)
     "quizCard.correct": "Correct! ✓",
     "quizCard.incorrect": "Incorrect ✗",
     "quizCard.results": "Results",
     "quizCard.next": "Next →",
+    "quizCard.submit": "Submit",
+    "quizCard.typeAnswer": "Type your answer...",
+    "quizCard.correctAnswer": "Correct answer",
 
     // Result Screen (single player)
     "resultScreen.perfect": "Perfect!",
@@ -478,6 +511,21 @@ export const translations = {
     "settings.questionCount": "Klausimų skaičius",
     "settings.all": "Visi",
 
+    // Game Types
+    "gameTypes.title": "Pasirink žaidimo tipą",
+    "gameTypes.standard": "Klasikinis",
+    "gameTypes.standard.desc": "Keli atsakymai",
+    "gameTypes.true-false": "Tiesa / Melas",
+    "gameTypes.true-false.desc": "Du pasirinkimai",
+    "gameTypes.year-guesser": "Metų spėjimas",
+    "gameTypes.year-guesser.desc": "Stumk iki metų",
+    "gameTypes.fastest-finger": "Greičiausias",
+    "gameTypes.fastest-finger.desc": "Rašyk atsakymą",
+    "gameTypes.zoom-out": "Zoom Out",
+    "gameTypes.zoom-out.desc": "Atpažink nuotrauką",
+    "gameTypes.mixed": "Mišrus",
+    "gameTypes.mixed.desc": "Visi tipai kartu",
+
     // Topics
     "topics.news": "Naujienos",
     "topics.general": "Bendros žinios",
@@ -514,11 +562,29 @@ export const translations = {
     // Home
     "home.start": "Pradėti",
 
+    // Charades
+    "charades.title": "Heads Up!",
+    "charades.holdOnForehead": "Laikyk telefoną ant kaktos",
+    "charades.tiltDown": "Palenk ŽEMYN = teisingai",
+    "charades.tiltUp": "Palenk AUKŠTYN = praleisti",
+    "charades.start": "Pradėti",
+    "charades.correct": "Teisingai",
+    "charades.skipped": "Praleista",
+    "charades.skip": "Praleisti",
+    "charades.timeUp": "Laikas baigėsi!",
+    "charades.playAgain": "Dar kartą",
+    "charades.words": "žodžiai",
+    "gameTypes.charades": "Heads Up!",
+    "gameTypes.charades.desc": "Laikyk ir spėk",
+
     // Quiz Card (single player)
     "quizCard.correct": "Teisingai! ✓",
     "quizCard.incorrect": "Neteisingai ✗",
     "quizCard.results": "Rezultatai",
     "quizCard.next": "Toliau →",
+    "quizCard.submit": "Pateikti",
+    "quizCard.typeAnswer": "Įvesk atsakymą...",
+    "quizCard.correctAnswer": "Teisingas atsakymas",
 
     // Result Screen (single player)
     "resultScreen.perfect": "Tobula!",
