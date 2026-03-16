@@ -171,20 +171,25 @@ function CharadesInner() {
       const beta = e.beta ?? 0;
       const gamma = e.gamma ?? 0;
       const angle = screen.orientation?.angle ?? 0;
-
-      // Compute normalized forward/back tilt:
-      // In portrait (angle=0): beta=90 is neutral, >90 = forward, <90 = backward
-      // In landscape: we use gamma, adjusted for rotation direction
-      let tilt: number;
-      switch (angle) {
-        case 90:  tilt = 90 + gamma + 90; break; // landscape-left
-        case 270: tilt = 90 - gamma + 90; break; // landscape-right (or -90)
-        default:  tilt = beta; break;             // portrait (0 or 180)
-      }
+      const isLandscape = angle === 90 || angle === 270;
 
       let tiltDir: "none" | "correct" | "skip" = "none";
-      if (tilt > 105) tiltDir = "correct";
-      else if (tilt < 75) tiltDir = "skip";
+
+      if (isLandscape) {
+        // Landscape on forehead: |gamma| ≈ 90, beta ≈ 0
+        // Forward tilt (correct): |gamma| decreases toward 0
+        // Backward tilt (skip): |beta| increases (gamma clamped at ±90)
+        const absGamma = Math.abs(gamma);
+        const absBeta = Math.abs(beta);
+        if (absGamma < 75) tiltDir = "correct";
+        else if (absBeta > 20) tiltDir = "skip";
+      } else {
+        // Portrait on forehead: beta ≈ 90
+        // Forward tilt (correct): beta > 105
+        // Backward tilt (skip): beta < 75
+        if (beta > 105) tiltDir = "correct";
+        else if (beta < 75) tiltDir = "skip";
+      }
 
       if (tiltDir !== lastTiltRef.current) {
         lastTiltRef.current = tiltDir;
