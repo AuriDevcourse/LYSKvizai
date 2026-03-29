@@ -121,7 +121,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
                   </div>
                   {isSelected && (
                     <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white">
-                      <Check className="h-3.5 w-3.5 text-[#e8590c]" />
+                      <Check className="h-3.5 w-3.5 text-[#ff9062]" />
                     </div>
                   )}
                 </button>
@@ -173,7 +173,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
               >
                 {selectedCount > 0 && (
                   <div className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-white">
-                    <span className="text-[10px] font-extrabold text-[#e8590c]">{selectedCount}</span>
+                    <span className="text-[10px] font-extrabold text-[#ff9062]">{selectedCount}</span>
                   </div>
                 )}
                 <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${topic.bg}`}>
@@ -186,7 +186,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
             );
           })}
         </div>
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#e8590c] to-transparent sm:hidden" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#0e0e0e] to-transparent sm:hidden" />
       </div>
     );
   }

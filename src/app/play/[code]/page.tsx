@@ -271,7 +271,7 @@ export default function GamePage({ params }: PageProps) {
 
   if (roomError) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#e8590c]">
+      <div className="flex min-h-svh items-center justify-center bg-[#0e0e0e]">
         <div className="flex flex-col items-center gap-4 px-6 text-center">
           <p className="text-lg font-bold text-white">{roomError}</p>
           <button
@@ -287,7 +287,7 @@ export default function GamePage({ params }: PageProps) {
 
   if (!state) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#e8590c]">
+      <div className="flex min-h-svh items-center justify-center bg-[#0e0e0e]">
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="h-10 w-10 animate-spin text-white" />
           <p className="font-bold text-white/50">
@@ -303,7 +303,7 @@ export default function GamePage({ params }: PageProps) {
   const isLastQuestion = currentIndex + 1 >= totalQuestions;
 
   return (
-    <div className="relative flex min-h-svh flex-col bg-[#e8590c] bg-pattern">
+    <div className="relative flex min-h-svh flex-col bg-[#0e0e0e] bg-pattern">
       {/* Toast notification */}
       {toast && (
         <div className="fixed left-1/2 top-4 z-[60] -translate-x-1/2 animate-fade-in-up">

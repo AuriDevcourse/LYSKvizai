@@ -186,7 +186,7 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
             onClick={() => setTab("character")}
             className={`flex-1 rounded-lg px-2 py-1.5 text-xs font-bold transition-all ${
               tab === "character"
-                ? "bg-white text-[#e8590c]"
+                ? "bg-white text-[#ff9062]"
                 : "text-white/50 hover:text-white"
             }`}
           >
@@ -197,7 +197,7 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
             onClick={() => setTab("background")}
             className={`flex-1 rounded-lg px-2 py-1.5 text-xs font-bold transition-all ${
               tab === "background"
-                ? "bg-white text-[#e8590c]"
+                ? "bg-white text-[#ff9062]"
                 : "text-white/50 hover:text-white"
             }`}
           >

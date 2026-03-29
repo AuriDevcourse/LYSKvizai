@@ -152,7 +152,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
 
   if (loading) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#e8590c]">
+      <div className="flex min-h-svh items-center justify-center bg-[#0e0e0e]">
         <Loader2 className="h-10 w-10 animate-spin text-white" />
       </div>
     );
@@ -160,7 +160,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
 
   if (error || questions.length === 0) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#e8590c]">
+      <div className="flex min-h-svh items-center justify-center bg-[#0e0e0e]">
         <div className="flex flex-col items-center gap-4 text-center">
           <p className="text-lg font-bold text-white">{error || t("quiz.empty")}</p>
           <Link href="/" className="btn-primary">
@@ -172,7 +172,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
   }
 
   return (
-    <div className="relative flex min-h-svh flex-col items-center bg-[#e8590c] bg-pattern">
+    <div className="relative flex min-h-svh flex-col items-center bg-[#0e0e0e] bg-pattern">
       <Link
         href="/"
         className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white"

@@ -31,7 +31,7 @@ export default function HostWager({ players, onAdvance }: HostWagerProps) {
 
       <button
         onClick={onAdvance}
-        className="rounded-xl bg-white text-[#e8590c] px-8 py-4 text-lg font-bold transition-colors hover:bg-white/90"
+        className="rounded-xl bg-white text-[#ff9062] px-8 py-4 text-lg font-bold transition-colors hover:bg-white/90"
       >
         {t("hostWager.startQuestion")}
       </button>

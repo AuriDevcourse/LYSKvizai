@@ -141,7 +141,7 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
           <button
             type="button"
             onClick={handleUrlSubmit}
-            className="rounded-lg bg-white px-3 py-2 text-sm font-semibold text-[#e8590c] hover:bg-white/90"
+            className="rounded-lg bg-white px-3 py-2 text-sm font-semibold text-[#ff9062] hover:bg-white/90"
           >
             Pridėti
           </button>

@@ -2,11 +2,24 @@
 
 import { useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { Play, Plus, LogIn, ArrowLeft } from "lucide-react";
+import {
+  Play, Plus, LogIn, ArrowLeft,
+  HelpCircle, ToggleLeft, ZoomOut, Calendar, Keyboard, Shuffle, Smartphone,
+} from "lucide-react";
 import TopicPicker, { type SelectedGameType } from "@/components/TopicPicker";
 import GameSettings from "@/components/GameSettings";
 import type { QuizMeta } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+
+const GAME_MODES = [
+  { icon: HelpCircle, name: "Classic", color: "bg-[#43a5fc]/15 border-[#43a5fc]/20 text-[#43a5fc]" },
+  { icon: ToggleLeft, name: "True/False", color: "bg-[#e77fff]/15 border-[#e77fff]/20 text-[#e77fff]" },
+  { icon: ZoomOut, name: "Zoom Out", color: "bg-[#ff9062]/15 border-[#ff9062]/20 text-[#ff9062]" },
+  { icon: Keyboard, name: "Rapid Fire", color: "bg-[#ff716c]/15 border-[#ff716c]/20 text-[#ff716c]" },
+  { icon: Calendar, name: "Year Guesser", color: "bg-[#b2ff59]/15 border-[#b2ff59]/20 text-[#b2ff59]" },
+  { icon: Shuffle, name: "Mixed Mode", color: "bg-[#e77fff]/15 border-[#e77fff]/20 text-[#e77fff]" },
+  { icon: Smartphone, name: "Charades", color: "bg-[#43a5fc]/15 border-[#43a5fc]/20 text-[#43a5fc]" },
+];
 
 export default function Home() {
   const router = useRouter();
@@ -26,17 +39,10 @@ export default function Home() {
 
   const handleStart = () => {
     if (selectedIds.length === 0) return;
-
     const params = new URLSearchParams();
     if (questionCount > 0) params.set("count", String(questionCount));
-
-    if (gameType === "charades") {
-      router.push(`/charades?ids=${selectedIds.join(",")}`);
-      return;
-    }
-
+    if (gameType === "charades") { router.push(`/charades?ids=${selectedIds.join(",")}`); return; }
     if (gameType && gameType !== "standard") params.set("gameType", gameType);
-
     if (selectedIds.length === 1) {
       const qs = params.toString();
       router.push(`/quiz/${selectedIds[0]}${qs ? `?${qs}` : ""}`);
@@ -47,86 +53,108 @@ export default function Home() {
   };
 
   return (
-    <div className="relative flex min-h-svh flex-col items-center bg-[#e8590c] bg-pattern">
-      <main className="relative z-10 flex w-full max-w-2xl flex-1 flex-col px-5 py-8 sm:px-8">
-        {/* Logo */}
-        <div className="mb-10 flex flex-col items-center gap-3 animate-fade-in-up">
-          <h1 className="text-6xl font-extrabold tracking-tight text-white sm:text-8xl logo-stroke">
-            Quizmo
-          </h1>
-          <p className="text-base font-bold text-white/60 sm:text-lg">The ultimate quiz experience</p>
-        </div>
+    <div className="relative flex min-h-svh flex-col bg-[#0e0e0e] overflow-hidden">
+      {/* Ambient orange glow orbs */}
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute -left-[10%] -top-[20%] h-[80%] w-[60%] rounded-full bg-[#e8590c]/15 blur-[120px]" />
+        <div className="absolute -bottom-[10%] -right-[5%] h-[70%] w-[50%] rounded-full bg-[#e8590c]/10 blur-[100px]" />
+      </div>
 
-        {mode === "menu" && (
-          <div className="flex flex-1 items-center justify-center animate-fade-in-up">
-            <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
-              <button
-                onClick={() => setMode("create")}
-                className="group flex flex-col items-center gap-4 rounded-3xl border-2 border-white/25 bg-white/8 px-8 py-10 text-center backdrop-blur-sm transition-transform active:scale-[0.98] sm:py-16"
-              >
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10 sm:h-20 sm:w-20">
-                  <Plus className="h-8 w-8 text-white sm:h-10 sm:w-10" />
-                </div>
-                <div>
-                  <p className="text-xl font-extrabold text-white sm:text-2xl">{t("home.createGame")}</p>
-                  <p className="mt-1 text-sm font-bold text-white/50">Pick topics & play</p>
-                </div>
-              </button>
-              <button
-                onClick={() => router.push("/play?join=1")}
-                className="group flex flex-col items-center gap-4 rounded-3xl border-2 border-white/25 bg-white/8 px-8 py-10 text-center backdrop-blur-sm transition-transform active:scale-[0.98] sm:py-16"
-              >
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10 sm:h-20 sm:w-20">
-                  <LogIn className="h-8 w-8 text-white sm:h-10 sm:w-10" />
-                </div>
-                <div>
-                  <p className="text-xl font-extrabold text-white sm:text-2xl">{t("home.joinGame")}</p>
-                  <p className="mt-1 text-sm font-bold text-white/50">Enter a room code</p>
-                </div>
-              </button>
+      {mode === "menu" && (
+        <div className="flex flex-1 flex-col items-center justify-center px-5 py-10 animate-fade-in-up">
+          {/* Logo */}
+          <div className="mb-3 flex flex-col items-center">
+            <h1 className="font-[var(--font-headline)] text-6xl font-extrabold tracking-tighter text-white sm:text-8xl lg:text-[8rem] logo-stroke">
+              Quizmo
+            </h1>
+            <p className="mt-2 text-sm font-medium text-white/40 sm:text-base lg:text-lg">
+              Step into the high-energy arena. Play, create, and conquer.
+            </p>
+          </div>
+
+          {/* Action cards */}
+          <div className="mt-10 grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 sm:mt-12">
+            <button
+              onClick={() => setMode("create")}
+              className="group flex flex-col items-center gap-5 rounded-2xl bg-white/4 p-8 text-center backdrop-blur-2xl border-[1.5px] border-white/8 transition-all duration-300 hover:bg-white/8 hover:border-white/15 active:scale-[0.98] sm:p-10"
+            >
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#ff9062]/15 transition-all group-hover:bg-[#ff9062]/25 sm:h-16 sm:w-16">
+                <Plus className="h-7 w-7 text-[#ff9062] sm:h-8 sm:w-8" />
+              </div>
+              <div>
+                <p className="font-[var(--font-headline)] text-xl font-extrabold text-white sm:text-2xl">{t("home.createGame")}</p>
+                <p className="mt-1 text-sm text-white/40">Design your own logic & challenges</p>
+              </div>
+            </button>
+            <button
+              onClick={() => router.push("/play?join=1")}
+              className="group flex flex-col items-center gap-5 rounded-2xl bg-white/4 p-8 text-center backdrop-blur-2xl border-[1.5px] border-white/8 transition-all duration-300 hover:bg-white/8 hover:border-white/15 active:scale-[0.98] sm:p-10"
+            >
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#43a5fc]/15 transition-all group-hover:bg-[#43a5fc]/25 sm:h-16 sm:w-16">
+                <LogIn className="h-7 w-7 text-[#43a5fc] sm:h-8 sm:w-8" />
+              </div>
+              <div>
+                <p className="font-[var(--font-headline)] text-xl font-extrabold text-white sm:text-2xl">{t("home.joinGame")}</p>
+                <p className="mt-1 text-sm text-white/40">Enter code to join the party</p>
+              </div>
+            </button>
+          </div>
+
+          {/* Trending modes chips */}
+          <div className="mt-10 flex flex-col items-center gap-4 sm:mt-12">
+            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/30">
+              Trending modes
+            </p>
+            <div className="flex flex-wrap justify-center gap-2.5">
+              {GAME_MODES.map((m) => {
+                const Icon = m.icon;
+                return (
+                  <div key={m.name} className={`flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-bold backdrop-blur-md ${m.color}`}>
+                    <Icon className="h-3.5 w-3.5" />
+                    <span>{m.name}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        {mode === "create" && (
-          <div className="animate-fade-in-up">
-            {/* Back to menu — only visible when TopicPicker is at game type level (no gameType selected) */}
-            {!gameType && (
+      {mode === "create" && (
+        <main className="relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col px-5 py-8 sm:px-8 animate-fade-in-up">
+          {!gameType && (
+            <button
+              onClick={() => { setMode("menu"); setSelectedIds([]); setGameType(null); }}
+              className="mb-6 flex items-center gap-2 text-sm font-bold text-white/40 transition-colors hover:text-white"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back
+            </button>
+          )}
+
+          <TopicPicker onSelect={setSelectedIds} selectedIds={selectedIds} onQuizMetaLoad={handleQuizMetaLoad} onGameTypeChange={setGameType} />
+
+          {selectedIds.length > 0 && (
+            <div className="mt-8 flex flex-col gap-4 animate-slide-up">
+              <GameSettings
+                timer={0}
+                questionCount={questionCount}
+                onTimerChange={() => {}}
+                onCountChange={setQuestionCount}
+                showTimer={false}
+                totalQuestions={totalQuestions}
+              />
               <button
-                onClick={() => { setMode("menu"); setSelectedIds([]); setGameType(null); }}
-                className="mb-4 flex items-center gap-2 text-sm font-bold text-white/60 transition-colors hover:text-white"
+                onClick={handleStart}
+                className="btn-primary flex w-full items-center justify-center gap-2 text-lg py-4"
               >
-                <ArrowLeft className="h-4 w-4" />
-                {t("nav.back")}
+                <Play className="h-5 w-5" fill="currentColor" />
+                {t("home.start")}
               </button>
-            )}
-
-            {/* Game type → Category → Quiz picker */}
-            <TopicPicker onSelect={setSelectedIds} selectedIds={selectedIds} onQuizMetaLoad={handleQuizMetaLoad} onGameTypeChange={setGameType} />
-
-            {/* Start button + settings */}
-            {selectedIds.length > 0 && (
-              <div className="mt-6 flex flex-col gap-3 animate-slide-up">
-                <GameSettings
-                  timer={0}
-                  questionCount={questionCount}
-                  onTimerChange={() => {}}
-                  onCountChange={setQuestionCount}
-                  showTimer={false}
-                  totalQuestions={totalQuestions}
-                />
-                <button
-                  onClick={handleStart}
-                  className="btn-primary flex w-full items-center justify-center gap-2 text-lg py-4"
-                >
-                  <Play className="h-5 w-5" fill="currentColor" />
-                  {t("home.start")}
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-      </main>
+            </div>
+          )}
+        </main>
+      )}
     </div>
   );
 }

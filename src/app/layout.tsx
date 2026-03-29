@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Montserrat } from "next/font/google";
+import { Geist } from "next/font/google";
+import { Plus_Jakarta_Sans, Be_Vietnam_Pro } from "next/font/google";
 import BottomNav from "@/components/BottomNav";
 import TopNav from "@/components/TopNav";
 import LanguageToggle from "@/components/LanguageToggle";
@@ -12,10 +13,16 @@ const geistSans = Geist({
   subsets: ["latin", "latin-ext"],
 });
 
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-headline",
   subsets: ["latin", "latin-ext"],
-  weight: ["400", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+
+const beVietnamPro = Be_Vietnam_Pro({
+  variable: "--font-body",
+  subsets: ["latin", "latin-ext"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -26,7 +33,7 @@ export const metadata: Metadata = {
     icon: "/favicon.png",
     apple: "/icons/apple-touch-icon.png",
   },
-  themeColor: "#e8590c",
+  themeColor: "#0e0e0e",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -47,7 +54,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${montserrat.variable} font-[Montserrat] antialiased`}>
+      <body className={`${geistSans.variable} ${plusJakartaSans.variable} ${beVietnamPro.variable} font-[var(--font-body)] antialiased`}>
         <LanguageProvider>
           <TopNav />
           <div className="fixed left-3 top-3 z-50 sm:hidden">

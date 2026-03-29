@@ -24,7 +24,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 
 export default function SurvivalPage() {
   return (
-    <Suspense fallback={<div className="flex min-h-svh items-center justify-center bg-[#e8590c]"><Loader2 className="h-10 w-10 animate-spin text-white" /></div>}>
+    <Suspense fallback={<div className="flex min-h-svh items-center justify-center bg-[#0e0e0e]"><Loader2 className="h-10 w-10 animate-spin text-white" /></div>}>
       <SurvivalInner />
     </Suspense>
   );
@@ -182,7 +182,7 @@ function SurvivalInner() {
 
   if (loading) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#e8590c]">
+      <div className="flex min-h-svh items-center justify-center bg-[#0e0e0e]">
         <Loader2 className="h-10 w-10 animate-spin text-white" />
       </div>
     );
@@ -193,7 +193,7 @@ function SurvivalInner() {
   const timerCritical = timeLeft <= 3;
 
   return (
-    <div className="relative flex min-h-svh flex-col items-center bg-[#e8590c] bg-pattern">
+    <div className="relative flex min-h-svh flex-col items-center bg-[#0e0e0e] bg-pattern">
       <Link
         href="/"
         className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
