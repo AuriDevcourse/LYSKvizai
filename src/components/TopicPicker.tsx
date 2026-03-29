@@ -151,7 +151,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
         </h2>
         <p className="text-sm text-white/30 mb-6">Pick a topic to start building your challenge.</p>
 
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 stagger-children">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 stagger-children">
           {TOPICS.map((topic) => {
             const Icon = topic.icon;
             const topicIds = topic.quizIds;
@@ -160,21 +160,21 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
               <button
                 key={topic.id}
                 onClick={() => setActiveTopic(topic)}
-                className={`group relative flex flex-col items-center gap-2.5 rounded-xl px-3 py-5 text-center transition-all duration-300 ${
+                className={`group relative flex flex-col items-start gap-3 rounded-xl p-4 sm:p-5 text-left transition-all duration-300 ${
                   selectedCount > 0
                     ? "bg-[#e8590c]/12 border-[1.5px] border-[#ff9062]/40"
                     : "bg-white/4 border-[1.5px] border-white/5 hover:bg-white/8 hover:border-white/10"
                 }`}
               >
                 {selectedCount > 0 && (
-                  <div className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[#ff9062] text-[10px] font-extrabold text-black">
+                  <div className="absolute right-2.5 top-2.5 flex h-5 w-5 items-center justify-center rounded-full bg-[#ff9062] text-[10px] font-extrabold text-black">
                     {selectedCount}
                   </div>
                 )}
-                <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${topic.bg}`}>
+                <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${topic.bg}`}>
                   <Icon className="h-5 w-5 text-white" />
                 </div>
-                <span className="text-xs font-bold text-white/70 group-hover:text-white transition-colors">
+                <span className="text-sm font-bold text-white/80 group-hover:text-white transition-colors">
                   {t(topic.labelKey as never)}
                 </span>
               </button>

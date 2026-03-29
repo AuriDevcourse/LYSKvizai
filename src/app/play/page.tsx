@@ -161,12 +161,9 @@ function PlayPageInner() {
       )}
 
       {mode === "pick-quiz" && (
-        <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
-          <h1 className="text-2xl font-extrabold text-white">{t("play.pickQuizzes")}</h1>
-          <p className="text-sm font-bold text-white/50">{t("play.pickMultiple")}</p>
-
+        <div className="flex w-full flex-col gap-6 animate-fade-in-up">
           {error && (
-            <p className="w-full rounded-xl bg-[#e21b3c]/20 px-4 py-3 text-center text-sm font-bold text-white">
+            <p className="w-full rounded-xl bg-[#ff716c]/15 border border-[#ff716c]/20 px-4 py-3 text-center text-sm font-bold text-white">
               {error}
             </p>
           )}
