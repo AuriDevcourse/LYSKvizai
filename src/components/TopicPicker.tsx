@@ -56,9 +56,13 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
     onSelect(next);
   };
 
+  const isZoomOut = activeGameType?.id === "zoom-out";
+
   // === Level 3: Quizzes inside a category ===
   if (activeGameType && activeTopic) {
-    const topicQuizzes = allQuizzes.filter((q) => activeTopic.quizIds.includes(q.id));
+    const topicQuizzes = allQuizzes
+      .filter((q) => activeTopic.quizIds.includes(q.id))
+      .filter((q) => !isZoomOut || (q.imageCount ?? 0) > 0);
     const Icon = activeTopic.icon;
     return (
       <div className="animate-fade-in-up">
@@ -152,7 +156,14 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
         <p className="text-sm text-white/30 mb-6">Pick a topic to start building your challenge.</p>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 stagger-children">
-          {TOPICS.map((topic) => {
+          {TOPICS.filter((topic) => {
+            // For zoom-out: hide topics with zero image quizzes
+            if (!isZoomOut) return true;
+            return topic.quizIds.some((id) => {
+              const meta = allQuizzes.find((q) => q.id === id);
+              return meta && (meta.imageCount ?? 0) > 0;
+            });
+          }).map((topic) => {
             const Icon = topic.icon;
             const topicIds = topic.quizIds;
             const selectedCount = topicIds.filter((id) => selectedIds.includes(id)).length;
