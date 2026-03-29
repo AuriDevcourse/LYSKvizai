@@ -121,12 +121,13 @@ export default function QuizCard({
 
       {/* Image */}
       {question.image && (
-        <div className={`mb-6 overflow-hidden rounded-2xl ${isZoomOut ? "h-64 sm:h-80" : ""}`}>
+        <div className={`mb-6 overflow-hidden rounded-2xl ${isZoomOut ? "h-64 sm:h-80" : ""} relative bg-white/5`}>
           <img
             src={question.image}
             alt=""
             className={`w-full object-cover transition-transform duration-200 ease-out ${isZoomOut ? "h-full" : "h-48"}`}
             style={isZoomOut ? { transform: `scale(${zoomScale})` } : undefined}
+            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
           />
         </div>
       )}

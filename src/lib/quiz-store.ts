@@ -37,7 +37,7 @@ export async function listQuizzes(): Promise<QuizMeta[]> {
         emoji: quiz.emoji,
         questionCount: quiz.questions.length,
         language: (raw_quiz.language as string) || undefined,
-        imageCount: quiz.questions.filter((q) => !!q.image).length,
+        imageCount: quiz.questions.filter((q) => q.image && !q.image.startsWith("http")).length,
       });
     } catch {
       // skip invalid files

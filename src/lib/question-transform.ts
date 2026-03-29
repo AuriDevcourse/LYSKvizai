@@ -14,7 +14,9 @@ const BAD_ZOOM_SUBJECTS = new Set([
 ]);
 
 /** Check if an image is suitable for zoom-out guessing */
-function isGoodZoomImage(imagePath: string): boolean {
+export function isGoodZoomImage(imagePath: string): boolean {
+  // External URLs (Wikipedia etc.) are unreliable — rate limited, may 429
+  if (imagePath.startsWith("http")) return false;
   const match = imagePath.match(/\/([^/]+)\.\w+$/);
   if (!match) return false;
   return !BAD_ZOOM_SUBJECTS.has(match[1]);
