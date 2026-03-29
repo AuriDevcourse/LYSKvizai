@@ -44,7 +44,7 @@ export default function EditorPage() {
   };
 
   return (
-    <div className="relative flex min-h-svh flex-col items-center bg-[#0e0e0e] bg-pattern">
+    <div className="relative flex min-h-svh flex-col items-center">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-1/3 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-white/[0.07] blur-3xl" />
         <div className="absolute -bottom-1/4 right-0 h-[400px] w-[400px] rounded-full bg-red-500/[0.05] blur-3xl" />

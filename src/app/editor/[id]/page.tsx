@@ -147,7 +147,7 @@ export default function QuizEditorPage({ params }: PageProps) {
 
   if (loading) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#0e0e0e] bg-pattern">
+      <div className="flex min-h-svh items-center justify-center">
         <Loader2 className="h-10 w-10 animate-spin text-white" />
       </div>
     );
@@ -155,7 +155,7 @@ export default function QuizEditorPage({ params }: PageProps) {
 
   if (error && !title && !isNew) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#0e0e0e] bg-pattern">
+      <div className="flex min-h-svh items-center justify-center">
         <div className="flex flex-col items-center gap-4 text-center">
           <div className="text-5xl">😵</div>
           <p className="text-lg text-white">{error}</p>
@@ -171,7 +171,7 @@ export default function QuizEditorPage({ params }: PageProps) {
   }
 
   return (
-    <div className="relative flex min-h-svh flex-col bg-[#0e0e0e] bg-pattern">
+    <div className="relative flex min-h-svh flex-col">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-1/3 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-white/[0.07] blur-3xl" />
         <div className="absolute -bottom-1/4 right-0 h-[400px] w-[400px] rounded-full bg-red-500/[0.05] blur-3xl" />

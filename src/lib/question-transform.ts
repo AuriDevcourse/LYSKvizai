@@ -45,6 +45,7 @@ export function transformQuestion(q: Question, targetType: QuestionType | "mixed
     const correctText = q.options[q.correct];
     if (canBeTyped(correctText)) types.push("fastest-finger");
     if (q.correctYear != null) types.push("year-guesser");
+    if (q.image && isGoodZoomImage(q.image)) types.push("zoom-out");
     const picked = types[Math.floor(Math.random() * types.length)];
     return transformQuestion(q, picked);
   }
@@ -135,8 +136,24 @@ function convertToTrueFalse(q: Question): Question {
 
 /**
  * Transform an array of questions for a given game type.
+ * For zoom-out: only include questions that have suitable images.
+ * For year-guesser: only include questions with correctYear data.
  */
 export function transformQuestions(questions: Question[], gameType: string): Question[] {
   if (!gameType || gameType === "standard") return questions;
-  return questions.map((q) => transformQuestion(q, gameType as QuestionType | "mixed"));
+
+  // Pre-filter: remove questions that can't work with the target type
+  let filtered = questions;
+  if (gameType === "zoom-out") {
+    filtered = questions.filter((q) => q.image && isGoodZoomImage(q.image));
+  } else if (gameType === "year-guesser") {
+    filtered = questions.filter((q) => q.correctYear != null);
+  } else if (gameType === "fastest-finger") {
+    filtered = questions.filter((q) => canBeTyped(q.options[q.correct]));
+  }
+
+  // If filtering removed everything, fall back to all questions as standard
+  if (filtered.length === 0) return questions;
+
+  return filtered.map((q) => transformQuestion(q, gameType as QuestionType | "mixed"));
 }

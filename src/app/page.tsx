@@ -53,12 +53,7 @@ export default function Home() {
   };
 
   return (
-    <div className="relative flex min-h-svh flex-col bg-[#0e0e0e] overflow-hidden">
-      {/* Ambient orange glow orbs */}
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute -left-[10%] -top-[20%] h-[80%] w-[60%] rounded-full bg-[#e8590c]/15 blur-[120px]" />
-        <div className="absolute -bottom-[10%] -right-[5%] h-[70%] w-[50%] rounded-full bg-[#e8590c]/10 blur-[100px]" />
-      </div>
+    <div className="relative flex min-h-svh flex-col overflow-hidden">
 
       {mode === "menu" && (
         <div className="flex flex-1 flex-col items-center justify-center px-5 py-10 animate-fade-in-up">
