@@ -78,7 +78,7 @@ export default function Avatar({ value, size = 48, className = "" }: AvatarProps
   if (value.startsWith("svg:")) {
     const parts = value.split(":");
     const file = parts[1];
-    const bgColor = parts[2] || "#46178f";
+    const bgColor = parts[2] || "#e8590c";
     return (
       <div
         className={`relative overflow-hidden rounded-full ${className}`}

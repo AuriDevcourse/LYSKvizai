@@ -131,7 +131,7 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
           <button
             type="button"
             onClick={handleUrlSubmit}
-            className="rounded-lg bg-white px-3 py-2 text-sm font-semibold text-[#46178f] hover:bg-white/90"
+            className="rounded-lg bg-white px-3 py-2 text-sm font-semibold text-[#e8590c] hover:bg-white/90"
           >
             Pridėti
           </button>

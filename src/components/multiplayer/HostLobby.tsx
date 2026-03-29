@@ -119,7 +119,7 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
           <button
             onClick={onStart}
             disabled={players.length === 0}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-white text-[#46178f] px-10 py-4 text-xl font-bold transition-colors hover:bg-white/90 disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-white text-[#e8590c] px-10 py-4 text-xl font-bold transition-colors hover:bg-white/90 disabled:opacity-50"
           >
             <Play className="h-6 w-6" />
             {t("lobby.start")}

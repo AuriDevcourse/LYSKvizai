@@ -23,6 +23,10 @@ export interface Player {
   slowestStreak: number;
   /** Gamble result for this round (if assigned gamble power-up) */
   gambleWon?: boolean;
+  /** Power-up uses remaining (each player gets 3 per game) */
+  powerUpUses: number;
+  /** Power-up types already used this game */
+  usedPowerUpTypes: PowerUpType[];
 }
 
 export interface Room {
@@ -109,6 +113,8 @@ export interface PlayerInfo {
   connected: boolean;
   eliminated?: boolean;
   teamIndex?: number | null;
+  powerUpUses?: number;
+  usedPowerUpTypes?: string[];
 }
 
 export interface RoomSnapshot {
@@ -141,8 +147,12 @@ export interface QuestionPayload {
   isWagerRound?: boolean;
   canAnswer?: boolean;
   currentTeamAnswerers?: string[];
-  /** Power-ups randomly assigned this round: playerId -> powerUpType */
+  /** Power-ups active this round: playerId -> powerUpType */
   roundPowerUps?: { playerId: string; powerUp: PowerUpType }[];
+  /** Power-up uses remaining for requesting player */
+  powerUpUsesLeft?: number;
+  /** Power-up types already used by requesting player */
+  usedPowerUpTypes?: PowerUpType[];
   en?: { question: string; options: [string, string, string, string] };
   lt?: { question: string; options: [string, string, string, string] };
 }
@@ -240,4 +250,5 @@ export type ClientAction =
   | { action: "submit-wager"; code: string; playerId: string; amount: number }
   | { action: "advance-wager"; code: string; hostId: string }
   | { action: "answer-text"; code: string; playerId: string; answer: string }
-  | { action: "answer-year"; code: string; playerId: string; year: number };
+  | { action: "answer-year"; code: string; playerId: string; year: number }
+  | { action: "choose-powerup"; code: string; playerId: string; powerUp: PowerUpType };

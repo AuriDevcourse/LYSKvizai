@@ -70,7 +70,7 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
 
       <button
         type="submit"
-        disabled={!code.trim() || !name.trim() || loading}
+        disabled={!code.trim() || !name.trim() || !avatar || loading}
         className="btn-primary flex items-center justify-center gap-2 w-full disabled:opacity-50"
       >
         <LogIn className="h-5 w-5" />

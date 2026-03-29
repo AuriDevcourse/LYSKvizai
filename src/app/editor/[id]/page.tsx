@@ -147,7 +147,7 @@ export default function QuizEditorPage({ params }: PageProps) {
 
   if (loading) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#46178f] bg-pattern">
+      <div className="flex min-h-svh items-center justify-center bg-[#e8590c] bg-pattern">
         <Loader2 className="h-10 w-10 animate-spin text-white" />
       </div>
     );
@@ -155,13 +155,13 @@ export default function QuizEditorPage({ params }: PageProps) {
 
   if (error && !title && !isNew) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#46178f] bg-pattern">
+      <div className="flex min-h-svh items-center justify-center bg-[#e8590c] bg-pattern">
         <div className="flex flex-col items-center gap-4 text-center">
           <div className="text-5xl">😵</div>
           <p className="text-lg text-white">{error}</p>
           <button
             onClick={() => router.push("/editor")}
-            className="rounded-xl bg-white px-6 py-3 font-semibold text-[#46178f] hover:bg-white/90"
+            className="rounded-xl bg-white px-6 py-3 font-semibold text-[#e8590c] hover:bg-white/90"
           >
             {t("nav.back")}
           </button>
@@ -171,7 +171,7 @@ export default function QuizEditorPage({ params }: PageProps) {
   }
 
   return (
-    <div className="relative flex min-h-svh flex-col bg-[#46178f] bg-pattern">
+    <div className="relative flex min-h-svh flex-col bg-[#e8590c] bg-pattern">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-1/3 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-white/[0.07] blur-3xl" />
         <div className="absolute -bottom-1/4 right-0 h-[400px] w-[400px] rounded-full bg-red-500/[0.05] blur-3xl" />
@@ -190,7 +190,7 @@ export default function QuizEditorPage({ params }: PageProps) {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 font-semibold text-[#46178f] transition-colors hover:bg-white/90 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 font-semibold text-[#e8590c] transition-colors hover:bg-white/90 disabled:opacity-50"
           >
             {saving ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -292,7 +292,7 @@ export default function QuizEditorPage({ params }: PageProps) {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-2 rounded-xl bg-white px-8 py-3 font-semibold text-[#46178f] transition-colors hover:bg-white/90 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-xl bg-white px-8 py-3 font-semibold text-[#e8590c] transition-colors hover:bg-white/90 disabled:opacity-50"
           >
             {saving ? (
               <Loader2 className="h-4 w-4 animate-spin" />

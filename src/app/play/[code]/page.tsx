@@ -2,7 +2,7 @@
 
 import { use, useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, X } from "lucide-react";
+import { Loader2, X, AlertTriangle, WifiOff } from "lucide-react";
 import { useRoom } from "@/hooks/useRoom";
 import { useRoomActions } from "@/hooks/useRoomActions";
 import HostLobby from "@/components/multiplayer/HostLobby";
@@ -17,6 +17,7 @@ import Leaderboard from "@/components/multiplayer/Leaderboard";
 import WagerScreen from "@/components/multiplayer/WagerScreen";
 import HostWager from "@/components/multiplayer/HostWager";
 import { MP_API_URL } from "@/lib/multiplayer/config";
+import type { QuestionPayload } from "@/lib/multiplayer/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface PageProps {
@@ -93,10 +94,27 @@ export default function GamePage({ params }: PageProps) {
 
   const { startGame, submitAnswer, nextQuestion, sendReaction, submitWager } = useRoomActions();
 
+  // Toast notification for action errors
+  const [toast, setToast] = useState<string | null>(null);
+  const showToast = useCallback((msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 3000);
+  }, []);
+
   const currentPlayer = useMemo(
     () => players.find((p) => p.id === playerId),
     [players, playerId]
   );
+
+  // Enrich question with per-player power-up info
+  const enrichedQuestion = useMemo(() => {
+    if (!question || !currentPlayer) return question;
+    return {
+      ...question,
+      powerUpUsesLeft: currentPlayer.powerUpUses ?? 0,
+      usedPowerUpTypes: (currentPlayer.usedPowerUpTypes ?? []) as QuestionPayload["usedPowerUpTypes"],
+    };
+  }, [question, currentPlayer]);
 
   const [lastQuestion, setLastQuestion] = useState(question);
   useEffect(() => {
@@ -107,7 +125,7 @@ export default function GamePage({ params }: PageProps) {
     try {
       await startGame(code, hostId);
     } catch (e) {
-      console.error("Failed to start:", e);
+      showToast("Failed to start game");
     }
   }, [code, hostId, startGame]);
 
@@ -116,7 +134,7 @@ export default function GamePage({ params }: PageProps) {
       try {
         await submitAnswer(code, playerId, index);
       } catch (e) {
-        console.error("Failed to submit:", e);
+        showToast("Failed to submit answer");
       }
     },
     [code, playerId, submitAnswer]
@@ -132,7 +150,7 @@ export default function GamePage({ params }: PageProps) {
           body: JSON.stringify({ action: "answer-year", code, playerId, year }),
         });
       } catch (e) {
-        console.error("Failed to submit year answer:", e);
+        showToast("Failed to submit answer");
       }
     },
     [code, playerId]
@@ -148,7 +166,7 @@ export default function GamePage({ params }: PageProps) {
           body: JSON.stringify({ action: "answer-text", code, playerId, answer: text }),
         });
       } catch (e) {
-        console.error("Failed to submit text answer:", e);
+        showToast("Failed to submit answer");
       }
     },
     [code, playerId]
@@ -158,7 +176,7 @@ export default function GamePage({ params }: PageProps) {
     try {
       await nextQuestion(code, hostId);
     } catch (e) {
-      console.error("Failed to advance:", e);
+      showToast("Failed to advance");
     }
   }, [code, hostId, nextQuestion]);
 
@@ -167,7 +185,7 @@ export default function GamePage({ params }: PageProps) {
       try {
         await sendReaction(code, playerId, emoji);
       } catch (e) {
-        console.error("Failed to react:", e);
+        showToast("Failed to send reaction");
       }
     },
     [code, playerId, sendReaction]
@@ -178,7 +196,7 @@ export default function GamePage({ params }: PageProps) {
       try {
         await submitWager(code, playerId, amount);
       } catch (e) {
-        console.error("Failed to submit wager:", e);
+        showToast("Failed to submit wager");
       }
     },
     [code, playerId, submitWager]
@@ -192,9 +210,25 @@ export default function GamePage({ params }: PageProps) {
         body: JSON.stringify({ action: "advance-wager", code, hostId }),
       });
     } catch (e) {
-      console.error("Failed to advance from wager:", e);
+      showToast("Failed to advance from wager");
     }
   }, [code, hostId]);
+
+  const handleChoosePowerUp = useCallback(
+    async (powerUp: "freeze" | "shield" | "double") => {
+      if (!playerId) return;
+      try {
+        await fetch(`${MP_API_URL}/rooms`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "choose-powerup", code, playerId, powerUp }),
+        });
+      } catch (e) {
+        showToast("Failed to activate power-up");
+      }
+    },
+    [code, playerId, showToast]
+  );
 
   const handleExit = useCallback(() => {
     try {
@@ -216,7 +250,7 @@ export default function GamePage({ params }: PageProps) {
         body: JSON.stringify({ action: "force-results", code, hostId }),
       });
     } catch (e) {
-      console.error("Failed to force results:", e);
+      showToast("Failed to end timer");
     }
   }, [isHost, code, hostId]);
 
@@ -237,7 +271,7 @@ export default function GamePage({ params }: PageProps) {
 
   if (roomError) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#46178f]">
+      <div className="flex min-h-svh items-center justify-center bg-[#e8590c]">
         <div className="flex flex-col items-center gap-4 px-6 text-center">
           <p className="text-lg font-bold text-white">{roomError}</p>
           <button
@@ -253,7 +287,7 @@ export default function GamePage({ params }: PageProps) {
 
   if (!state) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#46178f]">
+      <div className="flex min-h-svh items-center justify-center bg-[#e8590c]">
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="h-10 w-10 animate-spin text-white" />
           <p className="font-bold text-white/50">
@@ -269,7 +303,27 @@ export default function GamePage({ params }: PageProps) {
   const isLastQuestion = currentIndex + 1 >= totalQuestions;
 
   return (
-    <div className="relative flex min-h-svh flex-col bg-[#46178f] bg-pattern">
+    <div className="relative flex min-h-svh flex-col bg-[#e8590c] bg-pattern">
+      {/* Toast notification */}
+      {toast && (
+        <div className="fixed left-1/2 top-4 z-[60] -translate-x-1/2 animate-fade-in-up">
+          <div className="flex items-center gap-2 rounded-xl bg-[#e21b3c] px-4 py-2.5 shadow-lg">
+            <AlertTriangle className="h-4 w-4 text-white" />
+            <span className="text-sm font-bold text-white">{toast}</span>
+          </div>
+        </div>
+      )}
+
+      {/* Reconnecting banner */}
+      {!connected && state && !roomError && (
+        <div className="fixed left-1/2 top-4 z-[60] -translate-x-1/2">
+          <div className="flex items-center gap-2 rounded-xl bg-yellow-600 px-4 py-2 shadow-lg">
+            <WifiOff className="h-4 w-4 animate-pulse text-white" />
+            <span className="text-sm font-bold text-white">Reconnecting...</span>
+          </div>
+        </div>
+      )}
+
       {/* Exit button */}
       <button
         onClick={handleExit}
@@ -344,7 +398,7 @@ export default function GamePage({ params }: PageProps) {
             />
           ) : (
             <PlayerQuestion
-              question={question}
+              question={enrichedQuestion!}
               onAnswer={handleAnswer}
               onTimerExpire={handleTimerExpire}
               timerReduction={timerReduction}
@@ -352,6 +406,7 @@ export default function GamePage({ params }: PageProps) {
               eliminated={currentPlayer?.eliminated ?? false}
               canAnswer={canAnswer}
               waitingPlayerName={waitingPlayerName}
+              onChoosePowerUp={handleChoosePowerUp}
             />
           )
         )}
@@ -375,7 +430,7 @@ export default function GamePage({ params }: PageProps) {
             />
           ) : (
             <PlayerQuestion
-              question={question}
+              question={enrichedQuestion!}
               onAnswer={handleAnswer}
               onTimerExpire={handleTimerExpire}
               timerReduction={timerReduction}
@@ -383,6 +438,7 @@ export default function GamePage({ params }: PageProps) {
               eliminated={currentPlayer?.eliminated ?? false}
               canAnswer={canAnswer}
               waitingPlayerName={waitingPlayerName}
+              onChoosePowerUp={handleChoosePowerUp}
             />
           )
         )}

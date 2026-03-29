@@ -65,13 +65,23 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
             setError(t("quiz.notFound"));
             return;
           }
-          let allQuestions: Question[] = shuffleArray(validQuizzes.flatMap((q: { questions: Question[] }) => q.questions));
+          // Deduplicate questions by text to prevent repeats
+          const seen = new Set<string>();
+          let allQuestions: Question[] = shuffleArray(
+            validQuizzes.flatMap((q: { questions: Question[] }) => q.questions)
+              .filter((q: Question) => {
+                const key = q.question.toLowerCase().trim();
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+              })
+          );
           if (maxQuestions > 0 && maxQuestions < allQuestions.length) {
             allQuestions = allQuestions.slice(0, maxQuestions);
           }
           setQuestions(gameType ? transformQuestions(allQuestions, gameType) : allQuestions);
           const titles = validQuizzes.map((q: { title: string }) => q.title);
-          setQuizTitle(`${t("quiz.mix")}${titles.join(" + ")}`);
+          setQuizTitle(`${t("quiz.mix")} ${titles.join(" + ")}`);
         })
         .catch(() => setError("Error loading quizzes"))
         .finally(() => setLoading(false));
@@ -142,7 +152,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
 
   if (loading) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#46178f]">
+      <div className="flex min-h-svh items-center justify-center bg-[#e8590c]">
         <Loader2 className="h-10 w-10 animate-spin text-white" />
       </div>
     );
@@ -150,7 +160,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
 
   if (error || questions.length === 0) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#46178f]">
+      <div className="flex min-h-svh items-center justify-center bg-[#e8590c]">
         <div className="flex flex-col items-center gap-4 text-center">
           <p className="text-lg font-bold text-white">{error || t("quiz.empty")}</p>
           <Link href="/" className="btn-primary">
@@ -162,7 +172,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
   }
 
   return (
-    <div className="relative flex min-h-svh flex-col items-center bg-[#46178f] bg-pattern">
+    <div className="relative flex min-h-svh flex-col items-center bg-[#e8590c] bg-pattern">
       <Link
         href="/"
         className="fixed right-3 top-3 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white"

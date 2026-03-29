@@ -1,8 +1,8 @@
 import {
   Calculator, Globe, Landmark, Star, FlaskConical,
-  Clapperboard, Music, Cpu, TreePine, Drama,
-  Clover, Trophy, Flag, BookOpen, Mic, Guitar, Headphones,
-  Newspaper, Brain, UtensilsCrossed, Wine, PawPrint, Trees,
+  Clapperboard, Music, Cpu, Trophy, BookOpen,
+  Mic, Guitar, Headphones, Newspaper, Brain,
+  UtensilsCrossed, Wine, PawPrint, Trees,
   Gamepad2, Smartphone, Puzzle, Tv, Film, Rocket, Atom,
   Dna, Medal, Dribbble, MapPin,
   type LucideIcon,
@@ -22,11 +22,9 @@ export const QUIZ_THEME: Record<string, { icon: LucideIcon; bg: string }> = {
 
   // History
   "pasaulio-istorija":   { icon: Landmark,      bg: "bg-[#d89e00]" },
-  "lietuvos-istorija":   { icon: Landmark,      bg: "bg-[#b45309]" },
 
   // Celebrities
   "pasaulio-zvaigzdes":  { icon: Star,          bg: "bg-[#e21b3c]" },
-  "lietuvos-izymybes":   { icon: Star,          bg: "bg-[#7c3aed]" },
 
   // Science
   "mokslas":             { icon: FlaskConical,   bg: "bg-[#0ea5e9]" },
@@ -53,7 +51,6 @@ export const QUIZ_THEME: Record<string, { icon: LucideIcon; bg: string }> = {
   "video-zaidimai":      { icon: Gamepad2,      bg: "bg-[#6366f1]" },
 
   // Sports
-  "lietuvos-sportas":    { icon: Trophy,        bg: "bg-[#eab308]" },
   "pasaulio-futbolas":   { icon: Dribbble,      bg: "bg-[#16a34a]" },
   "olimpiniai-zaidimai": { icon: Medal,         bg: "bg-[#d89e00]" },
   "krepsinis":           { icon: Trophy,        bg: "bg-[#f97316]" },
@@ -71,11 +68,6 @@ export const QUIZ_THEME: Record<string, { icon: LucideIcon; bg: string }> = {
   "misrus-testas":       { icon: Brain,          bg: "bg-[#6366f1]" },
   "zoom-out-pictures":   { icon: Brain,          bg: "bg-[#0ea5e9]" },
 
-  // Holidays
-  "kucios-ir-kaledos":   { icon: TreePine,      bg: "bg-[#16a34a]" },
-  "uzgavenes-klasika":   { icon: Drama,         bg: "bg-[#f97316]" },
-  "jonines-ir-rasas":    { icon: Clover,        bg: "bg-[#22c55e]" },
-  "lietuvos-tradicijos": { icon: Flag,          bg: "bg-[#dc2626]" },
 };
 
 /** News quiz theme */

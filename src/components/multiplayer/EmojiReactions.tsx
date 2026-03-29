@@ -14,7 +14,7 @@ export default function EmojiReactions({ reactions }: EmojiReactionsProps) {
   if (reactions.length === 0) return null;
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
+    <div className="pointer-events-none fixed inset-x-0 top-0 bottom-1/3 z-50 overflow-hidden">
       {reactions.map((r) => (
         <FloatingItem key={r.id} content={r.emoji} />
       ))}

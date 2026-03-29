@@ -1,6 +1,6 @@
 import {
   Globe, Clapperboard, Star, Landmark, FlaskConical,
-  Calculator, Music, Cpu, Trophy, TreePine, Newspaper,
+  Calculator, Music, Cpu, Trophy, Newspaper,
   UtensilsCrossed, PawPrint, Gamepad2, Brain,
   type LucideIcon,
 } from "lucide-react";
@@ -52,14 +52,14 @@ export const TOPICS: Topic[] = [
     labelKey: "topics.celebrities",
     icon: Star,
     bg: "bg-[#e21b3c]",
-    quizIds: ["pasaulio-zvaigzdes", "lietuvos-izymybes"],
+    quizIds: ["pasaulio-zvaigzdes"],
   },
   {
     id: "history",
     labelKey: "topics.history",
     icon: Landmark,
     bg: "bg-[#d89e00]",
-    quizIds: ["pasaulio-istorija", "lietuvos-istorija"],
+    quizIds: ["pasaulio-istorija"],
   },
   {
     id: "science",
@@ -94,7 +94,7 @@ export const TOPICS: Topic[] = [
     labelKey: "topics.sports",
     icon: Trophy,
     bg: "bg-[#eab308]",
-    quizIds: ["lietuvos-sportas", "pasaulio-futbolas", "olimpiniai-zaidimai", "krepsinis"],
+    quizIds: ["pasaulio-futbolas", "olimpiniai-zaidimai", "krepsinis"],
   },
   {
     id: "food",
@@ -116,12 +116,5 @@ export const TOPICS: Topic[] = [
     icon: Gamepad2,
     bg: "bg-[#6366f1]",
     quizIds: ["video-zaidimai"],
-  },
-  {
-    id: "holidays",
-    labelKey: "topics.holidays",
-    icon: TreePine,
-    bg: "bg-[#16a34a]",
-    quizIds: ["kucios-ir-kaledos", "uzgavenes-klasika", "jonines-ir-rasas", "lietuvos-tradicijos"],
   },
 ];

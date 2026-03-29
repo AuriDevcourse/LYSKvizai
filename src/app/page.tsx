@@ -47,7 +47,7 @@ export default function Home() {
   };
 
   return (
-    <div className="relative flex min-h-svh flex-col items-center bg-[#46178f] bg-pattern">
+    <div className="relative flex min-h-svh flex-col items-center bg-[#e8590c] bg-pattern">
       <main className="relative z-10 flex w-full max-w-2xl flex-1 flex-col px-5 py-8 sm:px-8">
         {/* Logo + Nav */}
         <div className="mb-8 flex flex-col items-center gap-4 animate-fade-in-up">
@@ -84,7 +84,7 @@ export default function Home() {
         <div className="mb-6 grid grid-cols-2 gap-3 animate-fade-in-up">
           <Link
             href="/play?create=1"
-            className="flex items-center justify-center gap-2 rounded-2xl bg-white px-4 py-4 text-base font-extrabold text-[#46178f] transition-transform active:scale-[0.98]"
+            className="flex items-center justify-center gap-2 rounded-2xl bg-white px-4 py-4 text-base font-extrabold text-[#e8590c] transition-transform active:scale-[0.98]"
           >
             <Plus className="h-5 w-5" />
             {t("home.createGame")}

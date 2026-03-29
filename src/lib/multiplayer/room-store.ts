@@ -7,7 +7,6 @@ import type {
   ResultsPayload,
   LeaderboardEntry,
   GameMode,
-  PowerUpType,
   TeamScore,
   WagerResult,
   PowerUpEffect,
@@ -16,8 +15,9 @@ import type {
 } from "./types";
 import { ALL_POWER_UPS } from "./types";
 import { generateRoomCode } from "./room-code";
-import { calculateScore } from "./scoring";
+import { calculateScore, getCatchUpMultiplier } from "./scoring";
 import { fuzzyMatch } from "../fuzzy-match";
+import { sanitizeName, sanitizeEmoji } from "../sanitize";
 import { broadcast, removeRoomConnections } from "./sse-manager";
 import { translateBatch } from "@/lib/translate";
 import { getQuiz } from "@/lib/quiz-store";
@@ -67,6 +67,8 @@ function playerToInfo(p: Player): PlayerInfo {
     connected: p.connected,
     eliminated: p.eliminated || undefined,
     teamIndex: p.teamIndex,
+    powerUpUses: p.powerUpUses,
+    usedPowerUpTypes: p.usedPowerUpTypes,
   };
 }
 
@@ -142,18 +144,18 @@ function getQuestionPayload(room: Room): QuestionPayload {
     payload.currentTeamAnswerers = [...room.currentTeamAnswerer.values()];
   }
 
-  // Include English translations if available
-  const enT = room.enTranslations.get(qIndex);
-  if (enT) {
-    const enShuffledOptions = optShuffle.map((origIdx) => {
+  // Include Lithuanian translations if available (content is in English)
+  const ltT = room.enTranslations.get(qIndex);
+  if (ltT) {
+    const ltShuffledOptions = optShuffle.map((origIdx) => {
       if (q.type === "bluff" && q.bluffAnswer && room.bluffReplacedOriginalIndex === origIdx) {
-        return q.bluffAnswer; // bluff answer stays as-is
+        return q.bluffAnswer;
       }
-      return enT.options[origIdx];
+      return ltT.options[origIdx];
     }) as [string, string, string, string];
-    payload.en = {
-      question: enT.question,
-      options: enShuffledOptions,
+    payload.lt = {
+      question: ltT.question,
+      options: ltShuffledOptions,
     };
   }
 
@@ -459,16 +461,16 @@ function getResultsPayload(room: Room): ResultsPayload {
     result.powerUpEffects = powerUpEffects;
   }
 
-  // Include English translations for results
-  const enT = room.enTranslations.get(qIndex);
-  if (enT) {
+  // Include Lithuanian translations for results (content is in English)
+  const ltT = room.enTranslations.get(qIndex);
+  if (ltT) {
     const optShuffle = room.optionShuffles[room.currentQuestionIndex];
-    result.en = {
+    result.lt = {
       correctAnswerText: result.correctAnswerText
-        ? enT.options[q.correct]
+        ? ltT.options[q.correct]
         : undefined,
-      explanation: enT.explanation,
-      options: optShuffle.map((origIdx) => enT.options[origIdx]),
+      explanation: ltT.explanation,
+      options: optShuffle.map((origIdx) => ltT.options[origIdx]),
     };
   }
 
@@ -584,16 +586,24 @@ export async function createRoom(
   }
   if (allQuestions.length === 0) throw new Error("Quizzes have no questions");
 
+  // Deduplicate questions by their text to prevent repeats across quizzes
+  const seen = new Set<string>();
+  const questions = allQuestions.filter((q) => {
+    const key = q.question.toLowerCase().trim();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  if (questions.length === 0) throw new Error("No unique questions found");
+
   let code: string;
   do {
     code = generateRoomCode();
   } while (rooms.has(code));
 
-  const questions = allQuestions;
-
   // Shuffle and pick questions
   const allIndices = shuffle(questions.map((_, i) => i));
-  const count = Math.min(questionCount ?? 15, questions.length);
+  const count = Math.max(1, Math.min(questionCount ?? 15, questions.length));
   const questionIndices = allIndices.slice(0, count);
 
   // Generate shuffled option orders for each selected question
@@ -658,13 +668,17 @@ export function getRoom(code: string): Room | undefined {
 export function joinRoom(
   code: string,
   playerId: string,
-  name: string,
-  emoji: string
+  rawName: string,
+  rawEmoji: string
 ): { room: Room; player: Player } | { error: string } {
   const room = rooms.get(code.toUpperCase());
   if (!room) return { error: "Room not found" };
   if (room.state !== "lobby") return { error: "Game already started" };
   if (room.players.size >= 50) return { error: "Room is full" };
+
+  const name = sanitizeName(rawName);
+  const emoji = sanitizeEmoji(rawEmoji);
+  if (!name) return { error: "Invalid name" };
 
   // Check for duplicate name
   for (const p of room.players.values()) {
@@ -693,6 +707,8 @@ export function joinRoom(
       teamIndex: null,
       currentTextAnswer: null,
       slowestStreak: 0,
+      powerUpUses: 3,
+      usedPowerUpTypes: [],
     };
     room.players.set(playerId, player);
   }
@@ -715,6 +731,8 @@ export async function startGame(code: string, hostId: string): Promise<{ error?:
     p.answerTime = null;
     p.currentTextAnswer = null;
     p.slowestStreak = 0;
+    p.powerUpUses = 3;
+    p.usedPowerUpTypes = [];
   }
 
   // Team mode: assign players to teams
@@ -734,14 +752,14 @@ export async function startGame(code: string, hostId: string): Promise<{ error?:
     }
   }
 
-  // Pre-translate all questions to English
+  // Pre-translate all questions to Lithuanian (content is in English)
   try {
     const allTexts: string[] = [];
     for (const idx of room.questionIndices) {
       const q = room.questions[idx];
       allTexts.push(q.question, ...q.options, q.explanation);
     }
-    const translated = await translateBatch(allTexts, "lt", "en");
+    const translated = await translateBatch(allTexts, "en", "lt");
     let ti = 0;
     for (const idx of room.questionIndices) {
       const tQuestion = translated[ti++];
@@ -750,7 +768,7 @@ export async function startGame(code: string, hostId: string): Promise<{ error?:
       room.enTranslations.set(idx, { question: tQuestion, options: tOptions, explanation: tExplanation });
     }
   } catch {
-    // Translation failed — multiplayer will fall back to Lithuanian
+    // Translation failed — multiplayer will fall back to English
   }
 
   room.currentQuestionIndex = 0;
@@ -803,23 +821,26 @@ export function submitAnswer(
 
   if (correct) {
     let finalPoints = points;
-    // Double power-up: 2x points
+    // Power-ups are mutually exclusive (only one assigned per round)
     if (activePU === "double") {
       finalPoints = points * 2;
-    }
-    // Gamble power-up: 50/50 chance of 3x or 0
-    if (activePU === "gamble") {
+    } else if (activePU === "gamble") {
       const won = Math.random() < 0.5;
       player.gambleWon = won;
       finalPoints = won ? points * 3 : 0;
     }
-    // Wager round: add wager * 2
-    if (room.isWagerRound && room.wagers.has(playerId)) {
-      finalPoints += room.wagers.get(playerId)! * 2;
-    }
-    // Mystery multiplier
+    // Mystery multiplier (applies to base + power-up points)
     const mysteryMult = room.mysteryMultipliers.get(room.currentQuestionIndex) ?? 1;
-    player.score += finalPoints * mysteryMult;
+    const multipliedPoints = finalPoints * mysteryMult;
+    // Catch-up multiplier: trailing players earn bonus points
+    const leaderScore = Math.max(...[...room.players.values()].map((p) => p.score));
+    const catchUp = getCatchUpMultiplier(player.score, leaderScore, room.players.size);
+    const catchUpPoints = Math.round(multipliedPoints * catchUp);
+    // Wager bonus added AFTER multipliers (flat, not multiplied)
+    const wagerBonus = (room.isWagerRound && room.wagers.has(playerId))
+      ? room.wagers.get(playerId)! * 2
+      : 0;
+    player.score += catchUpPoints + wagerBonus;
     player.streak = newStreak;
   } else {
     // Wrong answer
@@ -890,19 +911,31 @@ export function submitTextAnswer(
 
   if (correct) {
     let finalPoints = points;
-    if (activePU === "double") finalPoints = points * 2;
+    if (activePU === "double") {
+      finalPoints = points * 2;
+    } else if (activePU === "gamble") {
+      const won = Math.random() < 0.5;
+      player.gambleWon = won;
+      finalPoints = won ? points * 3 : 0;
+    }
 
-    // Check if this is the first correct answer (fastest finger bonus)
+    // Mystery multiplier applies to base scoring only
+    const mysteryMult = room.mysteryMultipliers.get(room.currentQuestionIndex) ?? 1;
+    const multipliedPoints = finalPoints * mysteryMult;
+
+    // Fastest finger bonus: flat +500, NOT multiplied
     const isFirstCorrect = ![...room.players.values()].some(p => {
       if (p.id === playerId) return false;
       if (!p.currentTextAnswer) return false;
       const pNorm = p.currentTextAnswer.toLowerCase();
       return acceptedAnswers.some(a => a.toLowerCase().trim() === pNorm);
     });
-    if (isFirstCorrect) finalPoints += 500;
+    const fastestBonus = isFirstCorrect ? 500 : 0;
 
-    const mysteryMult = room.mysteryMultipliers.get(room.currentQuestionIndex) ?? 1;
-    player.score += finalPoints * mysteryMult;
+    // Catch-up multiplier
+    const leaderScore = Math.max(...[...room.players.values()].map((p) => p.score));
+    const catchUp = getCatchUpMultiplier(player.score, leaderScore, room.players.size);
+    player.score += Math.round(multipliedPoints * catchUp) + fastestBonus;
     player.streak = newStreak;
   } else {
     if (activePU === "shield") {
@@ -976,7 +1009,9 @@ export function submitYearAnswer(
   }
 
   const mysteryMult = room.mysteryMultipliers.get(room.currentQuestionIndex) ?? 1;
-  player.score += finalPoints * mysteryMult;
+  const leaderScore = Math.max(...[...room.players.values()].map((p) => p.score));
+  const catchUp = getCatchUpMultiplier(player.score, leaderScore, room.players.size);
+  player.score += Math.round(finalPoints * mysteryMult * catchUp);
 
   if (points > 0) {
     player.streak += 1;
@@ -1130,21 +1165,9 @@ function startQuestionRound(room: Room): void {
     p.gambleWon = undefined;
   }
 
-  // Randomly assign power-ups (~35% chance per player)
+  // Power-ups: players choose their own (via choose-powerup action during question phase)
   room.activePowerUps.clear();
   room.freezeActive = false;
-  const activePlayers = getActivePlayers(room);
-  for (const p of activePlayers) {
-    if (Math.random() < 0.35) {
-      const randomPU = ALL_POWER_UPS[Math.floor(Math.random() * ALL_POWER_UPS.length)];
-      room.activePowerUps.set(p.id, randomPU);
-      // Freeze auto-applies immediately
-      if (randomPU === "freeze" && !room.freezeActive) {
-        room.freezeActive = true;
-        broadcast(room.code, { type: "timer-reduced", data: { seconds: 3 } });
-      }
-    }
-  }
 
   // Setup bluff if needed
   setupBluffQuestion(room, room.currentQuestionIndex);
@@ -1219,5 +1242,40 @@ export function forceShowResults(code: string, hostId: string): { error?: string
   if (room.state !== "question") return { error: "No active question" };
 
   showResults(room);
+  return {};
+}
+
+export function choosePowerUp(
+  code: string,
+  playerId: string,
+  powerUp: "freeze" | "shield" | "double"
+): { error?: string } {
+  const room = rooms.get(code);
+  if (!room) return { error: "Room not found" };
+  if (room.state !== "question") return { error: "Can't use power-ups right now" };
+
+  const player = room.players.get(playerId);
+  if (!player) return { error: "Player not found" };
+  if (player.eliminated) return { error: "You are eliminated" };
+  if (player.powerUpUses <= 0) return { error: "No power-up uses remaining" };
+  if (room.activePowerUps.has(playerId)) return { error: "Already used a power-up this round" };
+
+  // Deduct use and record
+  player.powerUpUses--;
+  player.usedPowerUpTypes.push(powerUp);
+  room.activePowerUps.set(playerId, powerUp);
+
+  // Freeze auto-applies immediately
+  if (powerUp === "freeze" && !room.freezeActive) {
+    room.freezeActive = true;
+    broadcast(room.code, { type: "timer-reduced", data: { seconds: 3 } });
+  }
+
+  // Broadcast updated power-ups to host screen
+  broadcast(room.code, {
+    type: "question-start",
+    data: getQuestionPayload(room),
+  });
+
   return {};
 }

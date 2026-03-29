@@ -15,7 +15,8 @@ function cacheKey(text: string, to: string): string {
  * Returns fully resolved array + whether all were resolved.
  */
 function resolveFromCache(texts: string[], lang: string): { result: string[]; complete: boolean } {
-  if (lang === "lt") return { result: texts, complete: true };
+  // Content is in English — no translation needed for EN
+  if (lang === "en") return { result: texts, complete: true };
   let complete = true;
   const result: string[] = new Array(texts.length);
   for (let i = 0; i < texts.length; i++) {
@@ -48,7 +49,8 @@ export function useContentTranslation(texts: string[]): string[] {
   const fetchingKey = useRef("");
 
   useEffect(() => {
-    if (lang === "lt" || complete) {
+    // Content is in English — no translation needed for EN
+    if (lang === "en" || complete) {
       setAsyncTranslated(null);
       return;
     }
@@ -66,7 +68,7 @@ export function useContentTranslation(texts: string[]): string[] {
     fetch("/api/translate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ texts: nonEmpty, from: "lt", to: lang }),
+      body: JSON.stringify({ texts: nonEmpty, from: "en", to: lang }),
       signal: controller.signal,
     })
       .then((r) => {
@@ -94,7 +96,8 @@ export function useContentTranslation(texts: string[]): string[] {
     return () => controller.abort();
   }, [stableTexts, lang, textsKey, complete]);
 
-  if (lang === "lt") return stableTexts;
+  // Content is in English — no translation needed for EN
+  if (lang === "en") return stableTexts;
   if (complete) return syncResolved;
   return asyncTranslated ?? syncResolved;
 }
@@ -116,7 +119,8 @@ export async function preTranslateContent(
   texts: string[],
   lang: string
 ): Promise<void> {
-  if (lang === "lt") return;
+  // Content is in English — no translation needed for EN
+  if (lang === "en") return;
 
   // Filter to only uncached, non-empty strings (deduplicate)
   const seen = new Set<string>();
@@ -140,7 +144,7 @@ export async function preTranslateContent(
       const res = await fetch("/api/translate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ texts: chunk, from: "lt", to: lang }),
+        body: JSON.stringify({ texts: chunk, from: "en", to: lang }),
       });
       if (!res.ok) continue;
       const data = await res.json();

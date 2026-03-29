@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #46178f;
+  --color-background: #e8590c;
   --color-foreground: #ffffff;
   --color-surface: rgba(255, 255, 255, 0.08);
   --color-surface-hover: rgba(255, 255, 255, 0.14);
-  --color-kahoot-purple: #46178f;
-  --color-kahoot-purple-light: #6c2bb3;
-  --color-kahoot-purple-dark: #2d0f5e;
+  --color-primary: #e8590c;
+  --color-primary-light: #f97316;
+  --color-primary-dark: #b83d04;
   --color-kahoot-red: #e21b3c;
   --color-kahoot-blue: #1368ce;
   --color-kahoot-yellow: #d89e00;
@@ -17,7 +17,7 @@
 }
 
 body {
-  background: var(--color-kahoot-purple);
+  background: var(--color-primary);
   color: var(--color-foreground);
   font-family: "Montserrat", "Geist Sans", Arial, Helvetica, sans-serif;
   overflow-x: hidden;
@@ -202,7 +202,7 @@ h1, h2, h3 {
 /* Primary button */
 .btn-primary {
   background: white;
-  color: #46178f;
+  color: #e8590c;
   font-weight: 800;
   border-radius: 0.75rem;
   padding: 0.875rem 2rem;
@@ -238,9 +238,9 @@ h1, h2, h3 {
 /* Background pattern */
 .bg-pattern {
   background-image:
-    radial-gradient(circle at 20% 50%, rgba(108, 43, 179, 0.5) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(108, 43, 179, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 50% 80%, rgba(45, 15, 94, 0.5) 0%, transparent 50%);
+    radial-gradient(circle at 20% 50%, rgba(249, 115, 22, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.25) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(184, 61, 4, 0.4) 0%, transparent 50%);
 }
 
 /* Timer pulse when low */

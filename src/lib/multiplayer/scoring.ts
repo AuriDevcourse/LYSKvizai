@@ -32,3 +32,21 @@ export function calculateScore(
     newStreak,
   };
 }
+
+/**
+ * Catch-up multiplier: trailing players earn bonus points.
+ * - Players in bottom half get up to 1.5x multiplier based on distance from leader.
+ * - Leader and top players get 1.0x (no bonus).
+ * - Minimum multiplier: 1.0x, Maximum: 1.5x
+ */
+export function getCatchUpMultiplier(
+  playerScore: number,
+  leaderScore: number,
+  playerCount: number
+): number {
+  if (playerCount <= 1 || leaderScore <= 0) return 1.0;
+  // How far behind as a ratio (0 = tied with leader, 1 = zero points vs leader)
+  const deficit = Math.max(0, (leaderScore - playerScore) / leaderScore);
+  // Scale: 0% deficit = 1.0x, 100% deficit = 1.5x
+  return 1.0 + deficit * 0.5;
+}

@@ -4,8 +4,8 @@
   "description": "Interactive quizzes. Play solo or with friends!",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#46178f",
-  "theme_color": "#46178f",
+  "background_color": "#e8590c",
+  "theme_color": "#e8590c",
   "icons": [
     { "src": "/icons/icon-72x72.png", "sizes": "72x72", "type": "image/png" },
     { "src": "/icons/icon-96x96.png", "sizes": "96x96", "type": "image/png" },

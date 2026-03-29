@@ -44,6 +44,7 @@ interface PlayerQuestionProps {
   eliminated?: boolean;
   canAnswer?: boolean;
   waitingPlayerName?: string;
+  onChoosePowerUp?: (powerUp: "freeze" | "shield" | "double") => void;
 }
 
 export default function PlayerQuestion({
@@ -55,6 +56,7 @@ export default function PlayerQuestion({
   eliminated = false,
   canAnswer = true,
   waitingPlayerName,
+  onChoosePowerUp,
 }: PlayerQuestionProps) {
   const { t, lang } = useTranslation();
   const qText = lang === "lt" && question.lt ? question.lt.question : lang !== "lt" && question.en ? question.en.question : question.question;
@@ -260,6 +262,32 @@ export default function PlayerQuestion({
           </button>
         ))}
       </div>
+
+      {/* Power-up chooser (below answers, safe from accidental taps) */}
+      {onChoosePowerUp && !myPowerUp && (question.powerUpUsesLeft ?? 0) > 0 && (
+        <div className="mt-2">
+          <p className="mb-1.5 text-center text-[10px] font-bold text-white/30 uppercase tracking-wider">
+            Power-up ({question.powerUpUsesLeft} left)
+          </p>
+          <div className="flex items-center justify-center gap-2">
+            {(["freeze", "shield", "double"] as const).map((pu) => {
+              const info = POWER_UP_INFO[pu];
+              const alreadyUsed = question.usedPowerUpTypes?.includes(pu);
+              return (
+                <button
+                  key={pu}
+                  onClick={() => onChoosePowerUp(pu)}
+                  disabled={!!alreadyUsed}
+                  className={`flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all active:scale-95 disabled:opacity-20 disabled:cursor-not-allowed ${info.bg} ${info.color} border`}
+                >
+                  {info.icon}
+                  <span>{info.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

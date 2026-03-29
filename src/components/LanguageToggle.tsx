@@ -11,7 +11,7 @@ export default function LanguageToggle() {
         onClick={() => setLang("en")}
         className={`rounded-full px-2.5 py-1 transition-all ${
           lang === "en"
-            ? "bg-white text-[#46178f]"
+            ? "bg-white text-[#e8590c]"
             : "text-white/60 hover:text-white"
         }`}
       >
@@ -21,7 +21,7 @@ export default function LanguageToggle() {
         onClick={() => setLang("lt")}
         className={`rounded-full px-2.5 py-1 transition-all ${
           lang === "lt"
-            ? "bg-white text-[#46178f]"
+            ? "bg-white text-[#e8590c]"
             : "text-white/60 hover:text-white"
         }`}
       >

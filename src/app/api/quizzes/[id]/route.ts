@@ -16,28 +16,29 @@ export async function GET(
   if (!quiz) return json({ error: "Quiz not found" }, 404);
 
   const lang = req.nextUrl.searchParams.get("lang");
-  const quizLang = (quiz as unknown as Record<string, unknown>).language as string | undefined;
-  // Skip translation if quiz is already in the requested language
-  if (lang && lang !== (quizLang || "lt")) {
-    // Collect all translatable strings
-    const texts: string[] = [quiz.title];
-    for (const q of quiz.questions) {
-      texts.push(q.question, ...q.options, q.explanation);
+  // Content is in English — translate to target language if not English
+  if (lang && lang !== "en") {
+    try {
+      const texts: string[] = [quiz.title];
+      for (const q of quiz.questions) {
+        texts.push(q.question, ...q.options, q.explanation);
+      }
+
+      const translated = await translateBatch(texts, "en", lang);
+
+      let idx = 0;
+      const tTitle = translated[idx++];
+      const tQuestions = quiz.questions.map((q) => {
+        const tQuestion = translated[idx++];
+        const tOptions = [translated[idx++], translated[idx++], translated[idx++], translated[idx++]] as [string, string, string, string];
+        const tExplanation = translated[idx++];
+        return { ...q, question: tQuestion, options: tOptions, explanation: tExplanation };
+      });
+
+      return json({ ...quiz, title: tTitle, questions: tQuestions });
+    } catch {
+      // Translation failed — return English content
     }
-
-    const translated = await translateBatch(texts, quizLang || "lt", lang);
-
-    // Rebuild quiz with translated content
-    let idx = 0;
-    const tTitle = translated[idx++];
-    const tQuestions = quiz.questions.map((q) => {
-      const tQuestion = translated[idx++];
-      const tOptions = [translated[idx++], translated[idx++], translated[idx++], translated[idx++]] as [string, string, string, string];
-      const tExplanation = translated[idx++];
-      return { ...q, question: tQuestion, options: tOptions, explanation: tExplanation };
-    });
-
-    return json({ ...quiz, title: tTitle, questions: tQuestions });
   }
 
   return json(quiz);

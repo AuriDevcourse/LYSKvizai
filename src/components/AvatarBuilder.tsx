@@ -99,7 +99,7 @@ const ALL_PORTRAITS = [
 
 // 20 background colors (2 rows of 10)
 const BG_PALETTE = [
-  "#46178f", "#7b2ff2", "#6c5ce7", "#a29bfe", "#e21b3c",
+  "#e8590c", "#7b2ff2", "#6c5ce7", "#a29bfe", "#e21b3c",
   "#ff7675", "#e84393", "#fd79a8", "#1368ce", "#0ea5e9",
   "#00cec9", "#00b894", "#26890c", "#55efc4", "#badc58",
   "#d89e00", "#fdcb6e", "#e17055", "#f8a5c2", "#2d3436",
@@ -119,8 +119,13 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
   const [bgColor, setBgColor] = useState(BG_PALETTE[0]);
   const [tab, setTab] = useState<Tab>("character");
 
+  // Auto-select a random avatar on mount
   useEffect(() => {
-    onChange("");
+    const file = ALL_PORTRAITS[Math.floor(Math.random() * ALL_PORTRAITS.length)];
+    const bg = BG_PALETTE[Math.floor(Math.random() * BG_PALETTE.length)];
+    setSelectedFile(file);
+    setBgColor(bg);
+    onChange(encode(file, bg));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -181,7 +186,7 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
             onClick={() => setTab("character")}
             className={`flex-1 rounded-lg px-2 py-1.5 text-xs font-bold transition-all ${
               tab === "character"
-                ? "bg-white text-[#46178f]"
+                ? "bg-white text-[#e8590c]"
                 : "text-white/50 hover:text-white"
             }`}
           >
@@ -192,7 +197,7 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
             onClick={() => setTab("background")}
             className={`flex-1 rounded-lg px-2 py-1.5 text-xs font-bold transition-all ${
               tab === "background"
-                ? "bg-white text-[#46178f]"
+                ? "bg-white text-[#e8590c]"
                 : "text-white/50 hover:text-white"
             }`}
           >

@@ -1,42 +1,44 @@
 import { NextRequest, NextResponse } from "next/server";
 import { listQuizzes, saveQuiz } from "@/lib/quiz-store";
 import { translateBatch } from "@/lib/translate";
+import { checkRateLimit } from "@/lib/rate-limit";
 import type { Quiz } from "@/data/types";
 
 function json(data: unknown, status = 200) {
   return NextResponse.json(data, { status });
 }
 
+function getClientIp(req: NextRequest): string {
+  return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+    ?? req.headers.get("x-real-ip")
+    ?? "unknown";
+}
+
 /** GET /api/quizzes — list all quiz metadata */
 export async function GET(req: NextRequest) {
+  const ip = getClientIp(req);
+  if (!checkRateLimit(`quizzes:${ip}`, 30, 10_000)) {
+    return json({ error: "Too many requests" }, 429);
+  }
+
   const quizzes = await listQuizzes();
 
   const lang = req.nextUrl.searchParams.get("lang");
-  if (lang && lang !== "lt") {
-    // Only translate Lithuanian titles to target lang; English titles are already fine
+  // Content is in English — translate titles to target language if not English
+  if (lang && lang !== "en") {
     const toTranslate: { idx: number; title: string }[] = [];
     for (let i = 0; i < quizzes.length; i++) {
-      if (quizzes[i].language !== "en") toTranslate.push({ idx: i, title: quizzes[i].title });
+      toTranslate.push({ idx: i, title: quizzes[i].title });
     }
     if (toTranslate.length > 0) {
-      const translated = await translateBatch(toTranslate.map((t) => t.title), "lt", lang);
-      const result = quizzes.map((q) => ({ ...q }));
-      toTranslate.forEach((t, j) => { result[t.idx].title = translated[j]; });
-      return json(result);
-    }
-    return json(quizzes);
-  }
-  if (lang === "lt") {
-    // Translate English titles to Lithuanian
-    const toTranslate: { idx: number; title: string }[] = [];
-    for (let i = 0; i < quizzes.length; i++) {
-      if (quizzes[i].language === "en") toTranslate.push({ idx: i, title: quizzes[i].title });
-    }
-    if (toTranslate.length > 0) {
-      const translated = await translateBatch(toTranslate.map((t) => t.title), "en", "lt");
-      const result = quizzes.map((q) => ({ ...q }));
-      toTranslate.forEach((t, j) => { result[t.idx].title = translated[j]; });
-      return json(result);
+      try {
+        const translated = await translateBatch(toTranslate.map((t) => t.title), "en", lang);
+        const result = quizzes.map((q) => ({ ...q }));
+        toTranslate.forEach((t, j) => { result[t.idx].title = translated[j]; });
+        return json(result);
+      } catch {
+        // Translation failed — return English titles
+      }
     }
   }
 
@@ -49,7 +51,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     if (!body.id || !body.title || !body.questions?.length) {
-      return json({ error: "Trūksta privalomų laukų (id, title, questions)" }, 400);
+      return json({ error: "Missing required fields (id, title, questions)" }, 400);
     }
 
     const quiz: Quiz = {
@@ -65,6 +67,6 @@ export async function POST(req: NextRequest) {
     await saveQuiz(quiz);
     return json(quiz, 201);
   } catch {
-    return json({ error: "Netinkamas užklausos formatas" }, 400);
+    return json({ error: "Invalid request format" }, 400);
   }
 }

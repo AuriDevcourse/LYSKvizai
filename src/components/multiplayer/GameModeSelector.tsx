@@ -136,7 +136,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
       <button
         type="button"
         onClick={handleConfirm}
-        className="rounded-xl bg-white text-[#46178f] px-6 py-3 font-bold transition-colors hover:bg-white/90"
+        className="rounded-xl bg-white text-[#e8590c] px-6 py-3 font-bold transition-colors hover:bg-white/90"
       >
         {t("gameMode.select")}
       </button>

@@ -17,18 +17,6 @@ interface TopicPickerProps {
   onGameTypeChange?: (gameType: SelectedGameType | null) => void;
 }
 
-const LT_CONTENT_IDS = new Set([
-  "lietuvos-istorija", "lietuvos-izymybes", "lietuvos-sportas",
-  "lietuvos-tradicijos", "kucios-ir-kaledos", "uzgavenes-klasika",
-  "jonines-ir-rasas", "muzika-klasikine",
-]);
-
-function getQuizRegion(quiz: QuizMeta): "lt" | "intl" {
-  if (quiz.language === "en") return "intl";
-  if (LT_CONTENT_IDS.has(quiz.id) || quiz.id.startsWith("lietuvos-")) return "lt";
-  return "intl";
-}
-
 type GameTypeOption = {
   id: QuestionType | "mixed";
   icon: typeof HelpCircle;
@@ -91,8 +79,16 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
         </div>
 
         {!initialLoaded ? (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-white" />
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-3 rounded-2xl bg-white/5 px-4 py-3 animate-pulse">
+                <div className="h-10 w-10 shrink-0 rounded-xl bg-white/10" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-4 w-2/3 rounded bg-white/10" />
+                  <div className="h-3 w-1/3 rounded bg-white/8" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : topicQuizzes.length === 0 ? (
           <p className="py-8 text-center text-sm font-bold text-white/40">
@@ -104,7 +100,6 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
               const isSelected = selectedIds.includes(quiz.id);
               const theme = getQuizTheme(quiz.id);
               const SubIcon = theme.icon;
-              const region = getQuizRegion(quiz);
               return (
                 <button
                   key={quiz.id}
@@ -119,21 +114,14 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
                     <SubIcon className="h-5 w-5 text-white" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1.5">
-                      <h3 className="text-sm font-extrabold leading-tight text-white truncate">{quiz.title}</h3>
-                      <span className={`shrink-0 rounded px-1 py-0.5 text-[9px] font-extrabold uppercase leading-none ${
-                        region === "lt" ? "bg-yellow-400/20 text-yellow-300" : "bg-blue-400/20 text-blue-300"
-                      }`}>
-                        {region === "lt" ? "LT" : "EN"}
-                      </span>
-                    </div>
+                    <h3 className="text-sm font-extrabold leading-tight text-white truncate">{quiz.title}</h3>
                     <p className="text-[11px] font-bold text-white/40">
                       {quiz.questionCount} {t("quizPicker.q")}
                     </p>
                   </div>
                   {isSelected && (
                     <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white">
-                      <Check className="h-3.5 w-3.5 text-[#46178f]" />
+                      <Check className="h-3.5 w-3.5 text-[#e8590c]" />
                     </div>
                   )}
                 </button>
@@ -185,7 +173,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
               >
                 {selectedCount > 0 && (
                   <div className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-white">
-                    <span className="text-[10px] font-extrabold text-[#46178f]">{selectedCount}</span>
+                    <span className="text-[10px] font-extrabold text-[#e8590c]">{selectedCount}</span>
                   </div>
                 )}
                 <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${topic.bg}`}>
@@ -198,7 +186,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
             );
           })}
         </div>
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#46178f] to-transparent sm:hidden" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#e8590c] to-transparent sm:hidden" />
       </div>
     );
   }

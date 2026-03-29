@@ -356,7 +356,7 @@ function PlayPageInner() {
 
 export default function PlayPage() {
   return (
-    <div className="relative flex min-h-svh flex-col items-center bg-[#46178f] bg-pattern">
+    <div className="relative flex min-h-svh flex-col items-center bg-[#e8590c] bg-pattern">
       <Suspense
         fallback={
           <div className="relative z-10 flex flex-1 items-center justify-center">

@@ -1,7 +1,7 @@
 # Quizmo — Project Guidelines
 
-## Design Philosophy: Kahoot Clone
-This is a quiz platform modeled after Kahoot. Every change MUST follow these principles:
+## Design Philosophy
+This is a distinctive quiz platform with its own vibrant orange identity. Every change MUST follow these principles:
 
 ### UI/UX Rules (STRICT)
 1. **Minimal text** — if it can be understood without words, remove the words
@@ -12,14 +12,14 @@ This is a quiz platform modeled after Kahoot. Every change MUST follow these pri
 6. **Typography** — always `font-extrabold` for headings, `font-bold` for body emphasis
 
 ### Color Palette
-- Background: `#46178f` (Kahoot purple)
+- Background: `#e8590c` (vibrant orange)
 - Text: white
 - Answer Red: `#e21b3c`
 - Answer Blue: `#1368ce`
 - Answer Green: `#26890c`
 - Answer Yellow: `#d89e00`
 - Surface: `glass` class (white/8 with blur)
-- Buttons: `btn-primary` (white bg, purple text) or `btn-secondary` (glass with border)
+- Buttons: `btn-primary` (white bg, orange text) or `btn-secondary` (glass with border)
 
 ### Animation Standards
 - Page enter: `animate-fade-in-up`
@@ -35,7 +35,7 @@ When reviewing code, flag these issues:
 - Subtle/muted colors (anything with opacity < 0.3 on important elements)
 - Missing animations on state transitions
 - Screens with more than 5 visible elements
-- Any reference to the old amber/#0f0e0a theme
+- Any reference to the old purple/#46178f theme
 
 ## Tech Stack
 - Next.js 16 (App Router) + React 19 + TypeScript

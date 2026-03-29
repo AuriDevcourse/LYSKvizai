@@ -37,6 +37,7 @@ interface UseRoomReturn {
 }
 
 const MAX_RETRIES = 50; // Higher limit since Vercel may drop SSE every ~25s
+const PERMANENT_DISCONNECT_TIMEOUT = 30_000; // 30s without connection = permanent disconnect
 
 export function useRoom(code: string | null, playerId: string | null): UseRoomReturn {
   const [state, setState] = useState<RoomState | null>(null);
@@ -57,6 +58,7 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
 
   const esRef = useRef<EventSource | null>(null);
   const reconnectTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const disconnectTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const retriesRef = useRef(0);
   const reactionIdRef = useRef(0);
 
@@ -184,6 +186,11 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
       setConnected(true);
       setError(null);
       retriesRef.current = 0;
+      // Clear permanent disconnect timer on successful connection
+      if (disconnectTimer.current) {
+        clearTimeout(disconnectTimer.current);
+        disconnectTimer.current = undefined;
+      }
     };
 
     es.onerror = () => {
@@ -192,8 +199,17 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
 
       retriesRef.current++;
       if (retriesRef.current >= MAX_RETRIES) {
-        setError("Room not found or connection lost. Go back to /play and try again.");
+        setError("Connection lost permanently. Go back to /play and try again.");
         return;
+      }
+
+      // Start permanent disconnect timer on first failure
+      if (!disconnectTimer.current) {
+        disconnectTimer.current = setTimeout(() => {
+          setError("Connection lost for too long. Go back to /play and try again.");
+          clearTimeout(reconnectTimeout.current);
+          esRef.current?.close();
+        }, PERMANENT_DISCONNECT_TIMEOUT);
       }
 
       // Quick reconnect (Vercel may drop SSE after ~25s, this is expected)
@@ -208,6 +224,7 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
     connect();
     return () => {
       clearTimeout(reconnectTimeout.current);
+      clearTimeout(disconnectTimer.current);
       esRef.current?.close();
     };
   }, [connect]);

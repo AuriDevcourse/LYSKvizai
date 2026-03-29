@@ -36,7 +36,7 @@ export default function CharadesPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-svh items-center justify-center bg-[#46178f]">
+        <div className="flex min-h-svh items-center justify-center bg-[#e8590c]">
           <Loader2 className="h-10 w-10 animate-spin text-white" />
         </div>
       }
@@ -243,7 +243,7 @@ function CharadesInner() {
   // === LOADING ===
   if (phase === "loading") {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#46178f]">
+      <div className="flex min-h-svh items-center justify-center bg-[#e8590c]">
         <Loader2 className="h-10 w-10 animate-spin text-white" />
       </div>
     );
@@ -252,7 +252,7 @@ function CharadesInner() {
   // === READY ===
   if (phase === "ready") {
     return (
-      <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-[#46178f] bg-pattern px-6">
+      <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-[#e8590c] bg-pattern px-6">
         <div className="flex gap-4">
           <Smartphone className="h-14 w-14 text-white/40" />
           <Smartphone className="h-14 w-14 text-white rotate-90" />
@@ -296,7 +296,7 @@ function CharadesInner() {
   // === COUNTDOWN ===
   if (phase === "countdown") {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-[#46178f]">
+      <div className="flex min-h-svh items-center justify-center bg-[#e8590c]">
         <span className="text-9xl font-black text-white animate-bounce-in">
           {countdown || "GO!"}
         </span>
@@ -307,7 +307,7 @@ function CharadesInner() {
   // === RESULTS ===
   if (phase === "results") {
     return (
-      <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-[#46178f] bg-pattern px-6">
+      <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-[#e8590c] bg-pattern px-6">
         <h1 className="text-3xl font-extrabold text-white">
           {t("charades.timeUp")}
         </h1>
@@ -359,7 +359,7 @@ function CharadesInner() {
       ? "bg-[#26890c]"
       : flashColor === "red"
         ? "bg-[#e21b3c]"
-        : "bg-[#46178f]";
+        : "bg-[#e8590c]";
 
   return (
     <div

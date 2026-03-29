@@ -86,7 +86,7 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
             >
               {isSelected && (
                 <div className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-white">
-                  <Check className="h-3.5 w-3.5 text-[#46178f]" />
+                  <Check className="h-3.5 w-3.5 text-[#e8590c]" />
                 </div>
               )}
               <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${theme.bg}`}>
