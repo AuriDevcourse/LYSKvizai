@@ -175,7 +175,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
     <div className="relative flex min-h-svh flex-col items-center bg-[#e8590c] bg-pattern">
       <Link
         href="/"
-        className="fixed right-3 top-3 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
+        className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
       >
         <X className="h-5 w-5" />
       </Link>

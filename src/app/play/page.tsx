@@ -322,7 +322,7 @@ function PlayPageInner() {
         <div className="relative flex w-full flex-col items-center gap-6 animate-fade-in-up self-start -mt-8 sm:self-center sm:mt-0">
           <button
             onClick={() => { setMode("menu"); setError(null); }}
-            className="fixed right-3 top-3 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white sm:hidden"
+            className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white sm:hidden"
           >
             <X className="h-5 w-5" />
           </button>

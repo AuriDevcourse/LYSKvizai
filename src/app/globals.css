@@ -23,7 +23,29 @@ body {
   overflow-x: hidden;
 }
 
-/* Kahoot-style bold headings */
+/* Logo with animated color-cycling stroke */
+.logo-stroke {
+  color: white;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.3);
+  paint-order: stroke fill;
+  -webkit-text-stroke-color: var(--stroke-color, rgba(255,255,255,0.3));
+  animation: stroke-cycle 6s ease-in-out infinite;
+}
+@media (min-width: 640px) {
+  .logo-stroke {
+    -webkit-text-stroke-width: 3px;
+  }
+}
+@keyframes stroke-cycle {
+  0%, 100% { -webkit-text-stroke-color: #f59e0b; }
+  16% { -webkit-text-stroke-color: #ef4444; }
+  33% { -webkit-text-stroke-color: #ec4899; }
+  50% { -webkit-text-stroke-color: #8b5cf6; }
+  66% { -webkit-text-stroke-color: #3b82f6; }
+  83% { -webkit-text-stroke-color: #22c55e; }
+}
+
+/* Bold headings */
 h1, h2, h3 {
   font-weight: 800;
   letter-spacing: -0.02em;

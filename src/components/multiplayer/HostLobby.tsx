@@ -89,7 +89,7 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
         </div>
 
         {/* Right: player list */}
-        <div className="flex min-w-[260px] flex-col gap-4 rounded-2xl border border-white/10 bg-white/5 p-5">
+        <div className="flex w-full flex-col gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 sm:min-w-[260px]">
           <div className="flex items-center justify-center gap-2 text-sm font-extrabold uppercase tracking-wider text-white/60">
             <Users className="h-5 w-5" />
             <span>{t("lobby.players")} ({players.length})</span>

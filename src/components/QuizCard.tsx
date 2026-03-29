@@ -217,7 +217,7 @@ export default function QuizCard({
                 className={classes}
               >
                 <Icon className="h-6 w-6 shrink-0" {...(isTrueFalse ? { strokeWidth: 3 } : { fill: "currentColor" })} />
-                <span className="text-sm leading-tight sm:text-base">{option}</span>
+                <span className="text-sm leading-tight break-words sm:text-base">{option}</span>
                 {answered && isCorrectAnswer && (
                   <Check className="absolute right-3 top-3 h-5 w-5 animate-bounce-in" />
                 )}

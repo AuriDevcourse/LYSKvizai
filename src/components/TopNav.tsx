@@ -12,7 +12,7 @@ export default function TopNav() {
   if (HIDDEN_PATTERNS.some((p) => p.test(pathname))) return null;
 
   return (
-    <div className="fixed right-3 top-3 z-50 hidden sm:block">
+    <div className="fixed right-4 top-4 z-50 hidden sm:block">
       <LanguageToggle />
     </div>
   );

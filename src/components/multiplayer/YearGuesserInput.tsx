@@ -131,12 +131,12 @@ export default function YearGuesserInput({
       {/* Year input */}
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
         {/* +10 / +1 buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             onPointerDown={() => startHold(10)}
             onPointerUp={stopHold}
             onPointerLeave={stopHold}
-            className="flex h-12 w-16 items-center justify-center rounded-xl bg-[#1368ce] font-extrabold text-white text-sm active:brightness-90"
+            className="flex h-12 w-14 items-center justify-center rounded-xl bg-[#1368ce] font-extrabold text-white text-sm active:brightness-90 sm:h-12 sm:w-16"
           >
             +10
           </button>
@@ -144,24 +144,24 @@ export default function YearGuesserInput({
             onPointerDown={() => startHold(1)}
             onPointerUp={stopHold}
             onPointerLeave={stopHold}
-            className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#26890c] text-white active:brightness-90"
+            className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#26890c] text-white active:brightness-90 sm:h-14 sm:w-14"
           >
             <ChevronUp className="h-7 w-7" />
           </button>
         </div>
 
         {/* Year display */}
-        <div className="text-6xl font-extrabold text-white tabular-nums">
+        <div className="text-5xl font-extrabold text-white tabular-nums sm:text-6xl">
           {year}
         </div>
 
         {/* -1 / -10 buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             onPointerDown={() => startHold(-10)}
             onPointerUp={stopHold}
             onPointerLeave={stopHold}
-            className="flex h-12 w-16 items-center justify-center rounded-xl bg-[#d89e00] font-extrabold text-white text-sm active:brightness-90"
+            className="flex h-12 w-14 items-center justify-center rounded-xl bg-[#d89e00] font-extrabold text-white text-sm active:brightness-90 sm:h-12 sm:w-16"
           >
             -10
           </button>
@@ -169,7 +169,7 @@ export default function YearGuesserInput({
             onPointerDown={() => startHold(-1)}
             onPointerUp={stopHold}
             onPointerLeave={stopHold}
-            className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#e21b3c] text-white active:brightness-90"
+            className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#e21b3c] text-white active:brightness-90 sm:h-14 sm:w-14"
           >
             <ChevronDown className="h-7 w-7" />
           </button>

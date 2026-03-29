@@ -45,7 +45,7 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
       </h2>
 
       {/* Podium */}
-      <div className="flex w-full max-w-lg items-end justify-center gap-3 mt-2">
+      <div className="flex w-full max-w-xs items-end justify-center gap-2 mt-2 sm:max-w-lg sm:gap-3">
         {/* 2nd place */}
         <div className="flex w-1/3 flex-col items-center" style={{ opacity: revealStep >= 2 ? 1 : 0, transition: "opacity 0.5s" }}>
           {top3[1] && (
@@ -53,7 +53,7 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
               <Award className="h-7 w-7 text-gray-300 animate-bounce-in" />
               <div
                 className={`mt-2 flex w-full flex-col items-center rounded-t-2xl px-2 py-4 animate-fade-in-up ${
-                  isMe(top3[1].playerId) ? "bg-white/20 ring-2 ring-white" : "glass"
+                  isMe(top3[1].playerId) ? "bg-white/20 outline outline-2 outline-white" : "glass"
                 }`}
                 style={{ minHeight: 100 }}
               >
@@ -73,7 +73,7 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
               <Crown className="h-9 w-9 text-[#d89e00] animate-bounce-in" />
               <div
                 className={`mt-2 flex w-full flex-col items-center rounded-t-2xl px-2 py-6 animate-fade-in-up ${
-                  isMe(top3[0].playerId) ? "bg-white/20 ring-2 ring-white" : "glass"
+                  isMe(top3[0].playerId) ? "bg-white/20 outline outline-2 outline-white" : "glass"
                 }`}
                 style={{ minHeight: 130 }}
               >
@@ -93,7 +93,7 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
               <Medal className="h-6 w-6 text-amber-700 animate-bounce-in" />
               <div
                 className={`mt-2 flex w-full flex-col items-center rounded-t-2xl px-2 py-3 animate-fade-in-up ${
-                  isMe(top3[2].playerId) ? "bg-white/20 ring-2 ring-white" : "glass"
+                  isMe(top3[2].playerId) ? "bg-white/20 outline outline-2 outline-white" : "glass"
                 }`}
                 style={{ minHeight: 70 }}
               >

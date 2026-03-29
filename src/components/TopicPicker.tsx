@@ -95,7 +95,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
             {t("quizPicker.noQuizzes")}
           </p>
         ) : (
-          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 stagger-children">
+          <div className="flex flex-wrap justify-center gap-2.5 stagger-children [&>button]:w-full sm:[&>button]:w-[calc(50%-0.3125rem)]">
             {topicQuizzes.map((quiz) => {
               const isSelected = selectedIds.includes(quiz.id);
               const theme = getQuizTheme(quiz.id);
@@ -106,7 +106,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
                   onClick={() => handleToggleQuiz(quiz.id)}
                   className={`answer-btn relative flex items-center gap-3 rounded-2xl px-4 py-3 text-left transition-all ${
                     isSelected
-                      ? "bg-white/20 ring-2 ring-white"
+                      ? "bg-white/20 outline outline-2 outline-white"
                       : "glass hover:bg-white/12"
                   }`}
                 >
@@ -156,7 +156,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
           </h2>
         </div>
 
-        <div className="max-h-[60svh] overflow-y-auto sm:max-h-none grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3 stagger-children">
+        <div className="max-h-[60svh] overflow-y-auto sm:max-h-none flex flex-wrap justify-center gap-3 sm:gap-4 stagger-children p-1 [&>button]:w-[calc(50%-0.375rem)] sm:[&>button]:w-[calc(25%-0.75rem)]">
           {TOPICS.map((topic) => {
             const Icon = topic.icon;
             const topicIds = topic.quizIds;
@@ -167,12 +167,12 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
                 onClick={() => setActiveTopic(topic)}
                 className={`answer-btn relative flex flex-col items-center gap-2 rounded-2xl px-3 py-4 text-center transition-all ${
                   selectedCount > 0
-                    ? "bg-white/20 ring-2 ring-white"
+                    ? "bg-white/20 outline outline-2 outline-white"
                     : "glass hover:bg-white/12"
                 }`}
               >
                 {selectedCount > 0 && (
-                  <div className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-white">
+                  <div className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-white">
                     <span className="text-[10px] font-extrabold text-[#e8590c]">{selectedCount}</span>
                   </div>
                 )}
@@ -194,7 +194,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
   // === Level 1: Game type grid ===
   return (
     <div className="relative">
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 stagger-children">
+      <div className="flex flex-wrap justify-center gap-3 stagger-children [&>button]:w-[calc(50%-0.375rem)] sm:[&>button]:w-[calc(33.333%-0.5rem)]">
         {GAME_TYPES.map((gt) => {
           const Icon = gt.icon;
           const nameKey = gt.id === "mixed" ? "gameTypes.mixed" : `gameTypes.${gt.id}`;
