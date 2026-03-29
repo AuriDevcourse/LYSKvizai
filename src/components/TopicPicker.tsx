@@ -56,13 +56,22 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
     onSelect(next);
   };
 
-  const isZoomOut = activeGameType?.id === "zoom-out";
+  /** Check if a quiz has enough eligible questions for the active game type */
+  const isQuizEligible = (q: QuizMeta): boolean => {
+    const mode = activeGameType?.id as string | undefined;
+    if (!mode || mode === "standard" || mode === "true-false" || mode === "mixed") return true;
+    if (mode === "charades") return true;
+    if (mode === "zoom-out") return (q.imageCount ?? 0) > 0;
+    if (mode === "year-guesser") return (q.yearCount ?? 0) > 0;
+    if (mode === "fastest-finger") return (q.shortAnswerCount ?? 0) >= 3;
+    return true;
+  };
 
   // === Level 3: Quizzes inside a category ===
   if (activeGameType && activeTopic) {
     const topicQuizzes = allQuizzes
       .filter((q) => activeTopic.quizIds.includes(q.id))
-      .filter((q) => !isZoomOut || (q.imageCount ?? 0) > 0);
+      .filter(isQuizEligible);
     const Icon = activeTopic.icon;
     return (
       <div className="animate-fade-in-up">
@@ -157,11 +166,10 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 stagger-children">
           {TOPICS.filter((topic) => {
-            // For zoom-out: hide topics with zero image quizzes
-            if (!isZoomOut) return true;
+            // Hide topics with zero eligible quizzes for this game type
             return topic.quizIds.some((id) => {
               const meta = allQuizzes.find((q) => q.id === id);
-              return meta && (meta.imageCount ?? 0) > 0;
+              return meta && isQuizEligible(meta);
             });
           }).map((topic) => {
             const Icon = topic.icon;

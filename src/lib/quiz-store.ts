@@ -38,6 +38,11 @@ export async function listQuizzes(): Promise<QuizMeta[]> {
         questionCount: quiz.questions.length,
         language: (raw_quiz.language as string) || undefined,
         imageCount: quiz.questions.filter((q) => q.image && !q.image.startsWith("http")).length,
+        yearCount: quiz.questions.filter((q) => q.correctYear != null).length,
+        shortAnswerCount: quiz.questions.filter((q) => {
+          const a = q.options[q.correct]?.trim() ?? "";
+          return a.length > 0 && a.length <= 25 && a.split(/\s+/).length <= 3;
+        }).length,
       });
     } catch {
       // skip invalid files

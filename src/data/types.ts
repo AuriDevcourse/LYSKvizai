@@ -35,6 +35,10 @@ export interface QuizMeta {
   questionCount: number;
   /** Content language/region: "lt" for Lithuanian-focused, "en" for English/international */
   language?: string;
-  /** Number of questions that have images (for zoom-out eligibility) */
+  /** Number of questions that have local images (for zoom-out eligibility) */
   imageCount?: number;
+  /** Number of questions with correctYear (for year-guesser eligibility) */
+  yearCount?: number;
+  /** Number of questions with short typeable answers (for fastest-finger eligibility) */
+  shortAnswerCount?: number;
 }

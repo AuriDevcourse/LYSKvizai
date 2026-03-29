@@ -73,7 +73,7 @@ export default function ResultScreen({ score, total, onRestart }: ResultScreenPr
     <div className="flex w-full flex-col items-center text-center">
       {/* Big emoji */}
       <div
-        className="mb-4 text-7xl sm:text-8xl transition-all duration-500"
+        className="mb-4 text-7xl sm:text-8xl transition-[opacity,transform] duration-500"
         style={{ opacity: step >= 1 ? 1 : 0, transform: step >= 1 ? "scale(1)" : "scale(0.3)" }}
       >
         {emoji}
@@ -81,7 +81,7 @@ export default function ResultScreen({ score, total, onRestart }: ResultScreenPr
 
       {/* Score */}
       <div
-        className="mb-2 transition-all duration-500"
+        className="mb-2 transition-[opacity,transform] duration-500"
         style={{ opacity: step >= 2 ? 1 : 0, transform: step >= 2 ? "translateY(0)" : "translateY(20px)" }}
       >
         <span className="font-[var(--font-headline)] text-7xl font-extrabold text-white sm:text-8xl">
@@ -111,7 +111,7 @@ export default function ResultScreen({ score, total, onRestart }: ResultScreenPr
 
       {/* Message */}
       <h2
-        className="mb-8 font-[var(--font-headline)] text-3xl font-extrabold text-white sm:text-4xl transition-all duration-500"
+        className="mb-8 font-[var(--font-headline)] text-3xl font-extrabold text-white sm:text-4xl transition-[opacity,transform] duration-500"
         style={{ opacity: step >= 4 ? 1 : 0, transform: step >= 4 ? "translateY(0)" : "translateY(12px)" }}
       >
         {title}
@@ -119,7 +119,7 @@ export default function ResultScreen({ score, total, onRestart }: ResultScreenPr
 
       {/* Play again button */}
       <div
-        className="w-full max-w-xs transition-all duration-500"
+        className="w-full max-w-xs transition-[opacity,transform] duration-500"
         style={{ opacity: step >= 5 ? 1 : 0, transform: step >= 5 ? "translateY(0)" : "translateY(12px)" }}
       >
         <button onClick={onRestart} className="btn-primary w-full text-center">
