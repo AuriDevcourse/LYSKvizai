@@ -120,7 +120,7 @@ function PlayPageInner() {
   };
 
   return (
-    <main className="relative z-10 flex w-full max-w-2xl flex-1 flex-col items-center justify-center px-5 py-8">
+    <main className="relative z-10 flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-5 py-8">
       {mode === "menu" && (
         <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
           <h1 className="text-3xl font-extrabold text-white sm:text-4xl">
@@ -161,7 +161,7 @@ function PlayPageInner() {
       )}
 
       {mode === "pick-quiz" && (
-        <div className="flex w-full flex-col gap-6 animate-fade-in-up">
+        <div className="flex w-full flex-col gap-6 animate-fade-in-up self-stretch">
           {error && (
             <p className="w-full rounded-xl bg-[#ff716c]/15 border border-[#ff716c]/20 px-4 py-3 text-center text-sm font-bold text-white">
               {error}
