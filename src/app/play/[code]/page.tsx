@@ -59,7 +59,7 @@ export default function GamePage({ params }: PageProps) {
   useEffect(() => {
     if (!hostId || hostId !== playerId) return;
     fetch(`${MP_API_URL}/rooms?code=${code}`)
-      .then((r) => r.json())
+      .then((r) => { if (!r.ok) throw new Error("Not found"); return r.json(); })
       .then((data) => {
         if (data.hostId === hostId) {
           setVerifiedHost(true);

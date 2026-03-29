@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, Check, Loader2, Shuffle, ToggleLeft, Calendar, Keyboard, HelpCircle, ZoomOut, Smartphone } from "lucide-react";
+import { ArrowLeft, Check, Shuffle, ToggleLeft, Calendar, Keyboard, HelpCircle, ZoomOut, Smartphone } from "lucide-react";
 import { TOPICS, type Topic } from "@/lib/topics";
 import type { QuizMeta } from "@/data/types";
 import type { QuestionType } from "@/data/types";
@@ -20,17 +20,18 @@ interface TopicPickerProps {
 type GameTypeOption = {
   id: QuestionType | "mixed";
   icon: typeof HelpCircle;
-  bg: string;
+  color: string;
+  desc: string;
 };
 
 const GAME_TYPES: GameTypeOption[] = [
-  { id: "standard", icon: HelpCircle, bg: "bg-[#1368ce]" },
-  { id: "true-false", icon: ToggleLeft, bg: "bg-[#26890c]" },
-  { id: "zoom-out", icon: ZoomOut, bg: "bg-[#0ea5e9]" },
-  { id: "year-guesser", icon: Calendar, bg: "bg-[#d89e00]" },
-  { id: "fastest-finger", icon: Keyboard, bg: "bg-[#e21b3c]" },
-  { id: "mixed", icon: Shuffle, bg: "bg-[#8b5cf6]" },
-  { id: "charades" as QuestionType, icon: Smartphone, bg: "bg-[#f97316]" },
+  { id: "standard", icon: HelpCircle, color: "bg-[#43a5fc]/15 text-[#43a5fc]", desc: "Four options, one winner" },
+  { id: "true-false", icon: ToggleLeft, color: "bg-[#e77fff]/15 text-[#e77fff]", desc: "Binary decision challenge" },
+  { id: "zoom-out", icon: ZoomOut, color: "bg-[#ff9062]/15 text-[#ff9062]", desc: "Identify the hidden image" },
+  { id: "year-guesser", icon: Calendar, color: "bg-[#b2ff59]/15 text-[#b2ff59]", desc: "Place events on a timeline" },
+  { id: "fastest-finger", icon: Keyboard, color: "bg-[#ff716c]/15 text-[#ff716c]", desc: "Speed is everything" },
+  { id: "mixed", icon: Shuffle, color: "bg-[#e77fff]/15 text-[#e77fff]", desc: "A chaotic variety of all types" },
+  { id: "charades" as QuestionType, icon: Smartphone, color: "bg-[#43a5fc]/15 text-[#43a5fc]", desc: "Act it out, guess it right" },
 ];
 
 export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onGameTypeChange }: TopicPickerProps) {
@@ -63,39 +64,39 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
       <div className="animate-fade-in-up">
         <button
           onClick={() => setActiveTopic(null)}
-          className="mb-4 flex items-center gap-2 text-sm font-bold text-white/60 transition-colors hover:text-white"
+          className="mb-4 flex items-center gap-2 text-sm font-bold text-white/40 transition-colors hover:text-white"
         >
           <ArrowLeft className="h-4 w-4" />
           {t("nav.back")}
         </button>
 
-        <div className="mb-5 flex items-center gap-3">
+        <div className="mb-6 flex items-center gap-3">
           <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${activeTopic.bg}`}>
             <Icon className="h-5 w-5 text-white" />
           </div>
-          <h2 className="text-xl font-extrabold text-white">
+          <h2 className="font-[var(--font-headline)] text-2xl font-extrabold text-white">
             {t(activeTopic.labelKey as never)}
           </h2>
         </div>
 
         {!initialLoaded ? (
-          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+          <div className="flex flex-col gap-3">
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-3 rounded-2xl bg-white/5 px-4 py-3 animate-pulse">
-                <div className="h-10 w-10 shrink-0 rounded-xl bg-white/10" />
+              <div key={i} className="flex items-center gap-3 rounded-xl bg-white/4 px-5 py-4 animate-pulse border border-white/5">
+                <div className="h-10 w-10 shrink-0 rounded-xl bg-white/8" />
                 <div className="flex-1 space-y-2">
-                  <div className="h-4 w-2/3 rounded bg-white/10" />
-                  <div className="h-3 w-1/3 rounded bg-white/8" />
+                  <div className="h-4 w-2/3 rounded bg-white/8" />
+                  <div className="h-3 w-1/3 rounded bg-white/5" />
                 </div>
               </div>
             ))}
           </div>
         ) : topicQuizzes.length === 0 ? (
-          <p className="py-8 text-center text-sm font-bold text-white/40">
+          <p className="py-8 text-center text-sm font-bold text-white/30">
             {t("quizPicker.noQuizzes")}
           </p>
         ) : (
-          <div className="flex flex-wrap justify-center gap-2.5 stagger-children [&>button]:w-full sm:[&>button]:w-[calc(50%-0.3125rem)]">
+          <div className="flex flex-col gap-3 stagger-children">
             {topicQuizzes.map((quiz) => {
               const isSelected = selectedIds.includes(quiz.id);
               const theme = getQuizTheme(quiz.id);
@@ -104,26 +105,26 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
                 <button
                   key={quiz.id}
                   onClick={() => handleToggleQuiz(quiz.id)}
-                  className={`answer-btn relative flex items-center gap-3 rounded-2xl px-4 py-3 text-left transition-all ${
+                  className={`group relative flex items-center gap-4 rounded-xl px-5 py-4 text-left transition-all duration-300 ${
                     isSelected
-                      ? "bg-white/20 outline outline-2 outline-white"
-                      : "glass hover:bg-white/12"
+                      ? "bg-[#e8590c]/12 border-[1.5px] border-[#ff9062]/40"
+                      : "bg-white/4 border-[1.5px] border-white/5 hover:bg-white/8 hover:border-white/10"
                   }`}
                 >
                   <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${theme.bg}`}>
                     <SubIcon className="h-5 w-5 text-white" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="text-sm font-extrabold leading-tight text-white truncate">{quiz.title}</h3>
-                    <p className="text-[11px] font-bold text-white/40">
-                      {quiz.questionCount} {t("quizPicker.q")}
+                    <h3 className={`text-sm font-extrabold leading-tight truncate ${isSelected ? "text-[#ff9062]" : "text-white group-hover:text-[#ff9062]"} transition-colors`}>{quiz.title}</h3>
+                    <p className="text-xs text-white/30 mt-0.5">
+                      {quiz.questionCount} questions
                     </p>
                   </div>
-                  {isSelected && (
-                    <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white">
-                      <Check className="h-3.5 w-3.5 text-[#ff9062]" />
-                    </div>
-                  )}
+                  <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border transition-all ${
+                    isSelected ? "bg-[#ff9062] border-[#ff9062]" : "border-white/20 bg-white/5"
+                  }`}>
+                    {isSelected && <Check className="h-3.5 w-3.5 text-black" />}
+                  </div>
                 </button>
               );
             })}
@@ -133,30 +134,24 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
     );
   }
 
-  // === Level 2: Categories inside a game type ===
+  // === Level 2: Topics grid ===
   if (activeGameType) {
-    const GtIcon = activeGameType.icon;
-    const gtKey = activeGameType.id === "mixed" ? "gameTypes.mixed" : `gameTypes.${activeGameType.id}`;
     return (
       <div className="animate-fade-in-up">
         <button
           onClick={() => { setActiveGameType(null); onGameTypeChange?.(null); }}
-          className="mb-4 flex items-center gap-2 text-sm font-bold text-white/60 transition-colors hover:text-white"
+          className="mb-2 flex items-center gap-2 text-sm font-bold text-white/40 transition-colors hover:text-white"
         >
           <ArrowLeft className="h-4 w-4" />
           {t("nav.back")}
         </button>
 
-        <div className="mb-5 flex items-center gap-3">
-          <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${activeGameType.bg}`}>
-            <GtIcon className="h-5 w-5 text-white" />
-          </div>
-          <h2 className="text-xl font-extrabold text-white">
-            {t(gtKey as never)}
-          </h2>
-        </div>
+        <h2 className="font-[var(--font-headline)] text-3xl font-extrabold text-white mb-1 sm:text-4xl">
+          Select <span className="text-[#43a5fc]">Topic</span>
+        </h2>
+        <p className="text-sm text-white/30 mb-6">Pick a topic to start building your challenge.</p>
 
-        <div className="max-h-[60svh] overflow-y-auto sm:max-h-none flex flex-wrap justify-center gap-3 sm:gap-4 stagger-children p-1 [&>button]:w-[calc(50%-0.375rem)] sm:[&>button]:w-[calc(25%-0.75rem)]">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 stagger-children">
           {TOPICS.map((topic) => {
             const Icon = topic.icon;
             const topicIds = topic.quizIds;
@@ -165,55 +160,58 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
               <button
                 key={topic.id}
                 onClick={() => setActiveTopic(topic)}
-                className={`answer-btn relative flex flex-col items-center gap-2 rounded-2xl px-3 py-4 text-center transition-all ${
+                className={`group relative flex flex-col items-center gap-2.5 rounded-xl px-3 py-5 text-center transition-all duration-300 ${
                   selectedCount > 0
-                    ? "bg-white/20 outline outline-2 outline-white"
-                    : "glass hover:bg-white/12"
+                    ? "bg-[#e8590c]/12 border-[1.5px] border-[#ff9062]/40"
+                    : "bg-white/4 border-[1.5px] border-white/5 hover:bg-white/8 hover:border-white/10"
                 }`}
               >
                 {selectedCount > 0 && (
-                  <div className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-white">
-                    <span className="text-[10px] font-extrabold text-[#ff9062]">{selectedCount}</span>
+                  <div className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[#ff9062] text-[10px] font-extrabold text-black">
+                    {selectedCount}
                   </div>
                 )}
                 <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${topic.bg}`}>
-                  <Icon className="h-6 w-6 text-white" />
+                  <Icon className="h-5 w-5 text-white" />
                 </div>
-                <span className="text-xs font-extrabold text-white/80">
+                <span className="text-xs font-bold text-white/70 group-hover:text-white transition-colors">
                   {t(topic.labelKey as never)}
                 </span>
               </button>
             );
           })}
         </div>
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#0e0e0e] to-transparent sm:hidden" />
       </div>
     );
   }
 
-  // === Level 1: Game type grid ===
+  // === Level 1: Game type list ===
   return (
-    <div className="relative">
-      <div className="flex flex-wrap justify-center gap-3 stagger-children [&>button]:w-[calc(50%-0.375rem)] sm:[&>button]:w-[calc(33.333%-0.5rem)]">
+    <div className="animate-fade-in-up">
+      <h2 className="font-[var(--font-headline)] text-3xl font-extrabold text-white mb-1 sm:text-4xl">
+        Choose Game <span className="text-[#ff9062]">Type</span>
+      </h2>
+      <p className="text-sm text-white/30 mb-6">Select a game mode to start building your quiz experience.</p>
+
+      <div className="flex flex-col gap-3 stagger-children">
         {GAME_TYPES.map((gt) => {
           const Icon = gt.icon;
           const nameKey = gt.id === "mixed" ? "gameTypes.mixed" : `gameTypes.${gt.id}`;
-          const descKey = gt.id === "mixed" ? "gameTypes.mixed.desc" : `gameTypes.${gt.id}.desc`;
           return (
             <button
               key={gt.id}
               onClick={() => { setActiveGameType(gt); onGameTypeChange?.(gt.id); }}
-              className="answer-btn flex flex-col items-center gap-2 rounded-2xl px-4 py-6 text-center glass hover:bg-white/12 transition-all"
+              className="group flex items-center gap-4 rounded-xl bg-white/4 border-[1.5px] border-white/5 px-5 py-4 text-left transition-all duration-300 hover:bg-white/8 hover:border-white/10 active:scale-[0.98]"
             >
-              <div className={`flex h-14 w-14 items-center justify-center rounded-2xl ${gt.bg}`}>
-                <Icon className="h-7 w-7 text-white" />
+              <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${gt.color.split(" ")[0]}`}>
+                <Icon className={`h-5 w-5 ${gt.color.split(" ").slice(1).join(" ")}`} />
               </div>
-              <span className="text-sm font-extrabold text-white">
-                {t(nameKey as never)}
-              </span>
-              <span className="text-[11px] font-bold text-white/70">
-                {t(descKey as never)}
-              </span>
+              <div className="min-w-0 flex-1">
+                <p className="font-[var(--font-headline)] text-base font-extrabold text-white">
+                  {t(nameKey as never)}
+                </p>
+                <p className="text-xs text-white/30 mt-0.5">{gt.desc}</p>
+              </div>
             </button>
           );
         })}
