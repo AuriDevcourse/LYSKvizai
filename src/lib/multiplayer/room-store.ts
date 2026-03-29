@@ -15,7 +15,7 @@ import type {
 } from "./types";
 import { ALL_POWER_UPS } from "./types";
 import { generateRoomCode } from "./room-code";
-import { calculateScore, getCatchUpMultiplier } from "./scoring";
+import { calculateScore, getQuestionValues } from "./scoring";
 import { fuzzyMatch } from "../fuzzy-match";
 import { sanitizeName, sanitizeEmoji } from "../sanitize";
 import { broadcast, removeRoomConnections } from "./sse-manager";
@@ -242,7 +242,7 @@ function getResultsPayload(room: Room): ResultsPayload {
         playerName: player.name,
         wager,
         won: correct,
-        netPoints: correct ? wager * 2 : -wager,
+        netPoints: correct ? wager : -wager,
       });
     }
 
@@ -255,25 +255,23 @@ function getResultsPayload(room: Room): ResultsPayload {
         true,
         (player.answerTime ?? room.questionStartTime) - room.questionStartTime,
         room.timerDuration * 1000,
-        player.streak - 1
+        player.streak - 1,
+        room.currentQuestionIndex
       ).points : 0;
     }
-    const mysteryMult = room.mysteryMultipliers.get(room.currentQuestionIndex) ?? 1;
-    const multipliedPts = basePts * mysteryMult;
 
     playerResults.push({
       playerId: player.id,
       playerName: player.name,
       playerEmoji: player.emoji,
       correct,
-      points: multipliedPts,
+      points: basePts,
       totalScore: player.score,
       streak: player.streak,
-      basePoints: mysteryMult > 1 ? basePts : undefined,
     });
   }
 
-  // --- Fastest / Slowest logic (only for standard multiple-choice) ---
+  // --- Fastest answerer bonus (only for standard multiple-choice, 3+ players) ---
   if (q.type !== "fastest-finger" && q.type !== "year-guesser") {
     const correctAnswerers = [...room.players.values()]
       .filter((p) => !p.eliminated && p.currentAnswer !== null && p.answerTime !== null)
@@ -284,38 +282,14 @@ function getResultsPayload(room: Room): ResultsPayload {
       .sort((a, b) => a.answerTime! - b.answerTime!);
 
     if (correctAnswerers.length >= 2) {
-      // Fastest correct answerer gets +200 bonus
       const fastest = correctAnswerers[0];
-      const SPEED_BONUS = 200;
+      const SPEED_BONUS = 150;
       fastest.score += SPEED_BONUS;
       const fastestResult = playerResults.find((r) => r.playerId === fastest.id);
       if (fastestResult) {
         fastestResult.points += SPEED_BONUS;
         fastestResult.totalScore = fastest.score;
         fastestResult.speedBonus = SPEED_BONUS;
-      }
-
-      // Slowest correct answerer tracking
-      const slowest = correctAnswerers[correctAnswerers.length - 1];
-      // Update slowest streaks
-      for (const p of correctAnswerers) {
-        if (p.id === slowest.id) {
-          p.slowestStreak++;
-        } else {
-          p.slowestStreak = 0;
-        }
-      }
-
-      // Penalty if slowest 2+ times in a row: -150
-      if (slowest.slowestStreak >= 2) {
-        const SLOW_PENALTY = -150;
-        slowest.score = Math.max(0, slowest.score + SLOW_PENALTY);
-        const slowestResult = playerResults.find((r) => r.playerId === slowest.id);
-        if (slowestResult) {
-          slowestResult.points += SLOW_PENALTY;
-          slowestResult.totalScore = slowest.score;
-          slowestResult.slowPenalty = SLOW_PENALTY;
-        }
       }
     }
   }
@@ -360,8 +334,8 @@ function getResultsPayload(room: Room): ResultsPayload {
     }
 
     if (pu === "gamble") {
-      pr.powerUpEffect = player.gambleWon ? "Gamble: 3x!" : "Gamble: 0!";
-      powerUpEffects.push({ playerId: pid, playerName: player.name, powerUp: "gamble", effect: player.gambleWon ? "3x points!" : "Lost it all!" });
+      pr.powerUpEffect = player.gambleWon ? "Gamble: 2x!" : "Gamble: 0!";
+      powerUpEffects.push({ playerId: pid, playerName: player.name, powerUp: "gamble", effect: player.gambleWon ? "2x points!" : "Lost it all!" });
     }
 
     if (pu === "double" && pr.correct) {
@@ -380,15 +354,12 @@ function getResultsPayload(room: Room): ResultsPayload {
     }
   }
 
-  const mysteryMultiplier = room.mysteryMultipliers.get(room.currentQuestionIndex);
-
   const result: ResultsPayload = {
     correctAnswer: shuffledCorrectIdx,
     explanation: q.explanation,
     answerDistribution: distribution,
     playerResults,
     leaderboard: getLeaderboard(room),
-    mysteryMultiplier: mysteryMultiplier && mysteryMultiplier > 1 ? mysteryMultiplier : undefined,
   };
 
   // Fastest finger data
@@ -744,13 +715,8 @@ export async function startGame(code: string, hostId: string): Promise<{ error?:
     rotateTeamAnswerers(room);
   }
 
-  // Mystery multiplier: randomly pick ~25% of questions
+  // Mystery multipliers removed — escalating question values replace them
   room.mysteryMultipliers.clear();
-  for (let i = 0; i < room.questionIndices.length; i++) {
-    if (Math.random() < 0.25) {
-      room.mysteryMultipliers.set(i, Math.floor(Math.random() * 4) + 2); // 2-5
-    }
-  }
 
   // Pre-translate all questions to Lithuanian (content is in English)
   try {
@@ -813,7 +779,8 @@ export function submitAnswer(
     correct,
     elapsed,
     room.timerDuration * 1000,
-    player.streak
+    player.streak,
+    room.currentQuestionIndex
   );
 
   // Check active power-ups
@@ -821,26 +788,16 @@ export function submitAnswer(
 
   if (correct) {
     let finalPoints = points;
-    // Power-ups are mutually exclusive (only one assigned per round)
+    // Double power-up: 2x base (capped at 2x the per-question cap)
     if (activePU === "double") {
-      finalPoints = points * 2;
-    } else if (activePU === "gamble") {
-      const won = Math.random() < 0.5;
-      player.gambleWon = won;
-      finalPoints = won ? points * 3 : 0;
+      const { cap } = getQuestionValues(room.currentQuestionIndex);
+      finalPoints = Math.min(points * 2, cap * 2);
     }
-    // Mystery multiplier (applies to base + power-up points)
-    const mysteryMult = room.mysteryMultipliers.get(room.currentQuestionIndex) ?? 1;
-    const multipliedPoints = finalPoints * mysteryMult;
-    // Catch-up multiplier: trailing players earn bonus points
-    const leaderScore = Math.max(...[...room.players.values()].map((p) => p.score));
-    const catchUp = getCatchUpMultiplier(player.score, leaderScore, room.players.size);
-    const catchUpPoints = Math.round(multipliedPoints * catchUp);
-    // Wager bonus added AFTER multipliers (flat, not multiplied)
+    // Wager bonus: win = +wager (flat, additive)
     const wagerBonus = (room.isWagerRound && room.wagers.has(playerId))
-      ? room.wagers.get(playerId)! * 2
+      ? room.wagers.get(playerId)!
       : 0;
-    player.score += catchUpPoints + wagerBonus;
+    player.score += finalPoints + wagerBonus;
     player.streak = newStreak;
   } else {
     // Wrong answer
@@ -905,37 +862,27 @@ export function submitTextAnswer(
 
   // Use same scoring as regular answers
   const elapsed = player.answerTime - room.questionStartTime;
-  const { points, newStreak } = calculateScore(correct, elapsed, room.timerDuration * 1000, player.streak);
+  const { points, newStreak } = calculateScore(correct, elapsed, room.timerDuration * 1000, player.streak, room.currentQuestionIndex);
 
   const activePU = room.activePowerUps.get(playerId);
 
   if (correct) {
     let finalPoints = points;
     if (activePU === "double") {
-      finalPoints = points * 2;
-    } else if (activePU === "gamble") {
-      const won = Math.random() < 0.5;
-      player.gambleWon = won;
-      finalPoints = won ? points * 3 : 0;
+      const { cap } = getQuestionValues(room.currentQuestionIndex);
+      finalPoints = Math.min(points * 2, cap * 2);
     }
 
-    // Mystery multiplier applies to base scoring only
-    const mysteryMult = room.mysteryMultipliers.get(room.currentQuestionIndex) ?? 1;
-    const multipliedPoints = finalPoints * mysteryMult;
-
-    // Fastest finger bonus: flat +500, NOT multiplied
+    // Fastest finger bonus: flat +150
     const isFirstCorrect = ![...room.players.values()].some(p => {
       if (p.id === playerId) return false;
       if (!p.currentTextAnswer) return false;
       const pNorm = p.currentTextAnswer.toLowerCase();
       return acceptedAnswers.some(a => a.toLowerCase().trim() === pNorm);
     });
-    const fastestBonus = isFirstCorrect ? 500 : 0;
+    const fastestBonus = isFirstCorrect ? 150 : 0;
 
-    // Catch-up multiplier
-    const leaderScore = Math.max(...[...room.players.values()].map((p) => p.score));
-    const catchUp = getCatchUpMultiplier(player.score, leaderScore, room.players.size);
-    player.score += Math.round(multipliedPoints * catchUp) + fastestBonus;
+    player.score += finalPoints + fastestBonus;
     player.streak = newStreak;
   } else {
     if (activePU === "shield") {
@@ -1005,13 +952,11 @@ export function submitYearAnswer(
 
   let finalPoints = points;
   if (activePU === "double" && points > 0) {
-    finalPoints = points * 2;
+    const { cap } = getQuestionValues(room.currentQuestionIndex);
+    finalPoints = Math.min(points * 2, cap * 2);
   }
 
-  const mysteryMult = room.mysteryMultipliers.get(room.currentQuestionIndex) ?? 1;
-  const leaderScore = Math.max(...[...room.players.values()].map((p) => p.score));
-  const catchUp = getCatchUpMultiplier(player.score, leaderScore, room.players.size);
-  player.score += Math.round(finalPoints * mysteryMult * catchUp);
+  player.score += finalPoints;
 
   if (points > 0) {
     player.streak += 1;
@@ -1116,12 +1061,11 @@ export function nextQuestion(code: string, hostId: string): { error?: string } {
   room.wagers.clear();
 
   // Check if this is a wager round (every Nth question, 1-indexed)
-  const questionNum = room.currentQuestionIndex + 1;
-  if (questionNum > 1 && questionNum % room.wagerInterval === 0) {
-    // Alternate: odd wager rounds = regular, even = super
+  // Final question wager: trigger wager phase only before the last question
+  const isLastQuestion = room.currentQuestionIndex + 1 >= room.questionIndices.length - 1;
+  if (isLastQuestion && room.wagerCount === 0) {
     room.wagerCount++;
-    room.wagerType = room.wagerCount % 2 === 1 ? "regular" : "super";
-    // Start wager phase
+    room.wagerType = "regular";
     room.state = "wager";
     broadcast(code, { type: "wager-start", data: getWagerPayload(room) });
     return {};
@@ -1194,8 +1138,8 @@ export function submitWager(
   if (!player) return { error: "Player not found" };
   if (player.eliminated) return { error: "You are eliminated" };
 
-  // Clamp wager to [0, score] (all-in allowed)
-  const maxWager = player.score;
+  // Clamp wager to [0, 30% of score] — prevents runaway scoring
+  const maxWager = Math.floor(player.score * 0.3);
   const clamped = Math.max(0, Math.min(amount, maxWager));
   room.wagers.set(playerId, clamped);
 
