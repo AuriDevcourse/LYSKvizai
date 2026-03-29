@@ -144,13 +144,12 @@ h1, h2, h3 {
 
 /* Answer button hover effect */
 .answer-btn {
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.12s ease, filter 0.12s ease;
   cursor: pointer;
   user-select: none;
 }
 .answer-btn:hover {
-  transform: scale(1.02);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  filter: brightness(1.08);
 }
 .answer-btn:active {
   transform: scale(0.97);
@@ -207,15 +206,13 @@ h1, h2, h3 {
   border-radius: 0.75rem;
   padding: 0.875rem 2rem;
   font-size: 1.125rem;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  transition: transform 0.12s ease, filter 0.12s ease;
 }
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  filter: brightness(0.95);
 }
 .btn-primary:active {
-  transform: translateY(0);
+  transform: scale(0.98);
 }
 
 /* Secondary button */
@@ -232,7 +229,6 @@ h1, h2, h3 {
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.18);
   border-color: rgba(255, 255, 255, 0.35);
-  transform: translateY(-1px);
 }
 
 /* Background pattern */

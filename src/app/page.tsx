@@ -3,7 +3,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Play, Home as HomeIcon, Users, PenLine, Plus, LogIn } from "lucide-react";
+import { Play, Home as HomeIcon, Users, Plus, LogIn } from "lucide-react";
 import TopicPicker, { type SelectedGameType } from "@/components/TopicPicker";
 import GameSettings from "@/components/GameSettings";
 import type { QuizMeta } from "@/data/types";
@@ -58,7 +58,6 @@ export default function Home() {
             {[
               { href: "/", icon: HomeIcon, label: t("nav.home") },
               { href: "/play", icon: Users, label: t("nav.play") },
-              { href: "/editor", icon: PenLine, label: t("nav.editor") },
             ].map((item) => {
               const Icon = item.icon;
               const isActive = item.href === "/";

@@ -377,7 +377,7 @@ function getResultsPayload(room: Room): ResultsPayload {
       result.fastestFinger = {
         playerId: correctPlayers[0].id,
         playerName: correctPlayers[0].name,
-        bonusPoints: 500,
+        bonusPoints: 150,
       };
     }
     // Include the correct answer text for display
@@ -1203,6 +1203,7 @@ export function choosePowerUp(
   if (player.eliminated) return { error: "You are eliminated" };
   if (player.powerUpUses <= 0) return { error: "No power-up uses remaining" };
   if (room.activePowerUps.has(playerId)) return { error: "Already used a power-up this round" };
+  if (player.usedPowerUpTypes.includes(powerUp)) return { error: "Already used this power-up type" };
 
   // Deduct use and record
   player.powerUpUses--;

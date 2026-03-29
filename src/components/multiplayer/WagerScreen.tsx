@@ -13,7 +13,7 @@ interface WagerScreenProps {
 
 export default function WagerScreen({ currentScore, onSubmit, wagerType = "regular" }: WagerScreenProps) {
   const { t } = useTranslation();
-  const maxWager = currentScore;
+  const maxWager = Math.floor(currentScore * 0.3);
   const [amount, setAmount] = useState(Math.round(maxWager / 2));
   const [submitted, setSubmitted] = useState(false);
 

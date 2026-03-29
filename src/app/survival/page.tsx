@@ -37,6 +37,7 @@ function SurvivalInner() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [totalAnswered, setTotalAnswered] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [lives, setLives] = useState(MAX_LIVES);
   const [score, setScore] = useState(0);
@@ -152,6 +153,8 @@ function SurvivalInner() {
   const handleNext = useCallback(() => {
     if (gameOver) return;
     const nextIndex = currentIndex + 1;
+    const nextTotal = totalAnswered + 1;
+    setTotalAnswered(nextTotal);
 
     // If we've used all questions, reshuffle
     if (nextIndex >= questions.length) {
@@ -161,12 +164,13 @@ function SurvivalInner() {
       setCurrentIndex(nextIndex);
     }
     setSelectedAnswer(null);
-    setTimeLeft(getTimer(nextIndex));
-  }, [currentIndex, questions.length, gameOver, getTimer]);
+    setTimeLeft(getTimer(nextTotal));
+  }, [currentIndex, totalAnswered, questions.length, gameOver, getTimer]);
 
   const handleRestart = () => {
     setQuestions((prev) => shuffleArray(prev));
     setCurrentIndex(0);
+    setTotalAnswered(0);
     setSelectedAnswer(null);
     setLives(MAX_LIVES);
     setScore(0);

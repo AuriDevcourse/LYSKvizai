@@ -211,7 +211,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
               <span className="text-sm font-extrabold text-white">
                 {t(nameKey as never)}
               </span>
-              <span className="text-[11px] font-bold text-white/40">
+              <span className="text-[11px] font-bold text-white/70">
                 {t(descKey as never)}
               </span>
             </button>
