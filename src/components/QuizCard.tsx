@@ -16,15 +16,15 @@ interface QuizCardProps {
 }
 
 const COLORS = [
-  { bg: "bg-[#e21b3c]", hover: "hover:brightness-110", icon: Triangle },
-  { bg: "bg-[#1368ce]", hover: "hover:brightness-110", icon: Diamond },
-  { bg: "bg-[#26890c]", hover: "hover:brightness-110", icon: Circle },
-  { bg: "bg-[#d89e00]", hover: "hover:brightness-110", icon: Square },
+  { bg: "bg-[#ff716c]", hover: "hover:brightness-110", icon: Triangle },
+  { bg: "bg-[#43a5fc]", hover: "hover:brightness-110", icon: Diamond },
+  { bg: "bg-[#b2ff59]", hover: "hover:brightness-110", icon: Circle },
+  { bg: "bg-[#ffff00]", hover: "hover:brightness-110", icon: Square },
 ];
 
 const TF_COLORS = [
-  { bg: "bg-[#26890c]", hover: "hover:brightness-110", icon: Check },
-  { bg: "bg-[#e21b3c]", hover: "hover:brightness-110", icon: X },
+  { bg: "bg-[#b2ff59]", hover: "hover:brightness-110", icon: Check },
+  { bg: "bg-[#ff716c]", hover: "hover:brightness-110", icon: X },
 ];
 
 export default function QuizCard({
@@ -173,7 +173,7 @@ export default function QuizCard({
             disabled={answered}
             autoFocus
             placeholder={t("quizCard.typeAnswer")}
-            className="w-full max-w-md rounded-2xl border-2 border-white/20 bg-white/10 px-5 py-4 text-center text-xl font-bold text-white placeholder:text-white/30 focus:border-white/50 focus:outline-none disabled:opacity-60"
+            className="w-full max-w-md rounded-2xl border-[1.5px] border-white/8 bg-white/5 px-5 py-4 text-center text-xl font-bold text-white placeholder:text-white/30 focus:border-white/50 focus:outline-none disabled:opacity-60"
           />
           {!answered && (
             <button
@@ -200,7 +200,7 @@ export default function QuizCard({
 
             if (answered) {
               if (isCorrectAnswer) {
-                classes += " ring-4 ring-white scale-[1.02]";
+                classes += " outline outline-2 outline-[#ff9062] scale-[1.02]";
               } else if (isThis) {
                 classes += " opacity-60 grayscale";
               } else {
@@ -237,10 +237,10 @@ export default function QuizCard({
           <div
             className={`rounded-2xl px-5 py-4 text-center font-bold ${
               isYearGuesser && yearGotPoints && !isYearCorrect
-                ? "bg-[#d89e00] text-white"
+                ? "bg-[#ffff00] text-white"
                 : isCorrect
-                  ? "bg-[#26890c] text-white"
-                  : "bg-[#e21b3c] text-white"
+                  ? "bg-[#b2ff59] text-white"
+                  : "bg-[#ff716c] text-white"
             }`}
           >
             <p className="text-lg">

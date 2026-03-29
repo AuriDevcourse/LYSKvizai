@@ -22,7 +22,7 @@ export default function BottomNav() {
 
   return (
     <nav className="fixed bottom-0 inset-x-0 z-50 sm:hidden">
-      <div className="mx-3 mb-3 flex items-stretch justify-around rounded-2xl bg-white/10 backdrop-blur-xl border border-white/10">
+      <div className="mx-3 mb-3 flex items-stretch justify-around rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;

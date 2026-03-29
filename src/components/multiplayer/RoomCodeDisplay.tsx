@@ -17,7 +17,7 @@ export default function RoomCodeDisplay({ code }: RoomCodeDisplayProps) {
         {code.split("").map((char, i) => (
           <span
             key={i}
-            className="flex h-14 w-14 items-center justify-center rounded-xl border-2 border-white/20 bg-white/10 text-3xl font-bold text-white"
+            className="flex h-14 w-14 items-center justify-center rounded-xl border-[1.5px] border-white/8 bg-white/5 text-3xl font-bold text-white"
           >
             {char}
           </span>

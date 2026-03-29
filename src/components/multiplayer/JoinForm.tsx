@@ -40,7 +40,7 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
           autoComplete="off"
           autoCorrect="off"
           spellCheck={false}
-          className="w-full rounded-xl border-2 border-white/15 bg-white/5 px-4 py-3 text-center text-2xl font-bold uppercase tracking-widest text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
+          className="w-full rounded-xl border-[1.5px] border-white/8 bg-white/5 px-4 py-3 text-center text-2xl font-bold uppercase tracking-widest text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
         />
       </div>
 
@@ -57,7 +57,7 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
           autoCapitalize="words"
           autoCorrect="off"
           spellCheck={false}
-          className="w-full rounded-xl border-2 border-white/15 bg-white/5 px-4 py-3 text-lg text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
+          className="w-full rounded-xl border-[1.5px] border-white/8 bg-white/5 px-4 py-3 text-lg text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
         />
       </div>
 
@@ -70,7 +70,7 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
       </div>
 
       {error && (
-        <p className="rounded-lg bg-[#e21b3c]/20 px-3 py-2 text-sm font-bold text-white">
+        <p className="rounded-lg bg-[#ff716c]/20 px-3 py-2 text-sm font-bold text-white">
           {error}
         </p>
       )}

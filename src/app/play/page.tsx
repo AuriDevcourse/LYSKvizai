@@ -128,7 +128,7 @@ function PlayPageInner() {
           </h1>
 
           {error && (
-            <p className="w-full rounded-xl bg-[#e21b3c]/20 px-4 py-3 text-center text-sm font-bold text-white">
+            <p className="w-full rounded-xl bg-[#ff716c]/20 px-4 py-3 text-center text-sm font-bold text-white">
               {error}
             </p>
           )}
@@ -205,7 +205,7 @@ function PlayPageInner() {
           <h1 className="text-2xl font-extrabold text-white">{t("play.pickMode")}</h1>
 
           {error && (
-            <p className="w-full rounded-xl bg-[#e21b3c]/20 px-4 py-3 text-center text-sm font-bold text-white">
+            <p className="w-full rounded-xl bg-[#ff716c]/20 px-4 py-3 text-center text-sm font-bold text-white">
               {error}
             </p>
           )}
@@ -229,7 +229,7 @@ function PlayPageInner() {
           <h1 className="text-2xl font-extrabold text-white">{t("play.howWillYouPlay")}</h1>
 
           {error && (
-            <p className="w-full rounded-xl bg-[#e21b3c]/20 px-4 py-3 text-center text-sm font-bold text-white">
+            <p className="w-full rounded-xl bg-[#ff716c]/20 px-4 py-3 text-center text-sm font-bold text-white">
               {error}
             </p>
           )}
@@ -241,9 +241,9 @@ function PlayPageInner() {
                 setHostPlaying(false);
                 handleCreateRoom();
               }}
-              className="flex items-center gap-4 rounded-2xl glass px-5 py-4 text-left transition-all hover:bg-white/15"
+              className="flex items-center gap-4 rounded-2xl glass px-5 py-4 text-left transition-all hover:bg-white/5"
             >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/10">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/5">
                 <Monitor className="h-6 w-6 text-white" />
               </div>
               <div>
@@ -259,11 +259,11 @@ function PlayPageInner() {
               }}
               className={`flex items-center gap-4 rounded-2xl px-5 py-4 text-left transition-all ${
                 hostPlaying
-                  ? "bg-white/15 ring-2 ring-white"
-                  : "glass hover:bg-white/15"
+                  ? "bg-white/5 outline outline-[1.5px] outline-[#ff9062]"
+                  : "glass hover:bg-white/5"
               }`}
             >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/10">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/5">
                 <Smartphone className="h-6 w-6 text-white" />
               </div>
               <div>
@@ -286,7 +286,7 @@ function PlayPageInner() {
                   onChange={(e) => setHostName(e.target.value)}
                   placeholder={t("play.namePlaceholder")}
                   maxLength={20}
-                  className="w-full rounded-xl border-2 border-white/15 bg-white/5 px-4 py-3 text-lg text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
+                  className="w-full rounded-xl border-[1.5px] border-white/8 bg-white/5 px-4 py-3 text-lg text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
                 />
               </div>
               <div>
@@ -319,7 +319,7 @@ function PlayPageInner() {
         <div className="relative flex w-full flex-col items-center gap-6 animate-fade-in-up self-start -mt-8 sm:self-center sm:mt-0">
           <button
             onClick={() => { setMode("menu"); setError(null); }}
-            className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white sm:hidden"
+            className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-white/60 transition-colors hover:bg-white/20 hover:text-white sm:hidden"
           >
             <X className="h-5 w-5" />
           </button>

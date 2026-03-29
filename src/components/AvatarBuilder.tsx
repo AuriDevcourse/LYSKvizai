@@ -99,10 +99,10 @@ const ALL_PORTRAITS = [
 
 // 20 background colors (2 rows of 10)
 const BG_PALETTE = [
-  "#e8590c", "#7b2ff2", "#6c5ce7", "#a29bfe", "#e21b3c",
-  "#ff7675", "#e84393", "#fd79a8", "#1368ce", "#0ea5e9",
-  "#00cec9", "#00b894", "#26890c", "#55efc4", "#badc58",
-  "#d89e00", "#fdcb6e", "#e17055", "#f8a5c2", "#2d3436",
+  "#ff9062", "#ff793e", "#e8590c", "#ff716c", "#e77fff",
+  "#43a5fc", "#0ea5e9", "#b2ff59", "#00cec9", "#00b894",
+  "#f59e0b", "#ec4899", "#8b5cf6", "#6366f1", "#14b8a6",
+  "#f97316", "#ef4444", "#22c55e", "#3b82f6", "#1e1e1e",
 ];
 
 // --- Component ---
@@ -159,7 +159,7 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
     <div className="flex gap-4">
       {/* Left: preview + dice */}
       <div className="flex flex-col items-center gap-2 shrink-0">
-        <div className="flex items-center justify-center rounded-2xl bg-white/10 p-2">
+        <div className="flex items-center justify-center rounded-2xl bg-white/5 p-2">
           {currentPreview ? (
             <Avatar value={currentPreview} size={72} />
           ) : (
@@ -171,7 +171,7 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
         <button
           type="button"
           onClick={randomize}
-          className="flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-1.5 text-xs font-bold text-white/60 transition-all hover:bg-white/20 hover:text-white active:scale-95"
+          className="flex items-center gap-1.5 rounded-xl bg-white/5 px-3 py-1.5 text-xs font-bold text-white/60 transition-all hover:bg-white/20 hover:text-white active:scale-95"
         >
           <Dices className="h-4 w-4" />
         </button>
@@ -215,8 +215,8 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
                 onClick={() => selectFile(file)}
                 className={`flex items-center justify-center rounded-xl p-1 transition-all ${
                   selectedFile === file
-                    ? "bg-white/20 ring-2 ring-white"
-                    : "bg-white/5 hover:bg-white/10"
+                    ? "bg-white/20 outline outline-[1.5px] outline-[#ff9062]"
+                    : "bg-white/5 hover:bg-white/5"
                 }`}
               >
                 <Avatar value={encode(file, bgColor)} size={40} />
@@ -233,7 +233,7 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
                 type="button"
                 onClick={() => selectBg(c)}
                 className={`h-10 w-10 rounded-full transition-all ${
-                  bgColor === c ? "ring-2 ring-white scale-110" : "hover:scale-110"
+                  bgColor === c ? "outline outline-[1.5px] outline-[#ff9062] scale-110" : "hover:scale-110"
                 }`}
                 style={{ backgroundColor: c }}
               />

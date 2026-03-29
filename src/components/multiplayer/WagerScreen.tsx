@@ -57,7 +57,7 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
         <Flame className="h-14 w-14 text-red-400" />
         <h2 className="text-2xl font-extrabold text-white">SUPER WAGER</h2>
 
-        <div className="rounded-xl border-2 border-white/20 bg-white/5 px-6 py-3 text-center">
+        <div className="rounded-xl border-[1.5px] border-white/8 bg-white/5 px-6 py-3 text-center">
           <p className="text-xs text-white/50">{t("wager.yourPoints")}</p>
           <p className="text-2xl font-extrabold text-white">{currentScore}</p>
         </div>
@@ -73,7 +73,7 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
 
           <button
             onClick={() => handleSubmit(0)}
-            className="flex w-full items-center justify-center rounded-2xl border-2 border-white/20 bg-white/5 px-6 py-4 text-lg font-extrabold text-white/60 transition-transform active:scale-[0.97]"
+            className="flex w-full items-center justify-center rounded-2xl border-[1.5px] border-white/8 bg-white/5 px-6 py-4 text-lg font-extrabold text-white/60 transition-transform active:scale-[0.97]"
           >
             {t("wager.skip")}
           </button>
@@ -92,17 +92,17 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-5">
-      <Coins className="h-12 w-12 text-[#d89e00]" />
+      <Coins className="h-12 w-12 text-[#ffff00]" />
       <h2 className="text-2xl font-extrabold text-white">{t("wager.roundExclaim")}</h2>
 
-      <div className="rounded-xl border-2 border-white/20 bg-white/5 px-6 py-3 text-center">
+      <div className="rounded-xl border-[1.5px] border-white/8 bg-white/5 px-6 py-3 text-center">
         <p className="text-xs text-white/50">{t("wager.yourPoints")}</p>
         <p className="text-2xl font-extrabold text-white">{currentScore}</p>
       </div>
 
       {/* Amount display */}
       <div className="text-center">
-        <p className="text-4xl font-black text-[#d89e00] tabular-nums">{amount}</p>
+        <p className="text-4xl font-black text-[#ffff00] tabular-nums">{amount}</p>
       </div>
 
       {/* Slider */}
@@ -114,7 +114,7 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
           step={Math.max(1, Math.round(maxWager / 100))}
           value={amount}
           onChange={(e) => setAmount(Number(e.target.value))}
-          className="w-full accent-[#d89e00]"
+          className="w-full accent-[#ffff00]"
         />
       </div>
 
@@ -126,8 +126,8 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
             onClick={() => setAmount(val)}
             className={`rounded-xl px-3 py-1.5 text-sm font-bold transition-colors ${
               amount === val
-                ? "bg-[#d89e00] text-white"
-                : "bg-white/10 text-white/60 hover:bg-white/20"
+                ? "bg-[#ffff00] text-white"
+                : "bg-white/5 text-white/60 hover:bg-white/20"
             }`}
           >
             {i === 3 ? "MAX" : `${(i + 1) * 25}%`}
@@ -139,7 +139,7 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
       <div className="flex w-full max-w-xs flex-col gap-3">
         <button
           onClick={() => handleSubmit(amount)}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#d89e00] px-6 py-4 text-xl font-extrabold text-white transition-transform active:scale-[0.97]"
+          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#ffff00] px-6 py-4 text-xl font-extrabold text-white transition-transform active:scale-[0.97]"
         >
           <Coins className="h-5 w-5" />
           {amount > 0 ? `${t("wager.wager")} ${amount}` : t("wager.skip")}

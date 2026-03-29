@@ -58,12 +58,12 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
 
   if (value) {
     return (
-      <div className="flex items-center gap-3 rounded-xl border-2 border-white/15 bg-white/5 px-4 py-3">
+      <div className="flex items-center gap-3 rounded-xl border-[1.5px] border-white/8 bg-white/5 px-4 py-3">
         <Icon className="h-5 w-5 shrink-0 text-white" />
         <span className="flex-1 truncate text-sm text-white/70">{value}</span>
         <button
           onClick={() => onChange(undefined)}
-          className="rounded-lg p-1.5 text-red-400/60 hover:bg-[#e21b3c]/20 hover:text-red-400"
+          className="rounded-lg p-1.5 text-red-400/60 hover:bg-[#ff716c]/20 hover:text-red-400"
         >
           <X className="h-4 w-4" />
         </button>
@@ -79,8 +79,8 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
           onClick={() => setMode("file")}
           className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
             mode === "file"
-              ? "bg-white/15 text-white/80"
-              : "bg-white/5 text-white/50 hover:bg-white/10"
+              ? "bg-white/5 text-white/80"
+              : "bg-white/5 text-white/50 hover:bg-white/5"
           }`}
         >
           <Upload className="mr-1 inline h-3 w-3" />
@@ -91,8 +91,8 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
           onClick={() => setMode("url")}
           className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
             mode === "url"
-              ? "bg-white/15 text-white/80"
-              : "bg-white/5 text-white/50 hover:bg-white/10"
+              ? "bg-white/5 text-white/80"
+              : "bg-white/5 text-white/50 hover:bg-white/5"
           }`}
         >
           <LinkIcon className="mr-1 inline h-3 w-3" />
@@ -105,7 +105,7 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop}
           onClick={() => fileRef.current?.click()}
-          className="flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 border-dashed border-white/15 bg-white/[0.02] px-4 py-6 transition-colors hover:border-white/30 hover:bg-white/5"
+          className="flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 border-dashed border-white/8 bg-white/[0.02] px-4 py-6 transition-colors hover:border-white/10 hover:bg-white/5"
         >
           {uploading ? (
             <Loader2 className="h-6 w-6 animate-spin text-white" />
@@ -136,7 +136,7 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
             onChange={(e) => setUrlInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleUrlSubmit()}
             placeholder={type === "video" ? "https://youtube.com/watch?v=..." : "https://example.com/audio.mp3"}
-            className="flex-1 rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
+            className="flex-1 rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
           />
           <button
             type="button"

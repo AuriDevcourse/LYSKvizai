@@ -94,7 +94,7 @@ export default function ResultScreen({ score, total, onRestart }: ResultScreenPr
 
       {/* Percentage bar */}
       <div
-        className="mb-2 h-3 w-full max-w-xs overflow-hidden rounded-full bg-white/10 transition-opacity duration-500"
+        className="mb-2 h-3 w-full max-w-xs overflow-hidden rounded-full bg-white/5 transition-opacity duration-500"
         style={{ opacity: step >= 3 ? 1 : 0 }}
       >
         <div

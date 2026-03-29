@@ -202,13 +202,13 @@ export default function QuizEditorPage({ params }: PageProps) {
         </div>
 
         {error && (
-          <div className="mb-4 rounded-lg bg-[#e21b3c]/20 px-4 py-2 text-sm text-white">
+          <div className="mb-4 rounded-lg bg-[#ff716c]/20 px-4 py-2 text-sm text-white">
             {error}
           </div>
         )}
 
         {/* Metadata */}
-        <div className="mb-6 space-y-4 rounded-2xl border-2 border-white/15 bg-white/5 p-5">
+        <div className="mb-6 space-y-4 rounded-2xl border-[1.5px] border-white/8 bg-white/5 p-5">
           <div>
             <label className="mb-1 block text-xs font-medium text-white/50">
               {t("editor.quizTitle")}
@@ -217,7 +217,7 @@ export default function QuizEditorPage({ params }: PageProps) {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-lg font-bold text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
+              className="w-full rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-lg font-bold text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
               placeholder={t("editor.quizTitlePlaceholder")}
             />
           </div>
@@ -230,7 +230,7 @@ export default function QuizEditorPage({ params }: PageProps) {
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
+              className="w-full rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
               placeholder={t("editor.descriptionPlaceholder")}
             />
           </div>
@@ -247,8 +247,8 @@ export default function QuizEditorPage({ params }: PageProps) {
                   onClick={() => setEmoji(e)}
                   className={`flex h-10 w-10 items-center justify-center rounded-lg text-xl transition-colors ${
                     emoji === e
-                      ? "bg-white/15 ring-2 ring-white"
-                      : "bg-white/5 hover:bg-white/10"
+                      ? "bg-white/5 outline outline-[1.5px] outline-[#ff9062]"
+                      : "bg-white/5 hover:bg-white/5"
                   }`}
                 >
                   {e}
@@ -281,7 +281,7 @@ export default function QuizEditorPage({ params }: PageProps) {
         {/* Add question button */}
         <button
           onClick={addQuestion}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-white/15 py-4 text-white/50 transition-colors hover:border-white/30 hover:bg-white/5 hover:text-white/80"
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-white/8 py-4 text-white/50 transition-colors hover:border-white/10 hover:bg-white/5 hover:text-white/80"
         >
           <Plus className="h-5 w-5" />
           {t("editor.addQuestion")}

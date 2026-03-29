@@ -71,7 +71,7 @@ export default function Home() {
           <div className="mt-10 grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 sm:mt-12">
             <button
               onClick={() => setMode("create")}
-              className="group flex flex-col items-center gap-5 rounded-2xl bg-white/4 p-8 text-center backdrop-blur-2xl border-[1.5px] border-white/8 transition-all duration-300 hover:bg-white/8 hover:border-white/15 active:scale-[0.98] sm:p-10"
+              className="group flex flex-col items-center gap-5 rounded-2xl bg-white/4 p-8 text-center backdrop-blur-2xl border-[1.5px] border-white/8 transition-all duration-300 hover:bg-white/8 hover:border-white/8 active:scale-[0.98] sm:p-10"
             >
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#ff9062]/15 transition-all group-hover:bg-[#ff9062]/25 sm:h-16 sm:w-16">
                 <Plus className="h-7 w-7 text-[#ff9062] sm:h-8 sm:w-8" />
@@ -83,7 +83,7 @@ export default function Home() {
             </button>
             <button
               onClick={() => router.push("/play?join=1")}
-              className="group flex flex-col items-center gap-5 rounded-2xl bg-white/4 p-8 text-center backdrop-blur-2xl border-[1.5px] border-white/8 transition-all duration-300 hover:bg-white/8 hover:border-white/15 active:scale-[0.98] sm:p-10"
+              className="group flex flex-col items-center gap-5 rounded-2xl bg-white/4 p-8 text-center backdrop-blur-2xl border-[1.5px] border-white/8 transition-all duration-300 hover:bg-white/8 hover:border-white/8 active:scale-[0.98] sm:p-10"
             >
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#43a5fc]/15 transition-all group-hover:bg-[#43a5fc]/25 sm:h-16 sm:w-16">
                 <LogIn className="h-7 w-7 text-[#43a5fc] sm:h-8 sm:w-8" />

@@ -134,7 +134,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
                     </p>
                   </div>
                   <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border transition-all ${
-                    isSelected ? "bg-[#ff9062] border-[#ff9062]" : "border-white/20 bg-white/5"
+                    isSelected ? "bg-[#ff9062] border-[#ff9062]" : "border-white/8 bg-white/5"
                   }`}>
                     {isSelected && <Check className="h-3.5 w-3.5 text-black" />}
                   </div>

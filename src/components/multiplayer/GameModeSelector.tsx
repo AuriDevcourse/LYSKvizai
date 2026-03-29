@@ -15,15 +15,15 @@ const MODES = [
     labelKey: "gameMode.classic" as const,
     descKey: "gameMode.classicDesc" as const,
     icon: Swords,
-    color: "border-white/35 bg-white/10",
-    activeColor: "border-white bg-white/20 ring-2 ring-white/30",
+    color: "border-white/35 bg-white/5",
+    activeColor: "border-white bg-white/20 outline outline-[1.5px] outline-[#ff9062]/30",
   },
   {
     id: "elimination" as GameMode,
     labelKey: "gameMode.elimination" as const,
     descKey: "gameMode.eliminationDesc" as const,
     icon: Skull,
-    color: "border-red-400/50 bg-[#e21b3c]/20",
+    color: "border-red-400/50 bg-[#ff716c]/20",
     activeColor: "border-red-400 bg-red-400/20 ring-2 ring-red-400/30",
   },
   {
@@ -98,7 +98,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
                 className={`flex-1 rounded-lg py-2 text-sm font-bold transition-colors ${
                   teamCount === n
                     ? "bg-blue-500 text-white"
-                    : "bg-white/10 text-white/60 hover:bg-white/20"
+                    : "bg-white/5 text-white/60 hover:bg-white/20"
                 }`}
               >
                 {n}
@@ -123,7 +123,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
                 className={`flex-1 rounded-lg py-2 text-sm font-bold transition-colors ${
                   eliminationInterval === n
                     ? "bg-red-500 text-white"
-                    : "bg-white/10 text-white/60 hover:bg-white/20"
+                    : "bg-white/5 text-white/60 hover:bg-white/20"
                 }`}
               >
                 {n}

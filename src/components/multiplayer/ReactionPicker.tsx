@@ -84,7 +84,7 @@ export default function ReactionPicker({ onReact }: ReactionPickerProps) {
           <button
             key={emoji}
             onClick={() => handleReact(emoji)}
-            className="flex-shrink-0 rounded-xl bg-white/5 px-2.5 py-2 text-xl transition-transform hover:scale-110 hover:bg-white/10 active:scale-95 sm:px-3 sm:text-2xl"
+            className="flex-shrink-0 rounded-xl bg-white/5 px-2.5 py-2 text-xl transition-transform hover:scale-110 hover:bg-white/5 active:scale-95 sm:px-3 sm:text-2xl"
           >
             {emoji}
           </button>
@@ -105,7 +105,7 @@ export default function ReactionPicker({ onReact }: ReactionPickerProps) {
           onChange={(e) => setText(e.target.value)}
           placeholder="Comment..."
           maxLength={40}
-          className="min-w-0 flex-1 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/30 focus:outline-none"
+          className="min-w-0 flex-1 rounded-xl border border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/10 focus:outline-none"
         />
         <button
           type="submit"

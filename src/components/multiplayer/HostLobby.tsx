@@ -54,7 +54,7 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
         </h1>
         <button
           onClick={toggleMute}
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
         >
           {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
         </button>
@@ -107,7 +107,7 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
                   key={p.id}
                   className="flex flex-col items-center gap-1.5 animate-bounce-in"
                 >
-                  <div className="rounded-full bg-white/15 p-1">
+                  <div className="rounded-full bg-white/5 p-1">
                     <Avatar value={p.emoji} size={48} />
                   </div>
                   <span className="max-w-[80px] text-center text-sm font-extrabold text-white truncate">{p.name}</span>

@@ -307,7 +307,7 @@ export default function GamePage({ params }: PageProps) {
       {/* Toast notification */}
       {toast && (
         <div className="fixed left-1/2 top-4 z-[60] -translate-x-1/2 animate-fade-in-up">
-          <div className="flex items-center gap-2 rounded-xl bg-[#e21b3c] px-4 py-2.5 shadow-lg">
+          <div className="flex items-center gap-2 rounded-xl bg-[#ff716c] px-4 py-2.5 shadow-lg">
             <AlertTriangle className="h-4 w-4 text-white" />
             <span className="text-sm font-bold text-white">{toast}</span>
           </div>
@@ -327,7 +327,7 @@ export default function GamePage({ params }: PageProps) {
       {/* Exit button */}
       <button
         onClick={handleExit}
-        className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
+        className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
       >
         <X className="h-5 w-5" />
       </button>

@@ -175,7 +175,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
     <div className="relative flex min-h-svh flex-col items-center">
       <Link
         href="/"
-        className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
+        className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
       >
         <X className="h-5 w-5" />
       </Link>
@@ -203,7 +203,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
               total={questions.length}
             />
             {timerDuration > 0 && (
-              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/5">
                 <div
                   className={`h-full rounded-full transition-all duration-1000 ease-linear ${
                     timeLeft <= 3 ? "bg-red-500" : "bg-green-500"

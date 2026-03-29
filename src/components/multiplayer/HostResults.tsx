@@ -11,8 +11,8 @@ import EmojiReactions from "./EmojiReactions";
 import Avatar from "@/components/Avatar";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
-const OPTION_BG = ["bg-[#e21b3c]", "bg-[#1368ce]", "bg-[#26890c]", "bg-[#d89e00]"];
-const OPTION_BG_DIM = ["bg-[#e21b3c]/30", "bg-[#1368ce]/30", "bg-[#26890c]/30", "bg-[#d89e00]/30"];
+const OPTION_BG = ["bg-[#ff716c]", "bg-[#43a5fc]", "bg-[#b2ff59]", "bg-[#ffff00]"];
+const OPTION_BG_DIM = ["bg-[#ff716c]/30", "bg-[#43a5fc]/30", "bg-[#b2ff59]/30", "bg-[#ffff00]/30"];
 const OPTION_ICONS = [Triangle, Diamond, Circle, Square];
 
 interface HostResultsProps {
@@ -62,10 +62,10 @@ export default function HostResults({
 
         {/* Question number */}
         <div className="flex items-center gap-4 pb-3">
-          <div className="rounded-lg bg-white/10 px-3 py-1 text-sm font-extrabold text-white/70">
+          <div className="rounded-lg bg-white/5 px-3 py-1 text-sm font-extrabold text-white/70">
             {question ? `${question.index + 1} / ${question.total}` : ""}
           </div>
-          <div className="h-3 flex-1 rounded-full bg-white/10" />
+          <div className="h-3 flex-1 rounded-full bg-white/5" />
         </div>
 
         {/* Question text */}
@@ -89,7 +89,7 @@ export default function HostResults({
 
           {/* Year Guesser correct year */}
           {isYearGuesser && (
-            <div className="flex items-center gap-3 rounded-2xl bg-[#26890c] px-8 py-5 animate-bounce-in">
+            <div className="flex items-center gap-3 rounded-2xl bg-[#b2ff59] px-8 py-5 animate-bounce-in">
               <Calendar className="h-8 w-8 text-white" />
               <div>
                 <p className="text-sm font-bold text-white/70">{t("hostResults.correctYear")}</p>
@@ -114,7 +114,7 @@ export default function HostResults({
                   key={i}
                   className={`flex items-center gap-3 rounded-2xl px-4 py-2.5 sm:gap-4 sm:px-8 sm:py-5 transition-all ${
                     isCorrect
-                      ? `${OPTION_BG[i]} ring-4 ring-white`
+                      ? `${OPTION_BG[i]} outline outline-2 outline-[#ff9062]`
                       : `${OPTION_BG_DIM[i]} opacity-40`
                   }`}
                 >
@@ -254,8 +254,8 @@ function AnimatedLeaderboardPhase({
 
       {/* Elimination announcement */}
       {results.eliminatedThisRound && results.eliminatedThisRound.length > 0 && (
-        <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#e21b3c]/20 px-6 py-4">
-          <Skull className="h-6 w-6 text-[#e21b3c]" />
+        <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#ff716c]/20 px-6 py-4">
+          <Skull className="h-6 w-6 text-[#ff716c]" />
           {results.eliminatedThisRound.map((el) => (
             <span key={el.playerId} className="inline-flex items-center gap-2 text-lg font-extrabold text-white">
               <Avatar value={el.playerEmoji} size={24} /> {el.playerName}
@@ -266,18 +266,18 @@ function AnimatedLeaderboardPhase({
 
       {/* Mystery Multiplier */}
       {results.mysteryMultiplier && results.mysteryMultiplier > 1 && (
-        <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#d89e00]/20 px-5 py-3 animate-bounce-in">
-          <Sparkles className="h-5 w-5 text-[#d89e00]" />
-          <p className="text-lg font-extrabold text-[#d89e00]">x{results.mysteryMultiplier}!</p>
-          <Sparkles className="h-5 w-5 text-[#d89e00]" />
+        <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#ffff00]/20 px-5 py-3 animate-bounce-in">
+          <Sparkles className="h-5 w-5 text-[#ffff00]" />
+          <p className="text-lg font-extrabold text-[#ffff00]">x{results.mysteryMultiplier}!</p>
+          <Sparkles className="h-5 w-5 text-[#ffff00]" />
         </div>
       )}
 
       {/* Fastest Finger */}
       {results.fastestFinger && (
-        <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#d89e00]/20 px-5 py-3 animate-bounce-in">
-          <Zap className="h-5 w-5 text-[#d89e00]" />
-          <p className="text-lg font-extrabold text-[#d89e00]">
+        <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#ffff00]/20 px-5 py-3 animate-bounce-in">
+          <Zap className="h-5 w-5 text-[#ffff00]" />
+          <p className="text-lg font-extrabold text-[#ffff00]">
             {t("hostResults.fastestFinger")} {results.fastestFinger.playerName}
           </p>
         </div>
@@ -289,7 +289,7 @@ function AnimatedLeaderboardPhase({
           {results.yearGuesses.map((g) => {
             const diff = g.guessedYear - g.correctYear;
             const absDiff = Math.abs(diff);
-            const color = absDiff === 0 ? "text-[#26890c]" : absDiff <= 5 ? "text-[#d89e00]" : absDiff <= 25 ? "text-white" : "text-[#e21b3c]";
+            const color = absDiff === 0 ? "text-[#b2ff59]" : absDiff <= 5 ? "text-[#ffff00]" : absDiff <= 25 ? "text-white" : "text-[#ff716c]";
             return (
               <div key={g.playerId} className="flex items-center justify-between rounded-xl bg-white/5 px-4 py-2.5">
                 <span className="font-bold text-white">{g.playerName}</span>
@@ -328,7 +328,7 @@ function AnimatedLeaderboardPhase({
                 {/* Score bar */}
                 <div
                   className={`absolute inset-y-0 left-0 transition-all duration-1000 ease-out ${
-                    playerResult?.correct ? "bg-[#26890c]/20" : "bg-[#e21b3c]/15"
+                    playerResult?.correct ? "bg-[#b2ff59]/20" : "bg-[#ff716c]/15"
                   }`}
                   style={{ width: `${barWidth}%` }}
                 />
@@ -374,7 +374,7 @@ function AnimatedLeaderboardPhase({
                       </span>
                     )}
                     {pointsGained > 0 && (
-                      <span className={`flex items-center gap-0.5 text-xs font-extrabold text-[#26890c] ${
+                      <span className={`flex items-center gap-0.5 text-xs font-extrabold text-[#b2ff59] ${
                         animationDone ? "animate-bounce-in" : "opacity-0"
                       }`}>
                         <TrendingUp className="h-3.5 w-3.5" />
@@ -382,7 +382,7 @@ function AnimatedLeaderboardPhase({
                       </span>
                     )}
                     {playerResult && !playerResult.correct && (
-                      <span className="text-xs font-bold text-[#e21b3c]/70">0</span>
+                      <span className="text-xs font-bold text-[#ff716c]/70">0</span>
                     )}
                   </div>
                 </div>
@@ -416,7 +416,7 @@ function AnimatedLeaderboardPhase({
           {results.wagerResults.map((wr) => (
             <div key={wr.playerId} className="flex items-center gap-2 rounded-xl glass px-4 py-2">
               <span className="text-sm font-bold text-white">{wr.playerName}</span>
-              <span className={`text-lg font-extrabold ${wr.won ? "text-[#26890c]" : "text-[#e21b3c]"}`}>
+              <span className={`text-lg font-extrabold ${wr.won ? "text-[#b2ff59]" : "text-[#ff716c]"}`}>
                 {wr.won ? "+" : ""}{wr.netPoints}
               </span>
             </div>

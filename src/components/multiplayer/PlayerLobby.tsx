@@ -16,7 +16,7 @@ export default function PlayerLobby({ code, players, playerName, playerEmoji }: 
     <div className="flex flex-1 flex-col items-center justify-center gap-8">
       {/* Your avatar + name hero */}
       <div className="flex flex-col items-center gap-3 animate-bounce-in">
-        <div className="rounded-full bg-white/15 p-1.5">
+        <div className="rounded-full bg-white/5 p-1.5">
           <Avatar value={playerEmoji} size={88} />
         </div>
         <h1 className="text-3xl font-extrabold text-white">{playerName}</h1>
@@ -45,7 +45,7 @@ export default function PlayerLobby({ code, players, playerName, playerEmoji }: 
                 p.name === playerName ? "opacity-100" : "opacity-70"
               }`}
             >
-              <div className={`rounded-full p-0.5 ${p.name === playerName ? "ring-2 ring-white" : ""}`}>
+              <div className={`rounded-full p-0.5 ${p.name === playerName ? "outline outline-[1.5px] outline-[#ff9062]" : ""}`}>
                 <Avatar value={p.emoji} size={40} />
               </div>
               <span className="max-w-[72px] text-center text-xs font-extrabold text-white truncate">

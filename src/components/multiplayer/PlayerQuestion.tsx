@@ -13,10 +13,10 @@ import VideoPlayer from "./VideoPlayer";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 const BUTTON_COLORS = [
-  "bg-[#e21b3c] hover:brightness-110 active:brightness-90",
-  "bg-[#1368ce] hover:brightness-110 active:brightness-90",
-  "bg-[#26890c] hover:brightness-110 active:brightness-90",
-  "bg-[#d89e00] hover:brightness-110 active:brightness-90",
+  "bg-[#ff716c] hover:brightness-110 active:brightness-90",
+  "bg-[#43a5fc] hover:brightness-110 active:brightness-90",
+  "bg-[#b2ff59] hover:brightness-110 active:brightness-90",
+  "bg-[#ffff00] hover:brightness-110 active:brightness-90",
 ];
 
 const BUTTON_ICONS = [
@@ -102,7 +102,7 @@ export default function PlayerQuestion({
   if (eliminated) {
     return (
       <div className="flex flex-1 flex-col gap-4">
-        <div className="flex items-center justify-center gap-2 rounded-xl bg-[#e21b3c]/20 px-4 py-2 text-sm font-bold text-white">
+        <div className="flex items-center justify-center gap-2 rounded-xl bg-[#ff716c]/20 px-4 py-2 text-sm font-bold text-white">
           <Eye className="h-4 w-4" />
           {t("playerQuestion.spectatorMode")}
         </div>
@@ -134,7 +134,7 @@ export default function PlayerQuestion({
   if (!canAnswer && waitingPlayerName) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/10">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/5">
           <Eye className="h-8 w-8 text-white" />
         </div>
         <p className="text-lg font-extrabold text-white">{t("playerQuestion.waitingFor")} {waitingPlayerName}</p>
@@ -151,7 +151,7 @@ export default function PlayerQuestion({
   if (selected !== null) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 animate-scale-in">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/15">
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/5">
           <Check className="h-10 w-10 text-white" />
         </div>
         <p className="text-xl font-extrabold text-white">{t("playerQuestion.lockedIn")}</p>
@@ -177,7 +177,7 @@ export default function PlayerQuestion({
       <div className="text-center text-sm font-bold text-white/50">
         {question.index + 1} / {question.total}
         {question.isWagerRound && (
-          <span className="ml-2 rounded-lg bg-[#d89e00]/20 px-2 py-0.5 text-xs font-extrabold text-[#d89e00]">
+          <span className="ml-2 rounded-lg bg-[#ffff00]/20 px-2 py-0.5 text-xs font-extrabold text-[#ffff00]">
             {t("hostQuestion.wager")}
           </span>
         )}

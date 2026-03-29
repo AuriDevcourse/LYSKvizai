@@ -67,7 +67,7 @@ export default function QuestionEditor({
   const questionType = question.type ?? "standard";
 
   return (
-    <div className="rounded-2xl border-2 border-white/15 bg-white/5 p-5">
+    <div className="rounded-2xl border-[1.5px] border-white/8 bg-white/5 p-5">
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
         <span className="text-sm font-bold text-white">
@@ -77,20 +77,20 @@ export default function QuestionEditor({
           <button
             onClick={onMoveUp}
             disabled={index === 0}
-            className="rounded-lg p-1.5 text-white/40 hover:bg-white/10 hover:text-white/80 disabled:opacity-30"
+            className="rounded-lg p-1.5 text-white/40 hover:bg-white/5 hover:text-white/80 disabled:opacity-30"
           >
             <ChevronUp className="h-4 w-4" />
           </button>
           <button
             onClick={onMoveDown}
             disabled={index === total - 1}
-            className="rounded-lg p-1.5 text-white/40 hover:bg-white/10 hover:text-white/80 disabled:opacity-30"
+            className="rounded-lg p-1.5 text-white/40 hover:bg-white/5 hover:text-white/80 disabled:opacity-30"
           >
             <ChevronDown className="h-4 w-4" />
           </button>
           <button
             onClick={onDelete}
-            className="rounded-lg p-1.5 text-red-400/60 hover:bg-[#e21b3c]/20 hover:text-red-400"
+            className="rounded-lg p-1.5 text-red-400/60 hover:bg-[#ff716c]/20 hover:text-red-400"
           >
             <Trash2 className="h-4 w-4" />
           </button>
@@ -110,8 +110,8 @@ export default function QuestionEditor({
               onClick={() => updateField("type", qt.value)}
               className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
                 questionType === qt.value
-                  ? "bg-white/15 text-white/80"
-                  : "bg-white/5 text-white/50 hover:bg-white/10"
+                  ? "bg-white/5 text-white/80"
+                  : "bg-white/5 text-white/50 hover:bg-white/5"
               }`}
             >
               {qt.label}
@@ -129,7 +129,7 @@ export default function QuestionEditor({
           value={question.question}
           onChange={(e) => updateField("question", e.target.value)}
           rows={2}
-          className="w-full rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
+          className="w-full rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
           placeholder="Įvesk klausimą..."
         />
       </div>
@@ -239,7 +239,7 @@ export default function QuestionEditor({
               className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-bold transition-colors ${
                 question.correct === i
                   ? "bg-emerald-400 text-emerald-950"
-                  : "bg-white/10 text-white/50 hover:bg-white/20"
+                  : "bg-white/5 text-white/50 hover:bg-white/20"
               }`}
             >
               {["A", "B", "C", "D"][i]}
@@ -248,7 +248,7 @@ export default function QuestionEditor({
               type="text"
               value={opt}
               onChange={(e) => updateOption(i, e.target.value)}
-              className="flex-1 rounded-lg border-2 border-white/15 bg-white/5 px-3 py-1.5 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
+              className="flex-1 rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-1.5 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
               placeholder={questionType === "true-false" ? (i === 0 ? "Tiesa" : "Melas") : `Atsakymas ${["A", "B", "C", "D"][i]}`}
             />
           </div>
@@ -266,7 +266,7 @@ export default function QuestionEditor({
           value={question.explanation}
           onChange={(e) => updateField("explanation", e.target.value)}
           rows={2}
-          className="w-full rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
+          className="w-full rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
           placeholder="Paaiškinimas rodomas po atsakymo..."
         />
       </div>

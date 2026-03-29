@@ -39,7 +39,7 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
   return (
     <div className="flex w-full flex-col items-center gap-6">
       {/* Trophy icon */}
-      <Trophy className="h-12 w-12 text-[#d89e00] animate-bounce-in" />
+      <Trophy className="h-12 w-12 text-[#ffff00] animate-bounce-in" />
       <h2 className="text-3xl font-extrabold text-white sm:text-4xl animate-fade-in-up">
         {t("leaderboard.finalResults")}
       </h2>
@@ -70,17 +70,17 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
         <div className="flex w-1/3 flex-col items-center" style={{ opacity: revealStep >= 3 ? 1 : 0, transition: "opacity 0.5s" }}>
           {top3[0] && (
             <>
-              <Crown className="h-9 w-9 text-[#d89e00] animate-bounce-in" />
+              <Crown className="h-9 w-9 text-[#ffff00] animate-bounce-in" />
               <div
                 className={`mt-2 flex w-full flex-col items-center rounded-t-2xl px-2 py-6 animate-fade-in-up ${
                   isMe(top3[0].playerId) ? "bg-white/20 outline outline-2 outline-white" : "glass"
                 }`}
                 style={{ minHeight: 130 }}
               >
-                <div className="text-3xl font-extrabold text-[#d89e00] mb-1">1</div>
+                <div className="text-3xl font-extrabold text-[#ffff00] mb-1">1</div>
                 <Avatar value={top3[0].emoji} size={52} />
                 <p className="mt-1.5 text-base font-extrabold text-white text-center truncate w-full">{top3[0].name}</p>
-                <p className="text-xl font-extrabold text-[#d89e00]">{top3[0].score}</p>
+                <p className="text-xl font-extrabold text-[#ffff00]">{top3[0].score}</p>
               </div>
             </>
           )}
@@ -118,7 +118,7 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
               key={entry.playerId}
               className={`flex items-center justify-between rounded-xl px-4 py-2.5 ${
                 isMe(entry.playerId)
-                  ? "bg-white/15 ring-1 ring-white/50"
+                  ? "bg-white/5 ring-1 ring-white/50"
                   : "glass"
               }`}
             >

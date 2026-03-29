@@ -11,10 +11,10 @@ import VideoPlayer from "./VideoPlayer";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 const OPTION_BG = [
-  "bg-[#e21b3c]",
-  "bg-[#1368ce]",
-  "bg-[#26890c]",
-  "bg-[#d89e00]",
+  "bg-[#ff716c]",
+  "bg-[#43a5fc]",
+  "bg-[#b2ff59]",
+  "bg-[#ffff00]",
 ];
 
 const OPTION_ICONS = [Triangle, Diamond, Circle, Square];
@@ -67,11 +67,11 @@ export default function HostQuestion({
       {/* TOP: Question number + timer bar */}
       <div className="flex items-center gap-4 pb-3">
         <div className="flex items-center gap-2">
-          <div className="rounded-lg bg-white/10 px-3 py-1 text-sm font-extrabold text-white/70">
+          <div className="rounded-lg bg-white/5 px-3 py-1 text-sm font-extrabold text-white/70">
             {question.index + 1} / {question.total}
           </div>
           {question.isWagerRound && (
-            <span className="rounded-lg bg-[#d89e00]/20 px-2 py-1 text-xs font-extrabold text-[#d89e00]">
+            <span className="rounded-lg bg-[#ffff00]/20 px-2 py-1 text-xs font-extrabold text-[#ffff00]">
               {t("hostQuestion.wager")}
             </span>
           )}
@@ -81,14 +81,14 @@ export default function HostQuestion({
             </span>
           )}
         </div>
-        <div className="h-3 flex-1 overflow-hidden rounded-full bg-white/10">
+        <div className="h-3 flex-1 overflow-hidden rounded-full bg-white/5">
           <div
             className={`h-full rounded-full transition-all duration-100 ${
               fraction > 0.5
-                ? "bg-[#26890c]"
+                ? "bg-[#b2ff59]"
                 : fraction > 0.25
-                  ? "bg-[#d89e00]"
-                  : "bg-[#e21b3c]"
+                  ? "bg-[#ffff00]"
+                  : "bg-[#ff716c]"
             }`}
             style={{ width: `${fraction * 100}%` }}
           />
@@ -118,10 +118,10 @@ export default function HostQuestion({
         <div
           className={`flex h-18 w-18 shrink-0 items-center justify-center rounded-full text-3xl font-black sm:h-22 sm:w-22 sm:text-4xl ${
             isCritical
-              ? "bg-[#e21b3c] text-white timer-critical"
+              ? "bg-[#ff716c] text-white timer-critical"
               : fraction > 0.5
-                ? "bg-[#26890c] text-white"
-                : "bg-[#d89e00] text-white"
+                ? "bg-[#b2ff59] text-white"
+                : "bg-[#ffff00] text-white"
           }`}
         >
           {displaySeconds}

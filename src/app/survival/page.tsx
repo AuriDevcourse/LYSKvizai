@@ -196,7 +196,7 @@ function SurvivalInner() {
     <div className="relative flex min-h-svh flex-col items-center">
       <Link
         href="/"
-        className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
+        className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
       >
         <X className="h-5 w-5" />
       </Link>
@@ -266,7 +266,7 @@ function SurvivalInner() {
             </div>
 
             {/* Timer bar */}
-            <div className="relative z-10 mb-1 h-2 w-full overflow-hidden rounded-full bg-white/10">
+            <div className="relative z-10 mb-1 h-2 w-full overflow-hidden rounded-full bg-white/5">
               <div
                 className={`h-full rounded-full transition-all duration-1000 ease-linear ${
                   timerCritical ? "bg-red-500 timer-critical" : "bg-green-500"

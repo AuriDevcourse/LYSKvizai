@@ -56,7 +56,7 @@ export default function FastestFingerInput({
   if (eliminated) {
     return (
       <div className="flex flex-1 flex-col gap-4">
-        <div className="flex items-center justify-center gap-2 rounded-xl bg-[#e21b3c]/20 px-4 py-2 text-sm font-bold text-white">
+        <div className="flex items-center justify-center gap-2 rounded-xl bg-[#ff716c]/20 px-4 py-2 text-sm font-bold text-white">
           <Eye className="h-4 w-4" />
           {t("playerQuestion.spectatorMode")}
         </div>
@@ -66,7 +66,7 @@ export default function FastestFingerInput({
         <div className="glass rounded-2xl px-5 py-4 text-center">
           <h2 className="text-lg font-extrabold text-white">{qText}</h2>
         </div>
-        <div className="flex items-center justify-center gap-2 rounded-xl bg-[#d89e00]/20 px-4 py-2 text-sm font-bold text-[#d89e00]">
+        <div className="flex items-center justify-center gap-2 rounded-xl bg-[#ffff00]/20 px-4 py-2 text-sm font-bold text-[#ffff00]">
           <Zap className="h-4 w-4" />
           {t("fastestFinger.title")}
         </div>
@@ -77,7 +77,7 @@ export default function FastestFingerInput({
   if (submitted) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 animate-scale-in">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/15">
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/5">
           <Check className="h-10 w-10 text-white" />
         </div>
         <p className="text-xl font-extrabold text-white">{t("fastestFinger.lockedIn")}</p>
@@ -100,7 +100,7 @@ export default function FastestFingerInput({
       />
 
       {/* Fastest Finger badge */}
-      <div className="flex items-center justify-center gap-2 rounded-xl bg-[#d89e00]/20 px-4 py-2 text-sm font-extrabold text-[#d89e00]">
+      <div className="flex items-center justify-center gap-2 rounded-xl bg-[#ffff00]/20 px-4 py-2 text-sm font-extrabold text-[#ffff00]">
         <Zap className="h-4 w-4" />
         {t("fastestFinger.title")}
       </div>
@@ -130,7 +130,7 @@ export default function FastestFingerInput({
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={t("fastestFinger.placeholder")}
-          className="w-full rounded-2xl border-2 border-white/20 bg-white/10 px-5 py-4 text-lg font-bold text-white placeholder-white/40 outline-none transition-colors focus:border-white/50 focus:bg-white/15"
+          className="w-full rounded-2xl border-[1.5px] border-white/8 bg-white/5 px-5 py-4 text-lg font-bold text-white placeholder-white/40 outline-none transition-colors focus:border-white/50 focus:bg-white/5"
           autoComplete="off"
           autoCapitalize="off"
           spellCheck={false}
@@ -138,7 +138,7 @@ export default function FastestFingerInput({
         <button
           onClick={handleSubmit}
           disabled={!text.trim()}
-          className="w-full rounded-2xl bg-[#26890c] px-6 py-4 text-lg font-extrabold text-white transition-all hover:brightness-110 active:brightness-90 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-full rounded-2xl bg-[#b2ff59] px-6 py-4 text-lg font-extrabold text-white transition-all hover:brightness-110 active:brightness-90 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {t("fastestFinger.submit")}
         </button>

@@ -84,7 +84,7 @@ export default function EditorPage() {
             {quizzes.map((quiz) => (
               <div
                 key={quiz.id}
-                className="flex items-center gap-4 rounded-2xl border-2 border-white/15 bg-white/5 px-5 py-4"
+                className="flex items-center gap-4 rounded-2xl border-[1.5px] border-white/8 bg-white/5 px-5 py-4"
               >
                 {(() => {
                   const theme = getQuizTheme(quiz.id);
@@ -104,14 +104,14 @@ export default function EditorPage() {
                 <div className="flex gap-2">
                   <Link
                     href={`/editor/${quiz.id}`}
-                    className="rounded-lg bg-white/10 p-2 text-white/60 hover:bg-white/20 hover:text-white/80"
+                    className="rounded-lg bg-white/5 p-2 text-white/60 hover:bg-white/20 hover:text-white/80"
                   >
                     <Pencil className="h-4 w-4" />
                   </Link>
                   <button
                     onClick={() => handleDelete(quiz.id, quiz.title)}
                     disabled={deleting === quiz.id}
-                    className="rounded-lg bg-white/10 p-2 text-red-400/60 hover:bg-[#e21b3c]/20 hover:text-red-400 disabled:opacity-50"
+                    className="rounded-lg bg-white/5 p-2 text-red-400/60 hover:bg-[#ff716c]/20 hover:text-red-400 disabled:opacity-50"
                   >
                     {deleting === quiz.id ? (
                       <Loader2 className="h-4 w-4 animate-spin" />

@@ -15,21 +15,21 @@ export default function Timer({ duration, startTime, onExpire }: TimerProps) {
 
   return (
     <div className="flex items-center gap-3">
-      <div className="h-3 flex-1 overflow-hidden rounded-full bg-white/15">
+      <div className="h-3 flex-1 overflow-hidden rounded-full bg-white/5">
         <div
           className={`h-full rounded-full transition-all duration-100 ${
             fraction > 0.5
-              ? "bg-[#26890c]"
+              ? "bg-[#b2ff59]"
               : fraction > 0.25
-                ? "bg-[#d89e00]"
-                : "bg-[#e21b3c]"
+                ? "bg-[#ffff00]"
+                : "bg-[#ff716c]"
           }`}
           style={{ width: `${fraction * 100}%` }}
         />
       </div>
       <span
         className={`min-w-[2ch] text-right text-lg font-extrabold ${
-          isCritical ? "text-[#e21b3c] timer-critical" : "text-white"
+          isCritical ? "text-[#ff716c] timer-critical" : "text-white"
         }`}
       >
         {displaySeconds}

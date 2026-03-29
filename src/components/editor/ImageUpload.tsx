@@ -45,7 +45,7 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
 
   if (value) {
     return (
-      <div className="relative overflow-hidden rounded-xl border-2 border-white/15 bg-white/5">
+      <div className="relative overflow-hidden rounded-xl border-[1.5px] border-white/8 bg-white/5">
         <img
           src={value}
           alt="Klausimo nuotrauka"
@@ -69,8 +69,8 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
           onClick={() => setMode("file")}
           className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
             mode === "file"
-              ? "bg-white/15 text-white/80"
-              : "bg-white/5 text-white/50 hover:bg-white/10"
+              ? "bg-white/5 text-white/80"
+              : "bg-white/5 text-white/50 hover:bg-white/5"
           }`}
         >
           <Upload className="mr-1 inline h-3 w-3" />
@@ -81,8 +81,8 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
           onClick={() => setMode("url")}
           className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
             mode === "url"
-              ? "bg-white/15 text-white/80"
-              : "bg-white/5 text-white/50 hover:bg-white/10"
+              ? "bg-white/5 text-white/80"
+              : "bg-white/5 text-white/50 hover:bg-white/5"
           }`}
         >
           <LinkIcon className="mr-1 inline h-3 w-3" />
@@ -95,7 +95,7 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop}
           onClick={() => fileRef.current?.click()}
-          className="flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 border-dashed border-white/15 bg-white/[0.02] px-4 py-6 transition-colors hover:border-white/30 hover:bg-white/5"
+          className="flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 border-dashed border-white/8 bg-white/[0.02] px-4 py-6 transition-colors hover:border-white/10 hover:bg-white/5"
         >
           {uploading ? (
             <Loader2 className="h-6 w-6 animate-spin text-white" />
@@ -126,7 +126,7 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
             onChange={(e) => setUrlInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleUrlSubmit()}
             placeholder="https://example.com/image.jpg"
-            className="flex-1 rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
+            className="flex-1 rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
           />
           <button
             type="button"

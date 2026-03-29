@@ -60,7 +60,7 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
   return (
     <div>
       {multi && selectedIds.length > 0 && (
-        <div className="mb-3 flex items-center justify-between rounded-xl bg-white/10 px-4 py-2">
+        <div className="mb-3 flex items-center justify-between rounded-xl bg-white/5 px-4 py-2">
           <span className="text-sm font-bold text-white/70">
             {selectedIds.length} {selectedIds.length === 1 ? t("quizPicker.quiz") : t("quizPicker.quizzes")} {t("quizPicker.selected")}
           </span>
@@ -80,8 +80,8 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
               onClick={() => handleToggle(quiz.id)}
               className={`answer-btn relative flex flex-col items-center gap-2 rounded-2xl px-3 py-4 text-center transition-all ${
                 isSelected
-                  ? "bg-white/20 ring-2 ring-white"
-                  : "glass hover:bg-white/12"
+                  ? "bg-white/20 outline outline-[1.5px] outline-[#ff9062]"
+                  : "glass hover:bg-white/5"
               }`}
             >
               {isSelected && (
