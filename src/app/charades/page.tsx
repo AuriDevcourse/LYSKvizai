@@ -166,6 +166,9 @@ function CharadesInner() {
     if (phase !== "playing" && phase !== "flash") return;
 
     const handler = (e: DeviceOrientationEvent) => {
+      if (e.beta !== null || e.gamma !== null) {
+        gyroReceivedRef.current = true;
+      }
       if (phase !== "playing" || cooldownRef.current) return;
 
       const beta = e.beta ?? 0;
@@ -211,22 +214,38 @@ function CharadesInner() {
     };
   }, [phase, nextWord]);
 
+  // Track whether we actually received gyro events (not just permission)
+  const gyroReceivedRef = useRef(false);
+
   const handleStart = async () => {
     // Request gyro permission on iOS
     const DOE = DeviceOrientationEvent as unknown as {
       requestPermission?: () => Promise<string>;
     };
+    let gyroAvailable = false;
     if (DOE.requestPermission) {
       try {
         const perm = await DOE.requestPermission();
-        setHasGyro(perm === "granted");
+        gyroAvailable = perm === "granted";
       } catch {
-        setHasGyro(false);
+        gyroAvailable = false;
       }
-    } else {
-      // Android/desktop — check if events fire
-      setHasGyro("DeviceOrientationEvent" in window && "ontouchstart" in window);
+    } else if ("DeviceOrientationEvent" in window) {
+      // Android/desktop — optimistically enable, verify with actual events
+      gyroAvailable = true;
     }
+
+    if (gyroAvailable) {
+      setHasGyro(true);
+      gyroReceivedRef.current = false;
+      // After 2s, if no gyro events actually fired, show manual buttons
+      setTimeout(() => {
+        if (!gyroReceivedRef.current) {
+          setHasGyro(false);
+        }
+      }, 2000);
+    }
+
     setCountdown(3);
     setPhase("countdown");
   };
@@ -402,29 +421,30 @@ function CharadesInner() {
         )}
       </div>
 
-      {/* Manual buttons (for desktop or no-gyro) */}
-      {!hasGyro && !flashColor && (
-        <div className="grid w-full grid-cols-2 gap-0">
-          <button
-            onClick={() => nextWord(false)}
-            className="flex items-center justify-center gap-2 bg-[#ff716c] py-6 text-xl font-extrabold text-white active:brightness-75"
-          >
-            <X className="h-6 w-6" />
-            {t("charades.skip")}
-          </button>
-          <button
-            onClick={() => nextWord(true)}
-            className="flex items-center justify-center gap-2 bg-[#b2ff59] py-6 text-xl font-extrabold text-white active:brightness-75"
-          >
-            <Check className="h-6 w-6" />
-            {t("charades.correct")}
-          </button>
-        </div>
-      )}
-
-      {hasGyro && !flashColor && (
-        <div className="pb-6 text-center text-sm font-bold text-white/30">
-          ↓ {t("charades.tiltDown")} &nbsp;·&nbsp; ↑ {t("charades.tiltUp")}
+      {/* Manual buttons — always visible as fallback (gyro works alongside) */}
+      {!flashColor && (
+        <div className="w-full">
+          {hasGyro && (
+            <div className="pb-2 text-center text-sm font-bold text-white/30">
+              ↓ {t("charades.tiltDown")} &nbsp;·&nbsp; ↑ {t("charades.tiltUp")}
+            </div>
+          )}
+          <div className="grid w-full grid-cols-2 gap-0">
+            <button
+              onClick={() => nextWord(false)}
+              className="flex items-center justify-center gap-2 bg-[#ff716c] py-6 text-xl font-extrabold text-white active:brightness-75"
+            >
+              <X className="h-6 w-6" />
+              {t("charades.skip")}
+            </button>
+            <button
+              onClick={() => nextWord(true)}
+              className="flex items-center justify-center gap-2 bg-[#b2ff59] py-6 text-xl font-extrabold text-white active:brightness-75"
+            >
+              <Check className="h-6 w-6" />
+              {t("charades.correct")}
+            </button>
+          </div>
         </div>
       )}
     </div>

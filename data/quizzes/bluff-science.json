@@ -1,0 +1,129 @@
+{
+  "id": "bluff-science",
+  "title": "Bluff: Science Myths",
+  "description": "One answer is fake — can you spot the bluff?",
+  "emoji": "🧪",
+  "language": "en",
+  "questions": [
+    {
+      "question": "What is the hardest natural substance on Earth?",
+      "options": ["Titanium", "Diamond", "Tungsten", "Sapphire"],
+      "correct": 1,
+      "explanation": "Diamond scores 10 on the Mohs hardness scale, the highest possible.",
+      "type": "bluff",
+      "bluffAnswer": "Obsidian"
+    },
+    {
+      "question": "What is the most abundant gas in Earth's atmosphere?",
+      "options": ["Oxygen", "Nitrogen", "Carbon Dioxide", "Argon"],
+      "correct": 1,
+      "explanation": "Nitrogen makes up about 78% of Earth's atmosphere.",
+      "type": "bluff",
+      "bluffAnswer": "Hydrogen"
+    },
+    {
+      "question": "What is the speed of light in km/s?",
+      "options": ["150,000", "299,792", "350,000", "250,000"],
+      "correct": 1,
+      "explanation": "Light travels at approximately 299,792 km/s in a vacuum.",
+      "type": "bluff",
+      "bluffAnswer": "199,000"
+    },
+    {
+      "question": "Which planet has the most moons?",
+      "options": ["Jupiter", "Saturn", "Uranus", "Neptune"],
+      "correct": 1,
+      "explanation": "Saturn has over 140 confirmed moons, surpassing Jupiter's count.",
+      "type": "bluff",
+      "bluffAnswer": "Mars"
+    },
+    {
+      "question": "What temperature is absolute zero in Celsius?",
+      "options": ["-100°C", "-273.15°C", "-200°C", "-300°C"],
+      "correct": 1,
+      "explanation": "Absolute zero is -273.15°C, where all molecular motion stops.",
+      "type": "bluff",
+      "bluffAnswer": "-400°C"
+    },
+    {
+      "question": "What is the most common element in the universe?",
+      "options": ["Helium", "Hydrogen", "Oxygen", "Carbon"],
+      "correct": 1,
+      "explanation": "Hydrogen makes up about 75% of all normal matter in the universe.",
+      "type": "bluff",
+      "bluffAnswer": "Iron"
+    },
+    {
+      "question": "How many bones does an adult human have?",
+      "options": ["186", "206", "256", "196"],
+      "correct": 1,
+      "explanation": "Adults have 206 bones. Babies are born with about 270, which fuse over time.",
+      "type": "bluff",
+      "bluffAnswer": "312"
+    },
+    {
+      "question": "What is the largest organ in the human body?",
+      "options": ["Liver", "Skin", "Lungs", "Intestines"],
+      "correct": 1,
+      "explanation": "The skin is the largest organ, covering about 2 square meters in adults.",
+      "type": "bluff",
+      "bluffAnswer": "Stomach"
+    },
+    {
+      "question": "Which blood type is the universal donor?",
+      "options": ["A+", "O-", "AB+", "B-"],
+      "correct": 1,
+      "explanation": "O-negative can be given to anyone regardless of their blood type.",
+      "type": "bluff",
+      "bluffAnswer": "A-"
+    },
+    {
+      "question": "What is the chemical formula for table salt?",
+      "options": ["KCl", "NaCl", "CaCl₂", "NaOH"],
+      "correct": 1,
+      "explanation": "Table salt is sodium chloride (NaCl).",
+      "type": "bluff",
+      "bluffAnswer": "NaF"
+    },
+    {
+      "question": "How many chromosomes do humans have?",
+      "options": ["44", "46", "48", "42"],
+      "correct": 1,
+      "explanation": "Humans have 46 chromosomes (23 pairs).",
+      "type": "bluff",
+      "bluffAnswer": "52"
+    },
+    {
+      "question": "Which metal is liquid at room temperature?",
+      "options": ["Gallium", "Mercury", "Cesium", "Bromine"],
+      "correct": 1,
+      "explanation": "Mercury is the only metal that is liquid at standard room temperature.",
+      "type": "bluff",
+      "bluffAnswer": "Tin"
+    },
+    {
+      "question": "What is the closest star to Earth (besides the Sun)?",
+      "options": ["Alpha Centauri A", "Proxima Centauri", "Barnard's Star", "Sirius"],
+      "correct": 1,
+      "explanation": "Proxima Centauri is about 4.24 light-years from Earth.",
+      "type": "bluff",
+      "bluffAnswer": "Polaris"
+    },
+    {
+      "question": "What percentage of the human body is water?",
+      "options": ["45%", "60%", "75%", "50%"],
+      "correct": 1,
+      "explanation": "The adult human body is approximately 60% water.",
+      "type": "bluff",
+      "bluffAnswer": "85%"
+    },
+    {
+      "question": "What is the pH of pure water?",
+      "options": ["6", "7", "8", "5"],
+      "correct": 1,
+      "explanation": "Pure water has a neutral pH of exactly 7.",
+      "type": "bluff",
+      "bluffAnswer": "9"
+    }
+  ]
+}

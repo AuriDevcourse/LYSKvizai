@@ -1,0 +1,129 @@
+{
+  "id": "year-space",
+  "title": "Year Guesser: Space Exploration",
+  "description": "Guess when these space milestones happened",
+  "emoji": "🚀",
+  "language": "en",
+  "questions": [
+    {
+      "question": "When was Sputnik, the first artificial satellite, launched?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The Soviet Union launched Sputnik 1 on October 4, 1957.",
+      "type": "year-guesser",
+      "correctYear": 1957
+    },
+    {
+      "question": "When did Yuri Gagarin become the first human in space?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "Gagarin orbited Earth on April 12, 1961 aboard Vostok 1.",
+      "type": "year-guesser",
+      "correctYear": 1961
+    },
+    {
+      "question": "When did the first Moon landing happen?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "Apollo 11 landed on the Moon on July 20, 1969.",
+      "type": "year-guesser",
+      "correctYear": 1969
+    },
+    {
+      "question": "When was the International Space Station launched?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The first ISS module (Zarya) launched on November 20, 1998.",
+      "type": "year-guesser",
+      "correctYear": 1998
+    },
+    {
+      "question": "When did the Space Shuttle Challenger disaster occur?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "Challenger broke apart 73 seconds after launch on January 28, 1986.",
+      "type": "year-guesser",
+      "correctYear": 1986
+    },
+    {
+      "question": "When did the Voyager 1 spacecraft launch?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "Voyager 1 launched on September 5, 1977 and is now the farthest human-made object.",
+      "type": "year-guesser",
+      "correctYear": 1977
+    },
+    {
+      "question": "When did SpaceX successfully land a Falcon 9 rocket for the first time?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "SpaceX landed Falcon 9 at Cape Canaveral on December 21, 2015.",
+      "type": "year-guesser",
+      "correctYear": 2015
+    },
+    {
+      "question": "When did the Mars rover Curiosity land on Mars?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "Curiosity landed in Gale Crater on August 6, 2012.",
+      "type": "year-guesser",
+      "correctYear": 2012
+    },
+    {
+      "question": "When was Pluto reclassified as a dwarf planet?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The IAU reclassified Pluto as a dwarf planet on August 24, 2006.",
+      "type": "year-guesser",
+      "correctYear": 2006
+    },
+    {
+      "question": "When did the Hubble Space Telescope take its first photo?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "Hubble took its first image on May 20, 1990, just weeks after launch.",
+      "type": "year-guesser",
+      "correctYear": 1990
+    },
+    {
+      "question": "When did the first woman (Valentina Tereshkova) go to space?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "Tereshkova orbited Earth aboard Vostok 6 on June 16, 1963.",
+      "type": "year-guesser",
+      "correctYear": 1963
+    },
+    {
+      "question": "When did the Perseverance rover land on Mars?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "Perseverance landed in Jezero Crater on February 18, 2021.",
+      "type": "year-guesser",
+      "correctYear": 2021
+    },
+    {
+      "question": "When was the first space station (Salyut 1) launched?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The Soviet Union launched Salyut 1 on April 19, 1971.",
+      "type": "year-guesser",
+      "correctYear": 1971
+    },
+    {
+      "question": "When did New Horizons fly by Pluto?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "New Horizons flew past Pluto on July 14, 2015, capturing the first close-up images.",
+      "type": "year-guesser",
+      "correctYear": 2015
+    },
+    {
+      "question": "When did the James Webb Space Telescope launch?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "JWST launched on December 25, 2021 from French Guiana.",
+      "type": "year-guesser",
+      "correctYear": 2021
+    }
+  ]
+}

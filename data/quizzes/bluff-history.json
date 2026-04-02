@@ -1,0 +1,129 @@
+{
+  "id": "bluff-history",
+  "title": "Bluff: History Misconceptions",
+  "description": "One answer is fake — can you spot the bluff?",
+  "emoji": "📜",
+  "language": "en",
+  "questions": [
+    {
+      "question": "Who was the first President of the United States?",
+      "options": ["Thomas Jefferson", "George Washington", "John Adams", "Benjamin Franklin"],
+      "correct": 1,
+      "explanation": "George Washington served as the first US President from 1789 to 1797.",
+      "type": "bluff",
+      "bluffAnswer": "Alexander Hamilton"
+    },
+    {
+      "question": "Which ancient wonder still exists today?",
+      "options": ["Colossus of Rhodes", "Great Pyramid of Giza", "Hanging Gardens", "Lighthouse of Alexandria"],
+      "correct": 1,
+      "explanation": "The Great Pyramid of Giza is the only ancient wonder still largely intact.",
+      "type": "bluff",
+      "bluffAnswer": "Temple of Zeus"
+    },
+    {
+      "question": "Who painted the Mona Lisa?",
+      "options": ["Michelangelo", "Leonardo da Vinci", "Raphael", "Botticelli"],
+      "correct": 1,
+      "explanation": "Da Vinci painted the Mona Lisa between 1503 and 1519.",
+      "type": "bluff",
+      "bluffAnswer": "Donatello"
+    },
+    {
+      "question": "Which empire was the largest in history by land area?",
+      "options": ["Roman Empire", "British Empire", "Mongol Empire", "Ottoman Empire"],
+      "correct": 1,
+      "explanation": "The British Empire covered about 35.5 million km² at its peak.",
+      "type": "bluff",
+      "bluffAnswer": "Persian Empire"
+    },
+    {
+      "question": "Who invented the light bulb for commercial use?",
+      "options": ["Nikola Tesla", "Thomas Edison", "Joseph Swan", "Humphry Davy"],
+      "correct": 1,
+      "explanation": "Edison developed the first commercially practical incandescent light bulb in 1879.",
+      "type": "bluff",
+      "bluffAnswer": "Benjamin Franklin"
+    },
+    {
+      "question": "Which country was the first to give women the right to vote?",
+      "options": ["USA", "New Zealand", "Finland", "Australia"],
+      "correct": 1,
+      "explanation": "New Zealand granted women suffrage in 1893.",
+      "type": "bluff",
+      "bluffAnswer": "Sweden"
+    },
+    {
+      "question": "What was the shortest war in history?",
+      "options": ["Six-Day War", "Anglo-Zanzibar War", "Football War", "Falklands War"],
+      "correct": 1,
+      "explanation": "The Anglo-Zanzibar War lasted only 38-45 minutes on August 27, 1896.",
+      "type": "bluff",
+      "bluffAnswer": "Pig War"
+    },
+    {
+      "question": "Who wrote the Communist Manifesto?",
+      "options": ["Lenin", "Karl Marx", "Friedrich Engels", "Trotsky"],
+      "correct": 1,
+      "explanation": "Marx and Engels co-authored it, but Marx is the primary credited author.",
+      "type": "bluff",
+      "bluffAnswer": "Mao Zedong"
+    },
+    {
+      "question": "Which civilization built Machu Picchu?",
+      "options": ["Aztec", "Inca", "Maya", "Olmec"],
+      "correct": 1,
+      "explanation": "The Inca built Machu Picchu around 1450 AD as an estate for Emperor Pachacuti.",
+      "type": "bluff",
+      "bluffAnswer": "Toltec"
+    },
+    {
+      "question": "What was the first country to land on the Moon?",
+      "options": ["Soviet Union", "United States", "China", "Japan"],
+      "correct": 1,
+      "explanation": "The USA's Apollo 11 mission landed on the Moon on July 20, 1969.",
+      "type": "bluff",
+      "bluffAnswer": "United Kingdom"
+    },
+    {
+      "question": "Who discovered penicillin?",
+      "options": ["Louis Pasteur", "Alexander Fleming", "Joseph Lister", "Robert Koch"],
+      "correct": 1,
+      "explanation": "Fleming discovered penicillin in 1928 from a mold contaminating his lab.",
+      "type": "bluff",
+      "bluffAnswer": "Marie Curie"
+    },
+    {
+      "question": "Which wall divided Berlin during the Cold War?",
+      "options": ["Iron Curtain", "Berlin Wall", "Siegfried Line", "Atlantic Wall"],
+      "correct": 1,
+      "explanation": "The Berlin Wall divided East and West Berlin from 1961 to 1989.",
+      "type": "bluff",
+      "bluffAnswer": "Hadrian's Wall"
+    },
+    {
+      "question": "Who was the last pharaoh of ancient Egypt?",
+      "options": ["Nefertiti", "Cleopatra VII", "Hatshepsut", "Ramesses II"],
+      "correct": 1,
+      "explanation": "Cleopatra VII was the last active ruler of the Ptolemaic Kingdom of Egypt.",
+      "type": "bluff",
+      "bluffAnswer": "Tutankhamun"
+    },
+    {
+      "question": "Which treaty ended World War I?",
+      "options": ["Treaty of Paris", "Treaty of Versailles", "Treaty of Trianon", "Treaty of Brest-Litovsk"],
+      "correct": 1,
+      "explanation": "The Treaty of Versailles was signed on June 28, 1919.",
+      "type": "bluff",
+      "bluffAnswer": "Treaty of Vienna"
+    },
+    {
+      "question": "Who was the first person to circumnavigate the globe?",
+      "options": ["Christopher Columbus", "Ferdinand Magellan's crew", "Francis Drake", "Vasco da Gama"],
+      "correct": 1,
+      "explanation": "Magellan's expedition (completed by Elcano) was the first to circumnavigate Earth in 1522.",
+      "type": "bluff",
+      "bluffAnswer": "Marco Polo"
+    }
+  ]
+}

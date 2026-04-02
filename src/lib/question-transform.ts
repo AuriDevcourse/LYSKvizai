@@ -105,6 +105,65 @@ export function transformQuestion(q: Question, targetType: QuestionType | "mixed
   return q;
 }
 
+/**
+ * Build a "Is it true that …?" phrasing from a question + chosen answer.
+ * E.g. "Which country has the most time zones?" + "France"
+ *   → "Is it true that the country with the most time zones is France?"
+ *
+ * Strategy: strip interrogative opener and rephrase as a declarative claim.
+ */
+function buildTrueFalseStatement(question: string, answer: string): string {
+  let q = question.trim().replace(/\?$/, "").trim();
+
+  // Common patterns: "Which X is Y" → "X is answer"
+  // "What is the X of Y" → "the X of Y is answer"
+  // "How many X does Y have" → "Y has answer X"
+  // Fallback: "the answer to 'Q' is answer"
+
+  // "Which/What <noun> ..." → "<noun> ... is <answer>"
+  const whichWhat = q.match(/^(which|what)\s+(.+)/i);
+  if (whichWhat) {
+    const rest = whichWhat[2];
+
+    // "What is the X (of Y)" → "the X (of Y) is answer"
+    const whatIs = rest.match(/^(?:is|are|was|were)\s+(.+)/i);
+    if (whatIs) {
+      return `Is it true that ${whatIs[1]} is ${answer}?`;
+    }
+
+    // "What/Which X does Y verb" → "Y verbs answer"
+    // Too complex to parse reliably, use simple fallback
+    return `Is it true that ${rest} is ${answer}?`;
+  }
+
+  // "Who ..." → "... is <answer>"
+  const whoMatch = q.match(/^who\s+(.+)/i);
+  if (whoMatch) {
+    return `Is it true that ${whoMatch[1]} ${answer}?`;
+  }
+
+  // "How many X does Y have" / "How many X are in Y"
+  const howMany = q.match(/^how\s+many\s+(.+)/i);
+  if (howMany) {
+    return `Is it true that ${howMany[1]} is ${answer}?`;
+  }
+
+  // "Where ..." → "... is <answer>"
+  const whereMatch = q.match(/^where\s+(.+)/i);
+  if (whereMatch) {
+    return `Is it true that ${whereMatch[1]} ${answer}?`;
+  }
+
+  // "When ..." → "... is <answer>"
+  const whenMatch = q.match(/^when\s+(.+)/i);
+  if (whenMatch) {
+    return `Is it true that ${whenMatch[1]} ${answer}?`;
+  }
+
+  // Fallback: generic phrasing
+  return `Is it true that the answer to "${q}" is ${answer}?`;
+}
+
 function convertToTrueFalse(q: Question): Question {
   const correctAnswer = q.options[q.correct];
   const wrongAnswers = q.options.filter((_, i) => i !== q.correct && q.options[i] !== "");
@@ -116,7 +175,7 @@ function convertToTrueFalse(q: Question): Question {
     // Statement using the correct answer — answer is True (index 0)
     return {
       ...q,
-      question: `${q.question}\n→ ${correctAnswer}`,
+      question: buildTrueFalseStatement(q.question, correctAnswer),
       options: ["True", "False", "", ""],
       correct: 0,
       type: "true-false",
@@ -126,7 +185,7 @@ function convertToTrueFalse(q: Question): Question {
     const wrongAnswer = wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)] || correctAnswer;
     return {
       ...q,
-      question: `${q.question}\n→ ${wrongAnswer}`,
+      question: buildTrueFalseStatement(q.question, wrongAnswer),
       options: ["True", "False", "", ""],
       correct: 1,
       type: "true-false",

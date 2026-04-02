@@ -1,0 +1,129 @@
+{
+  "id": "bluff-food",
+  "title": "Bluff: Food & Drink",
+  "description": "One answer is fake — can you spot the bluff?",
+  "emoji": "🍕",
+  "language": "en",
+  "questions": [
+    {
+      "question": "Which country produces the most coffee in the world?",
+      "options": ["Colombia", "Brazil", "Vietnam", "Ethiopia"],
+      "correct": 1,
+      "explanation": "Brazil produces about one-third of the world's coffee supply.",
+      "type": "bluff",
+      "bluffAnswer": "Costa Rica"
+    },
+    {
+      "question": "What is the most consumed beverage in the world after water?",
+      "options": ["Coffee", "Tea", "Beer", "Coca-Cola"],
+      "correct": 1,
+      "explanation": "Tea is the second most consumed beverage globally after water.",
+      "type": "bluff",
+      "bluffAnswer": "Milk"
+    },
+    {
+      "question": "Which fruit has its seeds on the outside?",
+      "options": ["Raspberry", "Strawberry", "Kiwi", "Fig"],
+      "correct": 1,
+      "explanation": "Strawberries have about 200 seeds on their outer surface.",
+      "type": "bluff",
+      "bluffAnswer": "Blackberry"
+    },
+    {
+      "question": "What is the most expensive spice in the world by weight?",
+      "options": ["Vanilla", "Saffron", "Cardamom", "Cinnamon"],
+      "correct": 1,
+      "explanation": "Saffron can cost $5,000–$10,000 per kilogram — it takes 150,000 flowers for 1 kg.",
+      "type": "bluff",
+      "bluffAnswer": "Black Truffle"
+    },
+    {
+      "question": "Which cheese is the most consumed in the world?",
+      "options": ["Cheddar", "Mozzarella", "Gouda", "Parmesan"],
+      "correct": 1,
+      "explanation": "Mozzarella is the world's most consumed cheese, largely due to pizza.",
+      "type": "bluff",
+      "bluffAnswer": "Brie"
+    },
+    {
+      "question": "What is the hottest chili pepper in the world?",
+      "options": ["Ghost Pepper", "Carolina Reaper", "Trinidad Scorpion", "Habanero"],
+      "correct": 1,
+      "explanation": "The Carolina Reaper averages 1.6 million Scoville Heat Units.",
+      "type": "bluff",
+      "bluffAnswer": "Jalapeño"
+    },
+    {
+      "question": "Which nut is used to make marzipan?",
+      "options": ["Cashew", "Almond", "Pistachio", "Hazelnut"],
+      "correct": 1,
+      "explanation": "Marzipan is made from ground almonds and sugar.",
+      "type": "bluff",
+      "bluffAnswer": "Walnut"
+    },
+    {
+      "question": "Which country invented pizza?",
+      "options": ["Greece", "Italy", "Turkey", "France"],
+      "correct": 1,
+      "explanation": "Modern pizza originated in Naples, Italy in the 18th century.",
+      "type": "bluff",
+      "bluffAnswer": "Spain"
+    },
+    {
+      "question": "What is the main ingredient in guacamole?",
+      "options": ["Tomato", "Avocado", "Lime", "Cilantro"],
+      "correct": 1,
+      "explanation": "Guacamole is made primarily from mashed avocado.",
+      "type": "bluff",
+      "bluffAnswer": "Green Pepper"
+    },
+    {
+      "question": "Which country consumes the most chocolate per capita?",
+      "options": ["Belgium", "Switzerland", "Germany", "USA"],
+      "correct": 1,
+      "explanation": "Switzerland consumes about 10 kg of chocolate per person per year.",
+      "type": "bluff",
+      "bluffAnswer": "France"
+    },
+    {
+      "question": "What grain is used to make traditional Japanese sake?",
+      "options": ["Barley", "Rice", "Wheat", "Millet"],
+      "correct": 1,
+      "explanation": "Sake is brewed from polished rice using a special fermentation process.",
+      "type": "bluff",
+      "bluffAnswer": "Corn"
+    },
+    {
+      "question": "Which vegetable was the first to be grown in space?",
+      "options": ["Tomato", "Potato", "Lettuce", "Carrot"],
+      "correct": 1,
+      "explanation": "Potatoes were the first vegetable grown in space aboard the Space Shuttle Columbia in 1995.",
+      "type": "bluff",
+      "bluffAnswer": "Cucumber"
+    },
+    {
+      "question": "What is the most eaten food in the world?",
+      "options": ["Bread", "Rice", "Pasta", "Potatoes"],
+      "correct": 1,
+      "explanation": "Rice is the staple food for more than half the world's population.",
+      "type": "bluff",
+      "bluffAnswer": "Corn"
+    },
+    {
+      "question": "Which country is the largest producer of olive oil?",
+      "options": ["Italy", "Spain", "Greece", "Turkey"],
+      "correct": 1,
+      "explanation": "Spain produces about 45% of the world's olive oil.",
+      "type": "bluff",
+      "bluffAnswer": "Morocco"
+    },
+    {
+      "question": "What is wasabi traditionally made from?",
+      "options": ["Horseradish", "Japanese horseradish plant", "Mustard", "Green chili"],
+      "correct": 1,
+      "explanation": "Real wasabi comes from the Wasabia japonica plant stem, though most restaurants use dyed horseradish.",
+      "type": "bluff",
+      "bluffAnswer": "Ginger root"
+    }
+  ]
+}
