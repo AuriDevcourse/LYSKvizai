@@ -42,6 +42,8 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
           onChange={(e) => setCode(e.target.value.toUpperCase())}
           placeholder="XXXX"
           maxLength={4}
+          pattern="[A-HJ-NP-Z2-9]{4}"
+          title="Enter a 4-character room code"
           autoCapitalize="characters"
           autoComplete="off"
           autoCorrect="off"
