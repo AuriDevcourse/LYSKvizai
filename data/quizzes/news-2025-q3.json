@@ -1,0 +1,71 @@
+{
+  "id": "news-2025-q3",
+  "title": "News: 2025 Q3",
+  "description": "10 questions about major events from July to September 2025",
+  "emoji": "📰",
+  "language": "en",
+  "questions": [
+    {
+      "question": "Which country held the presidency of the Council of the European Union in the second half of 2025?",
+      "options": ["Spain", "Poland", "Denmark", "Belgium"],
+      "correct": 1,
+      "explanation": "Poland held the rotating presidency of the Council of the EU from July to December 2025."
+    },
+    {
+      "question": "What was the expiration date of Trump's 90-day tariff pause announced in April 2025?",
+      "options": ["June 2025", "July 2025", "August 2025", "September 2025"],
+      "correct": 1,
+      "explanation": "The 90-day pause on the highest reciprocal tariffs was set to expire in July 2025, creating renewed trade uncertainty."
+    },
+    {
+      "question": "Which major international club football tournament took place in the United States in summer 2025?",
+      "options": ["UEFA Nations League Finals", "Copa America", "FIFA Club World Cup", "Africa Cup of Nations"],
+      "correct": 2,
+      "explanation": "The expanded FIFA Club World Cup, featuring 32 clubs, was held in the United States in summer 2025."
+    },
+    {
+      "question": "Where was the 2025 FIFA Club World Cup held?",
+      "options": ["Qatar", "United States", "Saudi Arabia", "England"],
+      "correct": 1,
+      "explanation": "The 2025 FIFA Club World Cup was held in the United States across multiple venues."
+    },
+    {
+      "question": "Which space agency successfully launched the Europa Clipper mission to study Jupiter's moon Europa?",
+      "options": ["ESA", "NASA", "CNSA", "ISRO"],
+      "correct": 1,
+      "explanation": "NASA's Europa Clipper, launched in October 2024, continued its journey toward Jupiter's moon Europa during 2025."
+    },
+    {
+      "question": "What major climate milestone was reported for the 12-month period ending in mid-2025?",
+      "options": ["Global temperatures dropped below the 1.5°C threshold", "It was confirmed as the hottest 12-month period on record", "Arctic ice reached record high levels", "Carbon emissions dropped by 20%"],
+      "correct": 1,
+      "explanation": "Global temperatures continued to exceed the 1.5°C warming threshold above pre-industrial levels."
+    },
+    {
+      "question": "Which country's elections in 2025 were closely watched for the rise of far-right parties in Europe?",
+      "options": ["France", "Germany", "Austria", "Netherlands"],
+      "correct": 2,
+      "explanation": "Following the February 2025 election, Germany's coalition formation was closely watched amid the strong showing by the far-right AfD party."
+    },
+    {
+      "question": "What AI safety topic dominated tech policy discussions in mid-2025?",
+      "options": ["AI-generated deepfakes in elections", "Robot labor replacing all jobs", "AI achieving consciousness", "Quantum computing threats"],
+      "correct": 0,
+      "explanation": "AI-generated deepfakes and their potential impact on democratic processes remained a major policy concern in 2025."
+    },
+    {
+      "question": "Which major tech event typically held in September saw significant AI hardware announcements in 2025?",
+      "options": ["CES", "MWC", "Apple's iPhone event", "Google I/O"],
+      "correct": 2,
+      "explanation": "Apple's annual September event featured new iPhone models with enhanced AI capabilities."
+    },
+    {
+      "question": "What was a major ongoing humanitarian crisis in 2025?",
+      "options": ["Famine in North Korea", "Conflict and humanitarian disaster in Sudan", "Volcanic eruption in Iceland", "Drought in Australia"],
+      "correct": 1,
+      "explanation": "Sudan's civil war, which began in April 2023, continued to cause one of the world's worst humanitarian crises through 2025."
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}

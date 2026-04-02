@@ -1,0 +1,174 @@
+{
+  "id": "pasaulio-istorija",
+  "title": "World history",
+  "description": "15 questions about world history",
+  "emoji": "📜",
+  "questions": [
+    {
+      "question": "In what year was the Great Pyramid of Cheops built in Egypt?",
+      "options": [
+        "Around 2560 Ave. Cr.",
+        "Around 1500 Ave. Cr.",
+        "Around 3500 Ave. Cr.",
+        "Around 800 Ave. Cr."
+      ],
+      "correct": 0,
+      "explanation": "The Great Pyramid of Cheops was built around 2560 BC. Ave. Cr. and is the only surviving wonder of the ancient world."
+    },
+    {
+      "question": "Who was the first Roman emperor?",
+      "options": [
+        "August",
+        "Nero",
+        "Julius Caesar",
+        "Trajan"
+      ],
+      "correct": 0,
+      "explanation": "Augustus (Octavian) became the first Roman emperor in 27 AD. Ave. Cr."
+    },
+    {
+      "question": "In which city was the first Olympic Games held in ancient Greece?",
+      "options": [
+        "in Athens",
+        "in Olympia",
+        "In Sparta",
+        "in Corinth"
+      ],
+      "correct": 1,
+      "explanation": "The first Olympic Games were held in Olympia in 776. Ave. Cr."
+    },
+    {
+      "question": "In what year did Christopher Columbus discover America?",
+      "options": [
+        "in 1492",
+        "in 1512",
+        "1475",
+        "in 1488"
+      ],
+      "correct": 0,
+      "explanation": "Christopher Columbus reached America in 1492. October 12"
+    },
+    {
+      "question": "Who invented the printing press in Europe?",
+      "options": [
+        "Leonardo da Vinci",
+        "Johann Gutenberg",
+        "Galileo Galilei",
+        "Nicolas Copernicus"
+      ],
+      "correct": 1,
+      "explanation": "Johannes Gutenberg around 1440 invented the printing press with moving letters."
+    },
+    {
+      "question": "In what year did the First World War begin?",
+      "options": [
+        "in 1918",
+        "in 1914",
+        "in 1912",
+        "in 1916"
+      ],
+      "correct": 1,
+      "explanation": "The First World War began in 1914. July 28"
+    },
+    {
+      "question": "Who led Nazi Germany during World War II?",
+      "options": [
+        "Adolf Hitler",
+        "William II",
+        "Heinrich Himmler",
+        "Otto von Bismarck"
+      ],
+      "correct": 0,
+      "explanation": "Adolf Hitler was the Führer of Nazi Germany from 1933 to 1945."
+    },
+    {
+      "question": "In which year did World War II end in Europe?",
+      "options": [
+        "in 1945",
+        "in 1944",
+        "in 1943",
+        "in 1946"
+      ],
+      "correct": 0,
+      "explanation": "The Second World War in Europe ended in 1945. May 8, after Germany capitulated."
+    },
+    {
+      "question": "Who was the first person to fly into space?",
+      "options": [
+        "Neil Armstrong",
+        "John Glenn",
+        "Yuri Gagarin",
+        "Valentina Tereshkova"
+      ],
+      "correct": 2,
+      "explanation": "Yuri Gagarin in 1961 April 12 became the first man in space."
+    },
+    {
+      "question": "In which year did man first land on the moon?",
+      "options": [
+        "in 1965",
+        "in 1972",
+        "in 1975",
+        "in 1969"
+      ],
+      "correct": 3,
+      "explanation": "Neil Armstrong and Buzz Aldrin landed on the moon in 1969. July 20"
+    },
+    {
+      "question": "What year did the Berlin Wall fall?",
+      "options": [
+        "in 1987",
+        "in 1991",
+        "in 1989",
+        "in 1985"
+      ],
+      "correct": 2,
+      "explanation": "The Berlin Wall fell in 1989. on November 9, symbolizing the end of the Cold War."
+    },
+    {
+      "question": "Who invented the first telephone?",
+      "options": [
+        "Thomas Edison",
+        "Nikola Tesla",
+        "Samuel Morse",
+        "Alexander Graham Bell"
+      ],
+      "correct": 3,
+      "explanation": "Alexander Graham Bell 1876 patented the first practical telephone."
+    },
+    {
+      "question": "Which medieval event between 1347 and 1353 carried off a third of Europe's population?",
+      "options": [
+        "The Black Death",
+        "Crusades",
+        "The Hundred Years War",
+        "The Great Famine"
+      ],
+      "correct": 0,
+      "explanation": "Black Death (plague pandemic) 1347-1353 took away about a third of Europe's population."
+    },
+    {
+      "question": "In what year did the French Revolution take place?",
+      "options": [
+        "in 1776",
+        "in 1789",
+        "in 1815",
+        "in 1804"
+      ],
+      "correct": 1,
+      "explanation": "The French Revolution began in 1789 with the storming of the Bastille on July 14."
+    },
+    {
+      "question": "Who was the British Prime Minister nicknamed the \"Iron Lady\"?",
+      "options": [
+        "Queen Victoria",
+        "Margaret Thatcher",
+        "Theresa May",
+        "Indira Gandhi"
+      ],
+      "correct": 1,
+      "explanation": "Margaret Thatcher was the British Prime Minister from 1979 to 1990. and earned the nickname \"The Iron Lady\" for her determination."
+    }
+  ],
+  "language": "en"
+}

@@ -1,0 +1,114 @@
+{
+  "id": "geografija",
+  "title": "Geography",
+  "description": "15 questions about world geography",
+  "emoji": "🌍",
+  "language": "en",
+  "questions": [
+    {
+      "question": "What is the capital of Australia?",
+      "options": ["Canberra", "Melbourne", "Sydney", "Brisbane"],
+      "correct": 0,
+      "explanation": "The capital of Australia is Canberra, although Sydney and Melbourne are larger cities.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Canberra_Parliamentary_Zone_viewed_from_Mount_Ainslie.jpg/800px-Canberra_Parliamentary_Zone_viewed_from_Mount_Ainslie.jpg"
+    },
+    {
+      "question": "Which river is the longest in the world?",
+      "options": ["Yangtze", "Amazon", "Nile", "Mississippi"],
+      "correct": 2,
+      "explanation": "The Nile, which flows through Africa, is the longest river in the world, about 6,650 km.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Nile_River_and_delta_from_orbit.jpg/800px-Nile_River_and_delta_from_orbit.jpg"
+    },
+    {
+      "question": "On which continent is the Sahara desert?",
+      "options": ["Asia", "South America", "North America", "Africa"],
+      "correct": 3,
+      "explanation": "The Sahara is the largest hot desert in the world, located in North Africa.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Sahara_desert.jpg/800px-Sahara_desert.jpg"
+    },
+    {
+      "question": "What is the capital of Brazil?",
+      "options": ["Brasília", "Sao Paulo", "Rio de Janeiro", "Salvador"],
+      "correct": 0,
+      "explanation": "The capital of Brazil is Brasília, a specially designed city that became the capital in 1960.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Congresso_Nacional_do_Brasil.jpg/800px-Congresso_Nacional_do_Brasil.jpg"
+    },
+    {
+      "question": "How many oceans are there on Earth?",
+      "options": ["3", "5", "4", "6"],
+      "correct": 1,
+      "explanation": "There are 5 oceans on Earth: Pacific, Atlantic, Indian, Arctic and Southern.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/800px-The_Earth_seen_from_Apollo_17.jpg"
+    },
+    {
+      "question": "Which country has the largest area in the world?",
+      "options": ["Russia", "China", "USA", "Canada"],
+      "correct": 0,
+      "explanation": "Russia is the largest country in the world by area, more than 17 million km².",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Moscow_July_2011-16.jpg/800px-Moscow_July_2011-16.jpg"
+    },
+    {
+      "question": "What is the highest peak in the world?",
+      "options": ["K2", "Everest", "Kilimanjaro", "Mont Blanc"],
+      "correct": 1,
+      "explanation": "Everest (8,849 m) is the highest peak in the world, located in the Himalayas.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg/800px-Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg"
+    },
+    {
+      "question": "What is the longest river in Lithuania?",
+      "options": ["Neris", "Šventoji", "Nemunas", "Dubysa"],
+      "correct": 2,
+      "explanation": "Nemunas is the longest river in Lithuania, its length is about 937 km.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Nemunas_near_Merkine%2C_Lithuania.jpg/800px-Nemunas_near_Merkine%2C_Lithuania.jpg"
+    },
+    {
+      "question": "In which country is the Taj Mahal?",
+      "options": ["Pakistan", "Bangladesh", "India", "Nepal"],
+      "correct": 2,
+      "explanation": "The Taj Mahal in Agra, India is a famous mausoleum built in the 17th century.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Taj_Mahal%2C_Agra%2C_India_edit3.jpg/800px-Taj_Mahal%2C_Agra%2C_India_edit3.jpg"
+    },
+    {
+      "question": "Which is the most populated country in the world?",
+      "options": ["USA", "India", "Indonesia", "China"],
+      "correct": 1,
+      "explanation": "India is the most populated country in the world, surpassing China in 2023.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Crowd_at_Juhu_Beach.jpg/800px-Crowd_at_Juhu_Beach.jpg"
+    },
+    {
+      "question": "What is the biggest lake in Lithuania?",
+      "options": ["Lake Drūkšiai", "Lake Plateliai", "Lake Tauragnas", "Galvė Lake"],
+      "correct": 0,
+      "explanation": "Lake Drūkšiai is the largest lake in Lithuania, its area is about 44.8 km².",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Druksiai.jpg/800px-Druksiai.jpg"
+    },
+    {
+      "question": "On which continent are the Andes mountains?",
+      "options": ["North America", "Africa", "South America", "Asia"],
+      "correct": 2,
+      "explanation": "The Andes are the longest mountain range in the world, stretching across South America.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Andes_70.30345W_42.11048S.jpg/800px-Andes_70.30345W_42.11048S.jpg"
+    },
+    {
+      "question": "What is the capital of Turkey?",
+      "options": ["Istanbul", "Izmir", "Antalya", "Ankara"],
+      "correct": 3,
+      "explanation": "The capital of Turkey is Ankara, although Istanbul is the country's largest city.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Ankara_Turkey.jpg/800px-Ankara_Turkey.jpg"
+    },
+    {
+      "question": "Which country is the smallest in the world by area?",
+      "options": ["Monaco", "Liechtenstein", "San Marino", "Vatican"],
+      "correct": 3,
+      "explanation": "The Vatican is the smallest state in the world, its area is only about 0.44 km².",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/St_Peter%27s_Square%2C_Vatican_City_-_April_2007.jpg/800px-St_Peter%27s_Square%2C_Vatican_City_-_April_2007.jpg"
+    },
+    {
+      "question": "In which country is the Great Barrier Reef?",
+      "options": ["Indonesia", "Australia", "Philippines", "Thailand"],
+      "correct": 1,
+      "explanation": "The Great Barrier Reef is located off the northeast coast of Australia and is the largest coral reef system in the world.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Coral_reef_at_palmyra.jpg/800px-Coral_reef_at_palmyra.jpg"
+    }
+  ]
+}

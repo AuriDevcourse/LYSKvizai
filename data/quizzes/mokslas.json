@@ -1,0 +1,174 @@
+{
+  "id": "mokslas",
+  "title": "Science",
+  "description": "15 questions about science and nature",
+  "emoji": "🔬",
+  "questions": [
+    {
+      "question": "What is the largest organ in the human body?",
+      "options": [
+        "Liver",
+        "The brain",
+        "Heart",
+        "Skin"
+      ],
+      "correct": 3,
+      "explanation": "The skin is the largest organ of the human body, covering an area of ​​about 1.5 to 2 square meters."
+    },
+    {
+      "question": "What chemical element has the symbol 'O'?",
+      "options": [
+        "Gold",
+        "Osmium",
+        "Oxygen",
+        "Ozone"
+      ],
+      "correct": 2,
+      "explanation": "Oxygen is denoted by the chemical symbol O and is an essential element for life."
+    },
+    {
+      "question": "Which planet is closest to the Sun?",
+      "options": [
+        "Venus",
+        "Earth",
+        "Mercury",
+        "Mars"
+      ],
+      "correct": 2,
+      "explanation": "Mercury is the first and closest planet to the Sun in the Solar System."
+    },
+    {
+      "question": "What is the value of the speed of light in a vacuum?",
+      "options": [
+        "150,000 km/s",
+        "1,000,000 km/s",
+        "500,000 km/s",
+        "300,000 km/s"
+      ],
+      "correct": 3,
+      "explanation": "The speed of light in a vacuum is about 300,000 km/s (299,792 km/s to be exact)."
+    },
+    {
+      "question": "Which layer of gas protects the Earth from ultraviolet rays?",
+      "options": [
+        "Ozone layer",
+        "Mesosphere",
+        "Troposphere",
+        "Thermosphere"
+      ],
+      "correct": 0,
+      "explanation": "The ozone layer in the stratosphere absorbs most of the Sun's harmful ultraviolet rays."
+    },
+    {
+      "question": "How many bones does an adult skeleton have?",
+      "options": [
+        "206",
+        "106",
+        "306",
+        "156"
+      ],
+      "correct": 0,
+      "explanation": "The adult human skeleton consists of 206 bones."
+    },
+    {
+      "question": "What is the chemical formula of H₂O?",
+      "options": [
+        "Water",
+        "Carbon dioxide",
+        "Hydrogen peroxide",
+        "Hydrochloric acid"
+      ],
+      "correct": 0,
+      "explanation": "H₂O is the chemical formula for water, consisting of two hydrogen atoms and one oxygen atom."
+    },
+    {
+      "question": "Which planet is the largest in the solar system?",
+      "options": [
+        "Jupiter",
+        "Saturn",
+        "Neptune",
+        "Uranus"
+      ],
+      "correct": 0,
+      "explanation": "Jupiter is the largest planet in the Solar System, with a diameter about 11 times that of Earth."
+    },
+    {
+      "question": "What process allows plants to make food from sunlight?",
+      "options": [
+        "Fermentation",
+        "Osmosis",
+        "Photosynthesis",
+        "Diffusion"
+      ],
+      "correct": 2,
+      "explanation": "During photosynthesis, plants use sunlight, carbon dioxide and water to produce glucose and oxygen."
+    },
+    {
+      "question": "What force attracts objects to the Earth's surface?",
+      "options": [
+        "Magnetic force",
+        "Gravity",
+        "Frictional force",
+        "Electrostatic force"
+      ],
+      "correct": 1,
+      "explanation": "Gravity is the force that attracts all bodies with mass to each other, including objects near the Earth."
+    },
+    {
+      "question": "What chemical element has the largest proportion in the Sun?",
+      "options": [
+        "Helium",
+        "Coal",
+        "Oxygen",
+        "Hydrogen"
+      ],
+      "correct": 3,
+      "explanation": "Hydrogen makes up about 73% of the Sun's mass and is the main fuel for nuclear fusion."
+    },
+    {
+      "question": "What is the name of an erupting volcano whose crater is filled with water?",
+      "options": [
+        "Geyser",
+        "caldera",
+        "Lagoon",
+        "Rift"
+      ],
+      "correct": 1,
+      "explanation": "A caldera is a large depression formed by the collapse of the top of a volcano, which often fills with water."
+    },
+    {
+      "question": "How many planets are there in the solar system?",
+      "options": [
+        "7",
+        "9",
+        "8",
+        "10"
+      ],
+      "correct": 2,
+      "explanation": "There are 8 planets in the solar system, since Pluto since 2006. considered a dwarf planet."
+    },
+    {
+      "question": "Which animal is the largest that ever lived on Earth?",
+      "options": [
+        "African elephant",
+        "Blue whale",
+        "Tyrannosaurus rex",
+        "Megalodon"
+      ],
+      "correct": 1,
+      "explanation": "The blue whale, which can reach up to 30 meters in length, is the largest animal to have ever lived on Earth."
+    },
+    {
+      "question": "What atomic number value of the periodic table element corresponds to iron?",
+      "options": [
+        "12",
+        "30",
+        "56",
+        "26"
+      ],
+      "correct": 3,
+      "explanation": "Iron (Fe) has atomic number 26 in the periodic table."
+    }
+  ],
+  "language": "en"
+}

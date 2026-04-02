@@ -1,0 +1,101 @@
+{
+  "id": "news-2025-q2",
+  "title": "News: 2025 Q2",
+  "description": "15 questions about major events from April to June 2025",
+  "emoji": "📰",
+  "language": "en",
+  "questions": [
+    {
+      "question": "What sweeping trade policy did Trump announce on April 2, 2025, dubbed 'Liberation Day'?",
+      "options": ["Free trade with all nations", "Reciprocal tariffs on nearly all US trading partners", "Withdrawal from the WTO", "A new trade deal with China"],
+      "correct": 1,
+      "explanation": "On April 2, 2025, Trump announced broad reciprocal tariffs on imports from nearly all countries, calling it 'Liberation Day.'"
+    },
+    {
+      "question": "What was the baseline tariff rate imposed on most countries under Trump's April 2025 tariff plan?",
+      "options": ["5%", "10%", "25%", "50%"],
+      "correct": 1,
+      "explanation": "A baseline 10% tariff was imposed on most countries, with higher rates for specific nations like China."
+    },
+    {
+      "question": "Which country faced tariffs as high as 145% from the US during the spring 2025 trade war?",
+      "options": ["Mexico", "Japan", "China", "European Union"],
+      "correct": 2,
+      "explanation": "China faced escalating tariffs reaching as high as 145% as the trade war between the US and China intensified in spring 2025."
+    },
+    {
+      "question": "What happened to US stock markets immediately following the 'Liberation Day' tariff announcement?",
+      "options": ["They surged to record highs", "They experienced sharp declines", "They remained flat", "Trading was halted indefinitely"],
+      "correct": 1,
+      "explanation": "US stock markets experienced sharp sell-offs following the tariff announcement, with trillions in market value lost."
+    },
+    {
+      "question": "Which major Catholic event occurred in April 2025 following the death of Pope Francis?",
+      "options": ["A new Vatican Council", "A papal conclave to elect a new Pope", "The canonization of 100 saints", "The relocation of the Vatican"],
+      "correct": 1,
+      "explanation": "Pope Francis passed away on April 21, 2025, triggering a papal conclave to elect his successor."
+    },
+    {
+      "question": "Who was elected as the new Pope following the death of Pope Francis in 2025?",
+      "options": ["Cardinal Pietro Parolin", "Cardinal Robert Francis Prevost", "Cardinal Luis Antonio Tagle", "Cardinal Marc Ouellet"],
+      "correct": 1,
+      "explanation": "American Cardinal Robert Francis Prevost was elected Pope, taking the name Leo XIV, becoming the first American Pope."
+    },
+    {
+      "question": "What name did the newly elected Pope choose?",
+      "options": ["Francis II", "Benedict XVII", "Leo XIV", "John Paul III"],
+      "correct": 2,
+      "explanation": "The new Pope chose the name Leo XIV."
+    },
+    {
+      "question": "Trump announced a 90-day pause on the highest reciprocal tariffs in April 2025, except for which country?",
+      "options": ["Mexico", "Canada", "China", "European Union"],
+      "correct": 2,
+      "explanation": "Trump paused the highest reciprocal tariffs for 90 days for most countries but maintained and escalated tariffs on China."
+    },
+    {
+      "question": "Which major tech company became the first to reach a $4 trillion market capitalization in 2025?",
+      "options": ["Microsoft", "Apple", "NVIDIA", "Google"],
+      "correct": 1,
+      "explanation": "Apple became the first company to reach a $4 trillion market capitalization."
+    },
+    {
+      "question": "Which European country's leader visited the White House in spring 2025 amid trade tensions?",
+      "options": ["Germany's Friedrich Merz", "France's Emmanuel Macron", "UK's Keir Starmer", "Italy's Giorgia Meloni"],
+      "correct": 2,
+      "explanation": "UK Prime Minister Keir Starmer visited Washington to negotiate trade terms amid the tariff disputes."
+    },
+    {
+      "question": "What major AI model did Anthropic release in 2025?",
+      "options": ["Claude 2.5", "Claude 3", "Claude 3.5 Opus", "Claude 4"],
+      "correct": 3,
+      "explanation": "Anthropic released Claude 4 in 2025, advancing their AI assistant capabilities."
+    },
+    {
+      "question": "Which country retaliated against US tariffs by imposing 125% tariffs on American goods?",
+      "options": ["European Union", "Japan", "China", "India"],
+      "correct": 2,
+      "explanation": "China retaliated against US tariffs by imposing 125% tariffs on American goods."
+    },
+    {
+      "question": "What happened to the US dollar after the Liberation Day tariff announcements?",
+      "options": ["It strengthened significantly", "It weakened against major currencies", "It remained stable", "It was depegged from gold"],
+      "correct": 1,
+      "explanation": "The US dollar weakened against major currencies as markets reacted negatively to the trade war escalation."
+    },
+    {
+      "question": "Which ride-hailing company announced plans to deploy robotaxis in several new US cities in 2025?",
+      "options": ["Uber", "Lyft", "Waymo", "Tesla"],
+      "correct": 2,
+      "explanation": "Waymo continued expanding its robotaxi service to new US cities in 2025."
+    },
+    {
+      "question": "What was the conflict status between Russia and Ukraine in spring 2025?",
+      "options": ["A peace treaty was signed", "The conflict continued with no ceasefire", "Russia withdrew all forces", "NATO intervened militarily"],
+      "correct": 1,
+      "explanation": "The Russia-Ukraine conflict continued into spring 2025 with no ceasefire agreement reached despite diplomatic efforts."
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}

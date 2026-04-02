@@ -1,0 +1,129 @@
+{
+  "id": "year-world-history",
+  "title": "Year Guesser: World History",
+  "description": "Guess the year of major world events",
+  "emoji": "🏛️",
+  "language": "en",
+  "questions": [
+    {
+      "question": "When did the French Revolution begin?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The French Revolution began with the storming of the Bastille on July 14, 1789.",
+      "type": "year-guesser",
+      "correctYear": 1789
+    },
+    {
+      "question": "When did the Titanic sink?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The RMS Titanic sank on April 15, 1912 after hitting an iceberg.",
+      "type": "year-guesser",
+      "correctYear": 1912
+    },
+    {
+      "question": "When did World War I begin?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "WWI began on July 28, 1914 after the assassination of Archduke Franz Ferdinand.",
+      "type": "year-guesser",
+      "correctYear": 1914
+    },
+    {
+      "question": "When was the Declaration of Independence signed?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The US Declaration of Independence was signed on July 4, 1776.",
+      "type": "year-guesser",
+      "correctYear": 1776
+    },
+    {
+      "question": "When did the atomic bomb drop on Hiroshima?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The US dropped an atomic bomb on Hiroshima on August 6, 1945.",
+      "type": "year-guesser",
+      "correctYear": 1945
+    },
+    {
+      "question": "When did the Roman Empire fall (Western)?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The Western Roman Empire fell in 476 AD when Romulus Augustulus was deposed.",
+      "type": "year-guesser",
+      "correctYear": 476
+    },
+    {
+      "question": "When did Christopher Columbus reach the Americas?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "Columbus landed in the Bahamas on October 12, 1492.",
+      "type": "year-guesser",
+      "correctYear": 1492
+    },
+    {
+      "question": "When was the Magna Carta signed?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The Magna Carta was sealed by King John of England in 1215.",
+      "type": "year-guesser",
+      "correctYear": 1215
+    },
+    {
+      "question": "When did the Black Death reach Europe?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The Black Death arrived in Europe in 1347, killing roughly a third of the population.",
+      "type": "year-guesser",
+      "correctYear": 1347
+    },
+    {
+      "question": "When did Napoleon become Emperor of France?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "Napoleon crowned himself Emperor on December 2, 1804.",
+      "type": "year-guesser",
+      "correctYear": 1804
+    },
+    {
+      "question": "When was the Great Wall of China construction started?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The earliest walls were built around 700 BC, but major construction began under Emperor Qin Shi Huang in 221 BC.",
+      "type": "year-guesser",
+      "correctYear": 700
+    },
+    {
+      "question": "When did the Russian Revolution occur?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The Russian Revolution took place in 1917, overthrowing the Tsar.",
+      "type": "year-guesser",
+      "correctYear": 1917
+    },
+    {
+      "question": "When was the United Nations founded?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The UN was established on October 24, 1945.",
+      "type": "year-guesser",
+      "correctYear": 1945
+    },
+    {
+      "question": "When did the Cuban Missile Crisis happen?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The Cuban Missile Crisis was a 13-day confrontation in October 1962.",
+      "type": "year-guesser",
+      "correctYear": 1962
+    },
+    {
+      "question": "When did the Berlin Wall go up?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The Berlin Wall was erected on August 13, 1961 by East Germany.",
+      "type": "year-guesser",
+      "correctYear": 1961
+    }
+  ]
+}
