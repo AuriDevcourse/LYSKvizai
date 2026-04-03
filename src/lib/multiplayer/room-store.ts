@@ -725,28 +725,36 @@ export async function startGame(code: string, hostId: string): Promise<{ error?:
   // Mystery multipliers removed — escalating question values replace them
   room.mysteryMultipliers.clear();
 
-  // Pre-translate all questions to Lithuanian (content is in English)
-  try {
-    const allTexts: string[] = [];
-    for (const idx of room.questionIndices) {
-      const q = room.questions[idx];
-      allTexts.push(q.question, ...q.options, q.explanation);
-    }
-    const translated = await translateBatch(allTexts, "en", "lt");
-    let ti = 0;
-    for (const idx of room.questionIndices) {
-      const tQuestion = translated[ti++];
-      const tOptions = [translated[ti++], translated[ti++], translated[ti++], translated[ti++]];
-      const tExplanation = translated[ti++];
-      room.enTranslations.set(idx, { question: tQuestion, options: tOptions, explanation: tExplanation });
-    }
-  } catch {
-    // Translation failed — multiplayer will fall back to English
-  }
-
   room.currentQuestionIndex = 0;
   startQuestionRound(room);
+
+  // Translate questions to Lithuanian in the background (non-blocking)
+  translateQuestionsInBackground(room);
+
   return {};
+}
+
+/** Translate all questions to Lithuanian in the background without blocking game start */
+function translateQuestionsInBackground(room: Room): void {
+  (async () => {
+    try {
+      const allTexts: string[] = [];
+      for (const idx of room.questionIndices) {
+        const q = room.questions[idx];
+        allTexts.push(q.question, ...q.options, q.explanation);
+      }
+      const translated = await translateBatch(allTexts, "en", "lt");
+      let ti = 0;
+      for (const idx of room.questionIndices) {
+        const tQuestion = translated[ti++];
+        const tOptions = [translated[ti++], translated[ti++], translated[ti++], translated[ti++]];
+        const tExplanation = translated[ti++];
+        room.enTranslations.set(idx, { question: tQuestion, options: tOptions, explanation: tExplanation });
+      }
+    } catch {
+      // Translation failed — multiplayer will fall back to English
+    }
+  })();
 }
 
 export function submitAnswer(
