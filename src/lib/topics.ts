@@ -87,7 +87,7 @@ export const TOPICS: Topic[] = [
     labelKey: "topics.technology",
     icon: Cpu,
     bg: "bg-[#14b8a6]",
-    quizIds: ["technologijos", "socialiniai-tinklai"],
+    quizIds: ["technologijos", "socialiniai-tinklai", "technologijos-ai", "technologijos-internetas"],
   },
   {
     id: "sports",
@@ -115,6 +115,6 @@ export const TOPICS: Topic[] = [
     labelKey: "topics.gaming",
     icon: Gamepad2,
     bg: "bg-[#6366f1]",
-    quizIds: ["video-zaidimai"],
+    quizIds: ["video-zaidimai", "zaidimai-retro", "zaidimai-modern"],
   },
 ];

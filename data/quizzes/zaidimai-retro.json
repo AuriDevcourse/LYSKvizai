@@ -1,0 +1,109 @@
+{
+  "id": "zaidimai-retro",
+  "title": "Retro Gaming",
+  "description": "Classic games from the golden era",
+  "emoji": "🕹️",
+  "language": "en",
+  "questions": [
+    {
+      "question": "What year was Pac-Man first released?",
+      "options": ["1978", "1980", "1982", "1984"],
+      "correct": 1,
+      "explanation": "Pac-Man was released by Namco in 1980 and became an arcade icon.",
+      "correctYear": 1980
+    },
+    {
+      "question": "Which game was bundled with the original Game Boy?",
+      "options": ["Super Mario Land", "Tetris", "Kirby's Dream Land", "Pokemon Red"],
+      "correct": 1,
+      "explanation": "Tetris was bundled with the Game Boy when it launched in 1989.",
+      "correctYear": 1989
+    },
+    {
+      "question": "What is the name of Mario's brother?",
+      "options": ["Wario", "Luigi", "Toad", "Yoshi"],
+      "correct": 1,
+      "explanation": "Luigi is Mario's younger, taller brother who first appeared in Mario Bros. (1983)."
+    },
+    {
+      "question": "Which company created Sonic the Hedgehog?",
+      "options": ["Nintendo", "Atari", "Sega", "Capcom"],
+      "correct": 2,
+      "explanation": "Sonic was created by Sega as their mascot to compete with Nintendo's Mario."
+    },
+    {
+      "question": "What year was the original Doom released?",
+      "options": ["1991", "1993", "1995", "1997"],
+      "correct": 1,
+      "explanation": "Doom was released in December 1993 and revolutionized the FPS genre.",
+      "correctYear": 1993
+    },
+    {
+      "question": "In the original Street Fighter II, which country is Ryu from?",
+      "options": ["China", "Korea", "Japan", "Thailand"],
+      "correct": 2,
+      "explanation": "Ryu is a Japanese martial artist and one of the most iconic fighting game characters."
+    },
+    {
+      "question": "What was the first home console by Nintendo?",
+      "options": ["SNES", "NES", "Nintendo 64", "Game Boy"],
+      "correct": 1,
+      "explanation": "The NES (Nintendo Entertainment System) launched in 1983 in Japan as the Famicom.",
+      "correctYear": 1983
+    },
+    {
+      "question": "Which game featured a princess named Peach who needed rescuing?",
+      "options": ["Donkey Kong", "Super Mario Bros.", "Zelda", "Metroid"],
+      "correct": 1,
+      "explanation": "Princess Peach (originally called Toadstool) is rescued in Super Mario Bros."
+    },
+    {
+      "question": "What year was the original Grand Theft Auto released?",
+      "options": ["1995", "1997", "1999", "2001"],
+      "correct": 1,
+      "explanation": "The original GTA was released in 1997 with a top-down perspective.",
+      "correctYear": 1997
+    },
+    {
+      "question": "Which game introduced the 'Konami Code' (Up Up Down Down...)?",
+      "options": ["Gradius", "Contra", "Castlevania", "Metal Gear"],
+      "correct": 0,
+      "explanation": "The Konami Code first appeared in Gradius (1986), but became famous through Contra."
+    },
+    {
+      "question": "What was Half-Life developer Valve's home city?",
+      "options": ["San Francisco", "Seattle", "Bellevue", "Portland"],
+      "correct": 2,
+      "explanation": "Valve Corporation is headquartered in Bellevue, Washington."
+    },
+    {
+      "question": "Which 1996 game let players capture and train creatures?",
+      "options": ["Digimon World", "Pokemon Red/Blue", "Monster Rancher", "Tamagotchi"],
+      "correct": 1,
+      "explanation": "Pokemon Red and Blue launched in Japan in 1996 and became a global phenomenon.",
+      "correctYear": 1996
+    },
+    {
+      "question": "What was the best-selling console of the 1990s?",
+      "options": ["Sega Genesis", "Nintendo 64", "PlayStation", "SNES"],
+      "correct": 2,
+      "explanation": "The original PlayStation sold over 102 million units, dominating the 90s."
+    },
+    {
+      "question": "Which classic game has the goal of clearing lines by fitting falling blocks?",
+      "options": ["Columns", "Tetris", "Dr. Mario", "Puyo Puyo"],
+      "correct": 1,
+      "explanation": "Tetris was created by Alexey Pajitnov in 1985 and became one of the most iconic games ever.",
+      "correctYear": 1985
+    },
+    {
+      "question": "In what year was The Legend of Zelda: Ocarina of Time released?",
+      "options": ["1996", "1998", "2000", "2002"],
+      "correct": 1,
+      "explanation": "Ocarina of Time launched in 1998 on N64 and is considered one of the greatest games ever.",
+      "correctYear": 1998
+    }
+  ],
+  "createdAt": "2026-04-03T00:00:00.000Z",
+  "updatedAt": "2026-04-03T00:00:00.000Z"
+}
