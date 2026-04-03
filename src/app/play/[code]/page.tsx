@@ -14,6 +14,7 @@ import YearGuesserInput from "@/components/multiplayer/YearGuesserInput";
 import HostResults from "@/components/multiplayer/HostResults";
 import PlayerResults from "@/components/multiplayer/PlayerResults";
 import Leaderboard from "@/components/multiplayer/Leaderboard";
+import EmojiReactions from "@/components/multiplayer/EmojiReactions";
 import WagerScreen from "@/components/multiplayer/WagerScreen";
 import HostWager from "@/components/multiplayer/HostWager";
 import { MP_API_URL } from "@/lib/multiplayer/config";
@@ -331,6 +332,9 @@ export default function GamePage({ params }: PageProps) {
       >
         <X className="h-5 w-5" />
       </button>
+
+      {/* Global emoji reactions overlay — visible to all players in all states */}
+      <EmojiReactions reactions={reactions} />
 
       <main className="relative z-10 mx-auto flex w-[92%] max-w-5xl flex-1 flex-col px-2 py-3 sm:px-8 sm:py-6">
         {state === "lobby" && isHost && (

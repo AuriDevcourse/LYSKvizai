@@ -58,7 +58,7 @@ export default function HostResults({
   if (phase === "reveal") {
     return (
       <div className="flex flex-1 flex-col animate-fade-in-up">
-        <EmojiReactions reactions={reactions} />
+
 
         {/* Question number */}
         <div className="flex items-center gap-4 pb-3">
