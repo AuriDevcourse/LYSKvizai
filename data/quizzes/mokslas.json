@@ -145,7 +145,8 @@
         "10"
       ],
       "correct": 2,
-      "explanation": "There are 8 planets in the solar system, since Pluto since 2006. considered a dwarf planet."
+      "explanation": "There are 8 planets in the solar system, since Pluto since 2006. considered a dwarf planet.",
+      "correctYear": 2006
     },
     {
       "question": "Which animal is the largest that ever lived on Earth?",

@@ -21,7 +21,8 @@
       "question": "What is the name of the first human in space?",
       "options": ["Neil Armstrong", "Buzz Aldrin", "Yuri Gagarin", "John Glenn"],
       "correct": 2,
-      "explanation": "Yuri Gagarin became the first human in space on April 12, 1961."
+      "explanation": "Yuri Gagarin became the first human in space on April 12, 1961.",
+      "correctYear": 1961
     },
     {
       "question": "Which planet is known as the Red Planet?",
@@ -51,7 +52,8 @@
       "question": "What year did humans first land on the Moon?",
       "options": ["1965", "1967", "1969", "1971"],
       "correct": 2,
-      "explanation": "Apollo 11 landed on the Moon on July 20, 1969."
+      "explanation": "Apollo 11 landed on the Moon on July 20, 1969.",
+      "correctYear": 1969
     },
     {
       "question": "What is the closest star to our Sun?",
@@ -81,7 +83,8 @@
       "question": "Which spacecraft was the first to leave the solar system?",
       "options": ["Pioneer 10", "Voyager 1", "Voyager 2", "New Horizons"],
       "correct": 1,
-      "explanation": "Voyager 1 entered interstellar space in 2012."
+      "explanation": "Voyager 1 entered interstellar space in 2012.",
+      "correctYear": 2012
     },
     {
       "question": "What causes a lunar eclipse?",

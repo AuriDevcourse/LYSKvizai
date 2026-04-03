@@ -13,7 +13,8 @@
         "Johann Sebastian Bach"
       ],
       "correct": 2,
-      "explanation": "The Moon Sonata (Sonata No. 14) is a work by Ludwig van Beethoven composed in 1801."
+      "explanation": "The Moon Sonata (Sonata No. 14) is a work by Ludwig van Beethoven composed in 1801.",
+      "correctYear": 1801
     },
     {
       "question": "Who is M. K. Čiurlionis?",
@@ -35,7 +36,8 @@
         "Joseph Haydn"
       ],
       "correct": 0,
-      "explanation": "The Four Seasons is a cycle of violin concertos by Antonio Vivaldi, composed around 1723."
+      "explanation": "The Four Seasons is a cycle of violin concertos by Antonio Vivaldi, composed around 1723.",
+      "correctYear": 1723
     },
     {
       "question": "Which composer became deaf but continued to compose music?",
@@ -57,7 +59,8 @@
         "Mikas Petrauskas"
       ],
       "correct": 3,
-      "explanation": "Kermošius is the first Lithuanian opera created by Miko Petrauskas in 1906."
+      "explanation": "Kermošius is the first Lithuanian opera created by Miko Petrauskas in 1906.",
+      "correctYear": 1906
     },
     {
       "question": "How many strings does a violin have?",
@@ -90,7 +93,8 @@
         "Mozart"
       ],
       "correct": 3,
-      "explanation": "Mozart began writing the Requiem in 1791, but died before completing it. The work was completed by his student Süssmayr."
+      "explanation": "Mozart began writing the Requiem in 1791, but died before completing it. The work was completed by his student Süssmayr.",
+      "correctYear": 1791
     },
     {
       "question": "How many notes are there in one octave?",

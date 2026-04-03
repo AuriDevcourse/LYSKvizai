@@ -24,7 +24,8 @@
         "Us"
       ],
       "correct": 2,
-      "explanation": "The College Dropout is Kanye West's debut album, released in 2004."
+      "explanation": "The College Dropout is Kanye West's debut album, released in 2004.",
+      "correctYear": 2004
     },
     {
       "question": "Which artist sings Hotline Bling?",
@@ -35,7 +36,8 @@
         "J. Cole"
       ],
       "correct": 2,
-      "explanation": "Hotline Bling is Drake's 2015 hit that has become a viral meme."
+      "explanation": "Hotline Bling is Drake's 2015 hit that has become a viral meme.",
+      "correctYear": 2015
     },
     {
       "question": "What city did hip-hop music originate from?",
@@ -57,7 +59,8 @@
         "Ol' Dirty Bastard"
       ],
       "correct": 0,
-      "explanation": "Tupac Shakur was shot in 1996. in Las Vegas. He is considered one of the most influential rappers."
+      "explanation": "Tupac Shakur was shot in 1996. in Las Vegas. He is considered one of the most influential rappers.",
+      "correctYear": 1996
     },
     {
       "question": "Which artist produced the album To Pimp a Butterfly?",
@@ -68,7 +71,8 @@
         "Childish Gambino"
       ],
       "correct": 2,
-      "explanation": "To Pimp a Butterfly (2015) - Kendrick Lamar's album, considered one of the best hip-hop albums."
+      "explanation": "To Pimp a Butterfly (2015) - Kendrick Lamar's album, considered one of the best hip-hop albums.",
+      "correctYear": 2015
     },
     {
       "question": "Who is a DJ in hip-hop music?",
@@ -112,7 +116,8 @@
         "Suge Knight"
       ],
       "correct": 0,
-      "explanation": "Dr. Dre founded Aftermath Entertainment in 1996, where Eminem and 50 Cent debuted."
+      "explanation": "Dr. Dre founded Aftermath Entertainment in 1996, where Eminem and 50 Cent debuted.",
+      "correctYear": 1996
     }
   ],
   "language": "en"

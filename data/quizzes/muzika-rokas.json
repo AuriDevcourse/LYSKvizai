@@ -13,7 +13,8 @@
         "Pink Floyd"
       ],
       "correct": 0,
-      "explanation": "Bohemian Rhapsody is a song by Queen, released in 1975."
+      "explanation": "Bohemian Rhapsody is a song by Queen, released in 1975.",
+      "correctYear": 1975
     },
     {
       "question": "Which band performed the song Stairway to Heaven?",
@@ -24,7 +25,8 @@
         "The Rolling Stones"
       ],
       "correct": 2,
-      "explanation": "Stairway to Heaven is a legendary Led Zeppelin song from 1971."
+      "explanation": "Stairway to Heaven is a legendary Led Zeppelin song from 1971.",
+      "correctYear": 1971
     },
     {
       "question": "Which member of The Beatles was murdered in 1980?",
@@ -35,7 +37,8 @@
         "Paul McCartney"
       ],
       "correct": 0,
-      "explanation": "John Lennon was shot in 1980. December 8 in New York."
+      "explanation": "John Lennon was shot in 1980. December 8 in New York.",
+      "correctYear": 1980
     },
     {
       "question": "Which band performed Smells Like Teen Spirit?",
@@ -68,7 +71,8 @@
         "King Crimson"
       ],
       "correct": 0,
-      "explanation": "The Dark Side of the Moon (1973) is one of Pink Floyd's best-selling albums."
+      "explanation": "The Dark Side of the Moon (1973) is one of Pink Floyd's best-selling albums.",
+      "correctYear": 1973
     },
     {
       "question": "Which guitarist is considered one of the greatest of all time and played the guitar left-handed?",
@@ -90,7 +94,8 @@
         "Guns N' Roses"
       ],
       "correct": 0,
-      "explanation": "Back in Black is a 1980 album and song by AC/DC."
+      "explanation": "Back in Black is a 1980 album and song by AC/DC.",
+      "correctYear": 1980
     },
     {
       "question": "Which band performed Hotel California?",
@@ -101,7 +106,8 @@
         "Creedence Clearwater Revival"
       ],
       "correct": 1,
-      "explanation": "Hotel California is a classic song by The Eagles from 1977."
+      "explanation": "Hotel California is a classic song by The Eagles from 1977.",
+      "correctYear": 1977
     },
     {
       "question": "Which nationality was freddie mercury?",

@@ -13,7 +13,8 @@
         "Taylor Swift"
       ],
       "correct": 3,
-      "explanation": "The album 1989 was released by Taylor Swift in 2014."
+      "explanation": "The album 1989 was released by Taylor Swift in 2014.",
+      "correctYear": 2014
     },
     {
       "question": "Which Billie Eilish song became one of the most popular songs of 2019?",
@@ -24,7 +25,8 @@
         "Happier Than Ever"
       ],
       "correct": 0,
-      "explanation": "Bad Guy became Billie Eilish's biggest hit of 2019, reaching number 1 in the US."
+      "explanation": "Bad Guy became Billie Eilish's biggest hit of 2019, reaching number 1 in the US.",
+      "correctYear": 2019
     },
     {
       "question": "Which artist is known for the song Blinding Lights?",
@@ -35,7 +37,8 @@
         "The Weeknd"
       ],
       "correct": 3,
-      "explanation": "Blinding Lights is a hit by The Weeknd released in 2019."
+      "explanation": "Blinding Lights is a hit by The Weeknd released in 2019.",
+      "correctYear": 2019
     },
     {
       "question": "Which singer is known as Queen Bey?",
@@ -57,7 +60,8 @@
         "Ed Sheeran"
       ],
       "correct": 3,
-      "explanation": "Shape of You is Ed Sheeran's mega hit from 2017. album Divide."
+      "explanation": "Shape of You is Ed Sheeran's mega hit from 2017. album Divide.",
+      "correctYear": 2017
     },
     {
       "question": "Which singer performed Rolling in the Deep?",
@@ -68,7 +72,8 @@
         "Lana Del Rey"
       ],
       "correct": 1,
-      "explanation": "Rolling in the Deep is a hit by Adele from her 2011 album 21."
+      "explanation": "Rolling in the Deep is a hit by Adele from her 2011 album 21.",
+      "correctYear": 2011
     },
     {
       "question": "Which Michael Jackson album is the best selling in the world?",
@@ -79,7 +84,8 @@
         "Off the Wall"
       ],
       "correct": 1,
-      "explanation": "Thriller (1982) is the best-selling album in world history, selling over 70 million copies. copies."
+      "explanation": "Thriller (1982) is the best-selling album in world history, selling over 70 million copies. copies.",
+      "correctYear": 1982
     },
     {
       "question": "Which band performed the hit Dynamite in 2020?",
@@ -90,7 +96,8 @@
         "TWICE"
       ],
       "correct": 0,
-      "explanation": "Dynamite is BTS' first English single to reach #1 in the US."
+      "explanation": "Dynamite is BTS' first English single to reach #1 in the US.",
+      "correctYear": 2020
     },
     {
       "question": "Which artist is known for the songs Umbrella and Diamonds?",

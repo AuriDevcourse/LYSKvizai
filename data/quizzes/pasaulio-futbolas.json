@@ -15,13 +15,15 @@
       "question": "Who holds the record for the most goals scored in a single World Cup tournament?",
       "options": ["Gerd Muller", "Just Fontaine", "Ronaldo", "Miroslav Klose"],
       "correct": 1,
-      "explanation": "Just Fontaine of France scored 13 goals in the 1958 World Cup, a record that still stands."
+      "explanation": "Just Fontaine of France scored 13 goals in the 1958 World Cup, a record that still stands.",
+      "correctYear": 1958
     },
     {
       "question": "In which year was the first FIFA World Cup held?",
       "options": ["1926", "1928", "1930", "1934"],
       "correct": 2,
-      "explanation": "The first FIFA World Cup was held in Uruguay in 1930, with Uruguay winning the tournament."
+      "explanation": "The first FIFA World Cup was held in Uruguay in 1930, with Uruguay winning the tournament.",
+      "correctYear": 1930
     },
     {
       "question": "Which player has scored the most goals in World Cup history (all tournaments combined)?",
@@ -33,7 +35,8 @@
       "question": "What is known as the 'Hand of God' goal?",
       "options": ["Pele's header in 1970", "Maradona's handball goal against England in 1986", "Zidane's penalty in 2006", "Hurst's controversial goal in 1966"],
       "correct": 1,
-      "explanation": "Diego Maradona punched the ball into the net against England in the 1986 World Cup quarterfinal, later calling it 'the Hand of God.'"
+      "explanation": "Diego Maradona punched the ball into the net against England in the 1986 World Cup quarterfinal, later calling it 'the Hand of God.'",
+      "correctYear": 1986
     },
     {
       "question": "Which club has won the most UEFA Champions League / European Cup titles?",
@@ -51,13 +54,15 @@
       "question": "Which country won the 2022 FIFA World Cup in Qatar?",
       "options": ["France", "Croatia", "Argentina", "Brazil"],
       "correct": 2,
-      "explanation": "Argentina won the 2022 World Cup, defeating France in a dramatic penalty shootout in the final."
+      "explanation": "Argentina won the 2022 World Cup, defeating France in a dramatic penalty shootout in the final.",
+      "correctYear": 2022
     },
     {
       "question": "What was the 'Miracle of Bern'?",
       "options": ["Brazil's 1970 World Cup victory", "West Germany's 1954 World Cup victory over Hungary", "Italy's comeback in the 1982 final", "England's 1966 World Cup win"],
       "correct": 1,
-      "explanation": "West Germany's unexpected 3-2 victory over heavily favored Hungary in the 1954 World Cup final is known as the Miracle of Bern."
+      "explanation": "West Germany's unexpected 3-2 victory over heavily favored Hungary in the 1954 World Cup final is known as the Miracle of Bern.",
+      "correctYear": 1954
     },
     {
       "question": "Which player has won the most Ballon d'Or awards?",
@@ -69,19 +74,22 @@
       "question": "What was the final score of Brazil's infamous 2014 World Cup semifinal loss to Germany?",
       "options": ["5-0", "6-1", "7-1", "4-0"],
       "correct": 2,
-      "explanation": "Germany demolished host nation Brazil 7-1 in the 2014 World Cup semifinal, one of the most shocking results in football history."
+      "explanation": "Germany demolished host nation Brazil 7-1 in the 2014 World Cup semifinal, one of the most shocking results in football history.",
+      "correctYear": 2014
     },
     {
       "question": "Which English club became the first to win the treble (League, FA Cup, Champions League) in 1999?",
       "options": ["Liverpool", "Arsenal", "Manchester United", "Chelsea"],
       "correct": 2,
-      "explanation": "Manchester United won the Premier League, FA Cup, and Champions League in the 1998-99 season under Sir Alex Ferguson."
+      "explanation": "Manchester United won the Premier League, FA Cup, and Champions League in the 1998-99 season under Sir Alex Ferguson.",
+      "correctYear": 1999
     },
     {
       "question": "Who scored a hat-trick in the 2022 World Cup final?",
       "options": ["Kylian Mbappe", "Lionel Messi", "Olivier Giroud", "Julian Alvarez"],
       "correct": 0,
-      "explanation": "Kylian Mbappe scored a hat-trick in the 2022 World Cup final against Argentina, though France ultimately lost on penalties."
+      "explanation": "Kylian Mbappe scored a hat-trick in the 2022 World Cup final against Argentina, though France ultimately lost on penalties.",
+      "correctYear": 2022
     },
     {
       "question": "Which country hosted the World Cup in both 1986 and 1970?",

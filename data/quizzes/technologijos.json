@@ -13,7 +13,8 @@
         "in 2011"
       ],
       "correct": 0,
-      "explanation": "The first iPhone was introduced in 2007 by Steve Jobs."
+      "explanation": "The first iPhone was introduced in 2007 by Steve Jobs.",
+      "correctYear": 2007
     },
     {
       "question": "Who created the social network Facebook?",
@@ -24,7 +25,8 @@
         "Bill Gates"
       ],
       "correct": 1,
-      "explanation": "Mark Zuckerberg created Facebook in 2004 while a student at Harvard University."
+      "explanation": "Mark Zuckerberg created Facebook in 2004 while a student at Harvard University.",
+      "correctYear": 2004
     },
     {
       "question": "What does the abbreviation HTML mean?",
@@ -46,7 +48,8 @@
         "in 2014"
       ],
       "correct": 2,
-      "explanation": "Instagram was launched in October 2010 and gained 25,000 users on its first day."
+      "explanation": "Instagram was launched in October 2010 and gained 25,000 users on its first day.",
+      "correctYear": 2010
     },
     {
       "question": "Which game became the most popular game in the world in terms of the number of copies sold?",
@@ -68,7 +71,8 @@
         "Sony"
       ],
       "correct": 3,
-      "explanation": "The PlayStation console was created by the Japanese company Sony, the first version appeared in 1994."
+      "explanation": "The PlayStation console was created by the Japanese company Sony, the first version appeared in 1994.",
+      "correctYear": 1994
     },
     {
       "question": "In what year was the first website created?",
@@ -79,7 +83,8 @@
         "in 2000"
       ],
       "correct": 1,
-      "explanation": "The first website was created in 1991 by Tim Berners-Lee at the CERN laboratory."
+      "explanation": "The first website was created in 1991 by Tim Berners-Lee at the CERN laboratory.",
+      "correctYear": 1991
     },
     {
       "question": "Who is the company behind the TikTok app?",
@@ -90,7 +95,8 @@
         "ByteDance"
       ],
       "correct": 3,
-      "explanation": "TikTok was created by the Chinese company ByteDance, and the international version was launched in 2017."
+      "explanation": "TikTok was created by the Chinese company ByteDance, and the international version was launched in 2017.",
+      "correctYear": 2017
     },
     {
       "question": "Which mobile operating system has the largest global market share?",
@@ -112,7 +118,8 @@
         "in 2003"
       ],
       "correct": 0,
-      "explanation": "Google was founded by Larry Page and Sergey Brin in 1998 while they were students at Stanford University."
+      "explanation": "Google was founded by Larry Page and Sergey Brin in 1998 while they were students at Stanford University.",
+      "correctYear": 1998
     },
     {
       "question": "Who are the developers of Fortnite?",
@@ -167,7 +174,8 @@
         "Sojourner"
       ],
       "correct": 3,
-      "explanation": "Sojourner was the first rover to successfully land on Mars in 1997 and send back pictures."
+      "explanation": "Sojourner was the first rover to successfully land on Mars in 1997 and send back pictures.",
+      "correctYear": 1997
     }
   ],
   "language": "en"

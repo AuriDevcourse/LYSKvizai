@@ -13,7 +13,8 @@
         "Dua Lipa"
       ],
       "correct": 1,
-      "explanation": "Taylor Swift released the album Midnights in October 2022."
+      "explanation": "Taylor Swift released the album Midnights in October 2022.",
+      "correctYear": 2022
     },
     {
       "question": "Which footballer has the most Ballon d'Or awards?",
@@ -46,7 +47,8 @@
         "Tom Cruise"
       ],
       "correct": 1,
-      "explanation": "Leonardo DiCaprio played Jack Dawson in the cult film Titanic (1997)."
+      "explanation": "Leonardo DiCaprio played Jack Dawson in the cult film Titanic (1997).",
+      "correctYear": 1997
     },
     {
       "question": "What singer is known as Queen Bey?",
@@ -68,7 +70,8 @@
         "Larry Page"
       ],
       "correct": 2,
-      "explanation": "Mark Zuckerberg created Facebook in 2004 while a student at Harvard University."
+      "explanation": "Mark Zuckerberg created Facebook in 2004 while a student at Harvard University.",
+      "correctYear": 2004
     },
     {
       "question": "Which scientist developed the theory of relativity?",
@@ -79,7 +82,8 @@
         "Stephen Hawking"
       ],
       "correct": 0,
-      "explanation": "Albert Einstein published the general theory of relativity in 1915."
+      "explanation": "Albert Einstein published the general theory of relativity in 1915.",
+      "correctYear": 1915
     },
     {
       "question": "Which artist sings the hit \"Shape of You\"?",
@@ -90,7 +94,8 @@
         "Harry Styles"
       ],
       "correct": 2,
-      "explanation": "Ed Sheeran released \"Shape of You\" in 2017 and it is one of the most popular songs in the world."
+      "explanation": "Ed Sheeran released \"Shape of You\" in 2017 and it is one of the most popular songs in the world.",
+      "correctYear": 2017
     },
     {
       "question": "Who painted the Mona Lisa?",
@@ -123,7 +128,8 @@
         "Charli XCX"
       ],
       "correct": 2,
-      "explanation": "Billie Eilish released the hit song \"Bad Guy\" in 2019 and won several Grammy Awards."
+      "explanation": "Billie Eilish released the hit song \"Bad Guy\" in 2019 and won several Grammy Awards.",
+      "correctYear": 2019
     },
     {
       "question": "Which basketball player is known by the nickname \"King James\"?",
@@ -167,7 +173,8 @@
         "Kanye West"
       ],
       "correct": 3,
-      "explanation": "Kanye West officially changed his name to Ye in 2021."
+      "explanation": "Kanye West officially changed his name to Ye in 2021.",
+      "correctYear": 2021
     }
   ],
   "language": "en"

@@ -24,7 +24,8 @@
         "Finding Nemo"
       ],
       "correct": 3,
-      "explanation": "Finding Nemo (2003) tells the story of Marlin the clownfish in search of his son Nemo."
+      "explanation": "Finding Nemo (2003) tells the story of Marlin the clownfish in search of his son Nemo.",
+      "correctYear": 2003
     },
     {
       "question": "In which series do children fight creatures from the Upside Down?",
@@ -46,7 +47,8 @@
         "James Cameron"
       ],
       "correct": 0,
-      "explanation": "Christopher Nolan directed Inception (2010) starring Leonardo DiCaprio."
+      "explanation": "Christopher Nolan directed Inception (2010) starring Leonardo DiCaprio.",
+      "correctYear": 2010
     },
     {
       "question": "Which movie won the best picture Oscar in 2024?",
@@ -57,7 +59,8 @@
         "Poor things"
       ],
       "correct": 0,
-      "explanation": "Oppenheimer Wins Best Picture Oscar 2024 at the ceremony."
+      "explanation": "Oppenheimer Wins Best Picture Oscar 2024 at the ceremony.",
+      "correctYear": 2024
     },
     {
       "question": "What is the name of the AI ​​robot in Big Hero 6?",
@@ -90,7 +93,8 @@
         "Cinderella"
       ],
       "correct": 0,
-      "explanation": "\"Frozen\" (Frozen, 2013) tells the story of sisters Elsa and Anna from the kingdom of Arendelle."
+      "explanation": "\"Frozen\" (Frozen, 2013) tells the story of sisters Elsa and Anna from the kingdom of Arendelle.",
+      "correctYear": 2013
     },
     {
       "question": "Which director made The Freaky Eight and Pulp Fiction?",
@@ -123,7 +127,8 @@
         "George Clooney"
       ],
       "correct": 1,
-      "explanation": "Robert Pattinson played Batman in the 2022 film directed by Matt Reeves. in the movie."
+      "explanation": "Robert Pattinson played Batman in the 2022 film directed by Matt Reeves. in the movie.",
+      "correctYear": 2022
     },
     {
       "question": "What animal is Simba in The Lion King cartoon?",
@@ -156,7 +161,8 @@
         "Alien world"
       ],
       "correct": 2,
-      "explanation": "\"Jurassic Park\" (Jurassic Park, 1993), Spielberg's film about revived dinosaurs."
+      "explanation": "\"Jurassic Park\" (Jurassic Park, 1993), Spielberg's film about revived dinosaurs.",
+      "correctYear": 1993
     },
     {
       "question": "Which cartoon tells about the emotions - Joy, Sadness, Anger - that live in a girl's head?",
@@ -167,7 +173,8 @@
         "Messed up"
       ],
       "correct": 3,
-      "explanation": "The Pixar film \"Inside Out\" (2015) depicts the emotions that live in the head of a girl named Riley."
+      "explanation": "The Pixar film \"Inside Out\" (2015) depicts the emotions that live in the head of a girl named Riley.",
+      "correctYear": 2015
     }
   ],
   "language": "en"

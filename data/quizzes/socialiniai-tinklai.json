@@ -9,13 +9,15 @@
       "question": "What year was Facebook launched?",
       "options": ["2002", "2004", "2006", "2008"],
       "correct": 1,
-      "explanation": "Facebook was launched by Mark Zuckerberg on February 4, 2004."
+      "explanation": "Facebook was launched by Mark Zuckerberg on February 4, 2004.",
+      "correctYear": 2004
     },
     {
       "question": "Which platform introduced the concept of 'Stories' that disappear after 24 hours?",
       "options": ["Instagram", "Snapchat", "Facebook", "WhatsApp"],
       "correct": 1,
-      "explanation": "Snapchat introduced Stories in 2013; Instagram later copied the feature."
+      "explanation": "Snapchat introduced Stories in 2013; Instagram later copied the feature.",
+      "correctYear": 2013
     },
     {
       "question": "What was the original name of Twitter (now X)?",
@@ -51,7 +53,8 @@
       "question": "What year was YouTube founded?",
       "options": ["2003", "2005", "2007", "2009"],
       "correct": 1,
-      "explanation": "YouTube was founded in February 2005 and bought by Google in 2006."
+      "explanation": "YouTube was founded in February 2005 and bought by Google in 2006.",
+      "correctYear": 2005
     },
     {
       "question": "What is the most-watched YouTube video of all time?",
@@ -69,7 +72,8 @@
       "question": "Which was the first social media platform to reach 1 billion users?",
       "options": ["YouTube", "Facebook", "WhatsApp", "Instagram"],
       "correct": 1,
-      "explanation": "Facebook reached 1 billion monthly active users in October 2012."
+      "explanation": "Facebook reached 1 billion monthly active users in October 2012.",
+      "correctYear": 2012
     },
     {
       "question": "What is Reddit's content organized into?",
@@ -81,7 +85,8 @@
       "question": "Who purchased Twitter in 2022 and renamed it to X?",
       "options": ["Jeff Bezos", "Mark Zuckerberg", "Elon Musk", "Jack Dorsey"],
       "correct": 2,
-      "explanation": "Elon Musk acquired Twitter for $44 billion in October 2022."
+      "explanation": "Elon Musk acquired Twitter for $44 billion in October 2022.",
+      "correctYear": 2022
     },
     {
       "question": "What was the first website ever created about?",
@@ -93,7 +98,8 @@
       "question": "Which AI chatbot went viral in late 2022?",
       "options": ["Siri", "Alexa", "ChatGPT", "Bard"],
       "correct": 2,
-      "explanation": "ChatGPT by OpenAI reached 100 million users in 2 months after its Nov 2022 launch."
+      "explanation": "ChatGPT by OpenAI reached 100 million users in 2 months after its Nov 2022 launch.",
+      "correctYear": 2022
     }
   ],
   "createdAt": "2026-03-15T00:00:00.000Z",
