@@ -60,6 +60,7 @@ export default function HostQuestion({
     isProgressive
   );
 
+  const allAnswered = answerCount != null && answerCount.total > 0 && answerCount.count >= answerCount.total;
   const isCritical = fraction <= 0.25;
 
   return (
@@ -154,7 +155,7 @@ export default function HostQuestion({
                   src={question.image}
                   alt=""
                   className="h-40 w-full object-cover sm:h-52 transition-transform duration-300 ease-out"
-                  style={{ transform: `scale(${1 + 5 * fraction})` }}
+                  style={{ transform: `scale(${allAnswered ? 1 : 1 + 5 * fraction})` }}
                 />
               ) : isProgressive ? (
                 <ProgressiveImage
