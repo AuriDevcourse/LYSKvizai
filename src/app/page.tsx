@@ -34,10 +34,15 @@ function HomeInner() {
 
   const handleQuizMetaLoad = useCallback((data: QuizMeta[]) => setQuizMeta(data), []);
 
-  const totalQuestions = useMemo(
-    () => quizMeta.filter((q) => selectedIds.includes(q.id)).reduce((sum, q) => sum + q.questionCount, 0),
-    [quizMeta, selectedIds]
-  );
+  const totalQuestions = useMemo(() => {
+    const selected = quizMeta.filter((q) => selectedIds.includes(q.id));
+    return selected.reduce((sum, q) => {
+      if (gameType === "year-guesser") return sum + (q.yearCount ?? 0);
+      if (gameType === "zoom-out") return sum + (q.imageCount ?? 0);
+      if (gameType === "fastest-finger") return sum + (q.shortAnswerCount ?? 0);
+      return sum + q.questionCount;
+    }, 0);
+  }, [quizMeta, selectedIds, gameType]);
 
   const handleStart = () => {
     if (selectedIds.length === 0) return;
