@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Home, Users, PenLine } from "lucide-react";
@@ -14,7 +15,7 @@ const NAV_ITEMS = [
 /** Pages where the bottom nav should be hidden (home screen + active gameplay) */
 const HIDDEN_PATTERNS = [/^\/quiz\//, /^\/play\/[A-Z0-9]/i, /^\/editor\//, /^\/survival/];
 
-export default function BottomNav() {
+function BottomNavInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const hasAction = searchParams.get("action");
@@ -53,5 +54,13 @@ export default function BottomNav() {
       </div>
     </nav>
     </>
+  );
+}
+
+export default function BottomNav() {
+  return (
+    <Suspense>
+      <BottomNavInner />
+    </Suspense>
   );
 }
