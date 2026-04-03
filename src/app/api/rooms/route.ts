@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { ClientAction } from "@/lib/multiplayer/types";
+
+export const dynamic = "force-dynamic";
 import { sanitizeEmoji, sanitizeText } from "@/lib/sanitize";
 import { checkRateLimit } from "@/lib/rate-limit";
 import {

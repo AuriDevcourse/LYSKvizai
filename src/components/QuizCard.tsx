@@ -112,8 +112,8 @@ export default function QuizCard({
     <div className="animate-fade-in-up w-full">
       {/* Question — hidden for zoom-out (image IS the question) */}
       {!isZoomOut && (
-        <div className="glass mb-6 rounded-2xl px-6 py-5 text-center">
-          <h2 className="text-xl font-extrabold leading-relaxed text-white sm:text-2xl">
+        <div className="glass mb-4 rounded-2xl px-5 py-4 text-center sm:mb-6 sm:px-6 sm:py-5">
+          <h2 className="text-lg font-extrabold leading-snug text-white sm:text-2xl sm:leading-relaxed">
             {qText}
           </h2>
         </div>
@@ -121,11 +121,11 @@ export default function QuizCard({
 
       {/* Image */}
       {question.image && (
-        <div className={`mb-6 overflow-hidden rounded-2xl ${isZoomOut ? "h-64 sm:h-80" : ""} relative bg-white/5`}>
+        <div className={`mb-4 overflow-hidden rounded-2xl sm:mb-6 ${isZoomOut ? "h-48 sm:h-80" : ""} relative bg-white/5`}>
           <img
             src={question.image}
             alt=""
-            className={`w-full object-cover transition-transform duration-200 ease-out ${isZoomOut ? "h-full" : "h-48"}`}
+            className={`w-full object-cover transition-transform duration-200 ease-out ${isZoomOut ? "h-full" : "h-36 sm:h-48"}`}
             style={isZoomOut ? { transform: `scale(${zoomScale})` } : undefined}
             onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
           />

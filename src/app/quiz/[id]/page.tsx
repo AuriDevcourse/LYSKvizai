@@ -189,7 +189,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
       >
         <X className="h-5 w-5" />
       </Link>
-      <main className="relative z-10 flex w-full max-w-xl flex-1 flex-col justify-center px-5 py-8 sm:px-8">
+      <main className="relative z-10 flex w-full max-w-xl flex-1 flex-col px-5 pt-10 pb-6 sm:justify-center sm:px-8 sm:py-8">
         {finished ? (
           <div className="flex flex-1 flex-col items-center justify-center">
             <ResultScreen
@@ -222,7 +222,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
                 />
               </div>
             )}
-            <div className="mt-6">
+            <div className="mt-4">
               <QuizCard
                 key={currentIndex}
                 question={questions[currentIndex]}
