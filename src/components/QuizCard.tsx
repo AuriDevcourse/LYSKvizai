@@ -80,18 +80,20 @@ export default function QuizCard({
   // Zoom-out animation: starts at 6x, shrinks to 1x over 15 seconds
   const ZOOM_DURATION = 15;
   const [zoomScale, setZoomScale] = useState(6);
+  const zoomRafRef = useRef<number>(0);
   useEffect(() => {
     if (!isZoomOut) return;
-    if (answered) { setZoomScale(1); return; }
+    if (answered) { cancelAnimationFrame(zoomRafRef.current); setZoomScale(1); return; }
+    setZoomScale(6);
     const start = Date.now();
     const tick = () => {
       const elapsed = (Date.now() - start) / 1000;
       const fraction = Math.min(elapsed / ZOOM_DURATION, 1);
-      setZoomScale(6 - 5 * fraction); // 6 → 1
-      if (fraction < 1) requestAnimationFrame(tick);
+      setZoomScale(6 - 5 * fraction);
+      if (fraction < 1) zoomRafRef.current = requestAnimationFrame(tick);
     };
-    const raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    zoomRafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(zoomRafRef.current);
   }, [isZoomOut, question.question, answered]);
 
   const isCorrect = isYearGuesser ? yearGotPoints : isTextInput ? isTextCorrect : isCorrectStandard;
