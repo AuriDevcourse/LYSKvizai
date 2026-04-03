@@ -106,62 +106,82 @@ export function transformQuestion(q: Question, targetType: QuestionType | "mixed
 }
 
 /**
- * Build a "Is it true that …?" phrasing from a question + chosen answer.
+ * Build a natural True/False statement from a question + answer.
  * E.g. "Which country has the most time zones?" + "France"
- *   → "Is it true that the country with the most time zones is France?"
- *
- * Strategy: strip interrogative opener and rephrase as a declarative claim.
+ *   → "The country with the most time zones is France."
+ * "What is the largest ocean?" + "Pacific Ocean"
+ *   → "The largest ocean is the Pacific Ocean."
  */
 function buildTrueFalseStatement(question: string, answer: string): string {
   const q = question.trim().replace(/\?$/, "").trim();
 
-  // Common patterns: "Which X is Y" → "X is answer"
-  // "What is the X of Y" → "the X of Y is answer"
-  // "How many X does Y have" → "Y has answer X"
-  // Fallback: "the answer to 'Q' is answer"
+  // "What is / What are / What was" → "The X is answer"
+  const whatIs = q.match(/^what\s+(?:is|are|was|were)\s+(.+)/i);
+  if (whatIs) {
+    const subject = capitalize(whatIs[1]);
+    return `${subject} is ${answer}.`;
+  }
 
-  // "Which/What <noun> ..." → "<noun> ... is <answer>"
-  const whichWhat = q.match(/^(which|what)\s+(.+)/i);
+  // "Which X is/has/does..." → "The X is/has/does... answer"
+  const whichIs = q.match(/^which\s+(.+?)\s+(is|are|was|were|has|had|does|did|can|could)\s+(.+)/i);
+  if (whichIs) {
+    return `The ${whichIs[1]} that ${whichIs[2]} ${whichIs[3]} is ${answer}.`;
+  }
+
+  // "Which X verb..." → "The X that verb... is answer"
+  const whichWhat = q.match(/^(?:which|what)\s+(.+)/i);
   if (whichWhat) {
-    const rest = whichWhat[2];
-
-    // "What is the X (of Y)" → "the X (of Y) is answer"
-    const whatIs = rest.match(/^(?:is|are|was|were)\s+(.+)/i);
-    if (whatIs) {
-      return `Is it true that ${whatIs[1]} is ${answer}?`;
-    }
-
-    // "What/Which X does Y verb" → "Y verbs answer"
-    // Too complex to parse reliably, use simple fallback
-    return `Is it true that ${rest} is ${answer}?`;
+    return `The ${whichWhat[1]} is ${answer}.`;
   }
 
-  // "Who ..." → "... is <answer>"
-  const whoMatch = q.match(/^who\s+(.+)/i);
-  if (whoMatch) {
-    return `Is it true that ${whoMatch[1]} ${answer}?`;
+  // "Who is/was..." → "Answer is/was..."
+  const whoIs = q.match(/^who\s+(is|are|was|were)\s+(.+)/i);
+  if (whoIs) {
+    return `${answer} ${whoIs[1]} ${whoIs[2]}.`;
   }
 
-  // "How many X does Y have" / "How many X are in Y"
+  // "Who verb..." → "Answer verb..."
+  const whoVerb = q.match(/^who\s+(.+)/i);
+  if (whoVerb) {
+    return `${answer} ${whoVerb[1]}.`;
+  }
+
+  // "How many X does/are..." → "There are answer X..."
   const howMany = q.match(/^how\s+many\s+(.+)/i);
   if (howMany) {
-    return `Is it true that ${howMany[1]} is ${answer}?`;
+    return `There are ${answer} ${howMany[1]}.`;
   }
 
-  // "Where ..." → "... is <answer>"
-  const whereMatch = q.match(/^where\s+(.+)/i);
-  if (whereMatch) {
-    return `Is it true that ${whereMatch[1]} ${answer}?`;
+  // "How much is X" → "X is answer"
+  const howMuch = q.match(/^how\s+much\s+(?:is|are|was|were|does)\s+(.+)/i);
+  if (howMuch) {
+    return `${capitalize(howMuch[1])} is ${answer}.`;
   }
 
-  // "When ..." → "... is <answer>"
-  const whenMatch = q.match(/^when\s+(.+)/i);
+  // "Where is/was..." → "Answer is in/at..."
+  const whereIs = q.match(/^where\s+(?:is|are|was|were)\s+(.+)/i);
+  if (whereIs) {
+    return `${capitalize(whereIs[1])} is located in ${answer}.`;
+  }
+
+  // "When did/was..." → "... happened in answer"
+  const whenMatch = q.match(/^when\s+(?:did|was|were|is)\s+(.+)/i);
   if (whenMatch) {
-    return `Is it true that ${whenMatch[1]} ${answer}?`;
+    return `${capitalize(whenMatch[1])} was in ${answer}.`;
   }
 
-  // Fallback: generic phrasing
-  return `Is it true that the answer to "${q}" is ${answer}?`;
+  // "In which..." → "The answer is answer"
+  const inWhich = q.match(/^in\s+which\s+(.+)/i);
+  if (inWhich) {
+    return `The ${inWhich[1]} is ${answer}.`;
+  }
+
+  // Fallback: simple declarative
+  return `${capitalize(q.replace(/^(is|are|was|were|do|does|did|can|could|has|had|have)\s+/i, ""))} is ${answer}.`;
+}
+
+function capitalize(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
 function convertToTrueFalse(q: Question): Question {
