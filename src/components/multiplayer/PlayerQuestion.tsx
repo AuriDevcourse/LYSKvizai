@@ -151,8 +151,19 @@ export default function PlayerQuestion({
   if (selected !== null) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 animate-scale-in">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/5">
-          <Check className="h-10 w-10 text-white" />
+        {/* Zoom-out: show fully revealed image after answering */}
+        {question.type === "zoom-out" && question.image && (
+          <div className="w-full max-w-sm overflow-hidden rounded-xl">
+            <img
+              src={question.image}
+              alt=""
+              className="h-40 w-full object-cover transition-transform duration-500 ease-out"
+              style={{ transform: "scale(1)" }}
+            />
+          </div>
+        )}
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/5">
+          <Check className="h-8 w-8 text-white" />
         </div>
         <p className="text-xl font-extrabold text-white">{t("playerQuestion.lockedIn")}</p>
         <p className="font-bold text-white/50">{t("playerQuestion.waitingForOthers")}</p>
