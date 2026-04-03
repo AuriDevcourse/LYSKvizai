@@ -7,108 +7,170 @@
   "questions": [
     {
       "question": "What is the deepest point in the ocean?",
-      "options": ["Tonga Trench", "Mariana Trench", "Puerto Rico Trench", "Java Trench"],
+      "options": [
+        "Tonga Trench",
+        "Mariana Trench",
+        "Puerto Rico Trench",
+        "Java Trench"
+      ],
       "correct": 1,
-      "explanation": "The Challenger Deep in the Mariana Trench is ~11,034 m deep.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Mariana_trench_location.jpg/800px-Mariana_trench_location.jpg"
+      "explanation": "The Challenger Deep in the Mariana Trench is ~11,034 m deep."
     },
     {
       "question": "Which is the largest ocean on Earth?",
-      "options": ["Atlantic", "Indian", "Pacific", "Arctic"],
+      "options": [
+        "Atlantic",
+        "Indian",
+        "Pacific",
+        "Arctic"
+      ],
       "correct": 2,
-      "explanation": "The Pacific Ocean covers about 165.25 million km², more than all land combined.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Pacific_Ocean_-_en.png/800px-Pacific_Ocean_-_en.png"
+      "explanation": "The Pacific Ocean covers about 165.25 million km², more than all land combined."
     },
     {
       "question": "Which continent has the most countries?",
-      "options": ["Asia", "Europe", "Africa", "South America"],
+      "options": [
+        "Asia",
+        "Europe",
+        "Africa",
+        "South America"
+      ],
       "correct": 2,
-      "explanation": "Africa has 54 recognized countries, more than any other continent.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Africa_%28orthographic_projection%29.svg/800px-Africa_%28orthographic_projection%29.svg.png"
+      "explanation": "Africa has 54 recognized countries, more than any other continent."
     },
     {
       "question": "What is the largest desert in the world?",
-      "options": ["Sahara", "Arabian", "Antarctic", "Gobi"],
+      "options": [
+        "Sahara",
+        "Arabian",
+        "Antarctic",
+        "Gobi"
+      ],
       "correct": 2,
-      "explanation": "Antarctica is technically the largest desert at 14.2 million km².",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Antarctica_6400px_from_Blue_Marble.jpg/800px-Antarctica_6400px_from_Blue_Marble.jpg"
+      "explanation": "Antarctica is technically the largest desert at 14.2 million km²."
     },
     {
       "question": "Which ocean is the warmest?",
-      "options": ["Pacific", "Atlantic", "Indian", "Southern"],
+      "options": [
+        "Pacific",
+        "Atlantic",
+        "Indian",
+        "Southern"
+      ],
       "correct": 2,
-      "explanation": "The Indian Ocean is the warmest ocean in the world.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Indian_Ocean-CIA_WFB_Map.png/800px-Indian_Ocean-CIA_WFB_Map.png"
+      "explanation": "The Indian Ocean is the warmest ocean in the world."
     },
     {
       "question": "What percentage of Earth's surface is covered by water?",
-      "options": ["51%", "61%", "71%", "81%"],
+      "options": [
+        "51%",
+        "61%",
+        "71%",
+        "81%"
+      ],
       "correct": 2,
       "explanation": "About 71% of Earth's surface is covered by water.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/800px-The_Earth_seen_from_Apollo_17.jpg"
     },
     {
       "question": "Which is the smallest continent by area?",
-      "options": ["Europe", "Australia/Oceania", "Antarctica", "South America"],
+      "options": [
+        "Europe",
+        "Australia/Oceania",
+        "Antarctica",
+        "South America"
+      ],
       "correct": 1,
-      "explanation": "Australia is the smallest continent at about 7.7 million km².",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Australia_%28orthographic_projection%29.svg/800px-Australia_%28orthographic_projection%29.svg.png"
+      "explanation": "Australia is the smallest continent at about 7.7 million km²."
     },
     {
       "question": "The Great Barrier Reef is located off the coast of which continent?",
-      "options": ["Asia", "Africa", "Australia", "South America"],
+      "options": [
+        "Asia",
+        "Africa",
+        "Australia",
+        "South America"
+      ],
       "correct": 2,
       "explanation": "The Great Barrier Reef is off the northeast coast of Australia.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Coral_reef_at_palmyra.jpg/800px-Coral_reef_at_palmyra.jpg"
     },
     {
       "question": "Which strait connects the Atlantic Ocean to the Mediterranean Sea?",
-      "options": ["Strait of Hormuz", "Strait of Malacca", "Strait of Gibraltar", "Bering Strait"],
+      "options": [
+        "Strait of Hormuz",
+        "Strait of Malacca",
+        "Strait of Gibraltar",
+        "Bering Strait"
+      ],
       "correct": 2,
-      "explanation": "The Strait of Gibraltar connects the Atlantic to the Mediterranean.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/STS059-238-074_Strait_of_Gibraltar.jpg/800px-STS059-238-074_Strait_of_Gibraltar.jpg"
+      "explanation": "The Strait of Gibraltar connects the Atlantic to the Mediterranean."
     },
     {
       "question": "What is the longest mountain range on Earth?",
-      "options": ["Himalayas", "Rocky Mountains", "Andes", "Mid-Atlantic Ridge"],
+      "options": [
+        "Himalayas",
+        "Rocky Mountains",
+        "Andes",
+        "Mid-Atlantic Ridge"
+      ],
       "correct": 2,
-      "explanation": "The Andes is the longest continental mountain range at about 7,000 km.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Andes_70.30345W_42.11048S.jpg/800px-Andes_70.30345W_42.11048S.jpg"
+      "explanation": "The Andes is the longest continental mountain range at about 7,000 km."
     },
     {
       "question": "Which continent is entirely in the Southern Hemisphere?",
-      "options": ["Africa", "South America", "Australia", "Antarctica"],
+      "options": [
+        "Africa",
+        "South America",
+        "Australia",
+        "Antarctica"
+      ],
       "correct": 3,
-      "explanation": "Antarctica is the only continent entirely in the Southern Hemisphere.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Antarctica_surface.jpg/800px-Antarctica_surface.jpg"
+      "explanation": "Antarctica is the only continent entirely in the Southern Hemisphere."
     },
     {
       "question": "What is the saltiest body of water on Earth?",
-      "options": ["Dead Sea", "Red Sea", "Don Juan Pond", "Great Salt Lake"],
+      "options": [
+        "Dead Sea",
+        "Red Sea",
+        "Don Juan Pond",
+        "Great Salt Lake"
+      ],
       "correct": 2,
-      "explanation": "Don Juan Pond in Antarctica is the saltiest at over 40% salinity.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Dead_Sea_by_David_Shankbone.jpg/800px-Dead_Sea_by_David_Shankbone.jpg"
+      "explanation": "Don Juan Pond in Antarctica is the saltiest at over 40% salinity."
     },
     {
       "question": "Which ocean surrounds the North Pole?",
-      "options": ["Pacific", "Atlantic", "Arctic", "Southern"],
+      "options": [
+        "Pacific",
+        "Atlantic",
+        "Arctic",
+        "Southern"
+      ],
       "correct": 2,
-      "explanation": "The Arctic Ocean surrounds the North Pole.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Arctic_Ocean.png/800px-Arctic_Ocean.png"
+      "explanation": "The Arctic Ocean surrounds the North Pole."
     },
     {
       "question": "What is the largest island in the world?",
-      "options": ["Borneo", "Madagascar", "Greenland", "New Guinea"],
+      "options": [
+        "Borneo",
+        "Madagascar",
+        "Greenland",
+        "New Guinea"
+      ],
       "correct": 2,
-      "explanation": "Greenland is the largest island at about 2.17 million km².",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Greenland_%28orthographic_projection%29.svg/800px-Greenland_%28orthographic_projection%29.svg.png"
+      "explanation": "Greenland is the largest island at about 2.17 million km²."
     },
     {
       "question": "The Ring of Fire is located primarily around which ocean?",
-      "options": ["Atlantic", "Indian", "Pacific", "Arctic"],
+      "options": [
+        "Atlantic",
+        "Indian",
+        "Pacific",
+        "Arctic"
+      ],
       "correct": 2,
-      "explanation": "The Ring of Fire circles the Pacific Ocean with 75% of the world's volcanoes.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Pacific_Ring_of_Fire.svg/800px-Pacific_Ring_of_Fire.svg.png"
+      "explanation": "The Ring of Fire circles the Pacific Ocean with 75% of the world's volcanoes."
     }
   ],
   "createdAt": "2026-03-15T00:00:00.000Z",

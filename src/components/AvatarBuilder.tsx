@@ -33,13 +33,17 @@ function randomConfig(): AvatarConfig {
   };
 }
 
+const DEFAULT_CONFIG: AvatarConfig = { animal: "bear", color: "red", hat: "none", accessory: "none" };
+
 export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
-  const [config, setConfig] = useState<AvatarConfig>(randomConfig);
+  const [config, setConfig] = useState<AvatarConfig>(DEFAULT_CONFIG);
   const [tab, setTab] = useState<Tab>("animal");
 
-  // Emit on mount
+  // Randomize on mount (client only) to avoid hydration mismatch
   useEffect(() => {
-    onChange(encodeAvatar(config));
+    const rand = randomConfig();
+    setConfig(rand);
+    onChange(encodeAvatar(rand));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

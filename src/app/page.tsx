@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState, useCallback, useMemo } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Play, Plus, LogIn, ArrowLeft, Users, User,
   HelpCircle, ToggleLeft, ZoomOut, Calendar, Keyboard, Shuffle, Smartphone,
@@ -21,10 +21,12 @@ const GAME_MODES = [
   { icon: Smartphone, name: "Charades", color: "bg-[#43a5fc]/15 border-[#43a5fc]/20 text-[#43a5fc]" },
 ];
 
-export default function Home() {
+function HomeInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { t } = useTranslation();
-  const [mode, setMode] = useState<"menu" | "choose" | "create">("menu");
+  const actionFromUrl = searchParams.get("action");
+  const [mode, setMode] = useState<"menu" | "choose" | "create">(actionFromUrl === "create" ? "choose" : "menu");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [questionCount, setQuestionCount] = useState(0);
   const [quizMeta, setQuizMeta] = useState<QuizMeta[]>([]);
@@ -95,8 +97,8 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Trending modes chips */}
-          <div className="mt-10 flex flex-col items-center gap-4 sm:mt-12">
+          {/* Trending modes chips — hidden on mobile to avoid overlapping bottom nav */}
+          <div className="mt-10 hidden flex-col items-center gap-4 sm:flex sm:mt-12">
             <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/30">
               Trending modes
             </p>
@@ -195,5 +197,13 @@ export default function Home() {
         </main>
       )}
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense>
+      <HomeInner />
+    </Suspense>
   );
 }

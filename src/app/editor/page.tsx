@@ -50,7 +50,7 @@ export default function EditorPage() {
         <div className="absolute -bottom-1/4 right-0 h-[400px] w-[400px] rounded-full bg-red-500/[0.05] blur-3xl" />
       </div>
 
-      <main className="relative z-10 flex w-full max-w-2xl flex-1 flex-col px-5 py-8 sm:px-8">
+      <main className="relative z-10 flex w-full max-w-2xl flex-1 flex-col px-5 pt-12 pb-24 sm:px-8 sm:pt-8 sm:pb-8">
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div>
