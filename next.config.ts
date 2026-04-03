@@ -7,6 +7,9 @@ if (!MP_SERVER) {
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  outputFileTracingIncludes: {
+    "/api/**": ["./data/quizzes/**"],
+  },
   async rewrites() {
     if (!MP_SERVER) return [];
     return [
