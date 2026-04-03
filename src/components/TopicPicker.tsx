@@ -130,7 +130,10 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
                   <div className="min-w-0 flex-1">
                     <h3 className={`text-sm font-extrabold leading-tight truncate ${isSelected ? "text-[#ff9062]" : "text-white group-hover:text-[#ff9062]"} transition-colors`}>{quiz.title}</h3>
                     <p className="text-xs text-white/30 mt-0.5">
-                      {quiz.questionCount} questions
+                      {activeGameType?.id === "year-guesser" ? (quiz.yearCount ?? 0)
+                        : activeGameType?.id === "zoom-out" ? (quiz.imageCount ?? 0)
+                        : activeGameType?.id === "fastest-finger" ? (quiz.shortAnswerCount ?? 0)
+                        : quiz.questionCount} questions
                     </p>
                   </div>
                   <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border transition-all ${
