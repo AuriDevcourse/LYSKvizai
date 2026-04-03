@@ -24,6 +24,16 @@ function shuffleArray<T>(arr: T[]): T[] {
   return a;
 }
 
+/** Shuffle options within a question so the correct answer isn't always at the same index */
+function shuffleOptions(q: Question): Question {
+  // Skip shuffling for true-false (only 2 real options) and non-standard types
+  if (q.type === "true-false" || q.type === "fastest-finger" || q.type === "year-guesser" || q.type === "zoom-out") return q;
+  const indices = shuffleArray([0, 1, 2, 3]);
+  const newOptions = indices.map((i) => q.options[i]) as [string, string, string, string];
+  const newCorrect = indices.indexOf(q.correct);
+  return { ...q, options: newOptions, correct: newCorrect };
+}
+
 export default function SinglePlayerQuiz({ params }: PageProps) {
   const { id } = use(params);
   const searchParams = useSearchParams();
@@ -79,7 +89,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
           if (maxQuestions > 0 && maxQuestions < allQuestions.length) {
             allQuestions = allQuestions.slice(0, maxQuestions);
           }
-          setQuestions(gameType ? transformQuestions(allQuestions, gameType) : allQuestions);
+          setQuestions((gameType ? transformQuestions(allQuestions, gameType) : allQuestions).map(shuffleOptions));
           const titles = validQuizzes.map((q: { title: string }) => q.title);
           setQuizTitle(`${t("quiz.mix")} ${titles.join(" + ")}`);
         })
@@ -97,7 +107,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
           if (maxQuestions > 0 && maxQuestions < qs.length) {
             qs = qs.slice(0, maxQuestions);
           }
-          setQuestions(gameType ? transformQuestions(qs, gameType) : qs);
+          setQuestions((gameType ? transformQuestions(qs, gameType) : qs).map(shuffleOptions));
           setQuizTitle(quiz.title);
         })
         .catch((e) => setError(e.message))

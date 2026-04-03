@@ -684,12 +684,12 @@ export function joinRoom(
     room.players.set(playerId, player);
   }
 
-  broadcast(code, { type: "player-joined", data: { player: playerToInfo(player) } });
+  broadcast(room.code, { type: "player-joined", data: { player: playerToInfo(player) } });
   return { room, player };
 }
 
 export async function startGame(code: string, hostId: string): Promise<{ error?: string }> {
-  const room = rooms.get(code);
+  const room = rooms.get(code.toUpperCase());
   if (!room) return { error: "Room not found" };
   if (room.hostId !== hostId) return { error: "Only the host can start" };
   if (room.state !== "lobby") return { error: "Game already started" };
@@ -747,7 +747,7 @@ export function submitAnswer(
   playerId: string,
   answerIndex: number
 ): { error?: string } {
-  const room = rooms.get(code);
+  const room = rooms.get(code.toUpperCase());
   if (!room) return { error: "Room not found" };
   if (room.state !== "question") return { error: "Can't answer right now" };
 
@@ -822,7 +822,7 @@ export function submitAnswer(
     totalEligible++;
     if (p.currentAnswer !== null) answered++;
   }
-  broadcast(code, {
+  broadcast(room.code, {
     type: "answer-count",
     data: { count: answered, total: totalEligible },
   });
@@ -840,7 +840,7 @@ export function submitTextAnswer(
   playerId: string,
   answer: string
 ): { error?: string } {
-  const room = rooms.get(code);
+  const room = rooms.get(code.toUpperCase());
   if (!room) return { error: "Room not found" };
   if (room.state !== "question") return { error: "Can't answer right now" };
 
@@ -903,7 +903,7 @@ export function submitTextAnswer(
     totalEligible++;
     if (p.currentTextAnswer !== null) answered++;
   }
-  broadcast(code, { type: "answer-count", data: { count: answered, total: totalEligible } });
+  broadcast(room.code, { type: "answer-count", data: { count: answered, total: totalEligible } });
 
   if (answered >= totalEligible) {
     showResults(room);
@@ -928,7 +928,7 @@ export function submitYearAnswer(
   playerId: string,
   year: number
 ): { error?: string } {
-  const room = rooms.get(code);
+  const room = rooms.get(code.toUpperCase());
   if (!room) return { error: "Room not found" };
   if (room.state !== "question") return { error: "Can't answer right now" };
 
@@ -979,7 +979,7 @@ export function submitYearAnswer(
     totalEligible++;
     if (p.currentTextAnswer !== null) answered++;
   }
-  broadcast(code, { type: "answer-count", data: { count: answered, total: totalEligible } });
+  broadcast(room.code, { type: "answer-count", data: { count: answered, total: totalEligible } });
 
   if (answered >= totalEligible) {
     showResults(room);
@@ -1041,14 +1041,14 @@ function showResults(room: Room): void {
 }
 
 export function nextQuestion(code: string, hostId: string): { error?: string } {
-  const room = rooms.get(code);
+  const room = rooms.get(code.toUpperCase());
   if (!room) return { error: "Room not found" };
   if (room.hostId !== hostId) return { error: "Only the host can continue" };
   if (room.state !== "results") return { error: "Can't continue yet" };
 
   if (room.currentQuestionIndex + 1 >= room.questionIndices.length) {
     room.state = "finished";
-    broadcast(code, { type: "finished", data: { leaderboard: getLeaderboard(room) } });
+    broadcast(room.code, { type: "finished", data: { leaderboard: getLeaderboard(room) } });
     return {};
   }
 
@@ -1062,12 +1062,12 @@ export function nextQuestion(code: string, hostId: string): { error?: string } {
 
   // Check if this is a wager round (every Nth question, 1-indexed)
   // Final question wager: trigger wager phase only before the last question
-  const isLastQuestion = room.currentQuestionIndex + 1 >= room.questionIndices.length - 1;
-  if (isLastQuestion && room.wagerCount === 0) {
+  const isSecondToLast = room.currentQuestionIndex + 1 >= room.questionIndices.length - 1;
+  if (isSecondToLast && room.wagerCount === 0) {
     room.wagerCount++;
     room.wagerType = "regular";
     room.state = "wager";
-    broadcast(code, { type: "wager-start", data: getWagerPayload(room) });
+    broadcast(room.code, { type: "wager-start", data: getWagerPayload(room) });
     return {};
   }
 
@@ -1130,7 +1130,7 @@ export function submitWager(
   playerId: string,
   amount: number
 ): { error?: string } {
-  const room = rooms.get(code);
+  const room = rooms.get(code.toUpperCase());
   if (!room) return { error: "Room not found" };
   if (room.state !== "wager") return { error: "Can't wager right now" };
 
@@ -1154,7 +1154,7 @@ export function submitWager(
 }
 
 export function advanceFromWagerAction(code: string, hostId: string): { error?: string } {
-  const room = rooms.get(code);
+  const room = rooms.get(code.toUpperCase());
   if (!room) return { error: "Room not found" };
   if (room.hostId !== hostId) return { error: "Only the host can continue" };
   if (room.state !== "wager") return { error: "No wager phase" };
@@ -1169,18 +1169,18 @@ function advanceFromWager(room: Room): void {
 }
 
 export function disconnectPlayer(code: string, playerId: string): void {
-  const room = rooms.get(code);
+  const room = rooms.get(code.toUpperCase());
   if (!room) return;
 
   const player = room.players.get(playerId);
   if (player) {
     player.connected = false;
-    broadcast(code, { type: "player-left", data: { playerId } });
+    broadcast(room.code, { type: "player-left", data: { playerId } });
   }
 }
 
 export function forceShowResults(code: string, hostId: string): { error?: string } {
-  const room = rooms.get(code);
+  const room = rooms.get(code.toUpperCase());
   if (!room) return { error: "Room not found" };
   if (room.hostId !== hostId) return { error: "Only the host can continue" };
   if (room.state !== "question") return { error: "No active question" };
@@ -1194,7 +1194,7 @@ export function choosePowerUp(
   playerId: string,
   powerUp: "freeze" | "shield" | "double"
 ): { error?: string } {
-  const room = rooms.get(code);
+  const room = rooms.get(code.toUpperCase());
   if (!room) return { error: "Room not found" };
   if (room.state !== "question") return { error: "Can't use power-ups right now" };
 

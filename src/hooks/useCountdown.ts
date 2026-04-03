@@ -20,6 +20,11 @@ export function useCountdown(
 ): UseCountdownReturn {
   const [remaining, setRemaining] = useState(duration);
   const expiredRef = useRef(false);
+  const onExpireRef = useRef(onExpire);
+
+  useEffect(() => {
+    onExpireRef.current = onExpire;
+  }, [onExpire]);
 
   useEffect(() => {
     expiredRef.current = false;
@@ -30,13 +35,13 @@ export function useCountdown(
 
       if (left <= 0 && !expiredRef.current) {
         expiredRef.current = true;
-        onExpire?.();
+        onExpireRef.current?.();
         clearInterval(interval);
       }
     }, 100);
 
     return () => clearInterval(interval);
-  }, [duration, startTime, onExpire]);
+  }, [duration, startTime]);
 
   return {
     remaining,

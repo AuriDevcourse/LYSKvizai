@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import QRCodeLib from "qrcode";
 
 interface QRCodeProps {
@@ -9,22 +9,35 @@ interface QRCodeProps {
 }
 
 export default function QRCode({ url, size = 200 }: QRCodeProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [dataUrl, setDataUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!canvasRef.current) return;
-    QRCodeLib.toCanvas(canvasRef.current, url, {
-      width: size,
+    if (!url) return;
+    QRCodeLib.toDataURL(url, {
+      width: size * 2,
       margin: 2,
       color: { dark: "#e8590c", light: "#ffffff" },
-    });
+    })
+      .then(setDataUrl)
+      .catch(() => setDataUrl(null));
   }, [url, size]);
 
+  if (!dataUrl) {
+    return (
+      <div
+        className="flex items-center justify-center rounded-xl bg-white/5"
+        style={{ width: size, height: size }}
+      />
+    );
+  }
+
   return (
-    <canvas
-      ref={canvasRef}
+    <img
+      src={dataUrl}
+      alt="QR code"
       className="rounded-xl"
-      style={{ width: size, height: size }}
+      width={size}
+      height={size}
     />
   );
 }

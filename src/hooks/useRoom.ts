@@ -12,7 +12,7 @@ import type {
   GameMode,
   WagerPayload,
 } from "@/lib/multiplayer/types";
-import { MP_SSE_URL } from "@/lib/multiplayer/config";
+import { MP_SSE_URL, SSE_SUFFIX } from "@/lib/multiplayer/config";
 
 export interface EmojiReactionWithId extends EmojiReaction {
   id: string;
@@ -61,6 +61,7 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
   const disconnectTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const retriesRef = useRef(0);
   const reactionIdRef = useRef(0);
+  const connectRef = useRef<() => void>(undefined);
 
   const connect = useCallback(() => {
     if (!code || !playerId) return;
@@ -72,7 +73,7 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
       return { ...q, startTime: q.startTime + clockOffset };
     }
 
-    const url = `${MP_SSE_URL}/${code.toUpperCase()}?playerId=${playerId}`;
+    const url = `${MP_SSE_URL}/${code.toUpperCase()}${SSE_SUFFIX}?playerId=${playerId}`;
     const es = new EventSource(url);
     esRef.current = es;
 
@@ -215,10 +216,14 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
       // Quick reconnect (Vercel may drop SSE after ~25s, this is expected)
       const delay = Math.min(500 * Math.pow(1.5, Math.min(retriesRef.current - 1, 5)), 4000);
       reconnectTimeout.current = setTimeout(() => {
-        connect();
+        connectRef.current?.();
       }, delay);
     };
   }, [code, playerId]);
+
+  useEffect(() => {
+    connectRef.current = connect;
+  }, [connect]);
 
   useEffect(() => {
     connect();

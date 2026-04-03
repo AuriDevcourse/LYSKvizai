@@ -22,6 +22,15 @@ function shuffleArray<T>(arr: T[]): T[] {
   return a;
 }
 
+/** Shuffle options within a question so the correct answer isn't always at the same index */
+function shuffleOptions(q: Question): Question {
+  if (q.type === "true-false" || q.type === "fastest-finger" || q.type === "year-guesser" || q.type === "zoom-out") return q;
+  const indices = shuffleArray([0, 1, 2, 3]);
+  const newOptions = indices.map((i) => q.options[i]) as [string, string, string, string];
+  const newCorrect = indices.indexOf(q.correct);
+  return { ...q, options: newOptions, correct: newCorrect };
+}
+
 export default function SurvivalPage() {
   return (
     <Suspense fallback={<div className="flex min-h-svh items-center justify-center"><Loader2 className="h-10 w-10 animate-spin text-white" /></div>}>
@@ -84,7 +93,7 @@ function SurvivalInner() {
         const all: Question[] = (quizzes as Array<{ questions: Question[] } | null>)
           .filter(Boolean)
           .flatMap((q) => q!.questions);
-        setQuestions(shuffleArray(all));
+        setQuestions(shuffleArray(all).map(shuffleOptions));
         setTimeLeft(baseTimer);
       })
       .catch(() => {})
@@ -215,7 +224,7 @@ function SurvivalInner() {
 
             <div className="flex gap-6 text-center">
               <div>
-                <p className="text-2xl font-extrabold text-white">{currentIndex}</p>
+                <p className="text-2xl font-extrabold text-white">{totalAnswered + 1}</p>
                 <p className="text-xs font-bold text-white/40">{t("survival.questions")}</p>
               </div>
               <div>

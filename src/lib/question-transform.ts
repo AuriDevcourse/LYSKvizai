@@ -113,7 +113,7 @@ export function transformQuestion(q: Question, targetType: QuestionType | "mixed
  * Strategy: strip interrogative opener and rephrase as a declarative claim.
  */
 function buildTrueFalseStatement(question: string, answer: string): string {
-  let q = question.trim().replace(/\?$/, "").trim();
+  const q = question.trim().replace(/\?$/, "").trim();
 
   // Common patterns: "Which X is Y" → "X is answer"
   // "What is the X of Y" → "the X of Y is answer"

@@ -132,7 +132,7 @@ export async function POST(req: NextRequest) {
       if (!player) return json({ error: "Player not found" }, 404);
       const safeEmoji = sanitizeEmoji(body.emoji);
       if (!safeEmoji) return json({ error: "Invalid emoji" }, 400);
-      broadcast(body.code, {
+      broadcast(room.code, {
         type: "emoji-reaction",
         data: {
           playerId: body.playerId,
@@ -173,5 +173,5 @@ export async function GET(req: NextRequest) {
   const room = getRoom(code);
   if (!room) return json({ error: "Room not found" }, 404);
 
-  return json({ snapshot: getRoomSnapshot(room) });
+  return json({ snapshot: getRoomSnapshot(room), hostId: room.hostId });
 }
