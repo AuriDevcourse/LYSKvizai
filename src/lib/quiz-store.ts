@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import type { Quiz, QuizMeta } from "@/data/types";
+import { isGoodZoomImage } from "./question-transform";
 
 const QUIZZES_DIR = path.join(process.cwd(), "data", "quizzes");
 
@@ -37,7 +38,7 @@ export async function listQuizzes(): Promise<QuizMeta[]> {
         emoji: quiz.emoji,
         questionCount: quiz.questions.length,
         language: (raw_quiz.language as string) || undefined,
-        imageCount: quiz.questions.filter((q) => q.image && !q.image.startsWith("http")).length,
+        imageCount: quiz.questions.filter((q) => q.image && isGoodZoomImage(q.image)).length,
         yearCount: quiz.questions.filter((q) => q.correctYear != null).length,
         shortAnswerCount: quiz.questions.filter((q) => {
           const a = q.options[q.correct]?.trim() ?? "";
