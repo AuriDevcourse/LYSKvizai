@@ -28,7 +28,7 @@ const GAME_TYPES: GameTypeOption[] = [
   { id: "standard", icon: HelpCircle, color: "bg-[#43a5fc]/15 text-[#43a5fc]", desc: "Four options, one winner" },
   { id: "true-false", icon: ToggleLeft, color: "bg-[#e77fff]/15 text-[#e77fff]", desc: "Binary decision challenge" },
   { id: "zoom-out", icon: ZoomOut, color: "bg-[#ff9062]/15 text-[#ff9062]", desc: "Identify the hidden image" },
-  { id: "year-guesser", icon: Calendar, color: "bg-[#b2ff59]/15 text-[#b2ff59]", desc: "Place events on a timeline" },
+  { id: "year-guesser", icon: Calendar, color: "bg-[#66bb6a]/15 text-[#66bb6a]", desc: "Place events on a timeline" },
   { id: "fastest-finger", icon: Keyboard, color: "bg-[#ff716c]/15 text-[#ff716c]", desc: "Speed is everything" },
   { id: "mixed", icon: Shuffle, color: "bg-[#e77fff]/15 text-[#e77fff]", desc: "A chaotic variety of all types" },
   { id: "charades" as QuestionType, icon: Smartphone, color: "bg-[#43a5fc]/15 text-[#43a5fc]", desc: "Act it out, guess it right" },
@@ -179,7 +179,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
               <button
                 key={topic.id}
                 onClick={() => setActiveTopic(topic)}
-                className={`group relative flex flex-col items-start gap-3 rounded-xl p-4 sm:p-5 text-left transition-all duration-300 ${
+                className={`group relative flex flex-col items-center gap-3 rounded-xl p-4 sm:items-start sm:p-5 text-center sm:text-left transition-all duration-300 ${
                   selectedCount > 0
                     ? "bg-[#e8590c]/12 border-[1.5px] border-[#ff9062]/40"
                     : "bg-white/4 border-[1.5px] border-white/5 hover:bg-white/8 hover:border-white/10"

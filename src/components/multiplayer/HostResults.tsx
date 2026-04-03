@@ -11,8 +11,8 @@ import EmojiReactions from "./EmojiReactions";
 import Avatar from "@/components/Avatar";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
-const OPTION_BG = ["bg-[#ff716c]", "bg-[#43a5fc]", "bg-[#b2ff59]", "bg-[#ffff00]"];
-const OPTION_BG_DIM = ["bg-[#ff716c]/30", "bg-[#43a5fc]/30", "bg-[#b2ff59]/30", "bg-[#ffff00]/30"];
+const OPTION_BG = ["bg-[#ff716c]", "bg-[#43a5fc]", "bg-[#66bb6a]", "bg-[#c9a825]"];
+const OPTION_BG_DIM = ["bg-[#ff716c]/30", "bg-[#43a5fc]/30", "bg-[#66bb6a]/30", "bg-[#c9a825]/30"];
 const OPTION_ICONS = [Triangle, Diamond, Circle, Square];
 
 interface HostResultsProps {
@@ -89,7 +89,7 @@ export default function HostResults({
 
           {/* Year Guesser correct year */}
           {isYearGuesser && (
-            <div className="flex items-center gap-3 rounded-2xl bg-[#b2ff59] px-8 py-5 animate-bounce-in">
+            <div className="flex items-center gap-3 rounded-2xl bg-[#66bb6a] px-8 py-5 animate-bounce-in">
               <Calendar className="h-8 w-8 text-white" />
               <div>
                 <p className="text-sm font-bold text-white/70">{t("hostResults.correctYear")}</p>
@@ -266,18 +266,18 @@ function AnimatedLeaderboardPhase({
 
       {/* Mystery Multiplier */}
       {results.mysteryMultiplier && results.mysteryMultiplier > 1 && (
-        <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#ffff00]/20 px-5 py-3 animate-bounce-in">
-          <Sparkles className="h-5 w-5 text-[#ffff00]" />
-          <p className="text-lg font-extrabold text-[#ffff00]">x{results.mysteryMultiplier}!</p>
-          <Sparkles className="h-5 w-5 text-[#ffff00]" />
+        <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#c9a825]/20 px-5 py-3 animate-bounce-in">
+          <Sparkles className="h-5 w-5 text-[#c9a825]" />
+          <p className="text-lg font-extrabold text-[#c9a825]">x{results.mysteryMultiplier}!</p>
+          <Sparkles className="h-5 w-5 text-[#c9a825]" />
         </div>
       )}
 
       {/* Fastest Finger */}
       {results.fastestFinger && (
-        <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#ffff00]/20 px-5 py-3 animate-bounce-in">
-          <Zap className="h-5 w-5 text-[#ffff00]" />
-          <p className="text-lg font-extrabold text-[#ffff00]">
+        <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#c9a825]/20 px-5 py-3 animate-bounce-in">
+          <Zap className="h-5 w-5 text-[#c9a825]" />
+          <p className="text-lg font-extrabold text-[#c9a825]">
             {t("hostResults.fastestFinger")} {results.fastestFinger.playerName}
           </p>
         </div>
@@ -289,7 +289,7 @@ function AnimatedLeaderboardPhase({
           {results.yearGuesses.map((g) => {
             const diff = g.guessedYear - g.correctYear;
             const absDiff = Math.abs(diff);
-            const color = absDiff === 0 ? "text-[#b2ff59]" : absDiff <= 5 ? "text-[#ffff00]" : absDiff <= 25 ? "text-white" : "text-[#ff716c]";
+            const color = absDiff === 0 ? "text-[#66bb6a]" : absDiff <= 5 ? "text-[#c9a825]" : absDiff <= 25 ? "text-white" : "text-[#ff716c]";
             return (
               <div key={g.playerId} className="flex items-center justify-between rounded-xl bg-white/5 px-4 py-2.5">
                 <span className="font-bold text-white">{g.playerName}</span>
@@ -328,7 +328,7 @@ function AnimatedLeaderboardPhase({
                 {/* Score bar */}
                 <div
                   className={`absolute inset-y-0 left-0 transition-all duration-1000 ease-out ${
-                    playerResult?.correct ? "bg-[#b2ff59]/20" : "bg-[#ff716c]/15"
+                    playerResult?.correct ? "bg-[#66bb6a]/20" : "bg-[#ff716c]/15"
                   }`}
                   style={{ width: `${barWidth}%` }}
                 />
@@ -374,7 +374,7 @@ function AnimatedLeaderboardPhase({
                       </span>
                     )}
                     {pointsGained > 0 && (
-                      <span className={`flex items-center gap-0.5 text-xs font-extrabold text-[#b2ff59] ${
+                      <span className={`flex items-center gap-0.5 text-xs font-extrabold text-[#66bb6a] ${
                         animationDone ? "animate-bounce-in" : "opacity-0"
                       }`}>
                         <TrendingUp className="h-3.5 w-3.5" />
@@ -416,7 +416,7 @@ function AnimatedLeaderboardPhase({
           {results.wagerResults.map((wr) => (
             <div key={wr.playerId} className="flex items-center gap-2 rounded-xl glass px-4 py-2">
               <span className="text-sm font-bold text-white">{wr.playerName}</span>
-              <span className={`text-lg font-extrabold ${wr.won ? "text-[#b2ff59]" : "text-[#ff716c]"}`}>
+              <span className={`text-lg font-extrabold ${wr.won ? "text-[#66bb6a]" : "text-[#ff716c]"}`}>
                 {wr.won ? "+" : ""}{wr.netPoints}
               </span>
             </div>

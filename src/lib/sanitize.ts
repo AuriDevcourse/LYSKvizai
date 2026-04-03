@@ -20,8 +20,8 @@ export function sanitizeName(name: string): string {
     .slice(0, 30);
 }
 
-/** Sanitize emoji reaction — only allow single emoji or short emoji sequences */
+/** Sanitize emoji/avatar string — allow encoded avatar configs and emoji sequences */
 export function sanitizeEmoji(input: string): string {
-  // Limit to 10 chars to allow compound emoji but prevent abuse
-  return input.slice(0, 10).replace(/<[^>]*>/g, "");
+  // Allow up to 50 chars for encoded avatar strings (e.g. "frog:orange:wizard:glasses")
+  return input.slice(0, 50).replace(/<[^>]*>/g, "");
 }

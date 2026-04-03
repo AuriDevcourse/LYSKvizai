@@ -15,7 +15,7 @@ interface PowerUpBarProps {
 const POWER_UPS: { type: PowerUpType; labelKey: "powerUp.freeze" | "powerUp.shield" | "powerUp.double"; icon: typeof Snowflake; color: string; descKey: "powerUp.freezeDesc" | "powerUp.shieldDesc" | "powerUp.doubleDesc" }[] = [
   { type: "freeze", labelKey: "powerUp.freeze", icon: Snowflake, color: "bg-cyan-500 hover:bg-cyan-400", descKey: "powerUp.freezeDesc" },
   { type: "shield", labelKey: "powerUp.shield", icon: Shield, color: "bg-emerald-500 hover:bg-emerald-400", descKey: "powerUp.shieldDesc" },
-  { type: "double", labelKey: "powerUp.double", icon: ChevronsUp, color: "bg-[#ffff00] hover:bg-[#ffff00]/80", descKey: "powerUp.doubleDesc" },
+  { type: "double", labelKey: "powerUp.double", icon: ChevronsUp, color: "bg-[#c9a825] hover:bg-[#c9a825]/80", descKey: "powerUp.doubleDesc" },
 ];
 
 export default function PowerUpBar({ usesLeft, usedTypes = [], onUse, disabled }: PowerUpBarProps) {
@@ -29,7 +29,7 @@ export default function PowerUpBar({ usesLeft, usedTypes = [], onUse, disabled }
   return (
     <div className="w-full">
       <p className="mb-2 text-center text-xs font-bold text-white/40">
-        {t("powerUp.powers")} — {usesLeft} {t("powerUp.left")}
+        {t("powerUp.powers")} · {usesLeft} {t("powerUp.left")}
       </p>
       <div className="flex items-stretch justify-center gap-2">
         {POWER_UPS.map((pu) => {

@@ -218,7 +218,7 @@ export default function QuestionEditor({
       {/* Zoom-out hint */}
       {questionType === "zoom-out" && !question.image && (
         <div className="mb-4 rounded-lg border-2 border-yellow-400/30 bg-yellow-400/5 px-3 py-2 text-xs text-yellow-300/70">
-          ⚠ Zoom Out klausimui reikia nuotraukos — pridėk ją žemiau
+          ⚠ Zoom Out klausimui reikia nuotraukos, pridėk ją žemiau
         </div>
       )}
 

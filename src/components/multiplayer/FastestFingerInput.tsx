@@ -66,7 +66,7 @@ export default function FastestFingerInput({
         <div className="glass rounded-2xl px-5 py-4 text-center">
           <h2 className="text-lg font-extrabold text-white">{qText}</h2>
         </div>
-        <div className="flex items-center justify-center gap-2 rounded-xl bg-[#ffff00]/20 px-4 py-2 text-sm font-bold text-[#ffff00]">
+        <div className="flex items-center justify-center gap-2 rounded-xl bg-[#c9a825]/20 px-4 py-2 text-sm font-bold text-[#c9a825]">
           <Zap className="h-4 w-4" />
           {t("fastestFinger.title")}
         </div>
@@ -100,7 +100,7 @@ export default function FastestFingerInput({
       />
 
       {/* Fastest Finger badge */}
-      <div className="flex items-center justify-center gap-2 rounded-xl bg-[#ffff00]/20 px-4 py-2 text-sm font-extrabold text-[#ffff00]">
+      <div className="flex items-center justify-center gap-2 rounded-xl bg-[#c9a825]/20 px-4 py-2 text-sm font-extrabold text-[#c9a825]">
         <Zap className="h-4 w-4" />
         {t("fastestFinger.title")}
       </div>
@@ -138,7 +138,7 @@ export default function FastestFingerInput({
         <button
           onClick={handleSubmit}
           disabled={!text.trim()}
-          className="w-full rounded-2xl bg-[#b2ff59] px-6 py-4 text-lg font-extrabold text-white transition-all hover:brightness-110 active:brightness-90 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-full rounded-2xl bg-[#5a9e3e] px-6 py-4 text-lg font-extrabold text-white transition-all hover:brightness-110 active:brightness-90 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {t("fastestFinger.submit")}
         </button>

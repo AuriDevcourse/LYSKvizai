@@ -19,16 +19,16 @@ export default function Timer({ duration, startTime, onExpire }: TimerProps) {
         <div
           className={`h-full rounded-full transition-all duration-100 ${
             fraction > 0.5
-              ? "bg-[#b2ff59]"
+              ? "bg-[#66bb6a]"
               : fraction > 0.25
-                ? "bg-[#ffff00]"
+                ? "bg-[#c9a825]"
                 : "bg-[#ff716c]"
           }`}
           style={{ width: `${fraction * 100}%` }}
         />
       </div>
       <span
-        className={`min-w-[2ch] text-right text-lg font-extrabold ${
+        className={`w-8 text-center tabular-nums text-lg font-extrabold ${
           isCritical ? "text-[#ff716c] timer-critical" : "text-white"
         }`}
       >

@@ -33,7 +33,7 @@ export const COLORS = [
 ] as const;
 
 export const HATS = [
-  { id: "none", label: "—" },
+  { id: "none", label: "None" },
   { id: "crown", label: "Karūna" },
   { id: "tophat", label: "Cilindras" },
   { id: "beanie", label: "Kepurė" },
@@ -43,7 +43,7 @@ export const HATS = [
 ] as const;
 
 export const ACCESSORIES = [
-  { id: "none", label: "—" },
+  { id: "none", label: "None" },
   { id: "glasses", label: "Akiniai" },
   { id: "sunglasses", label: "Saulės" },
   { id: "bowtie", label: "Peteliškė" },
@@ -84,11 +84,17 @@ export default function Avatar({ value, size = 48, className = "" }: AvatarProps
         className={`relative overflow-hidden rounded-full ${className}`}
         style={{ width: size, height: size, backgroundColor: bgColor }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={`/avatars/${file}`}
           alt="avatar"
           className="absolute inset-0 h-full w-full object-cover"
           draggable={false}
+          loading="eager"
+          onError={(e) => {
+            // Hide broken image, show bg color circle as fallback
+            (e.target as HTMLImageElement).style.display = "none";
+          }}
         />
       </div>
     );

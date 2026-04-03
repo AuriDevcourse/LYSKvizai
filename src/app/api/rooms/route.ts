@@ -128,16 +128,15 @@ export async function POST(req: NextRequest) {
     case "react": {
       const room = getRoom(body.code);
       if (!room) return json({ error: "Room not found" }, 404);
-      const player = room.players.get(body.playerId);
-      if (!player) return json({ error: "Player not found" }, 404);
       const safeEmoji = sanitizeEmoji(body.emoji);
       if (!safeEmoji) return json({ error: "Invalid emoji" }, 400);
+      const player = room.players.get(body.playerId);
       broadcast(room.code, {
         type: "emoji-reaction",
         data: {
           playerId: body.playerId,
-          playerName: player.name,
-          playerEmoji: player.emoji,
+          playerName: player?.name ?? "Host",
+          playerEmoji: player?.emoji ?? "",
           emoji: safeEmoji,
         },
       });

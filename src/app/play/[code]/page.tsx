@@ -2,7 +2,7 @@
 
 import { use, useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, X, AlertTriangle, WifiOff } from "lucide-react";
+import { Loader2, X, AlertTriangle, WifiOff, ArrowRight, Trophy } from "lucide-react";
 import { useRoom } from "@/hooks/useRoom";
 import { useRoomActions } from "@/hooks/useRoomActions";
 import HostLobby from "@/components/multiplayer/HostLobby";
@@ -461,7 +461,7 @@ export default function GamePage({ params }: PageProps) {
               onClick={handleNext}
               className="btn-primary flex items-center justify-center gap-2 w-full text-lg mt-4"
             >
-              {isLastQuestion ? t("game.results") : t("game.nextQuestion")}
+              {isLastQuestion ? <>{t("game.results")} <Trophy className="h-5 w-5" /></> : <>{t("game.nextQuestion")} <ArrowRight className="h-5 w-5" /></>}
             </button>
           </PlayerResults>
         )}

@@ -19,14 +19,13 @@ interface HostLobbyProps {
 
 export default function HostLobby({ code, players, onStart, gameMode = "classic", teamNames = [] }: HostLobbyProps) {
   const [joinUrl, setJoinUrl] = useState("");
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(true);
   const { playLobby, stopLobby } = useSound();
   const { t } = useTranslation();
 
   useEffect(() => {
-    playLobby();
     return () => stopLobby();
-  }, [playLobby, stopLobby]);
+  }, [stopLobby]);
 
   const toggleMute = () => {
     if (muted) {
@@ -101,16 +100,18 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
               <p className="font-bold">{t("lobby.waitingForPlayers")}</p>
             </div>
           ) : (
-            <div className="flex flex-wrap gap-3 justify-center">
+            <div className="flex flex-wrap gap-2 justify-center">
               {players.map((p) => (
                 <div
                   key={p.id}
-                  className="flex flex-col items-center gap-1.5 animate-bounce-in"
+                  className="flex flex-col items-center gap-1 animate-bounce-in w-16 sm:w-20"
                 >
                   <div className="rounded-full bg-white/5 p-1">
-                    <Avatar value={p.emoji} size={48} />
+                    <Avatar value={p.emoji} size={40} />
                   </div>
-                  <span className="max-w-[80px] text-center text-sm font-extrabold text-white truncate">{p.name}</span>
+                  <span className={`w-full text-center font-extrabold text-white leading-tight break-words ${
+                    p.name.length > 8 ? "text-[10px]" : "text-xs"
+                  }`}>{p.name}</span>
                 </div>
               ))}
             </div>

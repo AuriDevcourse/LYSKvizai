@@ -13,10 +13,10 @@ import VideoPlayer from "./VideoPlayer";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 const BUTTON_COLORS = [
-  "bg-[#ff716c] hover:brightness-110 active:brightness-90",
-  "bg-[#43a5fc] hover:brightness-110 active:brightness-90",
-  "bg-[#b2ff59] hover:brightness-110 active:brightness-90",
-  "bg-[#ffff00] hover:brightness-110 active:brightness-90",
+  "bg-[#d9534f] hover:brightness-110 active:brightness-90",
+  "bg-[#3a8fd9] hover:brightness-110 active:brightness-90",
+  "bg-[#5a9e3e] hover:brightness-110 active:brightness-90",
+  "bg-[#c9a825] hover:brightness-110 active:brightness-90",
 ];
 
 const BUTTON_ICONS = [
@@ -177,7 +177,7 @@ export default function PlayerQuestion({
       <div className="text-center text-sm font-bold text-white/50">
         {question.index + 1} / {question.total}
         {question.isWagerRound && (
-          <span className="ml-2 rounded-lg bg-[#ffff00]/20 px-2 py-0.5 text-xs font-extrabold text-[#ffff00]">
+          <span className="ml-2 rounded-lg bg-[#c9a825]/20 px-2 py-0.5 text-xs font-extrabold text-[#c9a825]">
             {t("hostQuestion.wager")}
           </span>
         )}

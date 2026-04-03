@@ -3,7 +3,7 @@
 import { Suspense, useState, useEffect, useCallback, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Loader2, Check, X, RotateCcw, Home, Smartphone } from "lucide-react";
+import { Loader2, Check, X, RotateCcw, Home, Smartphone, ChevronDown, ChevronUp } from "lucide-react";
 import type { Question } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
@@ -288,7 +288,7 @@ function CharadesInner() {
           </p>
           <div className="flex flex-col gap-1 rounded-2xl bg-white/5 px-5 py-3">
             <div className="flex items-center justify-center gap-2">
-              <span className="text-sm font-extrabold text-[#b2ff59]">{t("charades.tiltDown")}</span>
+              <span className="text-sm font-extrabold text-[#66bb6a]">{t("charades.tiltDown")}</span>
             </div>
             <div className="flex items-center justify-center gap-2">
               <span className="text-sm font-extrabold text-[#ff716c]">{t("charades.tiltUp")}</span>
@@ -333,7 +333,7 @@ function CharadesInner() {
 
         <div className="flex gap-8">
           <div className="flex flex-col items-center">
-            <span className="text-5xl font-black text-[#b2ff59]">{correctWords.length}</span>
+            <span className="text-5xl font-black text-[#66bb6a]">{correctWords.length}</span>
             <span className="text-sm font-bold text-white/50">{t("charades.correct")}</span>
           </div>
           <div className="flex flex-col items-center">
@@ -344,8 +344,8 @@ function CharadesInner() {
 
         <div className="w-full max-w-sm space-y-1.5 max-h-[40vh] overflow-y-auto">
           {correctWords.map((w, i) => (
-            <div key={`c${i}`} className="flex items-center gap-2 rounded-xl bg-[#b2ff59]/20 px-4 py-2">
-              <Check className="h-4 w-4 text-[#b2ff59] shrink-0" />
+            <div key={`c${i}`} className="flex items-center gap-2 rounded-xl bg-[#66bb6a]/20 px-4 py-2">
+              <Check className="h-4 w-4 text-[#66bb6a] shrink-0" />
               <span className="text-sm font-bold text-white">{w}</span>
             </div>
           ))}
@@ -375,7 +375,7 @@ function CharadesInner() {
   const currentWord = words[currentIndex] ?? "";
   const bgColor =
     flashColor === "green"
-      ? "bg-[#b2ff59]"
+      ? "bg-[#66bb6a]"
       : flashColor === "red"
         ? "bg-[#ff716c]"
         : "bg-[#0e0e0e]";
@@ -426,7 +426,7 @@ function CharadesInner() {
         <div className="w-full">
           {hasGyro && (
             <div className="pb-2 text-center text-sm font-bold text-white/30">
-              ↓ {t("charades.tiltDown")} &nbsp;·&nbsp; ↑ {t("charades.tiltUp")}
+              <ChevronDown className="inline h-4 w-4" /> {t("charades.tiltDown")} &nbsp;·&nbsp; <ChevronUp className="inline h-4 w-4" /> {t("charades.tiltUp")}
             </div>
           )}
           <div className="grid w-full grid-cols-2 gap-0">
@@ -439,7 +439,7 @@ function CharadesInner() {
             </button>
             <button
               onClick={() => nextWord(true)}
-              className="flex items-center justify-center gap-2 bg-[#b2ff59] py-6 text-xl font-extrabold text-white active:brightness-75"
+              className="flex items-center justify-center gap-2 bg-[#66bb6a] py-6 text-xl font-extrabold text-white active:brightness-75"
             >
               <Check className="h-6 w-6" />
               {t("charades.correct")}

@@ -432,10 +432,17 @@ function getResultsPayload(room: Room): ResultsPayload {
     result.powerUpEffects = powerUpEffects;
   }
 
+  // Include English options in results (so PlayerResults doesn't depend on question payload)
+  const optShuffle = room.optionShuffles[room.currentQuestionIndex];
+  result.en = {
+    correctAnswerText: result.correctAnswerText,
+    explanation: q.explanation,
+    options: optShuffle.map((origIdx) => q.options[origIdx]),
+  };
+
   // Include Lithuanian translations for results (content is in English)
   const ltT = room.enTranslations.get(qIndex);
   if (ltT) {
-    const optShuffle = room.optionShuffles[room.currentQuestionIndex];
     result.lt = {
       correctAnswerText: result.correctAnswerText
         ? ltT.options[q.correct]
@@ -1216,10 +1223,10 @@ export function choosePowerUp(
     broadcast(room.code, { type: "timer-reduced", data: { seconds: 3 } });
   }
 
-  // Broadcast updated power-ups to host screen
+  // Broadcast updated state so clients get fresh player power-up data
   broadcast(room.code, {
-    type: "question-start",
-    data: getQuestionPayload(room),
+    type: "room-state",
+    data: getRoomSnapshot(room),
   });
 
   return {};

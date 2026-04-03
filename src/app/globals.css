@@ -15,8 +15,8 @@
   --color-on-surface-variant: #adaaaa;
   --color-outline: #484848;
   --color-answer-blue: #43a5fc;
-  --color-answer-green: #b2ff59;
-  --color-answer-yellow: #ffff00;
+  --color-answer-green: #66bb6a;
+  --color-answer-yellow: #c9a825;
   --color-answer-purple: #e77fff;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -46,8 +46,8 @@ body {
   16% { -webkit-text-stroke-color: #ff716c; }
   33% { -webkit-text-stroke-color: #e77fff; }
   50% { -webkit-text-stroke-color: #43a5fc; }
-  66% { -webkit-text-stroke-color: #b2ff59; }
-  83% { -webkit-text-stroke-color: #ffff00; }
+  66% { -webkit-text-stroke-color: #66bb6a; }
+  83% { -webkit-text-stroke-color: #c9a825; }
 }
 
 /* Bold headings */

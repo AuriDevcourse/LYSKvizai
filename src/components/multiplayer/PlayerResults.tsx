@@ -8,8 +8,8 @@ import { useTranslation } from "@/lib/i18n/LanguageContext";
 const ANSWER_COLORS = [
   "bg-[#ff716c]",
   "bg-[#43a5fc]",
-  "bg-[#b2ff59]",
-  "bg-[#ffff00]",
+  "bg-[#66bb6a]",
+  "bg-[#c9a825]",
 ];
 
 interface PlayerResultsProps {
@@ -28,7 +28,7 @@ export default function PlayerResults({ playerId, results, question, onReact, ch
   // Get translated options from question or results
   const options = question
     ? (lang === "lt" && question.lt ? question.lt.options : lang !== "lt" && question.en ? question.en.options : question.options)
-    : (lang === "lt" && results.lt?.options ? results.lt.options : lang !== "lt" && results.en?.options ? results.en.options : null);
+    : (lang === "lt" && results.lt?.options ? results.lt.options : results.en?.options ?? null);
 
   const correctIndex = results.correctAnswer;
 
@@ -49,8 +49,8 @@ export default function PlayerResults({ playerId, results, question, onReact, ch
       {myResult ? (
         <div className="flex flex-col items-center gap-2">
           {myResult.correct ? (
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#b2ff59]/20 animate-bounce-in">
-              <CheckCircle className="h-9 w-9 text-[#b2ff59]" />
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#66bb6a]/20 animate-bounce-in">
+              <CheckCircle className="h-9 w-9 text-[#66bb6a]" />
             </div>
           ) : (
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-400/15 animate-bounce-in">
@@ -65,7 +65,7 @@ export default function PlayerResults({ playerId, results, question, onReact, ch
           </p>
           {/* Fastest bonus */}
           {myResult.speedBonus && myResult.speedBonus > 0 && (
-            <div className="flex items-center gap-1.5 text-sm font-bold text-[#ffff00]">
+            <div className="flex items-center gap-1.5 text-sm font-bold text-[#c9a825]">
               <Zap className="h-4 w-4" />
               <span>{t("playerResults.fastest")} +{myResult.speedBonus}</span>
             </div>
@@ -86,7 +86,7 @@ export default function PlayerResults({ playerId, results, question, onReact, ch
           )}
           {/* Mystery multiplier */}
           {results.mysteryMultiplier && results.mysteryMultiplier > 1 && myResult.correct && (
-            <div className="flex items-center gap-1.5 text-sm font-bold text-[#ffff00]">
+            <div className="flex items-center gap-1.5 text-sm font-bold text-[#c9a825]">
               <Sparkles className="h-4 w-4" />
               x{results.mysteryMultiplier}
             </div>
@@ -111,8 +111,9 @@ export default function PlayerResults({ playerId, results, question, onReact, ch
       {/* Correct answer reveal */}
       {options && (
         <div className="w-full">
-          <div className="grid grid-cols-2 gap-2">
+          <div className={`grid gap-2 ${options.filter(o => o !== "").length <= 2 ? "grid-cols-2 max-w-xs mx-auto" : "grid-cols-2"}`}>
             {options.map((option, i) => {
+              if (option === "") return null;
               const isCorrect = i === correctIndex;
               return (
                 <div

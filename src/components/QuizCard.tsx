@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Triangle, Diamond, Circle, Square, Check, X, Clock } from "lucide-react";
+import { Triangle, Diamond, Circle, Square, Check, X, Clock, ArrowRight, Trophy } from "lucide-react";
 import type { Question } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 import { fuzzyMatch } from "@/lib/fuzzy-match";
@@ -18,12 +18,12 @@ interface QuizCardProps {
 const COLORS = [
   { bg: "bg-[#ff716c]", hover: "hover:brightness-110", icon: Triangle },
   { bg: "bg-[#43a5fc]", hover: "hover:brightness-110", icon: Diamond },
-  { bg: "bg-[#b2ff59]", hover: "hover:brightness-110", icon: Circle },
-  { bg: "bg-[#ffff00]", hover: "hover:brightness-110", icon: Square },
+  { bg: "bg-[#66bb6a]", hover: "hover:brightness-110", icon: Circle },
+  { bg: "bg-[#c9a825]", hover: "hover:brightness-110", icon: Square },
 ];
 
 const TF_COLORS = [
-  { bg: "bg-[#b2ff59]", hover: "hover:brightness-110", icon: Check },
+  { bg: "bg-[#66bb6a]", hover: "hover:brightness-110", icon: Check },
   { bg: "bg-[#ff716c]", hover: "hover:brightness-110", icon: X },
 ];
 
@@ -237,22 +237,22 @@ export default function QuizCard({
           <div
             className={`rounded-2xl px-5 py-4 text-center font-bold ${
               isYearGuesser && yearGotPoints && !isYearCorrect
-                ? "bg-[#ffff00] text-white"
+                ? "bg-[#c9a825] text-white"
                 : isCorrect
-                  ? "bg-[#b2ff59] text-white"
+                  ? "bg-[#66bb6a] text-white"
                   : "bg-[#ff716c] text-white"
             }`}
           >
-            <p className="text-lg">
+            <p className="flex items-center justify-center gap-2 text-lg">
               {isYearGuesser
                 ? isYearCorrect
-                  ? `${t("quizCard.correct")} — ${correctYear}`
+                  ? <>{t("quizCard.correct")} {correctYear} <Check className="h-5 w-5" /></>
                   : yearGotPoints
-                    ? `${Math.round(yearAccuracy * 100)}% — Off by ${yearDiff} ${yearDiff === 1 ? "year" : "years"}`
-                    : t("quizCard.incorrect")
+                    ? `${Math.round(yearAccuracy * 100)}% · Off by ${yearDiff} ${yearDiff === 1 ? "year" : "years"}`
+                    : <>{t("quizCard.incorrect")} <X className="h-5 w-5" /></>
                 : isCorrect
-                  ? t("quizCard.correct")
-                  : t("quizCard.incorrect")}
+                  ? <>{t("quizCard.correct")} <Check className="h-5 w-5" /></>
+                  : <>{t("quizCard.incorrect")} <X className="h-5 w-5" /></>}
             </p>
             {isYearGuesser && !isYearCorrect && (
               <p className="mt-1 text-sm font-medium text-white/80">
@@ -279,9 +279,9 @@ export default function QuizCard({
 
           <button
             onClick={onNext}
-            className="btn-primary mt-4 w-full text-center"
+            className="btn-primary mt-4 flex w-full items-center justify-center gap-2"
           >
-            {isLast ? t("quizCard.results") : t("quizCard.next")}
+            {isLast ? <>{t("quizCard.results")} <Trophy className="h-5 w-5" /></> : <>{t("quizCard.next")} <ArrowRight className="h-5 w-5" /></>}
           </button>
         </div>
       )}

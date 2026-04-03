@@ -37,18 +37,20 @@ export default function PlayerLobby({ code, players, playerName, playerEmoji }: 
           <Users className="h-4 w-4" />
           <span>{t("lobby.players")} ({players.length})</span>
         </div>
-        <div className="flex flex-wrap justify-center gap-3">
+        <div className="flex flex-wrap justify-center gap-2">
           {players.map((p) => (
             <div
               key={p.id}
-              className={`flex flex-col items-center gap-1 animate-fade-in-up ${
+              className={`flex flex-col items-center gap-1 animate-fade-in-up w-16 ${
                 p.name === playerName ? "opacity-100" : "opacity-70"
               }`}
             >
               <div className={`rounded-full p-0.5 ${p.name === playerName ? "outline outline-[1.5px] outline-[#ff9062]" : ""}`}>
                 <Avatar value={p.emoji} size={40} />
               </div>
-              <span className="max-w-[72px] text-center text-xs font-extrabold text-white truncate">
+              <span className={`w-full text-center font-extrabold text-white leading-tight break-words ${
+                p.name.length > 8 ? "text-[10px]" : "text-xs"
+              }`}>
                 {p.name}
               </span>
             </div>

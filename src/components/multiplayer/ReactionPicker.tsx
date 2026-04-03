@@ -50,7 +50,7 @@ export default function ReactionPicker({ onReact }: ReactionPickerProps) {
   }, [text, onReact, spawnFloat]);
 
   return (
-    <div className="w-full max-w-sm mx-auto overflow-hidden">
+    <div className="w-full max-w-sm mx-auto">
       {/* Floating items — fixed overlay */}
       {floats.length > 0 && (
         <div className="pointer-events-none fixed inset-x-0 top-0 bottom-1/3 z-50 overflow-hidden">
@@ -79,12 +79,12 @@ export default function ReactionPicker({ onReact }: ReactionPickerProps) {
       )}
 
       {/* Emoji buttons */}
-      <div className="flex items-center justify-center gap-1.5 sm:gap-2">
+      <div className="flex items-center justify-center gap-2 py-1 sm:gap-3">
         {REACTIONS.map((emoji) => (
           <button
             key={emoji}
             onClick={() => handleReact(emoji)}
-            className="flex-shrink-0 rounded-xl bg-white/5 px-2.5 py-2 text-xl transition-transform hover:scale-110 hover:bg-white/5 active:scale-95 sm:px-3 sm:text-2xl"
+            className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/5 text-xl transition-transform hover:scale-110 hover:bg-white/10 active:scale-95 sm:h-11 sm:w-11 sm:text-2xl"
           >
             {emoji}
           </button>

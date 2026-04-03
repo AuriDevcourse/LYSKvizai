@@ -16,12 +16,15 @@ export const translations = {
     "home.createGame": "Create game",
     "home.joinGame": "Join game",
     "home.practiceAlone": "Practice alone",
+    "home.playSolo": "Play solo",
+    "home.playSoloDesc": "Practice on your own",
+    "home.playWithFriendsDesc": "Host a live game for everyone",
 
     // Play page
     "play.playWithFriends": "Play with friends",
     "play.pickQuizzes": "Pick quizzes",
     "play.pickMultiple": "Pick multiple, questions will be shuffled",
-    "play.next": "Next →",
+    "play.next": "Next",
     "play.back": "Back",
     "play.pickMode": "Pick mode",
     "play.howWillYouPlay": "How will you play?",
@@ -40,7 +43,7 @@ export const translations = {
     "game.loading": "Loading...",
     "game.connecting": "Connecting...",
     "game.results": "Results",
-    "game.nextQuestion": "Next question →",
+    "game.nextQuestion": "Next question",
     "game.playAgain": "Play again",
 
     // Host Lobby
@@ -265,10 +268,10 @@ export const translations = {
     "charades.anyOrientation": "Works in portrait or landscape",
 
     // Quiz Card (single player)
-    "quizCard.correct": "Correct! ✓",
-    "quizCard.incorrect": "Incorrect ✗",
+    "quizCard.correct": "Correct!",
+    "quizCard.incorrect": "Incorrect",
     "quizCard.results": "Results",
-    "quizCard.next": "Next →",
+    "quizCard.next": "Next",
     "quizCard.submit": "Submit",
     "quizCard.typeAnswer": "Type your answer...",
     "quizCard.correctAnswer": "Correct answer",
@@ -333,12 +336,15 @@ export const translations = {
     "home.createGame": "Sukurti žaidimą",
     "home.joinGame": "Prisijungti",
     "home.practiceAlone": "Treniruotis vienam",
+    "home.playSolo": "Žaisti vienam",
+    "home.playSoloDesc": "Treniruokis savarankiškai",
+    "home.playWithFriendsDesc": "Sukurk žaidimą visiems",
 
     // Play page
     "play.playWithFriends": "Žaisti su draugais",
     "play.pickQuizzes": "Pasirinkite viktorinas",
     "play.pickMultiple": "Galite pasirinkti kelias, klausimai bus sumaišyti",
-    "play.next": "Toliau →",
+    "play.next": "Toliau",
     "play.back": "Atgal",
     "play.pickMode": "Režimas",
     "play.howWillYouPlay": "Kaip žaisite?",
@@ -357,7 +363,7 @@ export const translations = {
     "game.loading": "Kraunama...",
     "game.connecting": "Jungiamasi...",
     "game.results": "Rezultatai",
-    "game.nextQuestion": "Kitas klausimas →",
+    "game.nextQuestion": "Kitas klausimas",
     "game.playAgain": "Žaisti dar kartą",
 
     // Host Lobby
@@ -582,10 +588,10 @@ export const translations = {
     "charades.anyOrientation": "Veikia stačiai ir gulsčiai",
 
     // Quiz Card (single player)
-    "quizCard.correct": "Teisingai! ✓",
-    "quizCard.incorrect": "Neteisingai ✗",
+    "quizCard.correct": "Teisingai!",
+    "quizCard.incorrect": "Neteisingai",
     "quizCard.results": "Rezultatai",
-    "quizCard.next": "Toliau →",
+    "quizCard.next": "Toliau",
     "quizCard.submit": "Pateikti",
     "quizCard.typeAnswer": "Įvesk atsakymą...",
     "quizCard.correctAnswer": "Teisingas atsakymas",

@@ -31,7 +31,7 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">
+    <form onSubmit={handleSubmit} noValidate className="flex w-full flex-col gap-4">
       <div>
         <label className="mb-1.5 block text-sm font-bold text-white/60">
           {t("joinForm.roomCode")}
@@ -42,8 +42,6 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
           onChange={(e) => setCode(e.target.value.toUpperCase())}
           placeholder="XXXX"
           maxLength={4}
-          pattern="[A-HJ-NP-Z2-9]{4}"
-          title="Enter a 4-character room code"
           autoCapitalize="characters"
           autoComplete="off"
           autoCorrect="off"

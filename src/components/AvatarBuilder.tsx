@@ -1,172 +1,66 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Dices } from "lucide-react";
-import Avatar from "./Avatar";
-import { useTranslation } from "@/lib/i18n/LanguageContext";
-
-// --- SVG portrait data ---
-
-const ALL_PORTRAITS = [
-  "green-hair-white-female.svg",
-  "hippie-braids-asian-female.svg",
-  "punk-asian-female.svg",
-  "punk-asian-male.svg",
-  "punk-black-female.svg",
-  "punk-black-male.svg",
-  "punk-girl-nosering-tanktop.svg",
-  "punk-goth-emo-woman-african.svg",
-  "punk-goth-emo-woman-asian.svg",
-  "punk-goth-emo-woman-caucasian.svg",
-  "punk-white-female.svg",
-  "punk-white-male.svg",
-  "young-hippies-asian-female.svg",
-  "young-hippies-asian-male.svg",
-  "young-hippies-black-female.svg",
-  "young-hippies-black-male.svg",
-  "young-hippies-white-female.svg",
-  "young-hippies-white-male.svg",
-  "old-hippies-asian-female.svg",
-  "old-hippies-asian-male.svg",
-  "old-hippies-black-female.svg",
-  "old-hippies-black-male.svg",
-  "old-hippies-white-female.svg",
-  "old-hippies-white-male.svg",
-  "avatar-pirate-beard-man-african.svg",
-  "avatar-pirate-beard-man-asian.svg",
-  "avatar-pirate-beard-man-caucasian.svg",
-  "avatar-pirate-man-african.svg",
-  "avatar-pirate-man-asian.svg",
-  "avatar-pirate-man-caucasian.svg",
-  "avatar-pirate-woman-african.svg",
-  "avatar-pirate-woman-asian.svg",
-  "avatar-pirate-woman-caucasian.svg",
-  "avatar-doctor-asian-female-coronavirus.svg",
-  "avatar-doctor-asian-male-coronavirus.svg",
-  "avatar-doctor-black-female-coronavirus.svg",
-  "avatar-doctor-black-male-coronavirus.svg",
-  "avatar-doctor-white-female-coronavirus.svg",
-  "avatar-doctor-white-male-coronavirus.svg",
-  "avatar-ems-asian-female-coronavirus.svg",
-  "avatar-ems-asian-male-coronavirus.svg",
-  "avatar-ems-black-female-coronavirus.svg",
-  "avatar-ems-black-male-coronavirus.svg",
-  "avatar-ems-white-female-coronavirus.svg",
-  "avatar-ems-white-male-coronavirus.svg",
-  "avatar-firefighter-asian-female-coronavirus.svg",
-  "avatar-firefighter-asian-male-coronavirus.svg",
-  "avatar-firefighter-black-female-coronavirus.svg",
-  "avatar-firefighter-black-male-coronavirus.svg",
-  "avatar-firefighter-white-female-coronavirus.svg",
-  "avatar-firefighter-white-male-coronavirus.svg",
-  "avatar-nurse-asian-female-coronavirus.svg",
-  "avatar-nurse-asian-male-coronavirus.svg",
-  "avatar-nurse-black-female-coronavirus.svg",
-  "avatar-nurse-black-male-coronavirus.svg",
-  "avatar-nurse-white-female-coronavirus.svg",
-  "avatar-nurse-white-male-coronavirus.svg",
-  "avatar-pharmacist-asian-female-coronavirus.svg",
-  "avatar-pharmacist-asian-male-coronavirus.svg",
-  "avatar-pharmacist-black-female-coronavirus.svg",
-  "avatar-pharmacist-black-male-coronavirus.svg",
-  "avatar-pharmacist-white-female-coronavirus.svg",
-  "avatar-pharmacist-white-male-coronavirus.svg",
-  "avatar-police-asian-female-coronavirus.svg",
-  "avatar-police-asian-male-coronavirus.svg",
-  "avatar-police-black-female-coronavirus.svg",
-  "avatar-police-black-male-coronavirus.svg",
-  "avatar-police-white-female-coronavirus.svg",
-  "avatar-police-white-male-coronavirus.svg",
-  "avatar-pulmonologist-african-female-coronavirus.svg",
-  "avatar-pulmonologist-asian-female-coronavirus.svg",
-  "avatar-pulmonologist-asian-male-coronavirus.svg",
-  "avatar-pulmonologist-black-male-coronavirus.svg",
-  "avatar-pulmonologist-white-female-coronavirus.svg",
-  "avatar-pulmonologist-white-male-coronavirus.svg",
-  "avatar-surgeon-asian-female-coronavirus.svg",
-  "avatar-surgeon-asian-male-coronavirus.svg",
-  "avatar-surgeon-black-female-coronavirus.svg",
-  "avatar-surgeon-black-male-coronavirus.svg",
-  "avatar-surgeon-white-female-coronavirus.svg",
-  "avatar-surgeon-white-male-coronavirus.svg",
-  "avatar-virologist-asian-female-coronavirus.svg",
-  "avatar-virologist-asian-male-coronavirus.svg",
-  "avatar-virologist-black-female-coronavirus.svg",
-  "avatar-virologist-black-male-coronavirus.svg",
-  "avatar-virologist-white-female-coronavirus.svg",
-  "avatar-virologist-white-male-coronavirus.svg",
-];
-
-// 20 background colors (2 rows of 10)
-const BG_PALETTE = [
-  "#ff9062", "#ff793e", "#e8590c", "#ff716c", "#e77fff",
-  "#43a5fc", "#0ea5e9", "#b2ff59", "#00cec9", "#00b894",
-  "#f59e0b", "#ec4899", "#8b5cf6", "#6366f1", "#14b8a6",
-  "#f97316", "#ef4444", "#22c55e", "#3b82f6", "#1e1e1e",
-];
-
-// --- Component ---
+import Avatar, {
+  ANIMALS,
+  COLORS,
+  HATS,
+  ACCESSORIES,
+  encodeAvatar,
+  type AvatarConfig,
+} from "./Avatar";
 
 interface AvatarBuilderProps {
   onChange: (encoded: string) => void;
 }
 
-type Tab = "character" | "background";
+type Tab = "animal" | "color" | "hat" | "accessory";
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: "animal", label: "Face" },
+  { id: "color", label: "Color" },
+  { id: "hat", label: "Hat" },
+  { id: "accessory", label: "Extra" },
+];
+
+function randomConfig(): AvatarConfig {
+  return {
+    animal: ANIMALS[Math.floor(Math.random() * ANIMALS.length)].id,
+    color: COLORS[Math.floor(Math.random() * COLORS.length)].id,
+    hat: HATS[Math.floor(Math.random() * HATS.length)].id,
+    accessory: ACCESSORIES[Math.floor(Math.random() * ACCESSORIES.length)].id,
+  };
+}
 
 export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
-  const { t } = useTranslation();
-  const [selectedFile, setSelectedFile] = useState("");
-  const [bgColor, setBgColor] = useState(BG_PALETTE[0]);
-  const [tab, setTab] = useState<Tab>("character");
+  const [config, setConfig] = useState<AvatarConfig>(randomConfig);
+  const [tab, setTab] = useState<Tab>("animal");
 
-  // Auto-select a random avatar on mount
+  // Emit on mount
   useEffect(() => {
-    const file = ALL_PORTRAITS[Math.floor(Math.random() * ALL_PORTRAITS.length)];
-    const bg = BG_PALETTE[Math.floor(Math.random() * BG_PALETTE.length)];
-    setSelectedFile(file);
-    setBgColor(bg);
-    onChange(encode(file, bg));
+    onChange(encodeAvatar(config));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const encode = (file: string, bg: string) => `svg:${file}:${bg}`;
-
-  const emit = (file: string, bg: string) => {
-    onChange(encode(file, bg));
-  };
-
-  const selectFile = (file: string) => {
-    setSelectedFile(file);
-    emit(file, bgColor);
-  };
-
-  const selectBg = (color: string) => {
-    setBgColor(color);
-    if (selectedFile) emit(selectedFile, color);
+  const update = (patch: Partial<AvatarConfig>) => {
+    const next = { ...config, ...patch };
+    setConfig(next);
+    onChange(encodeAvatar(next));
   };
 
   const randomize = () => {
-    const file = ALL_PORTRAITS[Math.floor(Math.random() * ALL_PORTRAITS.length)];
-    const bg = BG_PALETTE[Math.floor(Math.random() * BG_PALETTE.length)];
-    setSelectedFile(file);
-    setBgColor(bg);
-    emit(file, bg);
+    const next = randomConfig();
+    setConfig(next);
+    onChange(encodeAvatar(next));
   };
-
-  const currentPreview = selectedFile ? encode(selectedFile, bgColor) : "";
 
   return (
     <div className="flex gap-4">
       {/* Left: preview + dice */}
       <div className="flex flex-col items-center gap-2 shrink-0">
         <div className="flex items-center justify-center rounded-2xl bg-white/5 p-2">
-          {currentPreview ? (
-            <Avatar value={currentPreview} size={72} />
-          ) : (
-            <div className="flex h-[72px] w-[72px] items-center justify-center text-[10px] font-bold text-white/30">
-              {t("avatar.pick")}
-            </div>
-          )}
+          <Avatar value={encodeAvatar(config)} size={72} />
         </div>
         <button
           type="button"
@@ -177,66 +71,98 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
         </button>
       </div>
 
-      {/* Right: tabs + content */}
+      {/* Right: tabs + options */}
       <div className="flex flex-1 flex-col gap-2 min-w-0">
         {/* Tabs */}
         <div className="flex rounded-xl bg-white/5 p-0.5">
-          <button
-            type="button"
-            onClick={() => setTab("character")}
-            className={`flex-1 rounded-lg px-2 py-1.5 text-xs font-bold transition-all ${
-              tab === "character"
-                ? "bg-white text-[#ff9062]"
-                : "text-white/50 hover:text-white"
-            }`}
-          >
-            {t("avatar.character")}
-          </button>
-          <button
-            type="button"
-            onClick={() => setTab("background")}
-            className={`flex-1 rounded-lg px-2 py-1.5 text-xs font-bold transition-all ${
-              tab === "background"
-                ? "bg-white text-[#ff9062]"
-                : "text-white/50 hover:text-white"
-            }`}
-          >
-            {t("avatar.background")}
-          </button>
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => setTab(t.id)}
+              className={`flex-1 rounded-lg px-1.5 py-1.5 text-[11px] font-bold transition-all ${
+                tab === t.id
+                  ? "bg-white text-[#ff9062]"
+                  : "text-white/50 hover:text-white"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
         </div>
 
         {/* Tab content */}
-        {tab === "character" && (
+        {tab === "animal" && (
           <div className="grid grid-cols-4 gap-1.5 max-h-44 overflow-y-auto pr-0.5">
-            {ALL_PORTRAITS.map((file) => (
+            {ANIMALS.map((a) => (
               <button
-                key={file}
+                key={a.id}
                 type="button"
-                onClick={() => selectFile(file)}
-                className={`flex items-center justify-center rounded-xl p-1 transition-all ${
-                  selectedFile === file
+                onClick={() => update({ animal: a.id })}
+                className={`flex items-center justify-center rounded-xl p-1.5 transition-all ${
+                  config.animal === a.id
                     ? "bg-white/20 outline outline-[1.5px] outline-[#ff9062]"
-                    : "bg-white/5 hover:bg-white/5"
+                    : "bg-white/5 hover:bg-white/10"
                 }`}
               >
-                <Avatar value={encode(file, bgColor)} size={40} />
+                <Avatar value={encodeAvatar({ ...config, animal: a.id })} size={36} />
               </button>
             ))}
           </div>
         )}
 
-        {tab === "background" && (
-          <div className="grid grid-cols-5 gap-2 max-h-44 overflow-y-auto pr-0.5">
-            {BG_PALETTE.map((c) => (
+        {tab === "color" && (
+          <div className="grid grid-cols-4 gap-2 max-h-44 overflow-y-auto pr-0.5">
+            {COLORS.map((c) => (
               <button
-                key={c}
+                key={c.id}
                 type="button"
-                onClick={() => selectBg(c)}
-                className={`h-10 w-10 rounded-full transition-all ${
-                  bgColor === c ? "outline outline-[1.5px] outline-[#ff9062] scale-110" : "hover:scale-110"
+                onClick={() => update({ color: c.id })}
+                className={`h-10 rounded-xl transition-all ${
+                  config.color === c.id
+                    ? "outline outline-[1.5px] outline-[#ff9062] scale-105"
+                    : "hover:scale-105"
                 }`}
-                style={{ backgroundColor: c }}
+                style={{ backgroundColor: c.fill }}
               />
+            ))}
+          </div>
+        )}
+
+        {tab === "hat" && (
+          <div className="grid grid-cols-4 gap-1.5 max-h-44 overflow-y-auto pr-0.5">
+            {HATS.map((h) => (
+              <button
+                key={h.id}
+                type="button"
+                onClick={() => update({ hat: h.id })}
+                className={`flex items-center justify-center rounded-xl p-1.5 transition-all ${
+                  config.hat === h.id
+                    ? "bg-white/20 outline outline-[1.5px] outline-[#ff9062]"
+                    : "bg-white/5 hover:bg-white/10"
+                }`}
+              >
+                <Avatar value={encodeAvatar({ ...config, hat: h.id })} size={36} />
+              </button>
+            ))}
+          </div>
+        )}
+
+        {tab === "accessory" && (
+          <div className="grid grid-cols-3 gap-1.5 max-h-44 overflow-y-auto pr-0.5">
+            {ACCESSORIES.map((a) => (
+              <button
+                key={a.id}
+                type="button"
+                onClick={() => update({ accessory: a.id })}
+                className={`flex items-center justify-center rounded-xl p-1.5 transition-all ${
+                  config.accessory === a.id
+                    ? "bg-white/20 outline outline-[1.5px] outline-[#ff9062]"
+                    : "bg-white/5 hover:bg-white/10"
+                }`}
+              >
+                <Avatar value={encodeAvatar({ ...config, accessory: a.id })} size={36} />
+              </button>
             ))}
           </div>
         )}

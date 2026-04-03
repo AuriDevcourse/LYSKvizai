@@ -3,7 +3,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import {
-  Play, Plus, LogIn, ArrowLeft,
+  Play, Plus, LogIn, ArrowLeft, Users, User,
   HelpCircle, ToggleLeft, ZoomOut, Calendar, Keyboard, Shuffle, Smartphone,
 } from "lucide-react";
 import TopicPicker, { type SelectedGameType } from "@/components/TopicPicker";
@@ -16,7 +16,7 @@ const GAME_MODES = [
   { icon: ToggleLeft, name: "True/False", color: "bg-[#e77fff]/15 border-[#e77fff]/20 text-[#e77fff]" },
   { icon: ZoomOut, name: "Zoom Out", color: "bg-[#ff9062]/15 border-[#ff9062]/20 text-[#ff9062]" },
   { icon: Keyboard, name: "Rapid Fire", color: "bg-[#ff716c]/15 border-[#ff716c]/20 text-[#ff716c]" },
-  { icon: Calendar, name: "Year Guesser", color: "bg-[#b2ff59]/15 border-[#b2ff59]/20 text-[#b2ff59]" },
+  { icon: Calendar, name: "Year Guesser", color: "bg-[#66bb6a]/15 border-[#66bb6a]/20 text-[#66bb6a]" },
   { icon: Shuffle, name: "Mixed Mode", color: "bg-[#e77fff]/15 border-[#e77fff]/20 text-[#e77fff]" },
   { icon: Smartphone, name: "Charades", color: "bg-[#43a5fc]/15 border-[#43a5fc]/20 text-[#43a5fc]" },
 ];
@@ -24,7 +24,7 @@ const GAME_MODES = [
 export default function Home() {
   const router = useRouter();
   const { t } = useTranslation();
-  const [mode, setMode] = useState<"menu" | "create">("menu");
+  const [mode, setMode] = useState<"menu" | "choose" | "create">("menu");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [questionCount, setQuestionCount] = useState(0);
   const [quizMeta, setQuizMeta] = useState<QuizMeta[]>([]);
@@ -62,7 +62,7 @@ export default function Home() {
             <h1 className="font-[var(--font-headline)] text-6xl font-extrabold tracking-tighter text-white sm:text-8xl lg:text-[8rem] logo-stroke">
               Quizmo
             </h1>
-            <p className="mt-2 text-sm font-medium text-white/40 sm:text-base lg:text-lg">
+            <p className="mt-2 text-center text-sm font-medium text-white/40 sm:text-base lg:text-lg">
               Step into the high-energy arena. Play, create, and conquer.
             </p>
           </div>
@@ -70,7 +70,7 @@ export default function Home() {
           {/* Action cards */}
           <div className="mt-10 grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 sm:mt-12">
             <button
-              onClick={() => setMode("create")}
+              onClick={() => setMode("choose")}
               className="group flex flex-col items-center gap-5 rounded-2xl bg-white/4 p-8 text-center backdrop-blur-2xl border-[1.5px] border-white/8 transition-all duration-300 hover:bg-white/8 hover:border-white/8 active:scale-[0.98] sm:p-10"
             >
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#ff9062]/15 transition-all group-hover:bg-[#ff9062]/25 sm:h-16 sm:w-16">
@@ -115,11 +115,55 @@ export default function Home() {
         </div>
       )}
 
+      {mode === "choose" && (
+        <div className="flex flex-1 flex-col items-center justify-center px-5 py-10 animate-fade-in-up">
+          <h1 className="mb-8 font-[var(--font-headline)] text-2xl font-extrabold text-white sm:text-3xl">
+            {t("home.createGame")}
+          </h1>
+
+          <div className="flex w-full max-w-md flex-col gap-3">
+            <button
+              onClick={() => setMode("create")}
+              className="flex items-center gap-4 rounded-2xl bg-white/4 px-5 py-5 text-left backdrop-blur-2xl border-[1.5px] border-white/8 transition-all duration-300 hover:bg-white/8 active:scale-[0.98]"
+            >
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#ff9062]/15">
+                <User className="h-6 w-6 text-[#ff9062]" />
+              </div>
+              <div>
+                <p className="text-base font-extrabold text-white">{t("home.playSolo")}</p>
+                <p className="text-xs text-white/40">{t("home.playSoloDesc")}</p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => router.push("/play?create=1")}
+              className="flex items-center gap-4 rounded-2xl bg-white/4 px-5 py-5 text-left backdrop-blur-2xl border-[1.5px] border-white/8 transition-all duration-300 hover:bg-white/8 active:scale-[0.98]"
+            >
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#43a5fc]/15">
+                <Users className="h-6 w-6 text-[#43a5fc]" />
+              </div>
+              <div>
+                <p className="text-base font-extrabold text-white">{t("home.playWithFriends")}</p>
+                <p className="text-xs text-white/40">{t("home.playWithFriendsDesc")}</p>
+              </div>
+            </button>
+          </div>
+
+          <button
+            onClick={() => setMode("menu")}
+            className="mt-6 flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            {t("nav.home")}
+          </button>
+        </div>
+      )}
+
       {mode === "create" && (
-        <main className="relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col px-5 py-8 sm:px-8 animate-fade-in-up">
+        <main className="relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col px-5 pt-14 pb-8 sm:px-8 sm:pt-8 animate-fade-in-up">
           {!gameType && (
             <button
-              onClick={() => { setMode("menu"); setSelectedIds([]); setGameType(null); }}
+              onClick={() => { setMode("choose"); setSelectedIds([]); setGameType(null); }}
               className="mb-6 flex items-center gap-2 text-sm font-bold text-white/40 transition-colors hover:text-white"
             >
               <ArrowLeft className="h-4 w-4" />

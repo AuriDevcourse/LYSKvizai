@@ -144,7 +144,7 @@ export default function YearGuesserInput({
             onPointerDown={() => startHold(1)}
             onPointerUp={stopHold}
             onPointerLeave={stopHold}
-            className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#b2ff59] text-white active:brightness-90 sm:h-14 sm:w-14"
+            className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#66bb6a] text-white active:brightness-90 sm:h-14 sm:w-14"
           >
             <ChevronUp className="h-7 w-7" />
           </button>
@@ -161,7 +161,7 @@ export default function YearGuesserInput({
             onPointerDown={() => startHold(-10)}
             onPointerUp={stopHold}
             onPointerLeave={stopHold}
-            className="flex h-12 w-14 items-center justify-center rounded-xl bg-[#ffff00] font-extrabold text-white text-sm active:brightness-90 sm:h-12 sm:w-16"
+            className="flex h-12 w-14 items-center justify-center rounded-xl bg-[#c9a825] font-extrabold text-white text-sm active:brightness-90 sm:h-12 sm:w-16"
           >
             -10
           </button>
