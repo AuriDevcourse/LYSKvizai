@@ -48,12 +48,15 @@ export function useContentTranslation(texts: string[]): string[] {
   const prevKey = useRef("");
   const fetchingKey = useRef("");
 
+  // Clear stale async translations (adjust-state-on-render)
+  const shouldClearAsync = (lang === "en" || complete) && asyncTranslated !== null;
+  if (shouldClearAsync) {
+    setAsyncTranslated(null);
+  }
+
   useEffect(() => {
-    // Content is in English — no translation needed for EN
-    if (lang === "en" || complete) {
-      setAsyncTranslated(null);
-      return;
-    }
+    // Content is in English or fully resolved from cache — nothing to fetch
+    if (lang === "en" || complete) return;
 
     const key = textsKey + ":" + lang;
     if (key === prevKey.current) return;

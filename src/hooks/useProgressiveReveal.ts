@@ -22,18 +22,28 @@ export function useProgressiveReveal(
 ): UseProgressiveRevealReturn {
   const [visibleWordCount, setVisibleWordCount] = useState(enabled ? 1 : totalWords);
   const [blurAmount, setBlurAmount] = useState(enabled ? 20 : 0);
-  const startRef = useRef(Date.now());
+  const [tracked, setTracked] = useState({ enabled, totalWords, durationSeconds });
+  const startRef = useRef<number>(0);
 
-  useEffect(() => {
-    if (!enabled) {
+  // Reset on input change (adjust-state-on-render)
+  if (
+    tracked.enabled !== enabled ||
+    tracked.totalWords !== totalWords ||
+    tracked.durationSeconds !== durationSeconds
+  ) {
+    setTracked({ enabled, totalWords, durationSeconds });
+    if (enabled) {
+      setVisibleWordCount(1);
+      setBlurAmount(20);
+    } else {
       setVisibleWordCount(totalWords);
       setBlurAmount(0);
-      return;
     }
+  }
 
+  useEffect(() => {
+    if (!enabled) return;
     startRef.current = Date.now();
-    setVisibleWordCount(1);
-    setBlurAmount(20);
 
     // Reveal over 70% of the timer duration
     const revealDuration = durationSeconds * 0.7 * 1000;

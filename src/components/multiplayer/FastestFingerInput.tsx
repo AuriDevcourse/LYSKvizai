@@ -25,12 +25,14 @@ export default function FastestFingerInput({
   const qText = lang === "lt" && question.lt ? question.lt.question : lang !== "lt" && question.en ? question.en.question : question.question;
   const [text, setText] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [lastQuestionIndex, setLastQuestionIndex] = useState(question.index);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
+  if (lastQuestionIndex !== question.index) {
+    setLastQuestionIndex(question.index);
     setText("");
     setSubmitted(false);
-  }, [question.index]);
+  }
 
   useEffect(() => {
     if (!submitted && !eliminated && inputRef.current) {

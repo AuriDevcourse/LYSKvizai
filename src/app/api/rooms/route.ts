@@ -33,18 +33,21 @@ function getClientIp(req: NextRequest): string {
 }
 
 export async function POST(req: NextRequest) {
-  const ip = getClientIp(req);
-
-  // Rate limit: 60 requests per 10 seconds per IP
-  if (!checkRateLimit(`post:${ip}`, 60, 10_000)) {
-    return json({ error: "Too many requests" }, 429);
-  }
-
   let body: ClientAction;
   try {
     body = await req.json();
   } catch {
     return json({ error: "Invalid request format" }, 400);
+  }
+
+  // Rate limit per-actor (playerId/hostId) so friends behind the same NAT don't
+  // share a bucket. Falls back to IP for anonymous requests.
+  const actor =
+    ("playerId" in body && body.playerId) ||
+    ("hostId" in body && body.hostId) ||
+    getClientIp(req);
+  if (!checkRateLimit(`post:${actor}`, 120, 10_000)) {
+    return json({ error: "Too many requests" }, 429);
   }
 
   switch (body.action) {

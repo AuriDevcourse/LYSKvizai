@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
 import { translations, type Language, type TranslationKey } from "./translations";
 
 interface LanguageContextValue {
@@ -15,15 +15,14 @@ const LanguageContext = createContext<LanguageContextValue>({
   t: (key) => key,
 });
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Language>("en");
+function readStoredLang(): Language {
+  if (typeof window === "undefined") return "en";
+  const saved = window.localStorage.getItem("quizmo-lang");
+  return saved === "en" || saved === "lt" ? saved : "en";
+}
 
-  useEffect(() => {
-    const saved = localStorage.getItem("quizmo-lang") as Language | null;
-    if (saved && (saved === "en" || saved === "lt")) {
-      setLangState(saved);
-    }
-  }, []);
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const [lang, setLangState] = useState<Language>(readStoredLang);
 
   const setLang = useCallback((newLang: Language) => {
     setLangState(newLang);

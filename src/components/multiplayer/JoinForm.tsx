@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { LogIn } from "lucide-react";
 import AvatarBuilder from "@/components/AvatarBuilder";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
@@ -14,15 +14,15 @@ interface JoinFormProps {
 
 export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFormProps) {
   const { t } = useTranslation();
-  const [code, setCode] = useState(initialCode ?? "");
+  const [code, setCode] = useState(() => (initialCode ?? "").toUpperCase());
+  const [lastInitial, setLastInitial] = useState(initialCode);
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
 
-  useEffect(() => {
-    if (initialCode) {
-      setCode(initialCode.toUpperCase());
-    }
-  }, [initialCode]);
+  if (initialCode !== lastInitial) {
+    setLastInitial(initialCode);
+    if (initialCode) setCode(initialCode.toUpperCase());
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

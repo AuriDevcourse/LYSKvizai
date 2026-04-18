@@ -1,6 +1,6 @@
 "use client";
 
-import { Triangle, Square, Circle, Diamond, Snowflake, Shield, Repeat, Coins, Bomb, Zap } from "lucide-react";
+import { Triangle, Square, Circle, Diamond, Snowflake, Shield, Repeat } from "lucide-react";
 import type { QuestionPayload, PowerUpType } from "@/lib/multiplayer/types";
 import { useCountdown } from "@/hooks/useCountdown";
 import { useProgressiveReveal } from "@/hooks/useProgressiveReveal";
@@ -23,9 +23,6 @@ const PU_ICONS: Record<PowerUpType, { icon: typeof Snowflake; color: string }> =
   freeze: { icon: Snowflake, color: "text-cyan-300" },
   shield: { icon: Shield, color: "text-blue-300" },
   double: { icon: Repeat, color: "text-emerald-300" },
-  thief: { icon: Coins, color: "text-purple-300" },
-  bomb: { icon: Bomb, color: "text-red-300" },
-  gamble: { icon: Zap, color: "text-yellow-300" },
 };
 
 interface HostQuestionProps {

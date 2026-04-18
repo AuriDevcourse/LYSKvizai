@@ -50,7 +50,9 @@ function CharadesInner() {
   const searchParams = useSearchParams();
   const { t, lang } = useTranslation();
 
-  const [phase, setPhase] = useState<Phase>("loading");
+  const idsParam = searchParams.get("ids") ?? "";
+  const hasIds = idsParam.split(",").some((s) => s.trim());
+  const [phase, setPhase] = useState<Phase>(hasIds ? "loading" : "ready");
   const [words, setWords] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [correctWords, setCorrectWords] = useState<string[]>([]);
@@ -62,14 +64,14 @@ function CharadesInner() {
   const cooldownRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const wakeLockRef = useRef<WakeLockSentinel | null>(null);
+  const tiltTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastTiltRef = useRef<"none" | "correct" | "skip">("none");
+  const gyroReceivedRef = useRef(false);
 
   // Load words from quizzes
   useEffect(() => {
-    const ids = searchParams.get("ids")?.split(",").filter(Boolean) ?? [];
-    if (ids.length === 0) {
-      setPhase("ready");
-      return;
-    }
+    const ids = idsParam.split(",").filter(Boolean);
+    if (ids.length === 0) return;
     Promise.all(
       ids.map((id) =>
         fetch(`/api/quizzes/${id}?lang=${lang}`)
@@ -83,16 +85,20 @@ function CharadesInner() {
       setWords(extractWords(allQuestions));
       setPhase("ready");
     });
-  }, [searchParams, lang]);
+  }, [idsParam, lang]);
 
-  // Countdown timer (3-2-1)
+  // Countdown timer (3-2-1) — transitions to "playing" when it reaches 0
   useEffect(() => {
     if (phase !== "countdown") return;
-    if (countdown <= 0) {
-      setPhase("playing");
-      return;
-    }
-    const t = setTimeout(() => setCountdown((c) => c - 1), 1000);
+    const t = setTimeout(() => {
+      setCountdown((c) => {
+        if (c <= 1) {
+          setPhase("playing");
+          return 0;
+        }
+        return c - 1;
+      });
+    }, 1000);
     return () => clearTimeout(t);
   }, [phase, countdown]);
 
@@ -159,9 +165,6 @@ function CharadesInner() {
 
   // Device orientation with debounce — must sustain tilt for 300ms
   // Uses screen.orientation.angle to normalize tilt across portrait & landscape
-  const tiltTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastTiltRef = useRef<"none" | "correct" | "skip">("none");
-
   useEffect(() => {
     if (phase !== "playing" && phase !== "flash") return;
 
@@ -213,9 +216,6 @@ function CharadesInner() {
       if (tiltTimerRef.current) clearTimeout(tiltTimerRef.current);
     };
   }, [phase, nextWord]);
-
-  // Track whether we actually received gyro events (not just permission)
-  const gyroReceivedRef = useRef(false);
 
   const handleStart = async () => {
     // Request gyro permission on iOS

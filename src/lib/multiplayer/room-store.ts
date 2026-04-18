@@ -27,9 +27,58 @@ import type { Question } from "@/data/types";
 const g = globalThis as typeof globalThis & {
   __quiz_rooms?: Map<string, Room>;
   __quiz_cleanup?: ReturnType<typeof setInterval>;
+  __quiz_pending_disconnects?: Map<string, ReturnType<typeof setTimeout>>;
 };
 if (!g.__quiz_rooms) g.__quiz_rooms = new Map();
+if (!g.__quiz_pending_disconnects) g.__quiz_pending_disconnects = new Map();
 const rooms = g.__quiz_rooms;
+const pendingDisconnects = g.__quiz_pending_disconnects;
+const DISCONNECT_GRACE_MS = 30_000;
+
+function disconnectKey(code: string, playerId: string) {
+  return `${code.toUpperCase()}:${playerId}`;
+}
+
+/** Cancel any pending disconnect for this player (called on reconnect) */
+export function cancelPendingDisconnect(code: string, playerId: string) {
+  const key = disconnectKey(code, playerId);
+  const t = pendingDisconnects.get(key);
+  if (t) {
+    clearTimeout(t);
+    pendingDisconnects.delete(key);
+  }
+}
+
+/**
+ * Called when an SSE connection for a player closes. If the player has no other
+ * active connections after a grace period, mark them disconnected.
+ */
+export function handleConnectionLost(code: string, playerId: string, hasOtherConnections: boolean) {
+  if (hasOtherConnections) return; // still connected elsewhere
+
+  const key = disconnectKey(code, playerId);
+  // Already pending
+  if (pendingDisconnects.has(key)) return;
+
+  const t = setTimeout(() => {
+    pendingDisconnects.delete(key);
+    const room = rooms.get(code.toUpperCase());
+    if (!room) return;
+    const player = room.players.get(playerId);
+    if (!player) return;
+    // If they already reconnected via a fresh SSE stream, connected stays true in broadcast
+    player.connected = false;
+    broadcast(room.code, { type: "player-left", data: { playerId } });
+
+    // During lobby, fully remove the player so the host isn't stuck waiting on ghosts.
+    if (room.state === "lobby") {
+      room.players.delete(playerId);
+      broadcast(room.code, { type: "room-state", data: getRoomSnapshot(room) });
+    }
+  }, DISCONNECT_GRACE_MS);
+
+  pendingDisconnects.set(key, t);
+}
 
 // Auto-cleanup rooms older than 2 hours (only one interval)
 const ROOM_TTL_MS = 2 * 60 * 60 * 1000;
@@ -294,7 +343,7 @@ function getResultsPayload(room: Room): ResultsPayload {
     }
   }
 
-  // --- Power-up effects (thief, bomb, gamble, double, shield) ---
+  // --- Power-up effects (freeze, shield, double) ---
   for (const [pid, pu] of room.activePowerUps) {
     const pr = playerResults.find((r) => r.playerId === pid);
     if (!pr) continue;
@@ -302,43 +351,12 @@ function getResultsPayload(room: Room): ResultsPayload {
     if (!player) continue;
     pr.powerUp = pu;
 
-    if (pu === "thief" && pr.correct) {
-      // Steal 300 from 1st place (or 2nd if thief IS 1st)
-      const sorted = [...room.players.values()].filter((p) => !p.eliminated).sort((a, b) => b.score - a.score);
-      const target = sorted.find((p) => p.id !== pid) ?? sorted[0];
-      if (target && target.id !== pid) {
-        const steal = Math.min(300, target.score);
-        target.score -= steal;
-        player.score += steal;
-        pr.points += steal;
-        pr.totalScore = player.score;
-        pr.powerUpEffect = `Stole ${steal} from ${target.name}!`;
-        const targetResult = playerResults.find((r) => r.playerId === target.id);
-        if (targetResult) { targetResult.totalScore = target.score; }
-        powerUpEffects.push({ playerId: pid, playerName: player.name, powerUp: "thief", effect: `Stole ${steal} pts from ${target.name}` });
-      }
-    }
-
-    if (pu === "bomb" && pr.correct) {
-      // Last place player loses 250
-      const sorted = [...room.players.values()].filter((p) => !p.eliminated && p.id !== pid).sort((a, b) => a.score - b.score);
-      const target = sorted[0];
-      if (target) {
-        const damage = Math.min(250, target.score);
-        target.score -= damage;
-        const targetResult = playerResults.find((r) => r.playerId === target.id);
-        if (targetResult) { targetResult.totalScore = target.score; targetResult.points -= damage; }
-        pr.powerUpEffect = `Bombed ${target.name}! -${damage}`;
-        powerUpEffects.push({ playerId: pid, playerName: player.name, powerUp: "bomb", effect: `${target.name} lost ${damage} pts` });
-      }
-    }
-
-    if (pu === "gamble") {
-      pr.powerUpEffect = player.gambleWon ? "Gamble: 2x!" : "Gamble: 0!";
-      powerUpEffects.push({ playerId: pid, playerName: player.name, powerUp: "gamble", effect: player.gambleWon ? "2x points!" : "Lost it all!" });
-    }
-
     if (pu === "double" && pr.correct) {
+      // Award a second copy of the points just earned this round
+      const bonus = pr.points;
+      player.score += bonus;
+      pr.points += bonus;
+      pr.totalScore = player.score;
       pr.powerUpEffect = "Double points!";
       powerUpEffects.push({ playerId: pid, playerName: player.name, powerUp: "double", effect: "2x points!" });
     }
@@ -472,7 +490,8 @@ export function getRoomSnapshot(room: Room): RoomSnapshot {
   if (room.state === "question") {
     snapshot.question = getQuestionPayload(room);
   } else if (room.state === "results") {
-    snapshot.results = getResultsPayload(room);
+    // Use cached payload — do NOT call getResultsPayload here (it mutates scores)
+    snapshot.results = room.cachedResults ?? getResultsPayload(room);
   } else if (room.state === "finished") {
     snapshot.leaderboard = getLeaderboard(room);
   } else if (room.state === "wager") {
@@ -633,6 +652,7 @@ export async function createRoom(
     mysteryMultipliers: new Map(),
     enTranslations: new Map(),
     previousLeaderboard: [],
+    cachedResults: null,
   };
 
   rooms.set(code, room);
@@ -643,6 +663,11 @@ export function getRoom(code: string): Room | undefined {
   return rooms.get(code.toUpperCase());
 }
 
+/** Normalize a name for case/accent-insensitive duplicate check */
+function normalizeName(name: string): string {
+  return name.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+}
+
 export function joinRoom(
   code: string,
   playerId: string,
@@ -651,22 +676,26 @@ export function joinRoom(
 ): { room: Room; player: Player } | { error: string } {
   const room = rooms.get(code.toUpperCase());
   if (!room) return { error: "Room not found" };
-  if (room.state !== "lobby") return { error: "Game already started" };
-  if (room.players.size >= 50) return { error: "Room is full" };
+
+  const existing = room.players.get(playerId);
+  // Allow existing players to reconnect in any state; only block NEW joins after lobby.
+  if (!existing && room.state !== "lobby") return { error: "Game already started" };
+  if (!existing && room.players.size >= 50) return { error: "Room is full" };
 
   const name = sanitizeName(rawName);
   const emoji = sanitizeEmoji(rawEmoji);
   if (!name) return { error: "Invalid name" };
 
-  // Check for duplicate name
+  // Check for duplicate name (case + accent insensitive)
+  const normNew = normalizeName(name);
   for (const p of room.players.values()) {
-    if (p.name.toLowerCase() === name.toLowerCase() && p.id !== playerId) {
+    if (p.id !== playerId && normalizeName(p.name) === normNew) {
       return { error: "This name is taken" };
     }
   }
 
   // Reconnect or create
-  let player = room.players.get(playerId);
+  let player = existing;
   if (player) {
     player.connected = true;
     player.name = name;
@@ -691,6 +720,9 @@ export function joinRoom(
     room.players.set(playerId, player);
   }
 
+  // Cancel any pending disconnect timer for this player
+  cancelPendingDisconnect(room.code, playerId);
+
   broadcast(room.code, { type: "player-joined", data: { player: playerToInfo(player) } });
   return { room, player };
 }
@@ -713,13 +745,14 @@ export async function startGame(code: string, hostId: string): Promise<{ error?:
     p.usedPowerUpTypes = [];
   }
 
-  // Team mode: assign players to teams
+  // Team mode: assign players to teams.
+  // Note: do NOT call rotateTeamAnswerers here — startQuestionRound will do it for Q1,
+  // otherwise the first team answerer would be advanced to index 1 instead of 0.
   if (room.gameMode === "team") {
     const playerArr = shuffle([...room.players.values()]);
     playerArr.forEach((p, i) => {
       p.teamIndex = i % room.teamCount;
     });
-    rotateTeamAnswerers(room);
   }
 
   // Mystery multipliers removed — escalating question values replace them
@@ -1004,6 +1037,10 @@ export function submitYearAnswer(
 }
 
 function showResults(room: Room): void {
+  // Idempotent: if we've already resolved results for this round, don't recompute
+  // (prevents score inflation from re-applying fastest/thief/bomb bonuses)
+  if (room.state === "results" && room.cachedResults) return;
+
   // Clear server-side timer
   if (room.questionTimer) {
     clearTimeout(room.questionTimer);
@@ -1012,6 +1049,7 @@ function showResults(room: Room): void {
   room.state = "results";
 
   const results = getResultsPayload(room);
+  room.cachedResults = results;
 
   // Elimination mode: check if it's time to eliminate
   if (room.gameMode === "elimination") {
@@ -1075,10 +1113,11 @@ export function nextQuestion(code: string, hostId: string): { error?: string } {
   room.isWagerRound = false;
   room.wagers.clear();
 
-  // Check if this is a wager round (every Nth question, 1-indexed)
-  // Final question wager: trigger wager phase only before the last question
-  const isSecondToLast = room.currentQuestionIndex + 1 >= room.questionIndices.length - 1;
-  if (isSecondToLast && room.wagerCount === 0) {
+  // Trigger wager phase immediately before the FINAL question.
+  // After incrementing currentQuestionIndex above, it now points at the next question to play.
+  // We want wager to fire when that next question is the last one.
+  const isFinalQuestion = room.currentQuestionIndex === room.questionIndices.length - 1;
+  if (isFinalQuestion && room.wagerCount === 0 && room.questionIndices.length >= 2) {
     room.wagerCount++;
     room.wagerType = "regular";
     room.state = "wager";
@@ -1113,6 +1152,9 @@ function startQuestionRound(room: Room): void {
   // Capture leaderboard before this round (for animated transitions)
   room.previousLeaderboard = getLeaderboard(room);
 
+  // Clear cached results from previous round
+  room.cachedResults = null;
+
   room.questionStartTime = Date.now();
   room.state = "question";
 
@@ -1121,7 +1163,6 @@ function startQuestionRound(room: Room): void {
     p.currentAnswer = null;
     p.answerTime = null;
     p.currentTextAnswer = null;
-    p.gambleWon = undefined;
   }
 
   // Power-ups: players choose their own (via choose-powerup action during question phase)
@@ -1153,8 +1194,8 @@ export function submitWager(
   if (!player) return { error: "Player not found" };
   if (player.eliminated) return { error: "You are eliminated" };
 
-  // Clamp wager to [0, 30% of score] — prevents runaway scoring
-  const maxWager = Math.floor(player.score * 0.3);
+  // Clamp wager to [0, max(500, 30% of score)] — low-scorers still get meaningful stakes
+  const maxWager = Math.max(500, Math.floor(player.score * 0.3));
   const clamped = Math.max(0, Math.min(amount, maxWager));
   room.wagers.set(playerId, clamped);
 
@@ -1209,6 +1250,11 @@ export function choosePowerUp(
   playerId: string,
   powerUp: "freeze" | "shield" | "double"
 ): { error?: string } {
+  // Runtime whitelist — TS types are erased, prevent clients from burning uses on invalid types
+  if (powerUp !== "freeze" && powerUp !== "shield" && powerUp !== "double") {
+    return { error: "Invalid power-up" };
+  }
+
   const room = rooms.get(code.toUpperCase());
   if (!room) return { error: "Room not found" };
   if (room.state !== "question") return { error: "Can't use power-ups right now" };

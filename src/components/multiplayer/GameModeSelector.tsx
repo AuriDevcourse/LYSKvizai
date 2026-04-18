@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Swords, Users, Skull, Heart } from "lucide-react";
+import { Swords, Users, Skull } from "lucide-react";
 import type { GameMode } from "@/lib/multiplayer/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
@@ -34,14 +34,6 @@ const MODES = [
     color: "border-blue-400/50 bg-blue-400/10",
     activeColor: "border-blue-400 bg-blue-400/20 ring-2 ring-blue-400/30",
   },
-  {
-    id: "survival" as GameMode,
-    labelKey: "gameMode.survival" as const,
-    descKey: "gameMode.survivalDesc" as const,
-    icon: Heart,
-    color: "border-pink-400/50 bg-pink-400/10",
-    activeColor: "border-pink-400 bg-pink-400/20 ring-2 ring-pink-400/30",
-  },
 ];
 
 export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
@@ -61,7 +53,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
     <div className="flex flex-col gap-4">
       <h3 className="text-center text-sm font-medium text-white/60">{t("gameMode.title")}</h3>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="grid grid-cols-3 gap-3">
         {MODES.map((mode) => {
           const Icon = mode.icon;
           const isActive = selected === mode.id;

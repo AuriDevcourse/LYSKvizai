@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { EmojiReactionWithId } from "@/hooks/useRoom";
 
 function isSingleEmoji(str: string) {
@@ -23,7 +24,7 @@ export default function EmojiReactions({ reactions }: EmojiReactionsProps) {
 }
 
 function FloatingItem({ content }: { content: string }) {
-  const left = Math.random() * 80 + 10;
+  const [left] = useState(() => Math.random() * 80 + 10);
 
   if (isSingleEmoji(content)) {
     return (

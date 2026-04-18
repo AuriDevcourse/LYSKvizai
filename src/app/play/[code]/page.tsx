@@ -73,6 +73,23 @@ export default function GamePage({ params }: PageProps) {
       .catch(() => {});
   }, [code, hostId, playerId]);
 
+  // Tell the server when the tab closes / backgrounds so ghost players don't
+  // linger in the lobby. sendBeacon works during page unload (fetch doesn't).
+  useEffect(() => {
+    if (!playerId) return;
+    const notifyDisconnect = () => {
+      const payload = JSON.stringify({ action: "disconnect", code, playerId });
+      try {
+        const blob = new Blob([payload], { type: "application/json" });
+        navigator.sendBeacon(`${MP_API_URL}/rooms`, blob);
+      } catch {
+        // ignore — server will detect via SSE heartbeat within ~30s
+      }
+    };
+    window.addEventListener("pagehide", notifyDisconnect);
+    return () => window.removeEventListener("pagehide", notifyDisconnect);
+  }, [code, playerId]);
+
   const isHost = !!hostId && hostId === playerId && verifiedHost;
   const isHostPlayer = isHost && hostPlaying;
 
@@ -118,9 +135,9 @@ export default function GamePage({ params }: PageProps) {
   }, [question, currentPlayer]);
 
   const [lastQuestion, setLastQuestion] = useState(question);
-  useEffect(() => {
-    if (question) setLastQuestion(question);
-  }, [question]);
+  if (question && question !== lastQuestion) {
+    setLastQuestion(question);
+  }
 
   const handleStart = useCallback(async () => {
     try {

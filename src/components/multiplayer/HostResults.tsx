@@ -97,6 +97,22 @@ export default function HostResults({
               </div>
             </div>
           )}
+
+          {/* Bluff answer reveal */}
+          {results.bluffAnswer && (
+            <div className="flex flex-col items-center gap-1 rounded-2xl bg-[#e77fff]/20 border-[1.5px] border-[#e77fff]/40 px-6 py-3 animate-bounce-in">
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-[#e77fff]" />
+                <p className="text-xs font-bold uppercase tracking-wider text-[#e77fff]">Bluff</p>
+              </div>
+              <p className="text-lg font-extrabold text-white">{results.bluffAnswer}</p>
+              {results.bluffVictims && results.bluffVictims.length > 0 && (
+                <p className="text-xs font-medium text-white/60">
+                  Fooled {results.bluffVictims.length} · {results.bluffVictims.join(", ")}
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Answer options — frozen with correct highlighted (skip for year guesser) */}
@@ -181,10 +197,6 @@ function AnimatedLeaderboardPhase({
   onNext,
   t,
 }: AnimatedLeaderboardPhaseProps) {
-  // Animated scores: start from previousScore, animate to totalScore
-  const [animatedScores, setAnimatedScores] = useState<Map<string, number>>(new Map());
-  const [animationDone, setAnimationDone] = useState(false);
-
   // Build leaderboard entries with previous positions
   const leaderboardEntries = useMemo(() => {
     return results.leaderboard ?? sortedPlayers.map((p, i) => ({
@@ -197,6 +209,25 @@ function AnimatedLeaderboardPhase({
       previousScore: undefined as number | undefined,
     }));
   }, [results.leaderboard, sortedPlayers]);
+
+  // Animated scores: start from previousScore, animate to totalScore
+  const buildInitialScores = (entries: typeof leaderboardEntries) => {
+    const m = new Map<string, number>();
+    entries.forEach((e) => m.set(e.playerId, e.previousScore ?? e.score));
+    return m;
+  };
+  const [animatedScores, setAnimatedScores] = useState<Map<string, number>>(() =>
+    buildInitialScores(leaderboardEntries)
+  );
+  const [animationDone, setAnimationDone] = useState(false);
+  const [trackedEntries, setTrackedEntries] = useState(leaderboardEntries);
+
+  // Reset animation state when leaderboard changes (adjust-state-on-render)
+  if (trackedEntries !== leaderboardEntries) {
+    setTrackedEntries(leaderboardEntries);
+    setAnimatedScores(buildInitialScores(leaderboardEntries));
+    setAnimationDone(false);
+  }
 
   // Sort by previous rank first, then animate to new positions
   const sortedByPrevious = useMemo(() => {
@@ -213,14 +244,6 @@ function AnimatedLeaderboardPhase({
 
   // Animation: count up scores, then reorder
   useEffect(() => {
-    // Initialize with previous scores
-    const initial = new Map<string, number>();
-    leaderboardEntries.forEach((e) => {
-      initial.set(e.playerId, e.previousScore ?? e.score);
-    });
-    setAnimatedScores(initial);
-    setAnimationDone(false);
-
     // After brief delay, animate scores to final values
     const countUpTimer = setTimeout(() => {
       const final = new Map<string, number>();

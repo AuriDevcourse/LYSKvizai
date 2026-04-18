@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import { Check, Triangle, Square, Circle, Diamond, Eye, Shield, Zap, Snowflake, Bomb, Coins, Repeat } from "lucide-react";
+import { useState, useMemo } from "react";
+import { Check, Triangle, Square, Circle, Diamond, Eye, Shield, Snowflake, Repeat } from "lucide-react";
 import type { QuestionPayload, PowerUpType } from "@/lib/multiplayer/types";
 import { useProgressiveReveal } from "@/hooks/useProgressiveReveal";
 import { useCountdown } from "@/hooks/useCountdown";
@@ -30,9 +30,6 @@ const POWER_UP_INFO: Record<PowerUpType, { icon: React.ReactNode; bigIcon: React
   freeze: { icon: <Snowflake className="h-5 w-5" />, bigIcon: <Snowflake className="h-8 w-8" />, color: "text-cyan-300", bg: "bg-cyan-500/20 border-cyan-500/40", label: "FREEZE", desc: "Timer -3s for everyone!" },
   shield: { icon: <Shield className="h-5 w-5" />, bigIcon: <Shield className="h-8 w-8" />, color: "text-blue-300", bg: "bg-blue-500/20 border-blue-500/40", label: "SHIELD", desc: "Keep your streak if wrong" },
   double: { icon: <Repeat className="h-5 w-5" />, bigIcon: <Repeat className="h-8 w-8" />, color: "text-emerald-300", bg: "bg-emerald-500/20 border-emerald-500/40", label: "DOUBLE", desc: "2x points if correct!" },
-  thief: { icon: <Coins className="h-5 w-5" />, bigIcon: <Coins className="h-8 w-8" />, color: "text-purple-300", bg: "bg-purple-500/20 border-purple-500/40", label: "THIEF", desc: "Steal 300 from 1st place!" },
-  bomb: { icon: <Bomb className="h-5 w-5" />, bigIcon: <Bomb className="h-8 w-8" />, color: "text-red-300", bg: "bg-red-500/20 border-red-500/40", label: "BOMB", desc: "Last place loses 250!" },
-  gamble: { icon: <Zap className="h-5 w-5" />, bigIcon: <Zap className="h-8 w-8" />, color: "text-yellow-300", bg: "bg-yellow-500/20 border-yellow-500/40", label: "GAMBLE", desc: "50/50: 2x points or 0!" },
 };
 
 interface PlayerQuestionProps {
@@ -62,6 +59,7 @@ export default function PlayerQuestion({
   const qText = lang === "lt" && question.lt ? question.lt.question : lang !== "lt" && question.en ? question.en.question : question.question;
   const qOptions = lang === "lt" && question.lt ? question.lt.options : lang !== "lt" && question.en ? question.en.options : question.options;
   const [selected, setSelected] = useState<number | null>(null);
+  const [lastQuestionIndex, setLastQuestionIndex] = useState(question.index);
   const isProgressive = question.progressiveReveal ?? false;
   const words = qText.split(/\s+/);
 
@@ -72,9 +70,10 @@ export default function PlayerQuestion({
     return entry?.powerUp ?? null;
   }, [playerId, question.roundPowerUps]);
 
-  useEffect(() => {
+  if (lastQuestionIndex !== question.index) {
+    setLastQuestionIndex(question.index);
     setSelected(null);
-  }, [question.index]);
+  }
 
   const { visibleWordCount, blurAmount } = useProgressiveReveal(
     words.length,

@@ -13,7 +13,8 @@ interface WagerScreenProps {
 
 export default function WagerScreen({ currentScore, onSubmit, wagerType = "regular" }: WagerScreenProps) {
   const { t } = useTranslation();
-  const maxWager = Math.floor(currentScore * 0.3);
+  // Match server logic: floor of 500 so low-scorers still participate
+  const maxWager = Math.max(500, Math.floor(currentScore * 0.3));
   const [amount, setAmount] = useState(Math.round(maxWager / 2));
   const [submitted, setSubmitted] = useState(false);
 
@@ -34,6 +35,7 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
     );
   }
 
+  // With the 500 floor this branch should never fire, but keep a safe fallback.
   if (maxWager <= 0) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4">

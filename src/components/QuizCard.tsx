@@ -55,13 +55,19 @@ export default function QuizCard({
   const [yearGuess, setYearGuess] = useState(Math.round((YEAR_MIN + YEAR_MAX) / 2));
   // Fastest finger state
   const [textAnswer, setTextAnswer] = useState("");
-  const ffStartTime = useRef<number>(Date.now());
+  const ffStartTime = useRef<number>(0);
   const [ffResponseTime, setFfResponseTime] = useState<number | null>(null);
+  const [lastQText, setLastQText] = useState(question.question);
 
-  // Reset start time when question changes
+  // Reset response state when question changes (adjust-state-on-render)
+  if (lastQText !== question.question) {
+    setLastQText(question.question);
+    setFfResponseTime(null);
+  }
+
+  // Record fastest-finger clock when question shows
   useEffect(() => {
     ffStartTime.current = Date.now();
-    setFfResponseTime(null);
   }, [question.question]);
 
   const isCorrectStandard = selectedAnswer === question.correct;
@@ -81,10 +87,23 @@ export default function QuizCard({
   const ZOOM_DURATION = 15;
   const [zoomScale, setZoomScale] = useState(6);
   const zoomRafRef = useRef<number>(0);
+  const [zoomTracked, setZoomTracked] = useState({ q: question.question, answered, isZoomOut });
+
+  // Reset zoom scale when question or answered/zoom mode changes (adjust-state-on-render)
+  if (
+    zoomTracked.q !== question.question ||
+    zoomTracked.answered !== answered ||
+    zoomTracked.isZoomOut !== isZoomOut
+  ) {
+    setZoomTracked({ q: question.question, answered, isZoomOut });
+    if (isZoomOut) setZoomScale(answered ? 1 : 6);
+  }
+
   useEffect(() => {
-    if (!isZoomOut) return;
-    if (answered) { cancelAnimationFrame(zoomRafRef.current); setZoomScale(1); return; }
-    setZoomScale(6);
+    if (!isZoomOut || answered) {
+      cancelAnimationFrame(zoomRafRef.current);
+      return;
+    }
     const start = Date.now();
     const tick = () => {
       const elapsed = (Date.now() - start) / 1000;

@@ -115,10 +115,16 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
     }
   }, [id, searchParams, lang]);
 
+  // Reset timeLeft when the question changes (adjust-state-on-render)
+  const [lastTimerIndex, setLastTimerIndex] = useState(currentIndex);
+  if (lastTimerIndex !== currentIndex) {
+    setLastTimerIndex(currentIndex);
+    if (timerDuration) setTimeLeft(timerDuration);
+  }
+
   // Timer countdown (only when timerDuration > 0)
   useEffect(() => {
     if (!timerDuration || loading || finished || selectedAnswer !== null || questions.length === 0) return;
-    setTimeLeft(timerDuration);
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
@@ -130,7 +136,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
       });
     }, 1000);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [timerDuration, loading, finished, currentIndex, questions.length]);
+  }, [timerDuration, loading, finished, selectedAnswer, currentIndex, questions.length]);
 
   const handleSelect = useCallback(
     (index: number) => {

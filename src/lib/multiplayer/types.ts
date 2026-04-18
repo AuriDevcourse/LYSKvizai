@@ -3,10 +3,10 @@ import type { Question, QuestionType } from "@/data/types";
 // --- Room & Player ---
 
 export type RoomState = "lobby" | "question" | "results" | "wager" | "finished";
-export type GameMode = "classic" | "elimination" | "team" | "survival";
-export type PowerUpType = "freeze" | "shield" | "double" | "thief" | "bomb" | "gamble";
+export type GameMode = "classic" | "elimination" | "team";
+export type PowerUpType = "freeze" | "shield" | "double";
 
-export const ALL_POWER_UPS: PowerUpType[] = ["freeze", "shield", "double", "thief", "bomb", "gamble"];
+export const ALL_POWER_UPS: PowerUpType[] = ["freeze", "shield", "double"];
 
 export interface Player {
   id: string;
@@ -21,8 +21,6 @@ export interface Player {
   teamIndex: number | null;
   currentTextAnswer: string | null;
   slowestStreak: number;
-  /** Gamble result for this round (if assigned gamble power-up) */
-  gambleWon?: boolean;
   /** Power-up uses remaining (each player gets 3 per game) */
   powerUpUses: number;
   /** Power-up types already used this game */
@@ -80,6 +78,10 @@ export interface Room {
 
   // Leaderboard snapshot (captured at question start, before answers)
   previousLeaderboard: LeaderboardEntry[];
+
+  // Cached results payload — computed once per round in showResults, read by getRoomSnapshot.
+  // Prevents score inflation from getResultsPayload being called on every snapshot fetch.
+  cachedResults: ResultsPayload | null;
 }
 
 // --- Server → Client Events (SSE) ---

@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "node:path";
 
 const MP_SERVER = process.env.MP_SERVER_URL;
 if (!MP_SERVER) {
@@ -7,6 +8,9 @@ if (!MP_SERVER) {
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
   outputFileTracingIncludes: {
     "/api/**": ["./data/quizzes/**"],
   },

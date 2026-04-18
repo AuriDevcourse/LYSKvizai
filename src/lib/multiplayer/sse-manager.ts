@@ -38,8 +38,19 @@ export function addConnection(
   return id;
 }
 
-export function removeConnection(connectionId: string): void {
-  connections.delete(connectionId);
+export function removeConnection(connectionId: string): Connection | undefined {
+  const conn = connections.get(connectionId);
+  if (conn) connections.delete(connectionId);
+  return conn;
+}
+
+/** Count active SSE connections for a specific player in a room */
+export function countPlayerConnections(roomCode: string, playerId: string): number {
+  let count = 0;
+  for (const conn of connections.values()) {
+    if (conn.roomCode === roomCode && conn.playerId === playerId) count++;
+  }
+  return count;
 }
 
 /** Broadcast an event to all connections in a room */

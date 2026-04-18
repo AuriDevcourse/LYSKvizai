@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
 import { Plus_Jakarta_Sans, Be_Vietnam_Pro } from "next/font/google";
 import BottomNav from "@/components/BottomNav";
@@ -33,7 +33,6 @@ export const metadata: Metadata = {
     icon: "/favicon.png",
     apple: "/icons/apple-touch-icon.png",
   },
-  themeColor: "#0e0e0e",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -41,10 +40,11 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport = {
+export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
+  themeColor: "#0e0e0e",
 };
 
 export default function RootLayout({
