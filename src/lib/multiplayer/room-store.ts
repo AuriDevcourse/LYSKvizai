@@ -897,6 +897,11 @@ export function submitTextAnswer(
   if (player.currentTextAnswer !== null) return { error: "Already answered" };
   if (player.eliminated) return { error: "You are eliminated" };
 
+  if (room.gameMode === "team") {
+    const isDesignated = [...room.currentTeamAnswerer.values()].includes(playerId);
+    if (!isDesignated) return { error: "Another team member answers this round" };
+  }
+
   const qIndex = room.questionIndices[room.currentQuestionIndex];
   const q = room.questions[qIndex];
 
@@ -984,6 +989,11 @@ export function submitYearAnswer(
   if (!player) return { error: "Player not found" };
   if (player.currentTextAnswer !== null) return { error: "Already answered" };
   if (player.eliminated) return { error: "You are eliminated" };
+
+  if (room.gameMode === "team") {
+    const isDesignated = [...room.currentTeamAnswerer.values()].includes(playerId);
+    if (!isDesignated) return { error: "Another team member answers this round" };
+  }
 
   const qIndex = room.questionIndices[room.currentQuestionIndex];
   const q = room.questions[qIndex];
