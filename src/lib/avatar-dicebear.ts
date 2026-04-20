@@ -161,10 +161,12 @@ function randInt(max: number): number {
   return Math.floor(Math.random() * max);
 }
 
-/** Randomize all features. Optional extras appear at modest rates so avatars
- *  don't feel over-decorated by default. Hair color mostly picks a natural
- *  tone; small chance of a fun color (green/teal/pink/purple). */
-export function randomConfig(): DiceBearConfig {
+/** Randomize all features. Skin is deliberately NOT randomized — it's an
+ *  identity choice, not a dice roll. First-load gets index 0 as a neutral
+ *  default; from there the user picks via the Skin tab. Optional extras
+ *  appear at modest rates; hair color is mostly natural, with small chance
+ *  of a novelty shade. When `preserveSkin` is passed, that value is kept. */
+export function randomConfig(preserveSkin?: number): DiceBearConfig {
   // Indices 0-9 are natural hair shades; 10-13 are novelty colors.
   const hairColor = Math.random() < 0.85 ? randInt(10) : 10 + randInt(Math.max(1, HAIR_COLORS.length - 10));
   return {
@@ -176,7 +178,7 @@ export function randomConfig(): DiceBearConfig {
     earrings: Math.random() < 0.2 ? randInt(variants.earrings.length) : -1,
     features: Math.random() < 0.3 ? randInt(variants.features.length) : -1,
     bg: randInt(BACKGROUNDS.length),
-    skin: randInt(SKIN_COLORS.length),
+    skin: preserveSkin ?? 0,
     hairColor,
   };
 }
@@ -211,7 +213,9 @@ export function renderSvg(c: DiceBearConfig, size = 128): string {
     size,
     backgroundColor: [BACKGROUNDS[clamp(c.bg, BACKGROUNDS.length)]],
     backgroundType: ["solid"],
-    radius: 50,
+    // SVG BG fills the full rectangle; the host element's CSS rounding
+    // (rounded-full or rounded-2xl) decides the visible shape.
+    radius: 0,
     hair: [variants.hair[clamp(c.hair, variants.hair.length)]],
     eyes: [variants.eyes[clamp(c.eyes, variants.eyes.length)]],
     mouth: [variants.mouth[clamp(c.mouth, variants.mouth.length)]],

@@ -81,7 +81,8 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
   const encoded = useMemo(() => encode(config), [config]);
 
   const randomize = () => {
-    const next = randomConfig();
+    // Preserve the user's chosen skin tone — Randomize All shouldn't swap identity.
+    const next = randomConfig(config.skin);
     setConfig(next);
     onChange(encode(next));
   };
@@ -99,13 +100,15 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
   };
 
   const activeLabel = TABS.find((t) => t.id === tab)?.label.toLowerCase() ?? "";
+  // Skin isn't a dice-roll category — it's an identity choice. Hide re-roll there.
+  const canReroll = tab !== "skin";
 
   return (
     <div className="flex flex-col gap-3">
       {/* Preview + dice controls */}
       <div className="flex items-center gap-3">
-        <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white/5 p-1">
-          <Avatar value={encoded} size={72} />
+        <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl">
+          <Avatar value={encoded} size={80} shape="square" />
         </div>
         <div className="flex flex-1 flex-col gap-1.5">
           <button
@@ -116,14 +119,20 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
             <Dices className="h-4 w-4" />
             Randomize all
           </button>
-          <button
-            type="button"
-            onClick={rerollCurrent}
-            className="flex items-center justify-center gap-1.5 rounded-xl bg-white/5 px-3 py-2 text-[11px] font-bold text-white/60 transition-all hover:bg-white/10 hover:text-white active:scale-95"
-          >
-            <Dices className="h-3.5 w-3.5" />
-            Re-roll {activeLabel}
-          </button>
+          {canReroll ? (
+            <button
+              type="button"
+              onClick={rerollCurrent}
+              className="flex items-center justify-center gap-1.5 rounded-xl bg-white/5 px-3 py-2 text-[11px] font-bold text-white/60 transition-all hover:bg-white/10 hover:text-white active:scale-95"
+            >
+              <Dices className="h-3.5 w-3.5" />
+              Re-roll {activeLabel}
+            </button>
+          ) : (
+            <div className="rounded-xl bg-white/5 px-3 py-2 text-center text-[11px] font-bold text-white/40">
+              Pick a {activeLabel} tone
+            </div>
+          )}
         </div>
       </div>
 
@@ -155,14 +164,12 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
               key={i}
               type="button"
               onClick={() => pickOption(tab, i)}
-              className={`flex aspect-square items-center justify-center rounded-xl p-1 transition-all ${
-                selected
-                  ? "bg-white/15 outline outline-[1.5px] outline-[#ff9062]"
-                  : "bg-white/5 hover:bg-white/10"
+              className={`relative aspect-square overflow-hidden rounded-xl transition-all ${
+                selected ? "outline outline-2 outline-[#ff9062]" : "outline outline-1 outline-transparent hover:outline-white/15"
               }`}
               aria-label={`${tab} option ${i + 1}`}
             >
-              <Avatar value={encode(preview)} size={40} />
+              <Avatar value={encode(preview)} size={80} shape="square" className="!rounded-xl" />
             </button>
           );
         })}

@@ -73,12 +73,16 @@ interface AvatarProps {
   value: string; // encoded avatar string or emoji
   size?: number;
   className?: string;
+  /** "circle" (default) = circular crop. "square" = rounded-rectangle crop
+   *  where the background color fills to the corners. */
+  shape?: "circle" | "square";
 }
 
-export default function Avatar({ value, size = 48, className = "" }: AvatarProps) {
+export default function Avatar({ value, size = 48, className = "", shape = "circle" }: AvatarProps) {
   const config = decodeAvatar(value);
+  const shapeClass = shape === "square" ? "rounded-2xl" : "rounded-full";
 
-  // DiceBear Notionists — "d1:..." encoded config
+  // DiceBear — "d2:..." (adventurer)
   const diceBear = useMemo(() => {
     const dec = decodeDiceBear(value);
     return dec ? renderDiceBearSvg(dec, size) : null;
@@ -87,7 +91,7 @@ export default function Avatar({ value, size = 48, className = "" }: AvatarProps
   if (diceBear) {
     return (
       <div
-        className={`shrink-0 overflow-hidden rounded-full ${className}`}
+        className={`shrink-0 overflow-hidden ${shapeClass} ${className}`}
         style={{ width: size, height: size }}
         dangerouslySetInnerHTML={{ __html: diceBear }}
       />
