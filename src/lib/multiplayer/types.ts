@@ -10,6 +10,8 @@ export const ALL_POWER_UPS: PowerUpType[] = ["freeze", "shield", "double"];
 
 export interface Player {
   id: string;
+  /** Server-issued auth token. Client proves identity by presenting this on every action. */
+  token: string;
   name: string;
   emoji: string;
   score: number;
@@ -30,6 +32,8 @@ export interface Player {
 export interface Room {
   code: string;
   hostId: string;
+  /** Server-issued host auth token. Required for host-only actions. */
+  hostToken: string;
   state: RoomState;
   players: Map<string, Player>;
   questions: Question[];
@@ -237,15 +241,15 @@ export interface PowerUpEffect {
 
 export type ClientAction =
   | { action: "create"; hostId: string; quizId?: string; quizIds?: string[]; questionCount?: number; timerDuration?: number; gameMode?: GameMode; teamCount?: number; eliminationInterval?: number }
-  | { action: "join"; code: string; playerId: string; name: string; emoji: string }
-  | { action: "start"; code: string; hostId: string }
-  | { action: "answer"; code: string; playerId: string; answerIndex: number }
-  | { action: "next"; code: string; hostId: string }
-  | { action: "force-results"; code: string; hostId: string }
-  | { action: "react"; code: string; playerId: string; emoji: string }
+  | { action: "join"; code: string; playerId: string; name: string; emoji: string; token?: string }
+  | { action: "start"; code: string; hostId: string; hostToken: string }
+  | { action: "answer"; code: string; playerId: string; token: string; answerIndex: number }
+  | { action: "next"; code: string; hostId: string; hostToken: string }
+  | { action: "force-results"; code: string; hostId: string; hostToken: string }
+  | { action: "react"; code: string; playerId: string; token: string; emoji: string }
   | { action: "disconnect"; code: string; playerId: string }
-  | { action: "submit-wager"; code: string; playerId: string; amount: number }
-  | { action: "advance-wager"; code: string; hostId: string }
-  | { action: "answer-text"; code: string; playerId: string; answer: string }
-  | { action: "answer-year"; code: string; playerId: string; year: number }
-  | { action: "choose-powerup"; code: string; playerId: string; powerUp: PowerUpType };
+  | { action: "submit-wager"; code: string; playerId: string; token: string; amount: number }
+  | { action: "advance-wager"; code: string; hostId: string; hostToken: string }
+  | { action: "answer-text"; code: string; playerId: string; token: string; answer: string }
+  | { action: "answer-year"; code: string; playerId: string; token: string; year: number }
+  | { action: "choose-powerup"; code: string; playerId: string; token: string; powerUp: PowerUpType };

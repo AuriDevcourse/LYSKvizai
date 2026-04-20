@@ -26,7 +26,6 @@ export function useRoomActions() {
       teamCount?: number,
       eliminationInterval?: number
     ) => {
-      // Support both single ID and array of IDs
       const ids = Array.isArray(quizIds) ? quizIds : [quizIds];
       return postAction({
         action: "create",
@@ -37,44 +36,49 @@ export function useRoomActions() {
         gameMode,
         teamCount,
         eliminationInterval,
-      }) as Promise<{ code: string }>;
+      }) as Promise<{ code: string; hostToken: string }>;
     },
     []
   );
 
-  const joinRoom = useCallback(async (code: string, playerId: string, name: string, emoji: string) => {
-    return postAction({ action: "join", code: code.toUpperCase(), playerId, name, emoji });
-  }, []);
+  const joinRoom = useCallback(
+    async (code: string, playerId: string, name: string, emoji: string, token?: string) => {
+      return postAction({ action: "join", code: code.toUpperCase(), playerId, name, emoji, token }) as Promise<{
+        playerToken: string;
+      }>;
+    },
+    []
+  );
 
-  const startGame = useCallback(async (code: string, hostId: string) => {
-    return postAction({ action: "start", code, hostId });
+  const startGame = useCallback(async (code: string, hostId: string, hostToken: string) => {
+    return postAction({ action: "start", code, hostId, hostToken });
   }, []);
 
   const submitAnswer = useCallback(
-    async (code: string, playerId: string, answerIndex: number) => {
-      return postAction({ action: "answer", code, playerId, answerIndex });
+    async (code: string, playerId: string, token: string, answerIndex: number) => {
+      return postAction({ action: "answer", code, playerId, token, answerIndex });
     },
     []
   );
 
-  const nextQuestion = useCallback(async (code: string, hostId: string) => {
-    return postAction({ action: "next", code, hostId });
+  const nextQuestion = useCallback(async (code: string, hostId: string, hostToken: string) => {
+    return postAction({ action: "next", code, hostId, hostToken });
   }, []);
 
-  const forceResults = useCallback(async (code: string, hostId: string) => {
-    return postAction({ action: "force-results", code, hostId });
+  const forceResults = useCallback(async (code: string, hostId: string, hostToken: string) => {
+    return postAction({ action: "force-results", code, hostId, hostToken });
   }, []);
 
   const sendReaction = useCallback(
-    async (code: string, playerId: string, emoji: string) => {
-      return postAction({ action: "react", code, playerId, emoji });
+    async (code: string, playerId: string, token: string, emoji: string) => {
+      return postAction({ action: "react", code, playerId, token, emoji });
     },
     []
   );
 
   const submitWager = useCallback(
-    async (code: string, playerId: string, amount: number) => {
-      return postAction({ action: "submit-wager", code, playerId, amount });
+    async (code: string, playerId: string, token: string, amount: number) => {
+      return postAction({ action: "submit-wager", code, playerId, token, amount });
     },
     []
   );

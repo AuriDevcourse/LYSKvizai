@@ -15,6 +15,12 @@ import type {
 } from "./types";
 import { ALL_POWER_UPS } from "./types";
 import { generateRoomCode } from "./room-code";
+import { randomBytes } from "crypto";
+
+/** 32-char URL-safe random token. ~192 bits of entropy — infeasible to guess. */
+function generateToken(): string {
+  return randomBytes(24).toString("base64url");
+}
 import { calculateScore, getQuestionValues } from "./scoring";
 import { fuzzyMatch } from "../fuzzy-match";
 import { sanitizeName, sanitizeEmoji } from "../sanitize";
@@ -512,10 +518,11 @@ function rotateTeamAnswerers(room: Room): void {
 
   room.currentTeamAnswerer.clear();
 
-  // Group players by team
+  // Group players by team. Skip disconnected so a dropped teammate doesn't
+  // stall the round — someone else on the team picks up the slack.
   const teamPlayers: Map<number, Player[]> = new Map();
   for (const p of room.players.values()) {
-    if (p.teamIndex !== null && !p.eliminated) {
+    if (p.teamIndex !== null && !p.eliminated && p.connected) {
       if (!teamPlayers.has(p.teamIndex)) teamPlayers.set(p.teamIndex, []);
       teamPlayers.get(p.teamIndex)!.push(p);
     }
@@ -588,6 +595,7 @@ export async function createRoom(
   const room: Room = {
     code,
     hostId,
+    hostToken: generateToken(),
     state: "lobby",
     players: new Map(),
     questions,
@@ -634,6 +642,36 @@ export function getRoom(code: string): Room | undefined {
   return rooms.get(code.toUpperCase());
 }
 
+/** Verify the caller is the host of this room. Returns the room on success, error otherwise. */
+function verifyHost(code: string, hostId: string, hostToken: string): Room | { error: string } {
+  const room = rooms.get(code.toUpperCase());
+  if (!room) return { error: "Room not found" };
+  if (room.hostId !== hostId || room.hostToken !== hostToken) {
+    return { error: "Only the host can do that" };
+  }
+  return room;
+}
+
+/** Verify the caller owns this playerId in this room. Returns {room, player} or error. */
+function verifyPlayer(
+  code: string,
+  playerId: string,
+  token: string
+): { room: Room; player: Player } | { error: string } {
+  const room = rooms.get(code.toUpperCase());
+  if (!room) return { error: "Room not found" };
+  const player = room.players.get(playerId);
+  if (!player || player.token !== token) return { error: "Invalid session" };
+  return { room, player };
+}
+
+/** Check if a given (hostId, token) pair owns this room. Used by GET /api/rooms. */
+export function isHostOf(code: string, hostId: string, hostToken: string): boolean {
+  const room = rooms.get(code.toUpperCase());
+  if (!room) return false;
+  return room.hostId === hostId && room.hostToken === hostToken;
+}
+
 /** Normalize a name for case/accent-insensitive duplicate check */
 function normalizeName(name: string): string {
   return name.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
@@ -643,7 +681,8 @@ export function joinRoom(
   code: string,
   playerId: string,
   rawName: string,
-  rawEmoji: string
+  rawEmoji: string,
+  providedToken?: string
 ): { room: Room; player: Player } | { error: string } {
   const room = rooms.get(code.toUpperCase());
   if (!room) return { error: "Room not found" };
@@ -652,6 +691,11 @@ export function joinRoom(
   // Allow existing players to reconnect in any state; only block NEW joins after lobby.
   if (!existing && room.state !== "lobby") return { error: "Game already started" };
   if (!existing && room.players.size >= 50) return { error: "Room is full" };
+
+  // Reconnecting must present the token issued on original join — prevents playerId hijack.
+  if (existing && existing.token !== providedToken) {
+    return { error: "This seat is taken by someone else" };
+  }
 
   const name = sanitizeName(rawName);
   const emoji = sanitizeEmoji(rawEmoji);
@@ -674,6 +718,7 @@ export function joinRoom(
   } else {
     player = {
       id: playerId,
+      token: generateToken(),
       name,
       emoji,
       score: 0,
@@ -698,10 +743,10 @@ export function joinRoom(
   return { room, player };
 }
 
-export async function startGame(code: string, hostId: string): Promise<{ error?: string }> {
-  const room = rooms.get(code.toUpperCase());
-  if (!room) return { error: "Room not found" };
-  if (room.hostId !== hostId) return { error: "Only the host can start" };
+export async function startGame(code: string, hostId: string, hostToken: string): Promise<{ error?: string }> {
+  const verified = verifyHost(code, hostId, hostToken);
+  if ("error" in verified) return verified;
+  const room = verified;
   if (room.state !== "lobby") return { error: "Game already started" };
   if (room.players.size === 0) return { error: "Need at least one player" };
 
@@ -738,14 +783,13 @@ export async function startGame(code: string, hostId: string): Promise<{ error?:
 export function submitAnswer(
   code: string,
   playerId: string,
+  token: string,
   answerIndex: number
 ): { error?: string } {
-  const room = rooms.get(code.toUpperCase());
-  if (!room) return { error: "Room not found" };
+  const verified = verifyPlayer(code, playerId, token);
+  if ("error" in verified) return verified;
+  const { room, player } = verified;
   if (room.state !== "question") return { error: "Can't answer right now" };
-
-  const player = room.players.get(playerId);
-  if (!player) return { error: "Player not found" };
   if (player.currentAnswer !== null) return { error: "Already answered" };
 
   // Elimination: eliminated players can't answer
@@ -831,14 +875,13 @@ export function submitAnswer(
 export function submitTextAnswer(
   code: string,
   playerId: string,
+  token: string,
   answer: string
 ): { error?: string } {
-  const room = rooms.get(code.toUpperCase());
-  if (!room) return { error: "Room not found" };
+  const verified = verifyPlayer(code, playerId, token);
+  if ("error" in verified) return verified;
+  const { room, player } = verified;
   if (room.state !== "question") return { error: "Can't answer right now" };
-
-  const player = room.players.get(playerId);
-  if (!player) return { error: "Player not found" };
   if (player.currentTextAnswer !== null) return { error: "Already answered" };
   if (player.eliminated) return { error: "You are eliminated" };
 
@@ -924,14 +967,13 @@ function scoreYearGuess(guessedYear: number, correctYear: number): number {
 export function submitYearAnswer(
   code: string,
   playerId: string,
+  token: string,
   year: number
 ): { error?: string } {
-  const room = rooms.get(code.toUpperCase());
-  if (!room) return { error: "Room not found" };
+  const verified = verifyPlayer(code, playerId, token);
+  if ("error" in verified) return verified;
+  const { room, player } = verified;
   if (room.state !== "question") return { error: "Can't answer right now" };
-
-  const player = room.players.get(playerId);
-  if (!player) return { error: "Player not found" };
   if (player.currentTextAnswer !== null) return { error: "Already answered" };
   if (player.eliminated) return { error: "You are eliminated" };
 
@@ -993,18 +1035,22 @@ export function submitYearAnswer(
 
 function showResults(room: Room): void {
   // Idempotent: if we've already resolved results for this round, don't recompute
-  // (prevents score inflation from re-applying fastest/thief/bomb bonuses)
-  if (room.state === "results" && room.cachedResults) return;
+  // (prevents score inflation from re-applying fastest/double bonuses).
+  if (room.cachedResults) return;
 
   // Clear server-side timer
   if (room.questionTimer) {
     clearTimeout(room.questionTimer);
     room.questionTimer = null;
   }
-  room.state = "results";
 
+  // Compute while state is still "question" — an SSE client connecting during the
+  // compute window sees the question branch in getRoomSnapshot, not the results
+  // branch that would otherwise fall through to a second getResultsPayload call
+  // and mutate scores a second time.
   const results = getResultsPayload(room);
   room.cachedResults = results;
+  room.state = "results";
 
   // Elimination mode: check if it's time to eliminate
   if (room.gameMode === "elimination") {
@@ -1048,10 +1094,10 @@ function showResults(room: Room): void {
   broadcast(room.code, { type: "results", data: results });
 }
 
-export function nextQuestion(code: string, hostId: string): { error?: string } {
-  const room = rooms.get(code.toUpperCase());
-  if (!room) return { error: "Room not found" };
-  if (room.hostId !== hostId) return { error: "Only the host can continue" };
+export function nextQuestion(code: string, hostId: string, hostToken: string): { error?: string } {
+  const verified = verifyHost(code, hostId, hostToken);
+  if ("error" in verified) return verified;
+  const room = verified;
   if (room.state !== "results") return { error: "Can't continue yet" };
 
   if (room.currentQuestionIndex + 1 >= room.questionIndices.length) {
@@ -1139,14 +1185,13 @@ function startQuestionRound(room: Room): void {
 export function submitWager(
   code: string,
   playerId: string,
+  token: string,
   amount: number
 ): { error?: string } {
-  const room = rooms.get(code.toUpperCase());
-  if (!room) return { error: "Room not found" };
+  const verified = verifyPlayer(code, playerId, token);
+  if ("error" in verified) return verified;
+  const { room, player } = verified;
   if (room.state !== "wager") return { error: "Can't wager right now" };
-
-  const player = room.players.get(playerId);
-  if (!player) return { error: "Player not found" };
   if (player.eliminated) return { error: "You are eliminated" };
 
   // Clamp wager to [0, max(500, 30% of score)] — low-scorers still get meaningful stakes
@@ -1164,10 +1209,10 @@ export function submitWager(
   return {};
 }
 
-export function advanceFromWagerAction(code: string, hostId: string): { error?: string } {
-  const room = rooms.get(code.toUpperCase());
-  if (!room) return { error: "Room not found" };
-  if (room.hostId !== hostId) return { error: "Only the host can continue" };
+export function advanceFromWagerAction(code: string, hostId: string, hostToken: string): { error?: string } {
+  const verified = verifyHost(code, hostId, hostToken);
+  if ("error" in verified) return verified;
+  const room = verified;
   if (room.state !== "wager") return { error: "No wager phase" };
 
   advanceFromWager(room);
@@ -1190,10 +1235,10 @@ export function disconnectPlayer(code: string, playerId: string): void {
   }
 }
 
-export function forceShowResults(code: string, hostId: string): { error?: string } {
-  const room = rooms.get(code.toUpperCase());
-  if (!room) return { error: "Room not found" };
-  if (room.hostId !== hostId) return { error: "Only the host can continue" };
+export function forceShowResults(code: string, hostId: string, hostToken: string): { error?: string } {
+  const verified = verifyHost(code, hostId, hostToken);
+  if ("error" in verified) return verified;
+  const room = verified;
   if (room.state !== "question") return { error: "No active question" };
 
   showResults(room);
@@ -1203,6 +1248,7 @@ export function forceShowResults(code: string, hostId: string): { error?: string
 export function choosePowerUp(
   code: string,
   playerId: string,
+  token: string,
   powerUp: "freeze" | "shield" | "double"
 ): { error?: string } {
   // Runtime whitelist — TS types are erased, prevent clients from burning uses on invalid types
@@ -1210,12 +1256,10 @@ export function choosePowerUp(
     return { error: "Invalid power-up" };
   }
 
-  const room = rooms.get(code.toUpperCase());
-  if (!room) return { error: "Room not found" };
+  const verified = verifyPlayer(code, playerId, token);
+  if ("error" in verified) return verified;
+  const { room, player } = verified;
   if (room.state !== "question") return { error: "Can't use power-ups right now" };
-
-  const player = room.players.get(playerId);
-  if (!player) return { error: "Player not found" };
   if (player.eliminated) return { error: "You are eliminated" };
   if (player.powerUpUses <= 0) return { error: "No power-up uses remaining" };
   if (room.activePowerUps.has(playerId)) return { error: "Already used a power-up this round" };
@@ -1226,10 +1270,23 @@ export function choosePowerUp(
   player.usedPowerUpTypes.push(powerUp);
   room.activePowerUps.set(playerId, powerUp);
 
-  // Freeze auto-applies immediately
+  // Freeze auto-applies immediately — cut 3s off both the client-visible
+  // countdown AND the server-side auto-end timer so they end in sync.
   if (powerUp === "freeze" && !room.freezeActive) {
     room.freezeActive = true;
     broadcast(room.code, { type: "timer-reduced", data: { seconds: 3 } });
+
+    if (room.questionTimer) {
+      clearTimeout(room.questionTimer);
+      const originalEndMs = room.questionStartTime + (room.timerDuration + 2) * 1000;
+      const remainingMs = Math.max(500, originalEndMs - 3000 - Date.now());
+      room.questionTimer = setTimeout(() => {
+        room.questionTimer = null;
+        if (room.state === "question") {
+          showResults(room);
+        }
+      }, remainingMs);
+    }
   }
 
   // Broadcast updated state so clients get fresh player power-up data

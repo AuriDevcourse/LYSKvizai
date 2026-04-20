@@ -40,6 +40,16 @@ export default function GamePage({ params }: PageProps) {
     return sessionStorage.getItem("quiz-host-id") ?? "";
   });
 
+  const [hostToken] = useState(() => {
+    if (typeof window === "undefined") return "";
+    return sessionStorage.getItem("quiz-host-token") ?? "";
+  });
+
+  const [playerToken] = useState(() => {
+    if (typeof window === "undefined") return "";
+    return sessionStorage.getItem("quiz-player-token") ?? "";
+  });
+
   const [playerName] = useState(() => {
     if (typeof window === "undefined") return "";
     return sessionStorage.getItem("quiz-player-name") ?? "";
@@ -55,23 +65,25 @@ export default function GamePage({ params }: PageProps) {
     return sessionStorage.getItem("quiz-host-playing") === "true";
   });
 
-  // Verify host status against server on mount
+  // Verify host status against server on mount. Server returns { isHost: boolean }
+  // and never exposes the stored hostId/hostToken.
   const [verifiedHost, setVerifiedHost] = useState(false);
   useEffect(() => {
-    if (!hostId || hostId !== playerId) return;
-    fetch(`${MP_API_URL}/rooms?code=${code}`)
+    if (!hostId || !hostToken || hostId !== playerId) return;
+    const params = new URLSearchParams({ code, hostId, hostToken });
+    fetch(`${MP_API_URL}/rooms?${params.toString()}`)
       .then((r) => { if (!r.ok) throw new Error("Not found"); return r.json(); })
       .then((data) => {
-        if (data.hostId === hostId) {
+        if (data.isHost) {
           setVerifiedHost(true);
         } else {
-          // Stale host flag from a previous game
           sessionStorage.removeItem("quiz-host-id");
+          sessionStorage.removeItem("quiz-host-token");
           sessionStorage.removeItem("quiz-host-playing");
         }
       })
       .catch(() => {});
-  }, [code, hostId, playerId]);
+  }, [code, hostId, hostToken, playerId]);
 
   // Tell the server when the tab closes / backgrounds so ghost players don't
   // linger in the lobby. sendBeacon works during page unload (fetch doesn't).
@@ -141,21 +153,21 @@ export default function GamePage({ params }: PageProps) {
 
   const handleStart = useCallback(async () => {
     try {
-      await startGame(code, hostId);
+      await startGame(code, hostId, hostToken);
     } catch (e) {
       showToast("Failed to start game");
     }
-  }, [code, hostId, startGame]);
+  }, [code, hostId, hostToken, startGame]);
 
   const handleAnswer = useCallback(
     async (index: number) => {
       try {
-        await submitAnswer(code, playerId, index);
+        await submitAnswer(code, playerId, playerToken, index);
       } catch (e) {
         showToast("Failed to submit answer");
       }
     },
-    [code, playerId, submitAnswer]
+    [code, playerId, playerToken, submitAnswer]
   );
 
   const handleYearAnswer = useCallback(
@@ -165,13 +177,13 @@ export default function GamePage({ params }: PageProps) {
         await fetch(`${MP_API_URL}/rooms`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "answer-year", code, playerId, year }),
+          body: JSON.stringify({ action: "answer-year", code, playerId, token: playerToken, year }),
         });
       } catch (e) {
         showToast("Failed to submit answer");
       }
     },
-    [code, playerId]
+    [code, playerId, playerToken]
   );
 
   const handleTextAnswer = useCallback(
@@ -181,43 +193,43 @@ export default function GamePage({ params }: PageProps) {
         await fetch(`${MP_API_URL}/rooms`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "answer-text", code, playerId, answer: text }),
+          body: JSON.stringify({ action: "answer-text", code, playerId, token: playerToken, answer: text }),
         });
       } catch (e) {
         showToast("Failed to submit answer");
       }
     },
-    [code, playerId]
+    [code, playerId, playerToken]
   );
 
   const handleNext = useCallback(async () => {
     try {
-      await nextQuestion(code, hostId);
+      await nextQuestion(code, hostId, hostToken);
     } catch (e) {
       showToast("Failed to advance");
     }
-  }, [code, hostId, nextQuestion]);
+  }, [code, hostId, hostToken, nextQuestion]);
 
   const handleReact = useCallback(
     async (emoji: string) => {
       try {
-        await sendReaction(code, playerId, emoji);
+        await sendReaction(code, playerId, playerToken, emoji);
       } catch (e) {
         showToast("Failed to send reaction");
       }
     },
-    [code, playerId, sendReaction]
+    [code, playerId, playerToken, sendReaction]
   );
 
   const handleWager = useCallback(
     async (amount: number) => {
       try {
-        await submitWager(code, playerId, amount);
+        await submitWager(code, playerId, playerToken, amount);
       } catch (e) {
         showToast("Failed to submit wager");
       }
     },
-    [code, playerId, submitWager]
+    [code, playerId, playerToken, submitWager]
   );
 
   const handleAdvanceFromWager = useCallback(async () => {
@@ -225,12 +237,12 @@ export default function GamePage({ params }: PageProps) {
       await fetch(`${MP_API_URL}/rooms`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "advance-wager", code, hostId }),
+        body: JSON.stringify({ action: "advance-wager", code, hostId, hostToken }),
       });
     } catch (e) {
       showToast("Failed to advance from wager");
     }
-  }, [code, hostId]);
+  }, [code, hostId, hostToken]);
 
   const handleChoosePowerUp = useCallback(
     async (powerUp: "freeze" | "shield" | "double") => {
@@ -239,13 +251,13 @@ export default function GamePage({ params }: PageProps) {
         await fetch(`${MP_API_URL}/rooms`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "choose-powerup", code, playerId, powerUp }),
+          body: JSON.stringify({ action: "choose-powerup", code, playerId, token: playerToken, powerUp }),
         });
       } catch (e) {
         showToast("Failed to activate power-up");
       }
     },
-    [code, playerId, showToast]
+    [code, playerId, playerToken, showToast]
   );
 
   const handleExit = useCallback(() => {
@@ -265,12 +277,12 @@ export default function GamePage({ params }: PageProps) {
       await fetch(`${MP_API_URL}/rooms`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "force-results", code, hostId }),
+        body: JSON.stringify({ action: "force-results", code, hostId, hostToken }),
       });
     } catch (e) {
       showToast("Failed to end timer");
     }
-  }, [isHost, code, hostId]);
+  }, [isHost, code, hostId, hostToken]);
 
   const canAnswer = useMemo(() => {
     if (gameMode !== "team" || !question?.currentTeamAnswerers) return true;
