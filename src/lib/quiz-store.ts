@@ -37,6 +37,8 @@ export async function listQuizzes(): Promise<QuizMeta[]> {
         description: quiz.description,
         emoji: quiz.emoji,
         questionCount: quiz.questions.length,
+        createdAt: quiz.createdAt,
+        updatedAt: quiz.updatedAt,
         language: (raw_quiz.language as string) || undefined,
         imageCount: quiz.questions.filter((q) => q.image && isGoodZoomImage(q.image)).length,
         yearCount: quiz.questions.filter((q) => q.correctYear != null).length,

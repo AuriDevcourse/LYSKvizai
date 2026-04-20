@@ -3,11 +3,16 @@
   "title": "Year Guesser: Music & Entertainment",
   "description": "Guess when these iconic cultural moments happened",
   "emoji": "🎬",
-  "language": "en",
+  "createdAt": "2026-04-02T11:31:01+02:00",
   "questions": [
     {
       "question": "When was the first Star Wars film released?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Star Wars (A New Hope) was released on May 25, 1977.",
       "type": "year-guesser",
@@ -15,7 +20,12 @@
     },
     {
       "question": "When did The Beatles break up?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The Beatles officially split in April 1970 when Paul McCartney announced his departure.",
       "type": "year-guesser",
@@ -23,7 +33,12 @@
     },
     {
       "question": "When was Netflix founded?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Netflix was founded in 1997 as a DVD-by-mail service.",
       "type": "year-guesser",
@@ -31,7 +46,12 @@
     },
     {
       "question": "When did Michael Jackson release 'Thriller'?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Thriller was released on November 30, 1982 and became the best-selling album ever.",
       "type": "year-guesser",
@@ -39,7 +59,12 @@
     },
     {
       "question": "When was Disneyland (California) opened?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Disneyland opened on July 17, 1955 in Anaheim, California.",
       "type": "year-guesser",
@@ -47,7 +72,12 @@
     },
     {
       "question": "When was the first Harry Potter book published?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Harry Potter and the Philosopher's Stone was published on June 26, 1997.",
       "type": "year-guesser",
@@ -55,7 +85,12 @@
     },
     {
       "question": "When did Woodstock music festival take place?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Woodstock took place August 15–18, 1969 in Bethel, New York.",
       "type": "year-guesser",
@@ -63,7 +98,12 @@
     },
     {
       "question": "When was YouTube launched?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "YouTube was launched on February 14, 2005. The first video was uploaded in April.",
       "type": "year-guesser",
@@ -71,7 +111,12 @@
     },
     {
       "question": "When did Elvis Presley die?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Elvis died on August 16, 1977 at Graceland in Memphis, Tennessee.",
       "type": "year-guesser",
@@ -79,7 +124,12 @@
     },
     {
       "question": "When was the first Toy Story movie released?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Toy Story was released on November 22, 1995 — Pixar's first feature film.",
       "type": "year-guesser",
@@ -87,7 +137,12 @@
     },
     {
       "question": "When did Spotify launch?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Spotify launched on October 7, 2008 in Sweden.",
       "type": "year-guesser",
@@ -95,7 +150,12 @@
     },
     {
       "question": "When was the first episode of The Simpsons aired?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The Simpsons premiered on December 17, 1989 on Fox.",
       "type": "year-guesser",
@@ -103,7 +163,12 @@
     },
     {
       "question": "When was the first James Bond film (Dr. No) released?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Dr. No starring Sean Connery was released on October 5, 1962.",
       "type": "year-guesser",
@@ -111,7 +176,12 @@
     },
     {
       "question": "When did Game of Thrones first air on HBO?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Game of Thrones premiered on April 17, 2011.",
       "type": "year-guesser",
@@ -119,11 +189,17 @@
     },
     {
       "question": "When was Instagram launched?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Instagram launched on October 6, 2010 and gained 25,000 users on day one.",
       "type": "year-guesser",
       "correctYear": 2010
     }
-  ]
+  ],
+  "language": "en"
 }

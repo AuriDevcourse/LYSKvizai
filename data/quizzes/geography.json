@@ -3,7 +3,7 @@
   "title": "Geography",
   "description": "15 questions about world geography",
   "emoji": "🌍",
-  "language": "en",
+  "createdAt": "2026-03-10T22:22:50+01:00",
   "questions": [
     {
       "question": "What is the capital of Australia?",
@@ -177,5 +177,6 @@
       "explanation": "The Great Barrier Reef is located off the northeast coast of Australia and is the largest coral reef system in the world.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Coral_reef_at_palmyra.jpg/800px-Coral_reef_at_palmyra.jpg"
     }
-  ]
+  ],
+  "language": "en"
 }

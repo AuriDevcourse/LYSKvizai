@@ -1,12 +1,38 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, Check, Shuffle, ToggleLeft, Calendar, Keyboard, HelpCircle, ZoomOut, Smartphone } from "lucide-react";
+import { ArrowLeft, Check, Shuffle, ToggleLeft, Calendar, Keyboard, HelpCircle, ZoomOut, Smartphone, Sparkles } from "lucide-react";
 import { TOPICS, type Topic } from "@/lib/topics";
 import type { QuizMeta } from "@/data/types";
 import type { QuestionType } from "@/data/types";
 import { getQuizTheme } from "@/lib/quiz-theme";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+
+const DAY_MS = 86_400_000;
+const NEW_THRESHOLD_DAYS = 14;
+
+/** Returns a short "X days ago" / "today" string from an ISO date. */
+function relativeAge(iso?: string): string | null {
+  if (!iso) return null;
+  const then = Date.parse(iso);
+  if (isNaN(then)) return null;
+  const days = Math.floor((Date.now() - then) / DAY_MS);
+  if (days < 0) return null;
+  if (days === 0) return "today";
+  if (days === 1) return "yesterday";
+  if (days < 30) return `${days}d ago`;
+  const months = Math.floor(days / 30);
+  if (months < 12) return `${months}mo ago`;
+  const years = Math.floor(days / 365);
+  return `${years}y ago`;
+}
+
+function isRecentlyAdded(iso?: string): boolean {
+  if (!iso) return false;
+  const then = Date.parse(iso);
+  if (isNaN(then)) return false;
+  return (Date.now() - then) / DAY_MS <= NEW_THRESHOLD_DAYS;
+}
 
 export type SelectedGameType = QuestionType | "mixed" | "charades";
 
@@ -128,12 +154,23 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
                     <SubIcon className="h-5 w-5 text-white" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className={`text-sm font-extrabold leading-tight truncate ${isSelected ? "text-[#ff9062]" : "text-white group-hover:text-[#ff9062]"} transition-colors`}>{quiz.title}</h3>
+                    <div className="flex items-center gap-1.5">
+                      <h3 className={`text-sm font-extrabold leading-tight truncate ${isSelected ? "text-[#ff9062]" : "text-white group-hover:text-[#ff9062]"} transition-colors`}>{quiz.title}</h3>
+                      {isRecentlyAdded(quiz.createdAt) && (
+                        <span className="flex shrink-0 items-center gap-0.5 rounded-full bg-[#ff9062]/20 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-[#ff9062]">
+                          <Sparkles className="h-2.5 w-2.5" />
+                          New
+                        </span>
+                      )}
+                    </div>
                     <p className="text-xs text-white/30 mt-0.5">
                       {activeGameType?.id === "year-guesser" ? (quiz.yearCount ?? 0)
                         : activeGameType?.id === "zoom-out" ? (quiz.imageCount ?? 0)
                         : activeGameType?.id === "fastest-finger" ? (quiz.shortAnswerCount ?? 0)
                         : quiz.questionCount} questions
+                      {quiz.createdAt && (
+                        <span className="text-white/20"> · {relativeAge(quiz.createdAt)}</span>
+                      )}
                     </p>
                   </div>
                   <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border transition-all ${

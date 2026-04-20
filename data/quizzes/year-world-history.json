@@ -3,11 +3,16 @@
   "title": "Year Guesser: World History",
   "description": "Guess the year of major world events",
   "emoji": "🏛️",
-  "language": "en",
+  "createdAt": "2026-04-02T11:31:01+02:00",
   "questions": [
     {
       "question": "When did the French Revolution begin?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The French Revolution began with the storming of the Bastille on July 14, 1789.",
       "type": "year-guesser",
@@ -15,7 +20,12 @@
     },
     {
       "question": "When did the Titanic sink?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The RMS Titanic sank on April 15, 1912 after hitting an iceberg.",
       "type": "year-guesser",
@@ -23,7 +33,12 @@
     },
     {
       "question": "When did World War I begin?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "WWI began on July 28, 1914 after the assassination of Archduke Franz Ferdinand.",
       "type": "year-guesser",
@@ -31,7 +46,12 @@
     },
     {
       "question": "When was the Declaration of Independence signed?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The US Declaration of Independence was signed on July 4, 1776.",
       "type": "year-guesser",
@@ -39,7 +59,12 @@
     },
     {
       "question": "When did the atomic bomb drop on Hiroshima?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The US dropped an atomic bomb on Hiroshima on August 6, 1945.",
       "type": "year-guesser",
@@ -47,7 +72,12 @@
     },
     {
       "question": "When did the Roman Empire fall (Western)?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The Western Roman Empire fell in 476 AD when Romulus Augustulus was deposed.",
       "type": "year-guesser",
@@ -55,7 +85,12 @@
     },
     {
       "question": "When did Christopher Columbus reach the Americas?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Columbus landed in the Bahamas on October 12, 1492.",
       "type": "year-guesser",
@@ -63,7 +98,12 @@
     },
     {
       "question": "When was the Magna Carta signed?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The Magna Carta was sealed by King John of England in 1215.",
       "type": "year-guesser",
@@ -71,7 +111,12 @@
     },
     {
       "question": "When did the Black Death reach Europe?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The Black Death arrived in Europe in 1347, killing roughly a third of the population.",
       "type": "year-guesser",
@@ -79,7 +124,12 @@
     },
     {
       "question": "When did Napoleon become Emperor of France?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Napoleon crowned himself Emperor on December 2, 1804.",
       "type": "year-guesser",
@@ -87,7 +137,12 @@
     },
     {
       "question": "When was the Great Wall of China construction started?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The earliest walls were built around 700 BC, but major construction began under Emperor Qin Shi Huang in 221 BC.",
       "type": "year-guesser",
@@ -95,7 +150,12 @@
     },
     {
       "question": "When did the Russian Revolution occur?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The Russian Revolution took place in 1917, overthrowing the Tsar.",
       "type": "year-guesser",
@@ -103,7 +163,12 @@
     },
     {
       "question": "When was the United Nations founded?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The UN was established on October 24, 1945.",
       "type": "year-guesser",
@@ -111,7 +176,12 @@
     },
     {
       "question": "When did the Cuban Missile Crisis happen?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The Cuban Missile Crisis was a 13-day confrontation in October 1962.",
       "type": "year-guesser",
@@ -119,11 +189,17 @@
     },
     {
       "question": "When did the Berlin Wall go up?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The Berlin Wall was erected on August 13, 1961 by East Germany.",
       "type": "year-guesser",
       "correctYear": 1961
     }
-  ]
+  ],
+  "language": "en"
 }

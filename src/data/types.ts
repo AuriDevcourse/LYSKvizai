@@ -33,6 +33,10 @@ export interface QuizMeta {
   description: string;
   emoji: string;
   questionCount: number;
+  /** ISO date when the quiz was first added (from git history, or set by editor on save). */
+  createdAt?: string;
+  /** ISO date of the last edit in the editor. */
+  updatedAt?: string;
   /** Reserved for future language tagging. Currently always "en". */
   language?: string;
   /** Number of questions that have local images (for zoom-out eligibility) */

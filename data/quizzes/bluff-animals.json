@@ -3,11 +3,16 @@
   "title": "Bluff: Animal Kingdom",
   "description": "One answer is fake — can you spot the bluff?",
   "emoji": "🦊",
-  "language": "en",
+  "createdAt": "2026-04-02T11:31:01+02:00",
   "questions": [
     {
       "question": "What is the largest living bird by wingspan?",
-      "options": ["Andean Condor", "Wandering Albatross", "Marabou Stork", "California Condor"],
+      "options": [
+        "Andean Condor",
+        "Wandering Albatross",
+        "Marabou Stork",
+        "California Condor"
+      ],
       "correct": 1,
       "explanation": "The Wandering Albatross has the largest wingspan of any living bird, up to 3.5 meters.",
       "type": "bluff",
@@ -15,7 +20,12 @@
     },
     {
       "question": "Which animal has the longest gestation period?",
-      "options": ["Blue Whale", "African Elephant", "Walrus", "White Rhinoceros"],
+      "options": [
+        "Blue Whale",
+        "African Elephant",
+        "Walrus",
+        "White Rhinoceros"
+      ],
       "correct": 1,
       "explanation": "African Elephants have a gestation period of about 22 months.",
       "type": "bluff",
@@ -23,7 +33,12 @@
     },
     {
       "question": "What is the fastest fish in the ocean?",
-      "options": ["Sailfish", "Swordfish", "Bluefin Tuna", "Mako Shark"],
+      "options": [
+        "Sailfish",
+        "Swordfish",
+        "Bluefin Tuna",
+        "Mako Shark"
+      ],
       "correct": 0,
       "explanation": "The Sailfish can reach speeds of up to 110 km/h.",
       "type": "bluff",
@@ -31,7 +46,12 @@
     },
     {
       "question": "Which mammal can hold its breath the longest underwater?",
-      "options": ["Sperm Whale", "Cuvier's Beaked Whale", "Elephant Seal", "Weddell Seal"],
+      "options": [
+        "Sperm Whale",
+        "Cuvier's Beaked Whale",
+        "Elephant Seal",
+        "Weddell Seal"
+      ],
       "correct": 1,
       "explanation": "Cuvier's Beaked Whale holds the record at nearly 4 hours underwater.",
       "type": "bluff",
@@ -39,7 +59,12 @@
     },
     {
       "question": "What is the most venomous snake in the world?",
-      "options": ["King Cobra", "Inland Taipan", "Black Mamba", "Eastern Brown Snake"],
+      "options": [
+        "King Cobra",
+        "Inland Taipan",
+        "Black Mamba",
+        "Eastern Brown Snake"
+      ],
       "correct": 1,
       "explanation": "The Inland Taipan's venom is the most toxic of any land snake.",
       "type": "bluff",
@@ -47,7 +72,12 @@
     },
     {
       "question": "Which insect can lift the most weight relative to its body?",
-      "options": ["Leafcutter Ant", "Dung Beetle", "Rhinoceros Beetle", "Hercules Beetle"],
+      "options": [
+        "Leafcutter Ant",
+        "Dung Beetle",
+        "Rhinoceros Beetle",
+        "Hercules Beetle"
+      ],
       "correct": 1,
       "explanation": "Dung Beetles can move objects over 1,000 times their body weight.",
       "type": "bluff",
@@ -55,7 +85,12 @@
     },
     {
       "question": "Which animal has the best eyesight?",
-      "options": ["Bald Eagle", "Mantis Shrimp", "Owl", "Chameleon"],
+      "options": [
+        "Bald Eagle",
+        "Mantis Shrimp",
+        "Owl",
+        "Chameleon"
+      ],
       "correct": 0,
       "explanation": "Eagles can spot a rabbit from over 3 km away.",
       "type": "bluff",
@@ -63,7 +98,12 @@
     },
     {
       "question": "What is the world's smallest mammal?",
-      "options": ["Pygmy Marmoset", "Bumblebee Bat", "Etruscan Shrew", "Pygmy Shrew"],
+      "options": [
+        "Pygmy Marmoset",
+        "Bumblebee Bat",
+        "Etruscan Shrew",
+        "Pygmy Shrew"
+      ],
       "correct": 1,
       "explanation": "The Bumblebee Bat weighs only about 2 grams.",
       "type": "bluff",
@@ -71,7 +111,12 @@
     },
     {
       "question": "Which animal sleeps the most hours per day?",
-      "options": ["Sloth", "Koala", "Cat", "Brown Bat"],
+      "options": [
+        "Sloth",
+        "Koala",
+        "Cat",
+        "Brown Bat"
+      ],
       "correct": 1,
       "explanation": "Koalas sleep up to 22 hours per day due to their low-energy eucalyptus diet.",
       "type": "bluff",
@@ -79,7 +124,12 @@
     },
     {
       "question": "Which ocean creature has three hearts?",
-      "options": ["Jellyfish", "Octopus", "Squid", "Sea Cucumber"],
+      "options": [
+        "Jellyfish",
+        "Octopus",
+        "Squid",
+        "Sea Cucumber"
+      ],
       "correct": 1,
       "explanation": "Octopuses have three hearts — two pump blood to the gills, one to the body.",
       "type": "bluff",
@@ -87,7 +137,12 @@
     },
     {
       "question": "What is the loudest animal on Earth?",
-      "options": ["Howler Monkey", "Sperm Whale", "Blue Whale", "Pistol Shrimp"],
+      "options": [
+        "Howler Monkey",
+        "Sperm Whale",
+        "Blue Whale",
+        "Pistol Shrimp"
+      ],
       "correct": 1,
       "explanation": "Sperm Whale clicks can reach 230 decibels underwater.",
       "type": "bluff",
@@ -95,7 +150,12 @@
     },
     {
       "question": "Which bird can fly backwards?",
-      "options": ["Swift", "Hummingbird", "Kingfisher", "Swallow"],
+      "options": [
+        "Swift",
+        "Hummingbird",
+        "Kingfisher",
+        "Swallow"
+      ],
       "correct": 1,
       "explanation": "Hummingbirds are the only birds that can sustain backward flight.",
       "type": "bluff",
@@ -103,7 +163,12 @@
     },
     {
       "question": "What animal has the strongest bite force?",
-      "options": ["Great White Shark", "Saltwater Crocodile", "Hippopotamus", "Grizzly Bear"],
+      "options": [
+        "Great White Shark",
+        "Saltwater Crocodile",
+        "Hippopotamus",
+        "Grizzly Bear"
+      ],
       "correct": 1,
       "explanation": "The Saltwater Crocodile has the strongest measured bite at ~3,700 PSI.",
       "type": "bluff",
@@ -111,7 +176,12 @@
     },
     {
       "question": "Which animal can regenerate its brain?",
-      "options": ["Starfish", "Axolotl", "Zebrafish", "Sea Cucumber"],
+      "options": [
+        "Starfish",
+        "Axolotl",
+        "Zebrafish",
+        "Sea Cucumber"
+      ],
       "correct": 1,
       "explanation": "Axolotls can regenerate their brain, heart, and limbs.",
       "type": "bluff",
@@ -119,11 +189,17 @@
     },
     {
       "question": "What is the only mammal that can truly fly?",
-      "options": ["Flying Squirrel", "Bat", "Sugar Glider", "Colugo"],
+      "options": [
+        "Flying Squirrel",
+        "Bat",
+        "Sugar Glider",
+        "Colugo"
+      ],
       "correct": 1,
       "explanation": "Bats are the only mammals capable of true sustained flight.",
       "type": "bluff",
       "bluffAnswer": "Flying Fox Lemur"
     }
-  ]
+  ],
+  "language": "en"
 }

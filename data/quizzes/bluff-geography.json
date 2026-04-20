@@ -3,11 +3,16 @@
   "title": "Bluff: Geography Surprises",
   "description": "One answer is fake — can you spot the bluff?",
   "emoji": "🌍",
-  "language": "en",
+  "createdAt": "2026-04-02T11:31:01+02:00",
   "questions": [
     {
       "question": "What is the driest place on Earth?",
-      "options": ["Sahara Desert", "Atacama Desert", "McMurdo Dry Valleys", "Death Valley"],
+      "options": [
+        "Sahara Desert",
+        "Atacama Desert",
+        "McMurdo Dry Valleys",
+        "Death Valley"
+      ],
       "correct": 2,
       "explanation": "The McMurdo Dry Valleys in Antarctica have had no rain for nearly 2 million years.",
       "type": "bluff",
@@ -15,7 +20,12 @@
     },
     {
       "question": "Which country has the most islands?",
-      "options": ["Indonesia", "Sweden", "Philippines", "Norway"],
+      "options": [
+        "Indonesia",
+        "Sweden",
+        "Philippines",
+        "Norway"
+      ],
       "correct": 1,
       "explanation": "Sweden has over 267,000 islands, more than any other country.",
       "type": "bluff",
@@ -23,7 +33,12 @@
     },
     {
       "question": "What is the longest river in the world?",
-      "options": ["Amazon", "Nile", "Yangtze", "Mississippi"],
+      "options": [
+        "Amazon",
+        "Nile",
+        "Yangtze",
+        "Mississippi"
+      ],
       "correct": 1,
       "explanation": "The Nile stretches approximately 6,650 km through northeastern Africa.",
       "type": "bluff",
@@ -31,7 +46,12 @@
     },
     {
       "question": "Which city is on two continents?",
-      "options": ["Cairo", "Istanbul", "Athens", "Moscow"],
+      "options": [
+        "Cairo",
+        "Istanbul",
+        "Athens",
+        "Moscow"
+      ],
       "correct": 1,
       "explanation": "Istanbul straddles Europe and Asia across the Bosphorus strait.",
       "type": "bluff",
@@ -39,7 +59,12 @@
     },
     {
       "question": "What is the smallest country in the world?",
-      "options": ["Monaco", "Vatican City", "San Marino", "Liechtenstein"],
+      "options": [
+        "Monaco",
+        "Vatican City",
+        "San Marino",
+        "Liechtenstein"
+      ],
       "correct": 1,
       "explanation": "Vatican City is only 0.44 km² — about the size of a golf course.",
       "type": "bluff",
@@ -47,7 +72,12 @@
     },
     {
       "question": "Which lake contains the most water by volume?",
-      "options": ["Lake Superior", "Lake Baikal", "Caspian Sea", "Lake Victoria"],
+      "options": [
+        "Lake Superior",
+        "Lake Baikal",
+        "Caspian Sea",
+        "Lake Victoria"
+      ],
       "correct": 1,
       "explanation": "Lake Baikal holds about 20% of the world's unfrozen fresh surface water.",
       "type": "bluff",
@@ -55,7 +85,12 @@
     },
     {
       "question": "What is the highest waterfall in the world?",
-      "options": ["Niagara Falls", "Angel Falls", "Victoria Falls", "Iguazu Falls"],
+      "options": [
+        "Niagara Falls",
+        "Angel Falls",
+        "Victoria Falls",
+        "Iguazu Falls"
+      ],
       "correct": 1,
       "explanation": "Angel Falls in Venezuela drops 979 meters — the world's highest uninterrupted waterfall.",
       "type": "bluff",
@@ -63,7 +98,12 @@
     },
     {
       "question": "Which desert is the largest in the world?",
-      "options": ["Sahara", "Antarctic Desert", "Arabian Desert", "Gobi Desert"],
+      "options": [
+        "Sahara",
+        "Antarctic Desert",
+        "Arabian Desert",
+        "Gobi Desert"
+      ],
       "correct": 1,
       "explanation": "Antarctica is technically the world's largest desert at 14 million km².",
       "type": "bluff",
@@ -71,7 +111,12 @@
     },
     {
       "question": "Which country has the most time zones?",
-      "options": ["Russia", "France", "USA", "China"],
+      "options": [
+        "Russia",
+        "France",
+        "USA",
+        "China"
+      ],
       "correct": 1,
       "explanation": "France has 12 time zones due to its overseas territories.",
       "type": "bluff",
@@ -79,7 +124,12 @@
     },
     {
       "question": "What is the deepest point in the ocean?",
-      "options": ["Tonga Trench", "Mariana Trench", "Puerto Rico Trench", "Java Trench"],
+      "options": [
+        "Tonga Trench",
+        "Mariana Trench",
+        "Puerto Rico Trench",
+        "Java Trench"
+      ],
       "correct": 1,
       "explanation": "The Challenger Deep in the Mariana Trench reaches about 10,935 meters.",
       "type": "bluff",
@@ -87,7 +137,12 @@
     },
     {
       "question": "Which African country has the most pyramids?",
-      "options": ["Egypt", "Sudan", "Ethiopia", "Libya"],
+      "options": [
+        "Egypt",
+        "Sudan",
+        "Ethiopia",
+        "Libya"
+      ],
       "correct": 1,
       "explanation": "Sudan has over 200 pyramids, more than double Egypt's count.",
       "type": "bluff",
@@ -95,7 +150,12 @@
     },
     {
       "question": "What is the most visited country in the world?",
-      "options": ["USA", "France", "Spain", "Italy"],
+      "options": [
+        "USA",
+        "France",
+        "Spain",
+        "Italy"
+      ],
       "correct": 1,
       "explanation": "France receives about 90 million international tourists per year.",
       "type": "bluff",
@@ -103,7 +163,12 @@
     },
     {
       "question": "Which country is both in Europe and South America?",
-      "options": ["Spain", "France", "Portugal", "Netherlands"],
+      "options": [
+        "Spain",
+        "France",
+        "Portugal",
+        "Netherlands"
+      ],
       "correct": 1,
       "explanation": "French Guiana is an overseas department of France located in South America.",
       "type": "bluff",
@@ -111,7 +176,12 @@
     },
     {
       "question": "What is the most earthquake-prone country?",
-      "options": ["Japan", "Indonesia", "Chile", "Nepal"],
+      "options": [
+        "Japan",
+        "Indonesia",
+        "Chile",
+        "Nepal"
+      ],
       "correct": 1,
       "explanation": "Indonesia sits on the Ring of Fire and experiences the most earthquakes annually.",
       "type": "bluff",
@@ -119,11 +189,17 @@
     },
     {
       "question": "Which capital city is the highest above sea level?",
-      "options": ["Quito", "La Paz", "Bogotá", "Addis Ababa"],
+      "options": [
+        "Quito",
+        "La Paz",
+        "Bogotá",
+        "Addis Ababa"
+      ],
       "correct": 1,
       "explanation": "La Paz, Bolivia sits at about 3,640 meters above sea level.",
       "type": "bluff",
       "bluffAnswer": "Mexico City"
     }
-  ]
+  ],
+  "language": "en"
 }

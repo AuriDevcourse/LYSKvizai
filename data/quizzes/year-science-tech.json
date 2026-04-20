@@ -3,11 +3,16 @@
   "title": "Year Guesser: Science & Technology",
   "description": "Guess when these inventions and discoveries happened",
   "emoji": "🔬",
-  "language": "en",
+  "createdAt": "2026-04-02T11:31:01+02:00",
   "questions": [
     {
       "question": "When was the telephone invented by Alexander Graham Bell?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Bell patented the telephone on March 7, 1876.",
       "type": "year-guesser",
@@ -15,7 +20,12 @@
     },
     {
       "question": "When was the World Wide Web invented?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Tim Berners-Lee invented the World Wide Web in 1989 at CERN.",
       "type": "year-guesser",
@@ -23,7 +33,12 @@
     },
     {
       "question": "When was the first iPhone released?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Apple released the first iPhone on June 29, 2007.",
       "type": "year-guesser",
@@ -31,7 +46,12 @@
     },
     {
       "question": "When did the Wright brothers achieve the first powered flight?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The Wright brothers flew at Kitty Hawk on December 17, 1903.",
       "type": "year-guesser",
@@ -39,7 +59,12 @@
     },
     {
       "question": "When was penicillin discovered?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Alexander Fleming discovered penicillin in 1928.",
       "type": "year-guesser",
@@ -47,7 +72,12 @@
     },
     {
       "question": "When was the first programmable computer (Z3) built?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Konrad Zuse built the Z3, the world's first programmable computer, in 1941.",
       "type": "year-guesser",
@@ -55,7 +85,12 @@
     },
     {
       "question": "When was electricity first generated commercially by Thomas Edison?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Edison opened the Pearl Street Station in New York in 1882.",
       "type": "year-guesser",
@@ -63,7 +98,12 @@
     },
     {
       "question": "When was DNA's double helix structure discovered?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Watson and Crick published their discovery of the DNA structure in 1953.",
       "type": "year-guesser",
@@ -71,7 +111,12 @@
     },
     {
       "question": "When was the printing press invented by Gutenberg?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Johannes Gutenberg invented the movable-type printing press around 1440.",
       "type": "year-guesser",
@@ -79,7 +124,12 @@
     },
     {
       "question": "When was the first nuclear reactor (Chicago Pile-1) activated?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Chicago Pile-1 achieved the first self-sustaining nuclear chain reaction on December 2, 1942.",
       "type": "year-guesser",
@@ -87,7 +137,12 @@
     },
     {
       "question": "When was the television demonstrated publicly for the first time?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "John Logie Baird demonstrated a working television in 1926.",
       "type": "year-guesser",
@@ -95,7 +150,12 @@
     },
     {
       "question": "When was the first email sent?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Ray Tomlinson sent the first email in 1971 using ARPANET.",
       "type": "year-guesser",
@@ -103,7 +163,12 @@
     },
     {
       "question": "When was the steam engine patented by James Watt?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Watt patented his improved steam engine in 1769.",
       "type": "year-guesser",
@@ -111,7 +176,12 @@
     },
     {
       "question": "When did Google launch?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Google was founded by Larry Page and Sergey Brin on September 4, 1998.",
       "type": "year-guesser",
@@ -119,11 +189,17 @@
     },
     {
       "question": "When was the Hubble Space Telescope launched?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Hubble was launched aboard the Space Shuttle Discovery on April 24, 1990.",
       "type": "year-guesser",
       "correctYear": 1990
     }
-  ]
+  ],
+  "language": "en"
 }

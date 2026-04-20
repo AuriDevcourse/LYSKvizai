@@ -3,11 +3,16 @@
   "title": "Year Guesser: Sports History",
   "description": "Guess the year of iconic sports moments",
   "emoji": "🏆",
-  "language": "en",
+  "createdAt": "2026-04-02T11:31:01+02:00",
   "questions": [
     {
       "question": "When were the first modern Olympic Games held?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The first modern Olympics were held in Athens, Greece in 1896.",
       "type": "year-guesser",
@@ -15,7 +20,12 @@
     },
     {
       "question": "When did Usain Bolt set the 100m world record (9.58s)?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Bolt ran 9.58 seconds at the 2009 World Championships in Berlin.",
       "type": "year-guesser",
@@ -23,7 +33,12 @@
     },
     {
       "question": "When was the first FIFA World Cup held?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The first World Cup was held in Uruguay in 1930.",
       "type": "year-guesser",
@@ -31,7 +46,12 @@
     },
     {
       "question": "When did Michael Jordan first retire from basketball?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Jordan announced his first retirement on October 6, 1993.",
       "type": "year-guesser",
@@ -39,7 +59,12 @@
     },
     {
       "question": "When did Muhammad Ali light the Olympic cauldron in Atlanta?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Ali lit the cauldron at the 1996 Atlanta Summer Olympics opening ceremony.",
       "type": "year-guesser",
@@ -47,7 +72,12 @@
     },
     {
       "question": "When did Leicester City win the Premier League?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Leicester City won the 2015–16 Premier League, one of sports' greatest upsets.",
       "type": "year-guesser",
@@ -55,7 +85,12 @@
     },
     {
       "question": "When did Tiger Woods win his first Masters Tournament?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Tiger Woods won the 1997 Masters by 12 strokes at age 21.",
       "type": "year-guesser",
@@ -63,7 +98,12 @@
     },
     {
       "question": "When was the first Super Bowl played?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Super Bowl I was played on January 15, 1967. The Green Bay Packers won.",
       "type": "year-guesser",
@@ -71,7 +111,12 @@
     },
     {
       "question": "When did Nadia Comăneci score the first perfect 10 in Olympic gymnastics?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Comăneci scored the first perfect 10 at the 1976 Montreal Olympics.",
       "type": "year-guesser",
@@ -79,7 +124,12 @@
     },
     {
       "question": "When did Spain win their first FIFA World Cup?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Spain won the 2010 World Cup in South Africa, beating the Netherlands 1-0.",
       "type": "year-guesser",
@@ -87,7 +137,12 @@
     },
     {
       "question": "When did Roger Bannister run the first sub-4-minute mile?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Bannister ran a mile in 3:59.4 on May 6, 1954 in Oxford.",
       "type": "year-guesser",
@@ -95,7 +150,12 @@
     },
     {
       "question": "When did LeBron James enter the NBA?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "LeBron was the first overall pick in the 2003 NBA Draft by the Cleveland Cavaliers.",
       "type": "year-guesser",
@@ -103,7 +163,12 @@
     },
     {
       "question": "When did the 'Miracle on Ice' happen at the Winter Olympics?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The US hockey team upset the Soviet Union at the 1980 Lake Placid Winter Olympics.",
       "type": "year-guesser",
@@ -111,7 +176,12 @@
     },
     {
       "question": "When did Serena Williams win her first Grand Slam title?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "Serena won the 1999 US Open at age 17.",
       "type": "year-guesser",
@@ -119,11 +189,17 @@
     },
     {
       "question": "When did the Chicago Cubs break their 108-year World Series drought?",
-      "options": ["", "", "", ""],
+      "options": [
+        "",
+        "",
+        "",
+        ""
+      ],
       "correct": 0,
       "explanation": "The Cubs won the 2016 World Series, their first title since 1908.",
       "type": "year-guesser",
       "correctYear": 2016
     }
-  ]
+  ],
+  "language": "en"
 }
