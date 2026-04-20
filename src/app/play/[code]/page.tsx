@@ -57,8 +57,8 @@ export default function GamePage({ params }: PageProps) {
   });
 
   const [playerEmoji] = useState(() => {
-    if (typeof window === "undefined") return "🎭";
-    return sessionStorage.getItem("quiz-player-emoji") ?? "🎭";
+    if (typeof window === "undefined") return "";
+    return sessionStorage.getItem("quiz-player-emoji") ?? "";
   });
 
   const [hostPlaying] = useState(() => {

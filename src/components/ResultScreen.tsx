@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Trophy, Flame, Star, ThumbsUp, Dumbbell, Target, type LucideIcon } from "lucide-react";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface ResultScreenProps {
@@ -9,14 +10,14 @@ interface ResultScreenProps {
   onRestart: () => void;
 }
 
-function getEmoji(score: number, total: number): string {
+function getTierIcon(score: number, total: number): { icon: LucideIcon; color: string } {
   const pct = score / total;
-  if (pct === 1) return "🏆";
-  if (pct >= 0.9) return "🔥";
-  if (pct >= 0.7) return "⭐";
-  if (pct >= 0.5) return "👍";
-  if (pct >= 0.3) return "💪";
-  return "🎯";
+  if (pct === 1) return { icon: Trophy, color: "text-[#ff9062]" };
+  if (pct >= 0.9) return { icon: Flame, color: "text-[#ff793e]" };
+  if (pct >= 0.7) return { icon: Star, color: "text-[#c9a825]" };
+  if (pct >= 0.5) return { icon: ThumbsUp, color: "text-[#66bb6a]" };
+  if (pct >= 0.3) return { icon: Dumbbell, color: "text-[#43a5fc]" };
+  return { icon: Target, color: "text-white/50" };
 }
 
 function getMessageKey(score: number, total: number): string {
@@ -31,7 +32,7 @@ function getMessageKey(score: number, total: number): string {
 
 export default function ResultScreen({ score, total, onRestart }: ResultScreenProps) {
   const { t } = useTranslation();
-  const emoji = getEmoji(score, total);
+  const { icon: TierIcon, color: tierColor } = getTierIcon(score, total);
   const title = t(getMessageKey(score, total) as never);
   const [displayScore, setDisplayScore] = useState(0);
   const [step, setStep] = useState(0);
@@ -71,12 +72,12 @@ export default function ResultScreen({ score, total, onRestart }: ResultScreenPr
 
   return (
     <div className="flex w-full flex-col items-center text-center">
-      {/* Big emoji */}
+      {/* Tier icon */}
       <div
-        className="mb-4 text-7xl sm:text-8xl transition-[opacity,transform] duration-500"
+        className="mb-4 transition-[opacity,transform] duration-500"
         style={{ opacity: step >= 1 ? 1 : 0, transform: step >= 1 ? "scale(1)" : "scale(0.3)" }}
       >
-        {emoji}
+        <TierIcon className={`h-20 w-20 sm:h-24 sm:w-24 ${tierColor}`} strokeWidth={1.5} />
       </div>
 
       {/* Score */}

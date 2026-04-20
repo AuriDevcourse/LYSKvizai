@@ -1,33 +1,31 @@
 import { createAvatar } from "@dicebear/core";
-import { notionists } from "@dicebear/collection";
+import { adventurer } from "@dicebear/collection";
 
-// Avatar config stored as compact string: "d1:H:E:L:N:B:Bd:Bd:G:BG"
+// Avatar config stored as compact string: "d2:H:E:M:B:G:Er:F:BG"
 // where each letter is a zero-based index into the style's variant list.
-// -1 for optional features (beard, glasses) means "not shown".
+// -1 for optional features (glasses, earrings, features) means "not shown".
+//
+// Prefix d2 = adventurer style. (d1 = legacy notionists, no longer generated.)
 
-type Category = "hair" | "eyes" | "lips" | "nose" | "brows" | "body" | "beard" | "glasses";
+type Category = "hair" | "eyes" | "mouth" | "eyebrows" | "glasses" | "earrings" | "features";
 
-const CATEGORIES: Category[] = ["hair", "eyes", "lips", "nose", "brows", "body", "beard", "glasses"];
+const CATEGORIES: Category[] = ["hair", "eyes", "mouth", "eyebrows", "glasses", "earrings", "features"];
 
-// Extract variant lists from the Notionists schema once. These are style-defined;
-// if DiceBear ships new variants in a minor version, old stored configs still resolve
-// because indices are bounded by getVariants(...).length.
-const schemaProps = (notionists.schema?.properties ?? {}) as Record<
+const schemaProps = (adventurer.schema?.properties ?? {}) as Record<
   string,
   { items?: { enum?: string[] } }
 >;
 const variants: Record<Category, string[]> = {
   hair: schemaProps.hair?.items?.enum ?? [],
   eyes: schemaProps.eyes?.items?.enum ?? [],
-  lips: schemaProps.lips?.items?.enum ?? [],
-  nose: schemaProps.nose?.items?.enum ?? [],
-  brows: schemaProps.brows?.items?.enum ?? [],
-  body: schemaProps.body?.items?.enum ?? [],
-  beard: schemaProps.beard?.items?.enum ?? [],
+  mouth: schemaProps.mouth?.items?.enum ?? [],
+  eyebrows: schemaProps.eyebrows?.items?.enum ?? [],
   glasses: schemaProps.glasses?.items?.enum ?? [],
+  earrings: schemaProps.earrings?.items?.enum ?? [],
+  features: schemaProps.features?.items?.enum ?? [],
 };
 
-// Palette of pleasant backgrounds that work on #0e0e0e panels.
+// Backgrounds that play well on #0e0e0e glass panels
 const BACKGROUNDS = [
   "transparent",
   "ff9062",
@@ -42,16 +40,14 @@ const BACKGROUNDS = [
 export interface DiceBearConfig {
   hair: number;
   eyes: number;
-  lips: number;
-  nose: number;
-  brows: number;
-  body: number;
-  beard: number;   // -1 = no beard
-  glasses: number; // -1 = no glasses
-  bg: number;      // index into BACKGROUNDS
+  mouth: number;
+  eyebrows: number;
+  glasses: number;   // -1 = no glasses
+  earrings: number;  // -1 = no earrings
+  features: number;  // -1 = no features (freckles etc.)
+  bg: number;
 }
 
-/** Get variant count for a category (useful for option grids). */
 export function variantCount(cat: Category): number {
   return variants[cat].length;
 }
@@ -75,47 +71,44 @@ function clamp(i: number, max: number): number {
 
 export function encode(c: DiceBearConfig): string {
   return [
-    "d1",
+    "d2",
     c.hair,
     c.eyes,
-    c.lips,
-    c.nose,
-    c.brows,
-    c.body,
-    c.beard,
+    c.mouth,
+    c.eyebrows,
     c.glasses,
+    c.earrings,
+    c.features,
     c.bg,
   ].join(":");
 }
 
 export function decode(s: string): DiceBearConfig | null {
-  if (!s.startsWith("d1:")) return null;
+  if (!s.startsWith("d2:")) return null;
   const parts = s.split(":");
-  if (parts.length !== 10) return null;
+  if (parts.length !== 9) return null;
   const nums = parts.slice(1).map((p) => parseInt(p, 10));
   if (nums.some((n) => isNaN(n))) return null;
   return {
     hair: nums[0],
     eyes: nums[1],
-    lips: nums[2],
-    nose: nums[3],
-    brows: nums[4],
-    body: nums[5],
-    beard: nums[6],
-    glasses: nums[7],
-    bg: nums[8],
+    mouth: nums[2],
+    eyebrows: nums[3],
+    glasses: nums[4],
+    earrings: nums[5],
+    features: nums[6],
+    bg: nums[7],
   };
 }
 
 export const DEFAULT_CONFIG: DiceBearConfig = {
   hair: 0,
   eyes: 0,
-  lips: 0,
-  nose: 0,
-  brows: 0,
-  body: 0,
-  beard: -1,
+  mouth: 0,
+  eyebrows: 0,
   glasses: -1,
+  earrings: -1,
+  features: -1,
   bg: 0,
 };
 
@@ -123,45 +116,40 @@ function randInt(max: number): number {
   return Math.floor(Math.random() * max);
 }
 
-/** Randomize all features. Beard/glasses appear with modest probability so
- *  not every avatar is over-decorated. */
+/** Randomize all features. Optional extras appear at modest rates so avatars
+ *  don't feel over-decorated by default. */
 export function randomConfig(): DiceBearConfig {
   return {
     hair: randInt(variants.hair.length),
     eyes: randInt(variants.eyes.length),
-    lips: randInt(variants.lips.length),
-    nose: randInt(variants.nose.length),
-    brows: randInt(variants.brows.length),
-    body: randInt(variants.body.length),
-    beard: Math.random() < 0.25 ? randInt(variants.beard.length) : -1,
-    glasses: Math.random() < 0.3 ? randInt(variants.glasses.length) : -1,
+    mouth: randInt(variants.mouth.length),
+    eyebrows: randInt(variants.eyebrows.length),
+    glasses: Math.random() < 0.25 ? randInt(variants.glasses.length) : -1,
+    earrings: Math.random() < 0.2 ? randInt(variants.earrings.length) : -1,
+    features: Math.random() < 0.3 ? randInt(variants.features.length) : -1,
     bg: randInt(BACKGROUNDS.length),
   };
 }
 
-/** Re-roll a single feature. */
 export function rerollCategory(c: DiceBearConfig, cat: Category | "bg"): DiceBearConfig {
   if (cat === "bg") return { ...c, bg: randInt(BACKGROUNDS.length) };
-  if (cat === "beard" || cat === "glasses") {
-    // Cycle: -1 → random variant → different random variant → -1 → ...
+  const isOptional = cat === "glasses" || cat === "earrings" || cat === "features";
+  if (isOptional) {
     if (c[cat] === -1) return { ...c, [cat]: randInt(variants[cat].length) };
-    const nextIdx = randInt(variants[cat].length);
-    // 25% chance of toggling off
     if (Math.random() < 0.25) return { ...c, [cat]: -1 };
-    return { ...c, [cat]: nextIdx === c[cat] ? (nextIdx + 1) % variants[cat].length : nextIdx };
+    const next = randInt(variants[cat].length);
+    return { ...c, [cat]: next === c[cat] ? (next + 1) % variants[cat].length : next };
   }
   const count = variants[cat].length;
   const next = randInt(count);
   return { ...c, [cat]: next === c[cat] ? (next + 1) % count : next };
 }
 
-/** Explicitly set one feature to a specific variant index. */
 export function setFeature(c: DiceBearConfig, cat: Category | "bg", idx: number): DiceBearConfig {
   if (cat === "bg") return { ...c, bg: clamp(idx, BACKGROUNDS.length) };
   return { ...c, [cat]: clamp(idx, variants[cat].length) };
 }
 
-/** Render the config as an SVG string. */
 export function renderSvg(c: DiceBearConfig, size = 128): string {
   const opts: Record<string, unknown> = {
     size,
@@ -170,22 +158,26 @@ export function renderSvg(c: DiceBearConfig, size = 128): string {
     radius: 50,
     hair: [variants.hair[clamp(c.hair, variants.hair.length)]],
     eyes: [variants.eyes[clamp(c.eyes, variants.eyes.length)]],
-    lips: [variants.lips[clamp(c.lips, variants.lips.length)]],
-    nose: [variants.nose[clamp(c.nose, variants.nose.length)]],
-    brows: [variants.brows[clamp(c.brows, variants.brows.length)]],
-    body: [variants.body[clamp(c.body, variants.body.length)]],
+    mouth: [variants.mouth[clamp(c.mouth, variants.mouth.length)]],
+    eyebrows: [variants.eyebrows[clamp(c.eyebrows, variants.eyebrows.length)]],
   };
-  if (c.beard >= 0 && variants.beard.length) {
-    opts.beard = [variants.beard[clamp(c.beard, variants.beard.length)]];
-    opts.beardProbability = 100;
-  } else {
-    opts.beardProbability = 0;
-  }
   if (c.glasses >= 0 && variants.glasses.length) {
     opts.glasses = [variants.glasses[clamp(c.glasses, variants.glasses.length)]];
     opts.glassesProbability = 100;
   } else {
     opts.glassesProbability = 0;
   }
-  return createAvatar(notionists, opts).toString();
+  if (c.earrings >= 0 && variants.earrings.length) {
+    opts.earrings = [variants.earrings[clamp(c.earrings, variants.earrings.length)]];
+    opts.earringsProbability = 100;
+  } else {
+    opts.earringsProbability = 0;
+  }
+  if (c.features >= 0 && variants.features.length) {
+    opts.features = [variants.features[clamp(c.features, variants.features.length)]];
+    opts.featuresProbability = 100;
+  } else {
+    opts.featuresProbability = 0;
+  }
+  return createAvatar(adventurer, opts).toString();
 }

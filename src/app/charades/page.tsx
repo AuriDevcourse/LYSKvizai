@@ -387,8 +387,12 @@ function CharadesInner() {
       {/* Timer bar */}
       <div className="w-full px-4 pt-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-bold text-white/50">
-            {correctWords.length} ✓ · {skippedWords.length} ✗
+          <span className="flex items-center gap-1.5 text-sm font-bold text-white/50">
+            <Check className="h-3.5 w-3.5 text-[#66bb6a]" strokeWidth={3} />
+            {correctWords.length}
+            <span className="mx-1 text-white/20">·</span>
+            <X className="h-3.5 w-3.5 text-[#ff716c]" strokeWidth={3} />
+            {skippedWords.length}
           </span>
           <span className={`text-2xl font-black ${timeLeft <= 10 ? "text-[#ff716c]" : "text-white"}`}>
             {timeLeft}

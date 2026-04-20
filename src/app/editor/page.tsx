@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Plus, Trash2, Pencil, ArrowLeft, Loader2 } from "lucide-react";
+import { Plus, Trash2, Pencil, ArrowLeft, Loader2, FileText } from "lucide-react";
 import type { QuizMeta } from "@/data/types";
 import { getQuizTheme } from "@/lib/quiz-theme";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
@@ -73,7 +73,9 @@ export default function EditorPage() {
           </div>
         ) : quizzes.length === 0 ? (
           <div className="py-16 text-center">
-            <div className="mb-4 text-5xl">📝</div>
+            <div className="mb-4 flex justify-center">
+              <FileText className="h-16 w-16 text-white/25" strokeWidth={1.5} />
+            </div>
             <p className="text-lg text-white/50">{t("editor.noQuizzes")}</p>
             <p className="mt-1 text-sm text-white/30">
               {t("editor.getStarted")}

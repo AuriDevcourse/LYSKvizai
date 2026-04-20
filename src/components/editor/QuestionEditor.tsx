@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronUp, ChevronDown, Trash2 } from "lucide-react";
+import { ChevronUp, ChevronDown, Trash2, AlertTriangle } from "lucide-react";
 import type { Question, QuestionType } from "@/data/types";
 import ImageUpload from "./ImageUpload";
 import MediaUpload from "./MediaUpload";
@@ -217,8 +217,9 @@ export default function QuestionEditor({
 
       {/* Zoom-out hint */}
       {questionType === "zoom-out" && !question.image && (
-        <div className="mb-4 rounded-lg border-2 border-yellow-400/30 bg-yellow-400/5 px-3 py-2 text-xs text-yellow-300/70">
-          ⚠ Zoom Out klausimui reikia nuotraukos, pridėk ją žemiau
+        <div className="mb-4 flex items-center gap-2 rounded-lg border-2 border-yellow-400/30 bg-yellow-400/5 px-3 py-2 text-xs text-yellow-300/70">
+          <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+          Zoom-out questions need an image. Add one below.
         </div>
       )}
 

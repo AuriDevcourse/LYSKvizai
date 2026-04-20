@@ -18,45 +18,44 @@ interface AvatarBuilderProps {
   onChange: (encoded: string) => void;
 }
 
-type Tab = "hair" | "eyes" | "brows" | "lips" | "nose" | "body" | "beard" | "glasses" | "bg";
+type Tab = "hair" | "eyes" | "eyebrows" | "mouth" | "glasses" | "earrings" | "features" | "bg";
 
-const TABS: { id: Tab; label: string; emoji: string }[] = [
-  { id: "hair", label: "Hair", emoji: "💇" },
-  { id: "eyes", label: "Eyes", emoji: "👀" },
-  { id: "brows", label: "Brows", emoji: "🤨" },
-  { id: "lips", label: "Lips", emoji: "👄" },
-  { id: "nose", label: "Nose", emoji: "👃" },
-  { id: "body", label: "Body", emoji: "🧑" },
-  { id: "beard", label: "Beard", emoji: "🧔" },
-  { id: "glasses", label: "Glasses", emoji: "👓" },
-  { id: "bg", label: "BG", emoji: "🎨" },
+const TABS: { id: Tab; label: string }[] = [
+  { id: "hair", label: "Hair" },
+  { id: "eyes", label: "Eyes" },
+  { id: "eyebrows", label: "Brows" },
+  { id: "mouth", label: "Mouth" },
+  { id: "glasses", label: "Glasses" },
+  { id: "earrings", label: "Earrings" },
+  { id: "features", label: "Features" },
+  { id: "bg", label: "Background" },
 ];
 
-/** Build a preview config with one feature swapped (used for option grids). */
+/** Build a preview config with one feature swapped. For optional categories
+ *  (glasses/earrings/features) option 0 is the "none" tile. */
 function withFeature(base: DiceBearConfig, cat: Tab, idx: number): DiceBearConfig {
   if (cat === "bg") return setFeature(base, "bg", idx);
-  if (cat === "beard" || cat === "glasses") {
-    // idx = 0 means "none", 1..N means variant (N-1)
+  const isOptional = cat === "glasses" || cat === "earrings" || cat === "features";
+  if (isOptional) {
     if (idx === 0) return { ...base, [cat]: -1 };
     return setFeature(base, cat, idx - 1);
   }
   return setFeature(base, cat, idx);
 }
 
-/** How many options to show in each tab's grid. Includes the "none" tile for
- *  optional categories (beard, glasses). */
 function optionCount(cat: Tab): number {
   if (cat === "bg") return backgroundCount();
-  if (cat === "beard") return variantCount("beard") + 1;
-  if (cat === "glasses") return variantCount("glasses") + 1;
+  if (cat === "glasses" || cat === "earrings" || cat === "features") {
+    return variantCount(cat) + 1;
+  }
   return variantCount(cat);
 }
 
-/** Is this option the currently-selected one? */
 function isSelected(cat: Tab, idx: number, c: DiceBearConfig): boolean {
   if (cat === "bg") return c.bg === idx;
-  if (cat === "beard") return idx === 0 ? c.beard === -1 : c.beard === idx - 1;
   if (cat === "glasses") return idx === 0 ? c.glasses === -1 : c.glasses === idx - 1;
+  if (cat === "earrings") return idx === 0 ? c.earrings === -1 : c.earrings === idx - 1;
+  if (cat === "features") return idx === 0 ? c.features === -1 : c.features === idx - 1;
   return c[cat] === idx;
 }
 
@@ -64,7 +63,6 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
   const [config, setConfig] = useState<DiceBearConfig>(DEFAULT_CONFIG);
   const [tab, setTab] = useState<Tab>("hair");
 
-  // Randomize on mount (client only to avoid hydration mismatch)
   useEffect(() => {
     const rand = randomConfig();
     setConfig(rand);
@@ -92,9 +90,11 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
     onChange(encode(next));
   };
 
+  const activeLabel = TABS.find((t) => t.id === tab)?.label.toLowerCase() ?? "";
+
   return (
     <div className="flex flex-col gap-3">
-      {/* Top: preview + dice */}
+      {/* Preview + dice controls */}
       <div className="flex items-center gap-3">
         <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white/5 p-1">
           <Avatar value={encoded} size={72} />
@@ -114,31 +114,30 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
             className="flex items-center justify-center gap-1.5 rounded-xl bg-white/5 px-3 py-2 text-[11px] font-bold text-white/60 transition-all hover:bg-white/10 hover:text-white active:scale-95"
           >
             <Dices className="h-3.5 w-3.5" />
-            Re-roll {TABS.find((t) => t.id === tab)?.label.toLowerCase()}
+            Re-roll {activeLabel}
           </button>
         </div>
       </div>
 
-      {/* Tabs (horizontal scroll on mobile) */}
+      {/* Tabs */}
       <div className="-mx-1 flex gap-1 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {TABS.map((t) => (
           <button
             key={t.id}
             type="button"
             onClick={() => setTab(t.id)}
-            className={`shrink-0 rounded-lg px-2.5 py-1.5 text-[11px] font-bold transition-all ${
+            className={`shrink-0 rounded-lg px-3 py-1.5 text-[11px] font-bold transition-all ${
               tab === t.id
                 ? "bg-[#ff9062] text-black"
                 : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
             }`}
           >
-            <span className="mr-1">{t.emoji}</span>
             {t.label}
           </button>
         ))}
       </div>
 
-      {/* Options grid — each tile is a full avatar preview with just this feature swapped */}
+      {/* Option grid */}
       <div className="grid max-h-56 grid-cols-4 gap-1.5 overflow-y-auto pr-0.5 sm:grid-cols-5">
         {Array.from({ length: optionCount(tab) }, (_, i) => {
           const preview = withFeature(config, tab, i);

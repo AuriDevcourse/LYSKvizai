@@ -2,7 +2,7 @@
 
 import { use, useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Plus, Save, Loader2 } from "lucide-react";
+import { ArrowLeft, Plus, Save, Loader2, AlertTriangle } from "lucide-react";
 import type { Question, Quiz } from "@/data/types";
 import QuestionEditor from "@/components/editor/QuestionEditor";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
@@ -157,7 +157,7 @@ export default function QuizEditorPage({ params }: PageProps) {
     return (
       <div className="flex min-h-svh items-center justify-center">
         <div className="flex flex-col items-center gap-4 text-center">
-          <div className="text-5xl">😵</div>
+          <AlertTriangle className="h-14 w-14 text-[#ff716c]" strokeWidth={1.5} />
           <p className="text-lg text-white">{error}</p>
           <button
             onClick={() => router.push("/editor")}
