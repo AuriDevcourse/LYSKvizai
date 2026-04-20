@@ -1,175 +1,164 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Dices } from "lucide-react";
-import Avatar, {
-  ANIMALS,
-  COLORS,
-  HATS,
-  ACCESSORIES,
-  encodeAvatar,
-  type AvatarConfig,
-} from "./Avatar";
+import Avatar from "./Avatar";
+import {
+  type DiceBearConfig,
+  DEFAULT_CONFIG,
+  encode,
+  randomConfig,
+  rerollCategory,
+  setFeature,
+  variantCount,
+  backgroundCount,
+} from "@/lib/avatar-dicebear";
 
 interface AvatarBuilderProps {
   onChange: (encoded: string) => void;
 }
 
-type Tab = "animal" | "color" | "hat" | "accessory";
+type Tab = "hair" | "eyes" | "brows" | "lips" | "nose" | "body" | "beard" | "glasses" | "bg";
 
-const TABS: { id: Tab; label: string }[] = [
-  { id: "animal", label: "Face" },
-  { id: "color", label: "Color" },
-  { id: "hat", label: "Hat" },
-  { id: "accessory", label: "Extra" },
+const TABS: { id: Tab; label: string; emoji: string }[] = [
+  { id: "hair", label: "Hair", emoji: "💇" },
+  { id: "eyes", label: "Eyes", emoji: "👀" },
+  { id: "brows", label: "Brows", emoji: "🤨" },
+  { id: "lips", label: "Lips", emoji: "👄" },
+  { id: "nose", label: "Nose", emoji: "👃" },
+  { id: "body", label: "Body", emoji: "🧑" },
+  { id: "beard", label: "Beard", emoji: "🧔" },
+  { id: "glasses", label: "Glasses", emoji: "👓" },
+  { id: "bg", label: "BG", emoji: "🎨" },
 ];
 
-function randomConfig(): AvatarConfig {
-  return {
-    animal: ANIMALS[Math.floor(Math.random() * ANIMALS.length)].id,
-    color: COLORS[Math.floor(Math.random() * COLORS.length)].id,
-    hat: HATS[Math.floor(Math.random() * HATS.length)].id,
-    accessory: ACCESSORIES[Math.floor(Math.random() * ACCESSORIES.length)].id,
-  };
+/** Build a preview config with one feature swapped (used for option grids). */
+function withFeature(base: DiceBearConfig, cat: Tab, idx: number): DiceBearConfig {
+  if (cat === "bg") return setFeature(base, "bg", idx);
+  if (cat === "beard" || cat === "glasses") {
+    // idx = 0 means "none", 1..N means variant (N-1)
+    if (idx === 0) return { ...base, [cat]: -1 };
+    return setFeature(base, cat, idx - 1);
+  }
+  return setFeature(base, cat, idx);
 }
 
-const DEFAULT_CONFIG: AvatarConfig = { animal: "bear", color: "red", hat: "none", accessory: "none" };
+/** How many options to show in each tab's grid. Includes the "none" tile for
+ *  optional categories (beard, glasses). */
+function optionCount(cat: Tab): number {
+  if (cat === "bg") return backgroundCount();
+  if (cat === "beard") return variantCount("beard") + 1;
+  if (cat === "glasses") return variantCount("glasses") + 1;
+  return variantCount(cat);
+}
+
+/** Is this option the currently-selected one? */
+function isSelected(cat: Tab, idx: number, c: DiceBearConfig): boolean {
+  if (cat === "bg") return c.bg === idx;
+  if (cat === "beard") return idx === 0 ? c.beard === -1 : c.beard === idx - 1;
+  if (cat === "glasses") return idx === 0 ? c.glasses === -1 : c.glasses === idx - 1;
+  return c[cat] === idx;
+}
 
 export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
-  const [config, setConfig] = useState<AvatarConfig>(DEFAULT_CONFIG);
-  const [tab, setTab] = useState<Tab>("animal");
+  const [config, setConfig] = useState<DiceBearConfig>(DEFAULT_CONFIG);
+  const [tab, setTab] = useState<Tab>("hair");
 
-  // Randomize on mount (client only) to avoid hydration mismatch
+  // Randomize on mount (client only to avoid hydration mismatch)
   useEffect(() => {
     const rand = randomConfig();
     setConfig(rand);
-    onChange(encodeAvatar(rand));
+    onChange(encode(rand));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const update = (patch: Partial<AvatarConfig>) => {
-    const next = { ...config, ...patch };
-    setConfig(next);
-    onChange(encodeAvatar(next));
-  };
+  const encoded = useMemo(() => encode(config), [config]);
 
   const randomize = () => {
     const next = randomConfig();
     setConfig(next);
-    onChange(encodeAvatar(next));
+    onChange(encode(next));
+  };
+
+  const pickOption = (cat: Tab, idx: number) => {
+    const next = withFeature(config, cat, idx);
+    setConfig(next);
+    onChange(encode(next));
+  };
+
+  const rerollCurrent = () => {
+    const next = rerollCategory(config, tab);
+    setConfig(next);
+    onChange(encode(next));
   };
 
   return (
-    <div className="flex gap-4">
-      {/* Left: preview + dice */}
-      <div className="flex flex-col items-center gap-2 shrink-0">
-        <div className="flex items-center justify-center rounded-2xl bg-white/5 p-2">
-          <Avatar value={encodeAvatar(config)} size={72} />
+    <div className="flex flex-col gap-3">
+      {/* Top: preview + dice */}
+      <div className="flex items-center gap-3">
+        <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white/5 p-1">
+          <Avatar value={encoded} size={72} />
         </div>
-        <button
-          type="button"
-          onClick={randomize}
-          className="flex items-center gap-1.5 rounded-xl bg-white/5 px-3 py-1.5 text-xs font-bold text-white/60 transition-all hover:bg-white/20 hover:text-white active:scale-95"
-        >
-          <Dices className="h-4 w-4" />
-        </button>
+        <div className="flex flex-1 flex-col gap-1.5">
+          <button
+            type="button"
+            onClick={randomize}
+            className="flex items-center justify-center gap-1.5 rounded-xl bg-white/8 px-3 py-2 text-xs font-bold text-white transition-all hover:bg-white/15 active:scale-95"
+          >
+            <Dices className="h-4 w-4" />
+            Randomize all
+          </button>
+          <button
+            type="button"
+            onClick={rerollCurrent}
+            className="flex items-center justify-center gap-1.5 rounded-xl bg-white/5 px-3 py-2 text-[11px] font-bold text-white/60 transition-all hover:bg-white/10 hover:text-white active:scale-95"
+          >
+            <Dices className="h-3.5 w-3.5" />
+            Re-roll {TABS.find((t) => t.id === tab)?.label.toLowerCase()}
+          </button>
+        </div>
       </div>
 
-      {/* Right: tabs + options */}
-      <div className="flex flex-1 flex-col gap-2 min-w-0">
-        {/* Tabs */}
-        <div className="flex rounded-xl bg-white/5 p-0.5">
-          {TABS.map((t) => (
+      {/* Tabs (horizontal scroll on mobile) */}
+      <div className="-mx-1 flex gap-1 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {TABS.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            onClick={() => setTab(t.id)}
+            className={`shrink-0 rounded-lg px-2.5 py-1.5 text-[11px] font-bold transition-all ${
+              tab === t.id
+                ? "bg-[#ff9062] text-black"
+                : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
+            }`}
+          >
+            <span className="mr-1">{t.emoji}</span>
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Options grid — each tile is a full avatar preview with just this feature swapped */}
+      <div className="grid max-h-56 grid-cols-4 gap-1.5 overflow-y-auto pr-0.5 sm:grid-cols-5">
+        {Array.from({ length: optionCount(tab) }, (_, i) => {
+          const preview = withFeature(config, tab, i);
+          const selected = isSelected(tab, i, config);
+          return (
             <button
-              key={t.id}
+              key={i}
               type="button"
-              onClick={() => setTab(t.id)}
-              className={`flex-1 rounded-lg px-1.5 py-1.5 text-[11px] font-bold transition-all ${
-                tab === t.id
-                  ? "bg-white text-[#ff9062]"
-                  : "text-white/50 hover:text-white"
+              onClick={() => pickOption(tab, i)}
+              className={`flex aspect-square items-center justify-center rounded-xl p-1 transition-all ${
+                selected
+                  ? "bg-white/15 outline outline-[1.5px] outline-[#ff9062]"
+                  : "bg-white/5 hover:bg-white/10"
               }`}
+              aria-label={`${tab} option ${i + 1}`}
             >
-              {t.label}
+              <Avatar value={encode(preview)} size={40} />
             </button>
-          ))}
-        </div>
-
-        {/* Tab content */}
-        {tab === "animal" && (
-          <div className="grid grid-cols-4 gap-1.5 max-h-44 overflow-y-auto pr-0.5">
-            {ANIMALS.map((a) => (
-              <button
-                key={a.id}
-                type="button"
-                onClick={() => update({ animal: a.id })}
-                className={`flex items-center justify-center rounded-xl p-1.5 transition-all ${
-                  config.animal === a.id
-                    ? "bg-white/20 outline outline-[1.5px] outline-[#ff9062]"
-                    : "bg-white/5 hover:bg-white/10"
-                }`}
-              >
-                <Avatar value={encodeAvatar({ ...config, animal: a.id })} size={36} />
-              </button>
-            ))}
-          </div>
-        )}
-
-        {tab === "color" && (
-          <div className="grid grid-cols-4 gap-2 max-h-44 overflow-y-auto pr-0.5">
-            {COLORS.map((c) => (
-              <button
-                key={c.id}
-                type="button"
-                onClick={() => update({ color: c.id })}
-                className={`h-10 rounded-xl transition-all ${
-                  config.color === c.id
-                    ? "outline outline-[1.5px] outline-[#ff9062] scale-105"
-                    : "hover:scale-105"
-                }`}
-                style={{ backgroundColor: c.fill }}
-              />
-            ))}
-          </div>
-        )}
-
-        {tab === "hat" && (
-          <div className="grid grid-cols-4 gap-1.5 max-h-44 overflow-y-auto pr-0.5">
-            {HATS.map((h) => (
-              <button
-                key={h.id}
-                type="button"
-                onClick={() => update({ hat: h.id })}
-                className={`flex items-center justify-center rounded-xl p-1.5 transition-all ${
-                  config.hat === h.id
-                    ? "bg-white/20 outline outline-[1.5px] outline-[#ff9062]"
-                    : "bg-white/5 hover:bg-white/10"
-                }`}
-              >
-                <Avatar value={encodeAvatar({ ...config, hat: h.id })} size={36} />
-              </button>
-            ))}
-          </div>
-        )}
-
-        {tab === "accessory" && (
-          <div className="grid grid-cols-3 gap-1.5 max-h-44 overflow-y-auto pr-0.5">
-            {ACCESSORIES.map((a) => (
-              <button
-                key={a.id}
-                type="button"
-                onClick={() => update({ accessory: a.id })}
-                className={`flex items-center justify-center rounded-xl p-1.5 transition-all ${
-                  config.accessory === a.id
-                    ? "bg-white/20 outline outline-[1.5px] outline-[#ff9062]"
-                    : "bg-white/5 hover:bg-white/10"
-                }`}
-              >
-                <Avatar value={encodeAvatar({ ...config, accessory: a.id })} size={36} />
-              </button>
-            ))}
-          </div>
-        )}
+          );
+        })}
       </div>
     </div>
   );

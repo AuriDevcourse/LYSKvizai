@@ -1,7 +1,11 @@
 "use client";
 
+import { useMemo } from "react";
+import { decode as decodeDiceBear, renderSvg as renderDiceBearSvg } from "@/lib/avatar-dicebear";
+
 // Avatar config format: "animal:color:hat:accessory" e.g. "bear:amber:crown:glasses"
-// Falls back to rendering as emoji if not in this format
+// Falls back to rendering as emoji if not in this format.
+// New: "d1:..." prefix = DiceBear Notionists config (see avatar-dicebear.ts)
 
 export interface AvatarConfig {
   animal: string;
@@ -73,6 +77,22 @@ interface AvatarProps {
 
 export default function Avatar({ value, size = 48, className = "" }: AvatarProps) {
   const config = decodeAvatar(value);
+
+  // DiceBear Notionists — "d1:..." encoded config
+  const diceBear = useMemo(() => {
+    const dec = decodeDiceBear(value);
+    return dec ? renderDiceBearSvg(dec, size) : null;
+  }, [value, size]);
+
+  if (diceBear) {
+    return (
+      <div
+        className={`shrink-0 overflow-hidden rounded-full ${className}`}
+        style={{ width: size, height: size }}
+        dangerouslySetInnerHTML={{ __html: diceBear }}
+      />
+    );
+  }
 
   // SVG portrait avatar: "svg:filename.svg:#bgColor"
   if (value.startsWith("svg:")) {

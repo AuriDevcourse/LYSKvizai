@@ -22,6 +22,8 @@ export function sanitizeName(name: string): string {
 
 /** Sanitize emoji/avatar string — allow encoded avatar configs and emoji sequences */
 export function sanitizeEmoji(input: string): string {
-  // Allow up to 50 chars for encoded avatar strings (e.g. "frog:orange:wizard:glasses")
-  return input.slice(0, 50).replace(/<[^>]*>/g, "");
+  // Allow up to 120 chars for encoded avatar strings. DiceBear config format
+  // "d1:H:E:L:N:B:Bd:Bd:G:BG" with 2-digit indices fits in ~35; leave headroom
+  // for future style toggles / longer encodings.
+  return input.slice(0, 120).replace(/<[^>]*>/g, "");
 }
