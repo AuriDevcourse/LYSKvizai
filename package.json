@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "news-quiz": "tsx scripts/news-quiz-generator.ts"
+    "news-quiz": "tsx scripts/news-quiz-generator.ts",
+    "backfill-dates": "node scripts/backfill-createdat.mjs"
   },
   "dependencies": {
     "agentation": "^2.2.1",
