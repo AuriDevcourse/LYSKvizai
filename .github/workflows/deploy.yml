@@ -1,0 +1,27 @@
+name: Deploy to Hetzner
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-hetzner
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Trigger deploy on server
+        env:
+          SSH_KEY: ${{ secrets.HETZNER_DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -t ed25519,rsa -H 46.225.135.183 >> ~/.ssh/known_hosts 2>/dev/null
+          # The server-side key is restricted (command="/opt/lys-kvizai/deploy.sh"),
+          # so any SSH command lands straight in deploy.sh regardless of what we pass.
+          ssh -i ~/.ssh/deploy_key -o BatchMode=yes root@46.225.135.183 deploy
