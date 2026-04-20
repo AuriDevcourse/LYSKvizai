@@ -33,7 +33,7 @@ if (!g.__quiz_rooms) g.__quiz_rooms = new Map();
 if (!g.__quiz_pending_disconnects) g.__quiz_pending_disconnects = new Map();
 const rooms = g.__quiz_rooms;
 const pendingDisconnects = g.__quiz_pending_disconnects;
-const DISCONNECT_GRACE_MS = 30_000;
+const DISCONNECT_GRACE_MS = 120_000;
 
 function disconnectKey(code: string, playerId: string) {
   return `${code.toUpperCase()}:${playerId}`;

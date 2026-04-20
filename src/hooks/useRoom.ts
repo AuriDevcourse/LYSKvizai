@@ -36,8 +36,8 @@ interface UseRoomReturn {
   eliminatedEvent: { playerId: string; playerName: string; playerEmoji: string } | null;
 }
 
-const MAX_RETRIES = 50; // Higher limit since Vercel may drop SSE every ~25s
-const PERMANENT_DISCONNECT_TIMEOUT = 30_000; // 30s without connection = permanent disconnect
+const MAX_RETRIES = 200;
+const PERMANENT_DISCONNECT_TIMEOUT = 180_000;
 
 export function useRoom(code: string | null, playerId: string | null): UseRoomReturn {
   const [state, setState] = useState<RoomState | null>(null);
@@ -233,6 +233,31 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
       esRef.current?.close();
     };
   }, [connect]);
+
+  // Force an immediate reconnect when the tab becomes visible again.
+  // Mobile browsers suspend EventSource in the background; waiting for the
+  // exponential backoff after waking up feels broken. pageshow fires on iOS
+  // Safari bfcache restore where visibilitychange may not.
+  useEffect(() => {
+    if (!code || !playerId) return;
+    const eager = () => {
+      if (document.visibilityState !== "visible") return;
+      const es = esRef.current;
+      if (es && es.readyState === EventSource.OPEN) return;
+      if (es) es.close();
+      clearTimeout(reconnectTimeout.current);
+      retriesRef.current = 0;
+      connectRef.current?.();
+    };
+    document.addEventListener("visibilitychange", eager);
+    window.addEventListener("pageshow", eager);
+    window.addEventListener("online", eager);
+    return () => {
+      document.removeEventListener("visibilitychange", eager);
+      window.removeEventListener("pageshow", eager);
+      window.removeEventListener("online", eager);
+    };
+  }, [code, playerId]);
 
   return {
     state, players, question, results, leaderboard, answerCount, reactions,
