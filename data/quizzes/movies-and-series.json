@@ -1,0 +1,181 @@
+{
+  "id": "movies-and-series",
+  "title": "Movies and series",
+  "description": "15 questions about movies and series",
+  "emoji": "🎬",
+  "questions": [
+    {
+      "question": "Which actor plays Iron Man in the Marvel movies?",
+      "options": [
+        "Chris Evans",
+        "Mark Ruffalo",
+        "Chris Hemsworth",
+        "Robert Downey Jr."
+      ],
+      "correct": 3,
+      "explanation": "Robert Downey Jr. played Tony Stark in all of the Marvel Iron Man films."
+    },
+    {
+      "question": "What is the name of the Pixar cartoon about a fish looking for its son?",
+      "options": [
+        "Dore the fish",
+        "Catfish",
+        "Luca",
+        "Finding Nemo"
+      ],
+      "correct": 3,
+      "explanation": "Finding Nemo (2003) tells the story of Marlin the clownfish in search of his son Nemo.",
+      "correctYear": 2003
+    },
+    {
+      "question": "In which series do children fight creatures from the Upside Down?",
+      "options": [
+        "Dark matter",
+        "Westworld",
+        "Stranger Things",
+        "The bear"
+      ],
+      "correct": 2,
+      "explanation": "Stranger Things takes place in Hawkins, where children encounter creatures from the Upside Down world."
+    },
+    {
+      "question": "Who directed the movie Inception?",
+      "options": [
+        "Christopher Nolan",
+        "Steven Spielberg",
+        "Quentin Tarantino",
+        "James Cameron"
+      ],
+      "correct": 0,
+      "explanation": "Christopher Nolan directed Inception (2010) starring Leonardo DiCaprio.",
+      "correctYear": 2010
+    },
+    {
+      "question": "Which movie won the best picture Oscar in 2024?",
+      "options": [
+        "Oppenheimer",
+        "Killers according to the ring moon",
+        "Barbie",
+        "Poor things"
+      ],
+      "correct": 0,
+      "explanation": "Oppenheimer Wins Best Picture Oscar 2024 at the ceremony.",
+      "correctYear": 2024
+    },
+    {
+      "question": "What is the name of the AI ​​robot in Big Hero 6?",
+      "options": [
+        "Wallis",
+        "Optimus",
+        "Baymax",
+        "Robbie"
+      ],
+      "correct": 2,
+      "explanation": "Baymax is an inflatable healthcare robot from the Disney film The Big Six."
+    },
+    {
+      "question": "Who said the famous line \"I am your father\" in Star Wars?",
+      "options": [
+        "Obi-Wan Kenobi",
+        "Luke Skywalker",
+        "Emperor Palpatine",
+        "Darth Vader"
+      ],
+      "correct": 3,
+      "explanation": "Darth Vader uttered this phrase to Luke Skywalker in The Empire Strikes Back."
+    },
+    {
+      "question": "Which Disney movie tells the story of two sisters, Elsa and Anna?",
+      "options": [
+        "Ice country",
+        "Wayana",
+        "Rapunzel",
+        "Cinderella"
+      ],
+      "correct": 0,
+      "explanation": "\"Frozen\" (Frozen, 2013) tells the story of sisters Elsa and Anna from the kingdom of Arendelle.",
+      "correctYear": 2013
+    },
+    {
+      "question": "Which director made The Freaky Eight and Pulp Fiction?",
+      "options": [
+        "Quentin Tarantino",
+        "David Fincher",
+        "Ridley Scott",
+        "Martin Scorsese"
+      ],
+      "correct": 0,
+      "explanation": "Quentin Tarantino directed both of these films and is known for his unique style."
+    },
+    {
+      "question": "What is the name of the show about the seven kingdoms fighting for the Iron Throne?",
+      "options": [
+        "wars of thrones",
+        "Vikings",
+        "The Lord of the Rings: The Rings of Power",
+        "Wizard"
+      ],
+      "correct": 0,
+      "explanation": "Game of Thrones is an HBO series based on George R.R. Martin's books."
+    },
+    {
+      "question": "Which actor plays Batman in The Batman (2022)?",
+      "options": [
+        "Ben Affleck",
+        "Robert Pattinson",
+        "Christian Bale",
+        "George Clooney"
+      ],
+      "correct": 1,
+      "explanation": "Robert Pattinson played Batman in the 2022 film directed by Matt Reeves. in the movie.",
+      "correctYear": 2022
+    },
+    {
+      "question": "What animal is Simba in The Lion King cartoon?",
+      "options": [
+        "Leopard",
+        "Leo",
+        "Tiger",
+        "Cheetah"
+      ],
+      "correct": 1,
+      "explanation": "Simba is a lion who becomes the king of the Lands of the Rise in Disney's The Lion King."
+    },
+    {
+      "question": "Which Netflix series is about chess genius Beth Harmon?",
+      "options": [
+        "Ozark",
+        "Queen's Gambit",
+        "Paper house",
+        "The Bridgertons"
+      ],
+      "correct": 1,
+      "explanation": "\"The Queen's Gambit\" (The Queen's Gambit) is a Netflix miniseries about chess genius Beth Harmon."
+    },
+    {
+      "question": "Which Steven Spielberg movie is about Dinosaur Park?",
+      "options": [
+        "E.T.",
+        "Saving Private Ryan",
+        "Sea period park",
+        "Alien world"
+      ],
+      "correct": 2,
+      "explanation": "\"Jurassic Park\" (Jurassic Park, 1993), Spielberg's film about revived dinosaurs.",
+      "correctYear": 1993
+    },
+    {
+      "question": "Which cartoon tells about the emotions - Joy, Sadness, Anger - that live in a girl's head?",
+      "options": [
+        "Luca",
+        "Cool Super",
+        "Coco",
+        "Messed up"
+      ],
+      "correct": 3,
+      "explanation": "The Pixar film \"Inside Out\" (2015) depicts the emotions that live in the head of a girl named Riley.",
+      "correctYear": 2015
+    }
+  ],
+  "language": "en"
+}

@@ -1,0 +1,101 @@
+{
+  "id": "drinks",
+  "title": "Drinks",
+  "description": "15 questions about drinks",
+  "emoji": "🍷",
+  "language": "en",
+  "questions": [
+    {
+      "question": "Which country produces the most wine in the world?",
+      "options": ["France", "Spain", "Italy", "USA"],
+      "correct": 2,
+      "explanation": "Italy is the world's largest wine producer by volume."
+    },
+    {
+      "question": "What is the main ingredient in tequila?",
+      "options": ["Corn", "Sugarcane", "Blue agave", "Barley"],
+      "correct": 2,
+      "explanation": "Tequila is distilled from the blue agave plant, primarily from Jalisco, Mexico."
+    },
+    {
+      "question": "Which country is the largest consumer of tea per capita?",
+      "options": ["China", "India", "Turkey", "United Kingdom"],
+      "correct": 2,
+      "explanation": "Turkey has the highest per capita tea consumption in the world."
+    },
+    {
+      "question": "What cocktail is made with vodka, coffee liqueur, and cream?",
+      "options": ["Espresso Martini", "Black Russian", "White Russian", "Mudslide"],
+      "correct": 2,
+      "explanation": "The White Russian combines vodka, Kahlúa, and cream."
+    },
+    {
+      "question": "Champagne can only officially come from which country?",
+      "options": ["Italy", "Spain", "France", "Germany"],
+      "correct": 2,
+      "explanation": "True Champagne must come from the Champagne region of France."
+    },
+    {
+      "question": "What is the world's most consumed alcoholic beverage?",
+      "options": ["Wine", "Spirits", "Beer", "Cider"],
+      "correct": 2,
+      "explanation": "Beer is the most consumed alcoholic beverage globally."
+    },
+    {
+      "question": "Which bean variety accounts for about 60% of world coffee production?",
+      "options": ["Robusta", "Liberica", "Arabica", "Excelsa"],
+      "correct": 2,
+      "explanation": "Arabica beans account for about 60-70% of global coffee production."
+    },
+    {
+      "question": "What is sake made from?",
+      "options": ["Barley", "Rice", "Wheat", "Potato"],
+      "correct": 1,
+      "explanation": "Sake is a Japanese alcoholic beverage made from fermented rice."
+    },
+    {
+      "question": "Which country invented bourbon whiskey?",
+      "options": ["Scotland", "Ireland", "United States", "Canada"],
+      "correct": 2,
+      "explanation": "Bourbon is an American whiskey, primarily associated with Kentucky."
+    },
+    {
+      "question": "What gives IPA beers their bitter taste?",
+      "options": ["Yeast", "Malt", "Hops", "Barley"],
+      "correct": 2,
+      "explanation": "Hops provide the distinctive bitter, floral flavor in IPA beers."
+    },
+    {
+      "question": "What is the national drink of Brazil?",
+      "options": ["Mojito", "Caipirinha", "Pisco sour", "Daiquiri"],
+      "correct": 1,
+      "explanation": "Caipirinha is made with cachaça, sugar, and lime."
+    },
+    {
+      "question": "Which tea type is the least processed?",
+      "options": ["Black tea", "Green tea", "White tea", "Oolong tea"],
+      "correct": 2,
+      "explanation": "White tea is the least processed, using young leaves and buds."
+    },
+    {
+      "question": "What is the main flavoring in gin?",
+      "options": ["Coriander", "Juniper berries", "Anise", "Citrus peel"],
+      "correct": 1,
+      "explanation": "Juniper berries give gin its distinctive pine-like flavor."
+    },
+    {
+      "question": "Which soft drink was invented first?",
+      "options": ["Pepsi", "Coca-Cola", "Dr Pepper", "7-Up"],
+      "correct": 2,
+      "explanation": "Dr Pepper was created in 1885, one year before Coca-Cola in 1886."
+    },
+    {
+      "question": "What is matcha?",
+      "options": ["A type of coffee", "Powdered green tea", "Herbal infusion", "Fermented tea"],
+      "correct": 1,
+      "explanation": "Matcha is finely ground powder of specially grown green tea leaves."
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}

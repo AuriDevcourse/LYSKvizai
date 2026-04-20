@@ -1,0 +1,101 @@
+{
+  "id": "biology",
+  "title": "Biology",
+  "description": "15 questions about biology",
+  "emoji": "🧬",
+  "language": "en",
+  "questions": [
+    {
+      "question": "What is the powerhouse of the cell?",
+      "options": ["Nucleus", "Ribosome", "Mitochondria", "Golgi apparatus"],
+      "correct": 2,
+      "explanation": "Mitochondria generate most of the cell's ATP (energy)."
+    },
+    {
+      "question": "How many chromosomes do humans have?",
+      "options": ["23", "44", "46", "48"],
+      "correct": 2,
+      "explanation": "Humans have 46 chromosomes (23 pairs)."
+    },
+    {
+      "question": "What is the largest organ in the human body?",
+      "options": ["Liver", "Brain", "Skin", "Lungs"],
+      "correct": 2,
+      "explanation": "The skin is the largest organ, covering about 2 square meters."
+    },
+    {
+      "question": "Which blood type is the universal donor?",
+      "options": ["A", "B", "AB", "O negative"],
+      "correct": 3,
+      "explanation": "O negative blood can be given to anyone regardless of blood type."
+    },
+    {
+      "question": "What molecule carries genetic information?",
+      "options": ["RNA", "DNA", "ATP", "Protein"],
+      "correct": 1,
+      "explanation": "DNA (deoxyribonucleic acid) carries the genetic instructions for life."
+    },
+    {
+      "question": "Which process do plants use to convert sunlight into energy?",
+      "options": ["Respiration", "Fermentation", "Photosynthesis", "Osmosis"],
+      "correct": 2,
+      "explanation": "Photosynthesis converts sunlight, water, and CO₂ into glucose and oxygen."
+    },
+    {
+      "question": "How many bones are in an adult human body?",
+      "options": ["186", "206", "226", "256"],
+      "correct": 1,
+      "explanation": "An adult human has 206 bones."
+    },
+    {
+      "question": "What is the smallest bone in the human body?",
+      "options": ["Stapes", "Incus", "Malleus", "Hyoid"],
+      "correct": 0,
+      "explanation": "The stapes (stirrup) in the middle ear is the smallest bone at ~3mm."
+    },
+    {
+      "question": "Which vitamin is produced when skin is exposed to sunlight?",
+      "options": ["Vitamin A", "Vitamin C", "Vitamin D", "Vitamin K"],
+      "correct": 2,
+      "explanation": "UV-B radiation triggers Vitamin D synthesis in the skin."
+    },
+    {
+      "question": "What is the fastest muscle in the human body?",
+      "options": ["Heart", "Tongue", "Eye muscle", "Diaphragm"],
+      "correct": 2,
+      "explanation": "The orbicularis oculi (eye-blinking muscle) is the fastest muscle."
+    },
+    {
+      "question": "Which organism is considered the closest living relative of humans?",
+      "options": ["Gorilla", "Orangutan", "Chimpanzee", "Bonobo"],
+      "correct": 3,
+      "explanation": "Bonobos and chimpanzees share about 98.7% of DNA with humans."
+    },
+    {
+      "question": "What is the primary function of red blood cells?",
+      "options": ["Fight infection", "Clot blood", "Carry oxygen", "Produce antibodies"],
+      "correct": 2,
+      "explanation": "Red blood cells transport oxygen using hemoglobin."
+    },
+    {
+      "question": "How many chambers does the human heart have?",
+      "options": ["2", "3", "4", "5"],
+      "correct": 2,
+      "explanation": "The human heart has 4 chambers: two atria and two ventricles."
+    },
+    {
+      "question": "What is the hardest substance in the human body?",
+      "options": ["Bone", "Cartilage", "Tooth enamel", "Nail"],
+      "correct": 2,
+      "explanation": "Tooth enamel is the hardest substance in the human body."
+    },
+    {
+      "question": "Which part of the brain controls balance and coordination?",
+      "options": ["Cerebrum", "Cerebellum", "Brainstem", "Hypothalamus"],
+      "correct": 1,
+      "explanation": "The cerebellum coordinates voluntary movements and balance."
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}

@@ -1,0 +1,101 @@
+{
+  "id": "animation",
+  "title": "Animation & Disney",
+  "description": "15 questions about animation and Disney",
+  "emoji": "🎬",
+  "language": "en",
+  "questions": [
+    {
+      "question": "What was the first full-length Disney animated feature film?",
+      "options": ["Pinocchio", "Fantasia", "Snow White and the Seven Dwarfs", "Bambi"],
+      "correct": 2,
+      "explanation": "Snow White and the Seven Dwarfs was released in 1937."
+    },
+    {
+      "question": "Which Pixar film features the emotion characters Joy, Sadness, and Anger?",
+      "options": ["Soul", "Coco", "Inside Out", "Up"],
+      "correct": 2,
+      "explanation": "Inside Out (2015) explores the emotions inside a young girl's mind."
+    },
+    {
+      "question": "What is the highest-grossing animated film of all time?",
+      "options": ["The Lion King (2019)", "Frozen II", "Inside Out 2", "Toy Story 4"],
+      "correct": 2,
+      "explanation": "Inside Out 2 (2024) became the highest-grossing animated film."
+    },
+    {
+      "question": "Which Studio Ghibli film won the Academy Award for Best Animated Feature?",
+      "options": ["My Neighbor Totoro", "Princess Mononoke", "Spirited Away", "Howl's Moving Castle"],
+      "correct": 2,
+      "explanation": "Spirited Away won the Oscar for Best Animated Feature in 2003."
+    },
+    {
+      "question": "What is the name of the young clownfish who gets captured by divers in a popular Pixar film?",
+      "options": ["Marlin", "Nemo", "Dory", "Gill"],
+      "correct": 1,
+      "explanation": "Nemo is the young clownfish who gets captured by divers."
+    },
+    {
+      "question": "Which anime series features a boy who wants to become King of the Pirates?",
+      "options": ["Naruto", "Dragon Ball", "One Piece", "Bleach"],
+      "correct": 2,
+      "explanation": "One Piece follows Monkey D. Luffy on his quest to become King of the Pirates."
+    },
+    {
+      "question": "In 'Toy Story', what is the name of Woody's astronaut rival?",
+      "options": ["Rex", "Buzz Lightyear", "Slinky", "Mr. Potato Head"],
+      "correct": 1,
+      "explanation": "Buzz Lightyear is the space ranger action figure."
+    },
+    {
+      "question": "Who voiced the Genie in the original 'Aladdin'?",
+      "options": ["Eddie Murphy", "Robin Williams", "Jim Carrey", "Will Smith"],
+      "correct": 1,
+      "explanation": "Robin Williams voiced the Genie in the 1992 animated film."
+    },
+    {
+      "question": "What was the first Pixar feature film?",
+      "options": ["A Bug's Life", "Toy Story", "Monsters, Inc.", "Finding Nemo"],
+      "correct": 1,
+      "explanation": "Toy Story (1995) was Pixar's first feature and the first fully CGI animated film."
+    },
+    {
+      "question": "In 'Frozen', what is Elsa's power?",
+      "options": ["Fire", "Wind", "Ice and snow", "Water"],
+      "correct": 2,
+      "explanation": "Elsa has the magical ability to create and control ice and snow."
+    },
+    {
+      "question": "Which anime is set in a world where people have superpowers called 'Quirks'?",
+      "options": ["Attack on Titan", "My Hero Academia", "Demon Slayer", "Jujutsu Kaisen"],
+      "correct": 1,
+      "explanation": "My Hero Academia is set in a world where 80% of people have Quirks."
+    },
+    {
+      "question": "What animal is Simba in the classic Disney film about an African savanna prince?",
+      "options": ["Tiger", "Lion", "Leopard", "Cheetah"],
+      "correct": 1,
+      "explanation": "Simba is a lion and the main character of The Lion King."
+    },
+    {
+      "question": "Which animated film features a rat who dreams of becoming a chef in Paris?",
+      "options": ["Ratatouille", "Flushed Away", "Stuart Little", "Mousehunt"],
+      "correct": 0,
+      "explanation": "Ratatouille follows Remy the rat pursuing his culinary dreams."
+    },
+    {
+      "question": "What is the name of the dragon in 'How to Train Your Dragon'?",
+      "options": ["Smaug", "Toothless", "Drogon", "Falkor"],
+      "correct": 1,
+      "explanation": "Toothless is the Night Fury dragon befriended by Hiccup."
+    },
+    {
+      "question": "Which Disney princess is based on a real historical figure?",
+      "options": ["Mulan", "Moana", "Pocahontas", "Rapunzel"],
+      "correct": 2,
+      "explanation": "Pocahontas was a real Native American woman from the 17th century."
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}

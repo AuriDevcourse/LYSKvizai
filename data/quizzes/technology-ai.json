@@ -1,0 +1,107 @@
+{
+  "id": "technology-ai",
+  "title": "AI & Future Tech",
+  "description": "Artificial intelligence, space tech, and modern innovations",
+  "emoji": "🤖",
+  "language": "en",
+  "questions": [
+    {
+      "question": "Which company created ChatGPT?",
+      "options": ["Google", "Meta", "OpenAI", "Microsoft"],
+      "correct": 2,
+      "explanation": "ChatGPT was created by OpenAI and launched in November 2022.",
+      "correctYear": 2022
+    },
+    {
+      "question": "What does GPT stand for in ChatGPT?",
+      "options": ["General Processing Tool", "Generative Pre-trained Transformer", "Global Pattern Technology", "Generated Prompt Text"],
+      "correct": 1,
+      "explanation": "GPT stands for Generative Pre-trained Transformer, a type of large language model."
+    },
+    {
+      "question": "Which company launched the first reusable orbital rocket?",
+      "options": ["NASA", "Blue Origin", "SpaceX", "Boeing"],
+      "correct": 2,
+      "explanation": "SpaceX's Falcon 9 became the first orbital rocket to land and be reused."
+    },
+    {
+      "question": "What is Bitcoin?",
+      "options": ["A social network", "A cryptocurrency", "A programming language", "A search engine"],
+      "correct": 1,
+      "explanation": "Bitcoin is the first decentralized cryptocurrency, created in 2009 by Satoshi Nakamoto.",
+      "correctYear": 2009
+    },
+    {
+      "question": "What year did Tesla release its first car, the Roadster?",
+      "options": ["2006", "2008", "2010", "2012"],
+      "correct": 1,
+      "explanation": "The Tesla Roadster was first delivered in 2008 as the first highway-legal electric car from Tesla.",
+      "correctYear": 2008
+    },
+    {
+      "question": "What technology does blockchain use to secure transactions?",
+      "options": ["Quantum computing", "Cryptography", "Bluetooth", "Cloud storage"],
+      "correct": 1,
+      "explanation": "Blockchain uses cryptographic hashing to create an immutable chain of transaction records."
+    },
+    {
+      "question": "Which AI image generator created controversy by winning an art competition in 2022?",
+      "options": ["DALL-E", "Midjourney", "Stable Diffusion", "Craiyon"],
+      "correct": 1,
+      "explanation": "A Midjourney-generated image won the Colorado State Fair art competition in 2022."
+    },
+    {
+      "question": "What is the name of Elon Musk's brain-computer interface company?",
+      "options": ["DeepMind", "Neuralink", "OpenAI", "Cerebras"],
+      "correct": 1,
+      "explanation": "Neuralink aims to develop implantable brain-computer interfaces."
+    },
+    {
+      "question": "Which Google AI famously beat the world champion at the board game Go?",
+      "options": ["DeepBlue", "AlphaGo", "Watson", "Gemini"],
+      "correct": 1,
+      "explanation": "AlphaGo by DeepMind beat world champion Lee Sedol in 2016.",
+      "correctYear": 2016
+    },
+    {
+      "question": "What does NFT stand for?",
+      "options": ["New File Transfer", "Non-Fungible Token", "Network Function Tool", "Next Future Tech"],
+      "correct": 1,
+      "explanation": "NFT stands for Non-Fungible Token, a unique digital asset on a blockchain."
+    },
+    {
+      "question": "Which company developed the AI assistant Alexa?",
+      "options": ["Apple", "Google", "Amazon", "Samsung"],
+      "correct": 2,
+      "explanation": "Alexa is Amazon's voice assistant, launched with the Echo speaker in 2014.",
+      "correctYear": 2014
+    },
+    {
+      "question": "What was the name of SpaceX's first crewed mission to the ISS?",
+      "options": ["Crew Dragon Demo-2", "Starship SN8", "Falcon Heavy", "Inspiration4"],
+      "correct": 0,
+      "explanation": "Crew Dragon Demo-2 in May 2020 was SpaceX's first crewed mission to the ISS.",
+      "correctYear": 2020
+    },
+    {
+      "question": "Which cryptocurrency is known for using 'smart contracts'?",
+      "options": ["Bitcoin", "Dogecoin", "Ethereum", "Litecoin"],
+      "correct": 2,
+      "explanation": "Ethereum, created by Vitalik Buterin, introduced programmable smart contracts."
+    },
+    {
+      "question": "What AI tool can generate realistic images from text descriptions?",
+      "options": ["ChatGPT", "DALL-E", "Siri", "Copilot"],
+      "correct": 1,
+      "explanation": "DALL-E by OpenAI generates images from text prompts using AI."
+    },
+    {
+      "question": "How many users did ChatGPT reach in its first 2 months?",
+      "options": ["10 million", "50 million", "100 million", "500 million"],
+      "correct": 2,
+      "explanation": "ChatGPT reached 100 million users in just 2 months, the fastest-growing app in history."
+    }
+  ],
+  "createdAt": "2026-04-03T00:00:00.000Z",
+  "updatedAt": "2026-04-03T00:00:00.000Z"
+}

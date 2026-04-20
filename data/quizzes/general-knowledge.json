@@ -1,0 +1,101 @@
+{
+  "id": "general-knowledge",
+  "title": "General Knowledge",
+  "description": "15 questions of general knowledge",
+  "emoji": "🧠",
+  "language": "en",
+  "questions": [
+    {
+      "question": "Which country has the most time zones?",
+      "options": ["Russia", "USA", "China", "France"],
+      "correct": 3,
+      "explanation": "France has 12 time zones due to its overseas territories."
+    },
+    {
+      "question": "What is the most spoken language in the world by native speakers?",
+      "options": ["English", "Spanish", "Mandarin Chinese", "Hindi"],
+      "correct": 2,
+      "explanation": "Mandarin Chinese has the most native speakers at over 900 million."
+    },
+    {
+      "question": "Which element has the chemical symbol 'Au'?",
+      "options": ["Silver", "Aluminum", "Gold", "Argon"],
+      "correct": 2,
+      "explanation": "Au comes from the Latin word 'aurum' meaning gold."
+    },
+    {
+      "question": "How many keys does a standard piano have?",
+      "options": ["76", "82", "88", "92"],
+      "correct": 2,
+      "explanation": "A standard piano has 88 keys: 52 white and 36 black."
+    },
+    {
+      "question": "Which country's flag has the most colors?",
+      "options": ["South Africa", "Belize", "Turkmenistan", "Mexico"],
+      "correct": 1,
+      "explanation": "Belize's flag features 12 different colors."
+    },
+    {
+      "question": "What year was the first iPhone released?",
+      "options": ["2005", "2006", "2007", "2008"],
+      "correct": 2,
+      "explanation": "The first iPhone was released on June 29, 2007."
+    },
+    {
+      "question": "Which currency is used in Japan?",
+      "options": ["Yuan", "Won", "Yen", "Ringgit"],
+      "correct": 2,
+      "explanation": "The Japanese yen (¥) is the official currency of Japan."
+    },
+    {
+      "question": "Who painted the Mona Lisa?",
+      "options": ["Michelangelo", "Raphael", "Leonardo da Vinci", "Donatello"],
+      "correct": 2,
+      "explanation": "Leonardo da Vinci painted the Mona Lisa between 1503 and 1519."
+    },
+    {
+      "question": "What is the most visited country in the world?",
+      "options": ["Spain", "USA", "France", "Italy"],
+      "correct": 2,
+      "explanation": "France is the most visited country with over 89 million tourists per year."
+    },
+    {
+      "question": "Which planet is named after the Roman god of war?",
+      "options": ["Jupiter", "Saturn", "Mars", "Mercury"],
+      "correct": 2,
+      "explanation": "Mars is named after the Roman god of war due to its red color."
+    },
+    {
+      "question": "What is the largest country in the world by area?",
+      "options": ["Canada", "China", "USA", "Russia"],
+      "correct": 3,
+      "explanation": "Russia is the largest country at 17.1 million km²."
+    },
+    {
+      "question": "Who invented the World Wide Web?",
+      "options": ["Bill Gates", "Steve Jobs", "Tim Berners-Lee", "Vint Cerf"],
+      "correct": 2,
+      "explanation": "Tim Berners-Lee invented the World Wide Web in 1989 at CERN."
+    },
+    {
+      "question": "Which is the only country to appear on every continent's border?",
+      "options": ["UK", "France", "USA", "No country does"],
+      "correct": 3,
+      "explanation": "No single country borders every continent."
+    },
+    {
+      "question": "What is the hardest natural substance?",
+      "options": ["Ruby", "Sapphire", "Diamond", "Quartz"],
+      "correct": 2,
+      "explanation": "Diamond is the hardest natural substance, rated 10 on the Mohs scale."
+    },
+    {
+      "question": "In which year did World War II end?",
+      "options": ["1943", "1944", "1945", "1946"],
+      "correct": 2,
+      "explanation": "WWII ended in 1945 with the surrender of Germany and Japan."
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}

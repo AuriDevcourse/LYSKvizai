@@ -11,61 +11,61 @@ import {
 /** Map quiz IDs to specific icons and accent colors */
 export const QUIZ_THEME: Record<string, { icon: LucideIcon; bg: string }> = {
   // Math
-  "matematika":          { icon: Calculator,   bg: "bg-[#1368ce]" },
-  "logikos-galvosukai":  { icon: Puzzle,        bg: "bg-[#8b5cf6]" },
+  "mathematics":          { icon: Calculator,   bg: "bg-[#1368ce]" },
+  "logic-puzzles":  { icon: Puzzle,        bg: "bg-[#8b5cf6]" },
 
   // Geography
-  "geografija":          { icon: Globe,         bg: "bg-[#26890c]" },
-  "pasaulio-sostines":   { icon: MapPin,        bg: "bg-[#16a34a]" },
-  "europos-geografija":  { icon: Globe,         bg: "bg-[#0ea5e9]" },
-  "vandenynai-ir-kontinentai": { icon: Globe,   bg: "bg-[#0284c7]" },
+  "geography":          { icon: Globe,         bg: "bg-[#26890c]" },
+  "world-capitals":   { icon: MapPin,        bg: "bg-[#16a34a]" },
+  "european-geography":  { icon: Globe,         bg: "bg-[#0ea5e9]" },
+  "oceans-and-continents": { icon: Globe,   bg: "bg-[#0284c7]" },
 
   // History
-  "pasaulio-istorija":   { icon: Landmark,      bg: "bg-[#d89e00]" },
+  "world-history":   { icon: Landmark,      bg: "bg-[#d89e00]" },
 
   // Celebrities
-  "pasaulio-zvaigzdes":  { icon: Star,          bg: "bg-[#e21b3c]" },
+  "world-celebrities":  { icon: Star,          bg: "bg-[#e21b3c]" },
 
   // Science
-  "mokslas":             { icon: FlaskConical,   bg: "bg-[#0ea5e9]" },
-  "biologija":           { icon: Dna,            bg: "bg-[#22c55e]" },
-  "fizika":              { icon: Atom,           bg: "bg-[#6366f1]" },
-  "kosmosas":            { icon: Rocket,         bg: "bg-[#1e40af]" },
+  "science":             { icon: FlaskConical,   bg: "bg-[#0ea5e9]" },
+  "biology":           { icon: Dna,            bg: "bg-[#22c55e]" },
+  "physics":              { icon: Atom,           bg: "bg-[#6366f1]" },
+  "space":            { icon: Rocket,         bg: "bg-[#1e40af]" },
 
   // Movies & TV
-  "filmai-ir-serialai":  { icon: Clapperboard,  bg: "bg-[#a855f7]" },
-  "tv-serialai":         { icon: Tv,            bg: "bg-[#7c3aed]" },
-  "animacija":           { icon: Film,          bg: "bg-[#ec4899]" },
+  "movies-and-series":  { icon: Clapperboard,  bg: "bg-[#a855f7]" },
+  "tv-series":         { icon: Tv,            bg: "bg-[#7c3aed]" },
+  "animation":           { icon: Film,          bg: "bg-[#ec4899]" },
 
   // Music
-  "muzika-pop":          { icon: Mic,           bg: "bg-[#ec4899]" },
-  "muzika-rokas":        { icon: Guitar,        bg: "bg-[#e21b3c]" },
-  "muzika-klasikine":    { icon: Music,         bg: "bg-[#a855f7]" },
-  "muzika-hiphop":       { icon: Headphones,    bg: "bg-[#f97316]" },
+  "music-pop":          { icon: Mic,           bg: "bg-[#ec4899]" },
+  "music-rock":        { icon: Guitar,        bg: "bg-[#e21b3c]" },
+  "music-classical":    { icon: Music,         bg: "bg-[#a855f7]" },
+  "music-hiphop":       { icon: Headphones,    bg: "bg-[#f97316]" },
 
   // Technology
-  "technologijos":       { icon: Cpu,           bg: "bg-[#14b8a6]" },
-  "socialiniai-tinklai": { icon: Smartphone,    bg: "bg-[#3b82f6]" },
+  "technology":       { icon: Cpu,           bg: "bg-[#14b8a6]" },
+  "social-networks": { icon: Smartphone,    bg: "bg-[#3b82f6]" },
 
   // Gaming
-  "video-zaidimai":      { icon: Gamepad2,      bg: "bg-[#6366f1]" },
+  "video-games":      { icon: Gamepad2,      bg: "bg-[#6366f1]" },
 
   // Sports
-  "pasaulio-futbolas":   { icon: Dribbble,      bg: "bg-[#16a34a]" },
-  "olimpiniai-zaidimai": { icon: Medal,         bg: "bg-[#d89e00]" },
-  "krepsinis":           { icon: Trophy,        bg: "bg-[#f97316]" },
+  "world-football":   { icon: Dribbble,      bg: "bg-[#16a34a]" },
+  "olympic-games": { icon: Medal,         bg: "bg-[#d89e00]" },
+  "basketball":           { icon: Trophy,        bg: "bg-[#f97316]" },
 
   // Food & Drink
-  "pasaulio-virtuve":    { icon: UtensilsCrossed, bg: "bg-[#f97316]" },
-  "gerimai":             { icon: Wine,           bg: "bg-[#7c3aed]" },
+  "world-cuisine":    { icon: UtensilsCrossed, bg: "bg-[#f97316]" },
+  "drinks":             { icon: Wine,           bg: "bg-[#7c3aed]" },
 
   // Animals & Nature
-  "gyvunai":             { icon: PawPrint,       bg: "bg-[#22c55e]" },
-  "gamta":               { icon: Trees,          bg: "bg-[#16a34a]" },
+  "animals":             { icon: PawPrint,       bg: "bg-[#22c55e]" },
+  "nature":               { icon: Trees,          bg: "bg-[#16a34a]" },
 
   // General Knowledge
-  "bendros-zinios":      { icon: Brain,          bg: "bg-[#8b5cf6]" },
-  "misrus-testas":       { icon: Brain,          bg: "bg-[#6366f1]" },
+  "general-knowledge":      { icon: Brain,          bg: "bg-[#8b5cf6]" },
+  "mixed-quiz":       { icon: Brain,          bg: "bg-[#6366f1]" },
   "zoom-out-pictures":   { icon: Brain,          bg: "bg-[#0ea5e9]" },
 
 };

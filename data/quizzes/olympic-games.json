@@ -1,0 +1,109 @@
+{
+  "id": "olympic-games",
+  "title": "Olympic Games",
+  "description": "15 questions about Olympic history, records, host cities, famous athletes, and unusual sports",
+  "emoji": "🏅",
+  "language": "en",
+  "questions": [
+    {
+      "question": "In which city were the first modern Olympic Games held in 1896?",
+      "options": ["Rome", "Paris", "Athens", "London"],
+      "correct": 2,
+      "explanation": "The first modern Olympic Games were held in Athens, Greece in 1896, organized by Pierre de Coubertin.",
+      "correctYear": 1896
+    },
+    {
+      "question": "Who has won the most Olympic gold medals of all time?",
+      "options": ["Usain Bolt", "Carl Lewis", "Michael Phelps", "Larisa Latynina"],
+      "correct": 2,
+      "explanation": "Michael Phelps won 23 Olympic gold medals in swimming across five Olympic Games (2000-2016)."
+    },
+    {
+      "question": "Which sport was removed from the Olympics after the 1900 Games but is sometimes cited as the strangest Olympic event?",
+      "options": ["Tug of war", "Live pigeon shooting", "Croquet", "Hot air ballooning"],
+      "correct": 1,
+      "explanation": "Live pigeon shooting appeared at the 1900 Paris Olympics. Nearly 300 birds were killed, and the event was never held again.",
+      "correctYear": 1900
+    },
+    {
+      "question": "In which year were the Olympic Games cancelled due to World War I?",
+      "options": ["1912", "1916", "1918", "1920"],
+      "correct": 1,
+      "explanation": "The 1916 Summer Olympics, scheduled for Berlin, were cancelled due to World War I.",
+      "correctYear": 1916
+    },
+    {
+      "question": "Which athlete lit the Olympic cauldron at the 1996 Atlanta Games?",
+      "options": ["Carl Lewis", "Jesse Owens' granddaughter", "Muhammad Ali", "Michael Johnson"],
+      "correct": 2,
+      "explanation": "Muhammad Ali, visibly affected by Parkinson's disease, lit the Olympic cauldron in one of the most memorable moments in Olympic history.",
+      "correctYear": 1996
+    },
+    {
+      "question": "How many consecutive Olympic Games did wrestler Aleksandr Karelin win gold before losing in the 2000 final?",
+      "options": ["2", "3", "4", "5"],
+      "correct": 1,
+      "explanation": "Karelin won gold in 1988, 1992, and 1996 (3 consecutive golds) before losing to Rulon Gardner in the 2000 Sydney final."
+    },
+    {
+      "question": "Which country has hosted the most Summer Olympic Games?",
+      "options": ["United States", "United Kingdom", "France", "Greece"],
+      "correct": 0,
+      "explanation": "The United States has hosted the Summer Olympics four times: 1904 (St. Louis), 1932 (Los Angeles), 1984 (Los Angeles), and 2028 (Los Angeles)."
+    },
+    {
+      "question": "What unusual event was part of the Olympic program from 1900 to 1920?",
+      "options": ["Polo", "Tug of war", "Pistol dueling", "Roller skating"],
+      "correct": 1,
+      "explanation": "Tug of war was an official Olympic sport from 1900 to 1920, contested at five consecutive Games."
+    },
+    {
+      "question": "Who was the first athlete to win gold medals at both the Summer and Winter Olympics?",
+      "options": ["Eddie Eagan", "Jim Thorpe", "Bo Jackson", "Clara Hughes"],
+      "correct": 0,
+      "explanation": "Eddie Eagan won gold in boxing (1920 Summer) and bobsled (1932 Winter), making him the first to win gold at both."
+    },
+    {
+      "question": "Usain Bolt's world record 100m time set at the 2009 World Championships is:",
+      "options": ["9.63 seconds", "9.58 seconds", "9.69 seconds", "9.72 seconds"],
+      "correct": 1,
+      "explanation": "Usain Bolt set the world record of 9.58 seconds at the 2009 World Championships in Berlin."
+    },
+    {
+      "question": "Which city will host the 2028 Summer Olympic Games?",
+      "options": ["Brisbane", "Paris", "Los Angeles", "Tokyo"],
+      "correct": 2,
+      "explanation": "Los Angeles will host the 2028 Summer Olympics, its third time hosting the Games.",
+      "correctYear": 2028
+    },
+    {
+      "question": "What controversial event occurred at the 1972 Munich Olympics?",
+      "options": ["Mass boycott by African nations", "Terrorist attack on Israeli athletes", "Doping scandal disqualifying all sprinters", "Stadium collapse"],
+      "correct": 1,
+      "explanation": "Palestinian terrorists took 11 Israeli team members hostage; all hostages were killed during a failed rescue attempt.",
+      "correctYear": 1972
+    },
+    {
+      "question": "Which gymnast achieved the first perfect 10.0 score in Olympic history?",
+      "options": ["Olga Korbut", "Nadia Comaneci", "Mary Lou Retton", "Simone Biles"],
+      "correct": 1,
+      "explanation": "Nadia Comaneci of Romania scored the first perfect 10.0 at the 1976 Montreal Olympics on the uneven bars.",
+      "correctYear": 1976
+    },
+    {
+      "question": "Which ancient Olympic event involved a combination of wrestling and boxing with almost no rules?",
+      "options": ["Pankration", "Pentathlon", "Hoplitodromos", "Dolichos"],
+      "correct": 0,
+      "explanation": "Pankration was a brutal ancient Greek combat sport combining wrestling and striking, with only biting and eye-gouging prohibited."
+    },
+    {
+      "question": "How many Olympic gold medals did Jesse Owens win at the 1936 Berlin Olympics?",
+      "options": ["2", "3", "4", "5"],
+      "correct": 2,
+      "explanation": "Jesse Owens won 4 gold medals (100m, 200m, long jump, 4x100m relay) at the 1936 Berlin Olympics, defying Nazi ideology.",
+      "correctYear": 1936
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}

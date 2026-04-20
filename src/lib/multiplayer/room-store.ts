@@ -19,7 +19,6 @@ import { calculateScore, getQuestionValues } from "./scoring";
 import { fuzzyMatch } from "../fuzzy-match";
 import { sanitizeName, sanitizeEmoji } from "../sanitize";
 import { broadcast, removeRoomConnections } from "./sse-manager";
-import { translateBatch } from "@/lib/translate";
 import { getQuiz } from "@/lib/quiz-store";
 import type { Question } from "@/data/types";
 
@@ -191,21 +190,6 @@ function getQuestionPayload(room: Room): QuestionPayload {
   // Team mode: include who can answer
   if (room.gameMode === "team") {
     payload.currentTeamAnswerers = [...room.currentTeamAnswerer.values()];
-  }
-
-  // Include Lithuanian translations if available (content is in English)
-  const ltT = room.enTranslations.get(qIndex);
-  if (ltT) {
-    const ltShuffledOptions = optShuffle.map((origIdx) => {
-      if (q.type === "bluff" && q.bluffAnswer && room.bluffReplacedOriginalIndex === origIdx) {
-        return q.bluffAnswer;
-      }
-      return ltT.options[origIdx];
-    }) as [string, string, string, string];
-    payload.lt = {
-      question: ltT.question,
-      options: ltShuffledOptions,
-    };
   }
 
   // Include randomly assigned power-ups
@@ -458,18 +442,6 @@ function getResultsPayload(room: Room): ResultsPayload {
     options: optShuffle.map((origIdx) => q.options[origIdx]),
   };
 
-  // Include Lithuanian translations for results (content is in English)
-  const ltT = room.enTranslations.get(qIndex);
-  if (ltT) {
-    result.lt = {
-      correctAnswerText: result.correctAnswerText
-        ? ltT.options[q.correct]
-        : undefined,
-      explanation: ltT.explanation,
-      options: optShuffle.map((origIdx) => ltT.options[origIdx]),
-    };
-  }
-
   return result;
 }
 
@@ -650,7 +622,6 @@ export async function createRoom(
     bluffReplacedOriginalIndex: null,
 
     mysteryMultipliers: new Map(),
-    enTranslations: new Map(),
     previousLeaderboard: [],
     cachedResults: null,
   };
@@ -761,33 +732,7 @@ export async function startGame(code: string, hostId: string): Promise<{ error?:
   room.currentQuestionIndex = 0;
   startQuestionRound(room);
 
-  // Translate questions to Lithuanian in the background (non-blocking)
-  translateQuestionsInBackground(room);
-
   return {};
-}
-
-/** Translate all questions to Lithuanian in the background without blocking game start */
-function translateQuestionsInBackground(room: Room): void {
-  (async () => {
-    try {
-      const allTexts: string[] = [];
-      for (const idx of room.questionIndices) {
-        const q = room.questions[idx];
-        allTexts.push(q.question, ...q.options, q.explanation);
-      }
-      const translated = await translateBatch(allTexts, "en", "lt");
-      let ti = 0;
-      for (const idx of room.questionIndices) {
-        const tQuestion = translated[ti++];
-        const tOptions = [translated[ti++], translated[ti++], translated[ti++], translated[ti++]];
-        const tExplanation = translated[ti++];
-        room.enTranslations.set(idx, { question: tQuestion, options: tOptions, explanation: tExplanation });
-      }
-    } catch {
-      // Translation failed — multiplayer will fall back to English
-    }
-  })();
 }
 
 export function submitAnswer(

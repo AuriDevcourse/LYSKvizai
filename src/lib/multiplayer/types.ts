@@ -73,9 +73,6 @@ export interface Room {
   // Mystery Multiplier
   mysteryMultipliers: Map<number, number>;
 
-  // Translations
-  enTranslations: Map<number, { question: string; options: string[]; explanation: string }>;
-
   // Leaderboard snapshot (captured at question start, before answers)
   previousLeaderboard: LeaderboardEntry[];
 
@@ -156,7 +153,6 @@ export interface QuestionPayload {
   /** Power-up types already used by requesting player */
   usedPowerUpTypes?: PowerUpType[];
   en?: { question: string; options: [string, string, string, string] };
-  lt?: { question: string; options: [string, string, string, string] };
 }
 
 export interface AnswerResult {
@@ -194,7 +190,6 @@ export interface ResultsPayload {
   correctAnswerText?: string;
   yearGuesses?: { playerId: string; playerName: string; guessedYear: number; correctYear: number; points: number }[];
   en?: { correctAnswerText?: string; explanation?: string; options?: string[] };
-  lt?: { correctAnswerText?: string; explanation?: string; options?: string[] };
 }
 
 export interface LeaderboardEntry {

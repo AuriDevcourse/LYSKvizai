@@ -1,0 +1,101 @@
+{
+  "id": "physics",
+  "title": "Physics",
+  "description": "15 questions about physics",
+  "emoji": "⚛️",
+  "language": "en",
+  "questions": [
+    {
+      "question": "What is the speed of light in a vacuum?",
+      "options": ["300,000 m/s", "300,000 km/s", "3,000,000 km/s", "30,000 km/s"],
+      "correct": 1,
+      "explanation": "The speed of light is approximately 300,000 km/s (299,792,458 m/s)."
+    },
+    {
+      "question": "Who formulated the theory of general relativity?",
+      "options": ["Isaac Newton", "Niels Bohr", "Albert Einstein", "Max Planck"],
+      "correct": 2,
+      "explanation": "Einstein published his theory of general relativity in 1915."
+    },
+    {
+      "question": "What is the SI unit of electric current?",
+      "options": ["Volt", "Watt", "Ohm", "Ampere"],
+      "correct": 3,
+      "explanation": "The ampere (A) is the SI unit of electric current."
+    },
+    {
+      "question": "What force keeps planets in orbit around the Sun?",
+      "options": ["Electromagnetic", "Nuclear", "Gravity", "Friction"],
+      "correct": 2,
+      "explanation": "Gravity is the force that keeps planets in orbit."
+    },
+    {
+      "question": "What is absolute zero in Celsius?",
+      "options": ["-100°C", "-173°C", "-273.15°C", "-373°C"],
+      "correct": 2,
+      "explanation": "Absolute zero is -273.15°C (0 Kelvin), where all molecular motion stops."
+    },
+    {
+      "question": "Which subatomic particle has a positive charge?",
+      "options": ["Electron", "Neutron", "Proton", "Photon"],
+      "correct": 2,
+      "explanation": "Protons carry a positive electric charge."
+    },
+    {
+      "question": "What does E=mc² describe?",
+      "options": ["Conservation of momentum", "Mass-energy equivalence", "Quantum entanglement", "Wave-particle duality"],
+      "correct": 1,
+      "explanation": "E=mc² shows that mass and energy are interchangeable."
+    },
+    {
+      "question": "What is the unit of frequency?",
+      "options": ["Hertz", "Pascal", "Newton", "Joule"],
+      "correct": 0,
+      "explanation": "The hertz (Hz) measures frequency in cycles per second."
+    },
+    {
+      "question": "Which color of visible light has the shortest wavelength?",
+      "options": ["Red", "Green", "Blue", "Violet"],
+      "correct": 3,
+      "explanation": "Violet light has the shortest wavelength (~380-450 nm) in the visible spectrum."
+    },
+    {
+      "question": "What is Newton's first law of motion also known as?",
+      "options": ["Law of gravity", "Law of inertia", "Law of acceleration", "Law of action-reaction"],
+      "correct": 1,
+      "explanation": "Newton's first law (law of inertia): an object stays at rest or in motion unless acted upon."
+    },
+    {
+      "question": "What particle was discovered at CERN in 2012?",
+      "options": ["Graviton", "Higgs boson", "Dark matter", "Tachyon"],
+      "correct": 1,
+      "explanation": "The Higgs boson was confirmed at CERN's Large Hadron Collider in 2012."
+    },
+    {
+      "question": "What phenomenon causes a straw to look bent in water?",
+      "options": ["Reflection", "Diffraction", "Refraction", "Dispersion"],
+      "correct": 2,
+      "explanation": "Refraction — the bending of light as it passes between different media."
+    },
+    {
+      "question": "Sound cannot travel through what?",
+      "options": ["Water", "Steel", "Air", "Vacuum"],
+      "correct": 3,
+      "explanation": "Sound needs a medium to travel; it cannot propagate through a vacuum."
+    },
+    {
+      "question": "Who is known as the father of quantum mechanics?",
+      "options": ["Albert Einstein", "Max Planck", "Werner Heisenberg", "Erwin Schrödinger"],
+      "correct": 1,
+      "explanation": "Max Planck introduced quantum theory in 1900 with his work on black-body radiation."
+    },
+    {
+      "question": "What happens to the pressure of a gas when its volume decreases (at constant temperature)?",
+      "options": ["Decreases", "Stays the same", "Increases", "Becomes zero"],
+      "correct": 2,
+      "explanation": "Boyle's Law: pressure increases when volume decreases at constant temperature."
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}

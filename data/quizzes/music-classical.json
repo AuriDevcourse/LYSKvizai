@@ -1,0 +1,123 @@
+{
+  "id": "music-classical",
+  "title": "Classical music",
+  "description": "Questions about classical music",
+  "emoji": "🎻",
+  "questions": [
+    {
+      "question": "Who composed the Moon Sonata?",
+      "options": [
+        "Wolfgang Amadeus Mozart",
+        "Frédéric Chopin",
+        "Ludwig van Beethoven",
+        "Johann Sebastian Bach"
+      ],
+      "correct": 2,
+      "explanation": "The Moon Sonata (Sonata No. 14) is a work by Ludwig van Beethoven composed in 1801.",
+      "correctYear": 1801
+    },
+    {
+      "question": "Who is M. K. Čiurlionis?",
+      "options": [
+        "Lithuanian poet",
+        "Lithuanian writer",
+        "Lithuanian architect",
+        "Lithuanian painter and composer"
+      ],
+      "correct": 3,
+      "explanation": "M. K. Čiurlionis is a famous Lithuanian painter and composer."
+    },
+    {
+      "question": "Which composer wrote The Four Seasons?",
+      "options": [
+        "Antonio Vivaldi",
+        "Johann Sebastian Bach",
+        "Georg Friedrich Handel",
+        "Joseph Haydn"
+      ],
+      "correct": 0,
+      "explanation": "The Four Seasons is a cycle of violin concertos by Antonio Vivaldi, composed around 1723.",
+      "correctYear": 1723
+    },
+    {
+      "question": "Which composer became deaf but continued to compose music?",
+      "options": [
+        "Mozart",
+        "Schubert",
+        "Beethoven",
+        "Brahms"
+      ],
+      "correct": 2,
+      "explanation": "Beethoven began composing in 1798, but produced his best works while almost completely deaf."
+    },
+    {
+      "question": "Who created the opera Kermoshius?",
+      "options": [
+        "Juozas Gruodis",
+        "Stasys Šimkus",
+        "Balys Dvarionas",
+        "Mikas Petrauskas"
+      ],
+      "correct": 3,
+      "explanation": "Kermošius is the first Lithuanian opera created by Miko Petrauskas in 1906.",
+      "correctYear": 1906
+    },
+    {
+      "question": "How many strings does a violin have?",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "correct": 1,
+      "explanation": "A violin has 4 strings: G, D, A and E."
+    },
+    {
+      "question": "Which composer is known for Swan Lake and The Nutcracker?",
+      "options": [
+        "Sergei Rachmaninov",
+        "Piotr Tchaikovsky",
+        "Igor Stravinsky",
+        "Dmitri Shostakovich"
+      ],
+      "correct": 1,
+      "explanation": "Piotr Tchaikovsky created the ballets Swan Lake, The Nutcracker and Sleeping Beauty."
+    },
+    {
+      "question": "Who composed the Requiem, which was completed by another composer after his death?",
+      "options": [
+        "Beethoven",
+        "Bach",
+        "Handel",
+        "Mozart"
+      ],
+      "correct": 3,
+      "explanation": "Mozart began writing the Requiem in 1791, but died before completing it. The work was completed by his student Süssmayr.",
+      "correctYear": 1791
+    },
+    {
+      "question": "How many notes are there in one octave?",
+      "options": [
+        "7",
+        "12",
+        "8",
+        "10"
+      ],
+      "correct": 1,
+      "explanation": "There are 12 semitones in an octave (chromatic scale)."
+    },
+    {
+      "question": "What is the Grammy Award?",
+      "options": [
+        "Movie bonus",
+        "Science prize",
+        "Literature prize",
+        "Music bonus"
+      ],
+      "correct": 3,
+      "explanation": "Grammy is the most prestigious music award given annually in the United States."
+    }
+  ],
+  "language": "en"
+}

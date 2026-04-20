@@ -21,14 +21,13 @@ interface PlayerResultsProps {
 }
 
 export default function PlayerResults({ playerId, results, question, onReact, children }: PlayerResultsProps) {
-  const { t, lang } = useTranslation();
+  const { t } = useTranslation();
   const myResult = results.playerResults.find((r) => r.playerId === playerId);
   const wasEliminated = results.eliminatedThisRound?.some((el) => el.playerId === playerId);
 
-  // Get translated options from question or results
   const options = question
-    ? (lang === "lt" && question.lt ? question.lt.options : lang !== "lt" && question.en ? question.en.options : question.options)
-    : (lang === "lt" && results.lt?.options ? results.lt.options : results.en?.options ?? null);
+    ? (question.en?.options ?? question.options)
+    : (results.en?.options ?? null);
 
   const correctIndex = results.correctAnswer;
 

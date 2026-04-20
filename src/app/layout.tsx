@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
 import { Plus_Jakarta_Sans, Be_Vietnam_Pro } from "next/font/google";
 import BottomNav from "@/components/BottomNav";
-import TopNav from "@/components/TopNav";
-import LanguageToggle from "@/components/LanguageToggle";
 import DevAgentation from "@/components/DevAgentation";
 import FeedbackButton from "@/components/FeedbackButton";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
@@ -57,10 +55,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${plusJakartaSans.variable} ${beVietnamPro.variable} font-[var(--font-body)] antialiased`}>
         <LanguageProvider>
-          <TopNav />
-          <div className="fixed left-3 top-3 z-50 sm:hidden">
-            <LanguageToggle />
-          </div>
           {children}
           <BottomNav />
           <FeedbackButton />

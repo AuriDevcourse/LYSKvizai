@@ -1,0 +1,101 @@
+{
+  "id": "world-capitals",
+  "title": "World Capitals",
+  "description": "15 questions about world capitals",
+  "emoji": "🏛️",
+  "language": "en",
+  "questions": [
+    {
+      "question": "What is the capital of Australia?",
+      "options": ["Sydney", "Melbourne", "Canberra", "Brisbane"],
+      "correct": 2,
+      "explanation": "Canberra is the capital of Australia, not Sydney or Melbourne."
+    },
+    {
+      "question": "What is the capital of Turkey?",
+      "options": ["Istanbul", "Ankara", "Izmir", "Antalya"],
+      "correct": 1,
+      "explanation": "Ankara has been the capital of Turkey since 1923."
+    },
+    {
+      "question": "What is the capital of Brazil?",
+      "options": ["São Paulo", "Rio de Janeiro", "Brasília", "Salvador"],
+      "correct": 2,
+      "explanation": "Brasília was purpose-built as the capital and inaugurated in 1960."
+    },
+    {
+      "question": "What is the capital of Canada?",
+      "options": ["Toronto", "Vancouver", "Montreal", "Ottawa"],
+      "correct": 3,
+      "explanation": "Ottawa is the capital of Canada."
+    },
+    {
+      "question": "What is the capital of Myanmar?",
+      "options": ["Yangon", "Mandalay", "Naypyidaw", "Bagan"],
+      "correct": 2,
+      "explanation": "Naypyidaw replaced Yangon as the capital in 2006."
+    },
+    {
+      "question": "What is the capital of Switzerland?",
+      "options": ["Zurich", "Geneva", "Bern", "Basel"],
+      "correct": 2,
+      "explanation": "Bern is the federal city (de facto capital) of Switzerland."
+    },
+    {
+      "question": "What is the capital of New Zealand?",
+      "options": ["Auckland", "Wellington", "Christchurch", "Queenstown"],
+      "correct": 1,
+      "explanation": "Wellington is the capital of New Zealand."
+    },
+    {
+      "question": "What is the capital of South Africa's executive branch?",
+      "options": ["Cape Town", "Johannesburg", "Pretoria", "Durban"],
+      "correct": 2,
+      "explanation": "South Africa has three capitals: Pretoria (executive), Cape Town (legislative), Bloemfontein (judicial)."
+    },
+    {
+      "question": "What is the capital of Morocco?",
+      "options": ["Casablanca", "Marrakech", "Rabat", "Fez"],
+      "correct": 2,
+      "explanation": "Rabat is the capital, while Casablanca is the largest city."
+    },
+    {
+      "question": "What is the capital of Pakistan?",
+      "options": ["Karachi", "Lahore", "Islamabad", "Peshawar"],
+      "correct": 2,
+      "explanation": "Islamabad became the capital in 1967, replacing Karachi."
+    },
+    {
+      "question": "What is the capital of Nigeria?",
+      "options": ["Lagos", "Abuja", "Kano", "Port Harcourt"],
+      "correct": 1,
+      "explanation": "Abuja became the capital in 1991, replacing Lagos."
+    },
+    {
+      "question": "What is the capital of Mongolia?",
+      "options": ["Erdenet", "Darkhan", "Ulaanbaatar", "Choibalsan"],
+      "correct": 2,
+      "explanation": "Ulaanbaatar is the capital and largest city of Mongolia."
+    },
+    {
+      "question": "What is the capital of Sri Lanka?",
+      "options": ["Colombo", "Kandy", "Sri Jayawardenepura Kotte", "Galle"],
+      "correct": 2,
+      "explanation": "Sri Jayawardenepura Kotte is the legislative capital, though Colombo is the commercial capital."
+    },
+    {
+      "question": "What is the capital of Kazakhstan?",
+      "options": ["Almaty", "Astana", "Shymkent", "Karaganda"],
+      "correct": 1,
+      "explanation": "Astana became the capital in 1997, replacing Almaty."
+    },
+    {
+      "question": "What is the capital of Tanzania?",
+      "options": ["Dar es Salaam", "Dodoma", "Arusha", "Mwanza"],
+      "correct": 1,
+      "explanation": "Dodoma is the official capital, though Dar es Salaam remains the largest city."
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}

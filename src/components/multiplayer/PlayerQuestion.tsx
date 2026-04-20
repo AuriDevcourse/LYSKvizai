@@ -55,9 +55,9 @@ export default function PlayerQuestion({
   waitingPlayerName,
   onChoosePowerUp,
 }: PlayerQuestionProps) {
-  const { t, lang } = useTranslation();
-  const qText = lang === "lt" && question.lt ? question.lt.question : lang !== "lt" && question.en ? question.en.question : question.question;
-  const qOptions = lang === "lt" && question.lt ? question.lt.options : lang !== "lt" && question.en ? question.en.options : question.options;
+  const { t } = useTranslation();
+  const qText = question.en?.question ?? question.question;
+  const qOptions = question.en?.options ?? question.options;
   const [selected, setSelected] = useState<number | null>(null);
   const [lastQuestionIndex, setLastQuestionIndex] = useState(question.index);
   const isProgressive = question.progressiveReveal ?? false;

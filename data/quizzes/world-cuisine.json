@@ -1,0 +1,101 @@
+{
+  "id": "world-cuisine",
+  "title": "World Cuisine",
+  "description": "15 questions about world cuisine",
+  "emoji": "🍕",
+  "language": "en",
+  "questions": [
+    {
+      "question": "Which country is the origin of sushi?",
+      "options": ["China", "Korea", "Japan", "Thailand"],
+      "correct": 2,
+      "explanation": "Sushi originated in Japan, evolving from a method of preserving fish in rice."
+    },
+    {
+      "question": "What is the main ingredient in hummus?",
+      "options": ["Lentils", "Chickpeas", "Black beans", "Fava beans"],
+      "correct": 1,
+      "explanation": "Hummus is made primarily from chickpeas, tahini, lemon, and garlic."
+    },
+    {
+      "question": "Which spice is the most expensive in the world by weight?",
+      "options": ["Vanilla", "Cardamom", "Saffron", "Cinnamon"],
+      "correct": 2,
+      "explanation": "Saffron is the most expensive spice, costing up to $10,000/kg."
+    },
+    {
+      "question": "Kimchi is a traditional fermented dish from which country?",
+      "options": ["Japan", "China", "South Korea", "Vietnam"],
+      "correct": 2,
+      "explanation": "Kimchi is a staple Korean side dish of salted and fermented vegetables."
+    },
+    {
+      "question": "What type of pasta is shaped like small ear-shaped cups?",
+      "options": ["Penne", "Orecchiette", "Fusilli", "Farfalle"],
+      "correct": 1,
+      "explanation": "Orecchiette means 'small ears' in Italian."
+    },
+    {
+      "question": "Which country is the largest producer of coffee?",
+      "options": ["Colombia", "Vietnam", "Ethiopia", "Brazil"],
+      "correct": 3,
+      "explanation": "Brazil produces about one-third of all the world's coffee."
+    },
+    {
+      "question": "What is the national dish of Spain?",
+      "options": ["Gazpacho", "Paella", "Tapas", "Churros"],
+      "correct": 1,
+      "explanation": "Paella, a rice dish from Valencia, is considered Spain's national dish."
+    },
+    {
+      "question": "Which fruit is known as the 'king of fruits' in Southeast Asia?",
+      "options": ["Mango", "Jackfruit", "Durian", "Rambutan"],
+      "correct": 2,
+      "explanation": "Durian is called the king of fruits despite its divisive smell."
+    },
+    {
+      "question": "What is wasabi traditionally made from?",
+      "options": ["Horseradish root", "Japanese horseradish plant", "Mustard seed", "Green chili"],
+      "correct": 1,
+      "explanation": "Real wasabi comes from the stem of the Wasabia japonica plant."
+    },
+    {
+      "question": "Which country invented the croissant?",
+      "options": ["France", "Austria", "Italy", "Belgium"],
+      "correct": 1,
+      "explanation": "The croissant was inspired by the Austrian kipferl but developed in France."
+    },
+    {
+      "question": "What is the main ingredient in guacamole?",
+      "options": ["Tomato", "Avocado", "Lime", "Jalapeño"],
+      "correct": 1,
+      "explanation": "Guacamole is primarily made from mashed avocados."
+    },
+    {
+      "question": "Which country does the dish 'pho' come from?",
+      "options": ["Thailand", "Cambodia", "Vietnam", "Laos"],
+      "correct": 2,
+      "explanation": "Pho is a Vietnamese soup with broth, rice noodles, herbs, and meat."
+    },
+    {
+      "question": "What gives bread its holes?",
+      "options": ["Baking soda", "Steam", "Yeast producing CO₂", "Kneading technique"],
+      "correct": 2,
+      "explanation": "Yeast fermentation produces CO₂ gas, creating bubbles in the dough."
+    },
+    {
+      "question": "Which nut is used to make marzipan?",
+      "options": ["Cashew", "Walnut", "Almond", "Hazelnut"],
+      "correct": 2,
+      "explanation": "Marzipan is made from ground almonds and sugar."
+    },
+    {
+      "question": "What is the most consumed food in the world?",
+      "options": ["Wheat", "Corn", "Rice", "Potatoes"],
+      "correct": 2,
+      "explanation": "Rice is the staple food for over half the world's population."
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}

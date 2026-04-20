@@ -21,8 +21,8 @@ export default function FastestFingerInput({
   timerReduction = 0,
   eliminated = false,
 }: FastestFingerInputProps) {
-  const { t, lang } = useTranslation();
-  const qText = lang === "lt" && question.lt ? question.lt.question : lang !== "lt" && question.en ? question.en.question : question.question;
+  const { t } = useTranslation();
+  const qText = question.en?.question ?? question.question;
   const [text, setText] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [lastQuestionIndex, setLastQuestionIndex] = useState(question.index);

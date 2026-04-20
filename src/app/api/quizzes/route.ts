@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { listQuizzes, saveQuiz } from "@/lib/quiz-store";
-import { translateBatch } from "@/lib/translate";
 import { checkRateLimit } from "@/lib/rate-limit";
 import type { Quiz } from "@/data/types";
 
@@ -22,26 +21,6 @@ export async function GET(req: NextRequest) {
   }
 
   const quizzes = await listQuizzes();
-
-  const lang = req.nextUrl.searchParams.get("lang");
-  // Content is in English — translate titles to target language if not English
-  if (lang && lang !== "en") {
-    const toTranslate: { idx: number; title: string }[] = [];
-    for (let i = 0; i < quizzes.length; i++) {
-      toTranslate.push({ idx: i, title: quizzes[i].title });
-    }
-    if (toTranslate.length > 0) {
-      try {
-        const translated = await translateBatch(toTranslate.map((t) => t.title), "en", lang);
-        const result = quizzes.map((q) => ({ ...q }));
-        toTranslate.forEach((t, j) => { result[t.idx].title = translated[j]; });
-        return json(result);
-      } catch {
-        // Translation failed — return English titles
-      }
-    }
-  }
-
   return json(quizzes);
 }
 

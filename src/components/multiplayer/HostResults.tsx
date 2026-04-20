@@ -32,20 +32,14 @@ export default function HostResults({
   onNext,
   gameMode = "classic",
 }: HostResultsProps) {
-  const { t, lang } = useTranslation();
+  const { t } = useTranslation();
   const [phase, setPhase] = useState<"reveal" | "leaderboard">("reveal");
 
-  const useEn = lang !== "lt" && results.en;
-  const useLt = lang === "lt" && results.lt;
   const correctText = results.correctAnswerText ?? question?.options[results.correctAnswer] ?? "";
-  const tCorrectAnswer = useLt && results.lt?.correctAnswerText ? results.lt.correctAnswerText : useEn && results.en?.correctAnswerText ? results.en.correctAnswerText : (useEn && results.en?.options ? results.en.options[results.correctAnswer] : useLt && results.lt?.options ? results.lt.options[results.correctAnswer] : correctText);
-  const tExplanation = useLt && results.lt?.explanation ? results.lt.explanation : useEn && results.en?.explanation ? results.en.explanation : (results.explanation ?? "");
-  const tOptions = useLt && results.lt?.options ? results.lt.options : useEn && results.en?.options ? results.en.options : (question?.options ?? ["", "", "", ""]);
-  const qText = question ? (
-    lang === "lt" && question.lt ? question.lt.question :
-    lang !== "lt" && question.en ? question.en.question :
-    question.question
-  ) : "";
+  const tCorrectAnswer = results.en?.correctAnswerText ?? results.en?.options?.[results.correctAnswer] ?? correctText;
+  const tExplanation = results.en?.explanation ?? results.explanation ?? "";
+  const tOptions = results.en?.options ?? question?.options ?? ["", "", "", ""];
+  const qText = question ? (question.en?.question ?? question.question) : "";
 
   const sortedPlayers = useMemo(() => {
     return [...results.playerResults].sort((a, b) => b.totalScore - a.totalScore);

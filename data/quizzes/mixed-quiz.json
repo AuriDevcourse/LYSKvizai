@@ -1,0 +1,124 @@
+{
+  "id": "mixed-quiz",
+  "title": "Mixed Mode Test",
+  "description": "All question types in one quiz",
+  "emoji": "🎯",
+  "language": "en",
+  "questions": [
+    {
+      "question": "What is the capital of Australia?",
+      "options": ["Sydney", "Melbourne", "Canberra", "Brisbane"],
+      "correct": 2,
+      "explanation": "Canberra has been the capital of Australia since 1913.",
+      "type": "standard"
+    },
+    {
+      "question": "The Great Wall of China is visible from space with the naked eye.",
+      "options": ["True", "False", "", ""],
+      "correct": 1,
+      "explanation": "This is a common myth. The Great Wall is too narrow to be seen from space without aid.",
+      "type": "true-false"
+    },
+    {
+      "question": "Which of these animals can fly?",
+      "options": ["Penguin", "Ostrich", "Bat", "Kiwi"],
+      "correct": 2,
+      "explanation": "Bats are the only mammals capable of true flight. One answer was fake!",
+      "type": "bluff",
+      "bluffAnswer": "Flying Squirrel"
+    },
+    {
+      "question": "When was the Berlin Wall torn down?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The Berlin Wall fell on November 9, 1989.",
+      "type": "year-guesser",
+      "correctYear": 1989
+    },
+    {
+      "question": "Water boils at 100 degrees Celsius at sea level.",
+      "options": ["True", "False", "", ""],
+      "correct": 0,
+      "explanation": "Water boils at exactly 100°C (212°F) at standard atmospheric pressure at sea level.",
+      "type": "true-false"
+    },
+    {
+      "question": "What is the chemical symbol for gold?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "Au comes from the Latin word 'aurum'.",
+      "type": "fastest-finger",
+      "acceptedAnswers": ["Au", "au", "AU"]
+    },
+    {
+      "question": "Which planet has the most moons?",
+      "options": ["Jupiter", "Saturn", "Uranus", "Neptune"],
+      "correct": 1,
+      "explanation": "Saturn has over 140 confirmed moons, surpassing Jupiter.",
+      "type": "standard"
+    },
+    {
+      "question": "When was the first manned Moon landing?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "Apollo 11 landed on the Moon on July 20, 1969.",
+      "type": "year-guesser",
+      "correctYear": 1969
+    },
+    {
+      "question": "Honey never spoils.",
+      "options": ["True", "False", "", ""],
+      "correct": 0,
+      "explanation": "Archaeologists have found 3000-year-old honey in Egyptian tombs that was still edible!",
+      "type": "true-false"
+    },
+    {
+      "question": "Name the largest ocean on Earth.",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "The Pacific Ocean covers about 165.25 million km².",
+      "type": "fastest-finger",
+      "acceptedAnswers": ["Pacific", "pacific", "Pacific Ocean", "pacific ocean", "the pacific", "The Pacific"]
+    },
+    {
+      "question": "Which country invented pizza?",
+      "options": ["Greece", "Italy", "France", "Spain"],
+      "correct": 1,
+      "explanation": "Modern pizza originated in Naples, Italy in the 18th century.",
+      "type": "standard"
+    },
+    {
+      "question": "Bananas are berries, but strawberries are not.",
+      "options": ["True", "False", "", ""],
+      "correct": 0,
+      "explanation": "Botanically, bananas qualify as berries while strawberries are 'accessory fruits'.",
+      "type": "true-false"
+    },
+    {
+      "question": "When did World War II end?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "WWII ended on September 2, 1945 with Japan's formal surrender.",
+      "type": "year-guesser",
+      "correctYear": 1945
+    },
+    {
+      "question": "What is the tallest mountain in the world?",
+      "options": ["K2", "Kangchenjunga", "Mount Everest", "Lhotse"],
+      "correct": 2,
+      "explanation": "Mount Everest stands at 8,849 meters above sea level.",
+      "type": "bluff",
+      "bluffAnswer": "Mount Kilimanjaro"
+    },
+    {
+      "question": "What is the fastest land animal?",
+      "options": ["", "", "", ""],
+      "correct": 0,
+      "explanation": "Cheetahs can reach speeds of up to 120 km/h.",
+      "type": "fastest-finger",
+      "acceptedAnswers": ["Cheetah", "cheetah", "the cheetah", "gepardas"]
+    }
+  ],
+  "createdAt": "2026-03-16T00:00:00.000Z",
+  "updatedAt": "2026-03-16T00:00:00.000Z"
+}

@@ -1,0 +1,181 @@
+{
+  "id": "world-celebrities",
+  "title": "World stars",
+  "description": "15 questions about the most famous people",
+  "emoji": "⭐",
+  "questions": [
+    {
+      "question": "Which singer released the album Midnights in 2022?",
+      "options": [
+        "Billie Eilish",
+        "Taylor Swift",
+        "Ariana Grande",
+        "Dua Lipa"
+      ],
+      "correct": 1,
+      "explanation": "Taylor Swift released the album Midnights in October 2022.",
+      "correctYear": 2022
+    },
+    {
+      "question": "Which footballer has the most Ballon d'Or awards?",
+      "options": [
+        "Cristiano Ronaldo",
+        "Lionel Messi",
+        "Kylian Mbappé",
+        "Neymar"
+      ],
+      "correct": 1,
+      "explanation": "Lionel Messi has won 8 Ballon d'Or awards, more than anyone else."
+    },
+    {
+      "question": "Who founded Tesla and SpaceX?",
+      "options": [
+        "Mark Zuckerberg",
+        "Jeff Bezos",
+        "Bill Gates",
+        "Elon Musk"
+      ],
+      "correct": 3,
+      "explanation": "Elon Musk is the CEO and co-founder of Tesla and SpaceX."
+    },
+    {
+      "question": "Which actor played Jack in Titanic?",
+      "options": [
+        "Brad Pitt",
+        "Leonardo DiCaprio",
+        "Johnny Depp",
+        "Tom Cruise"
+      ],
+      "correct": 1,
+      "explanation": "Leonardo DiCaprio played Jack Dawson in the cult film Titanic (1997).",
+      "correctYear": 1997
+    },
+    {
+      "question": "What singer is known as Queen Bey?",
+      "options": [
+        "Rihanna",
+        "Beyoncé",
+        "Lady Gaga",
+        "Shakira"
+      ],
+      "correct": 1,
+      "explanation": "Beyoncé is often referred to as \"Queen Bey\" and is one of the most influential artists in the world."
+    },
+    {
+      "question": "Who created the social network Facebook?",
+      "options": [
+        "Jack Dorsey",
+        "Steve Jobs",
+        "Mark Zuckerberg",
+        "Larry Page"
+      ],
+      "correct": 2,
+      "explanation": "Mark Zuckerberg created Facebook in 2004 while a student at Harvard University.",
+      "correctYear": 2004
+    },
+    {
+      "question": "Which scientist developed the theory of relativity?",
+      "options": [
+        "Albert Einstein",
+        "Nikola Tesla",
+        "Isaac Newton",
+        "Stephen Hawking"
+      ],
+      "correct": 0,
+      "explanation": "Albert Einstein published the general theory of relativity in 1915.",
+      "correctYear": 1915
+    },
+    {
+      "question": "Which artist sings the hit \"Shape of You\"?",
+      "options": [
+        "Justin Bieber",
+        "Shawn Mendes",
+        "Ed Sheeran",
+        "Harry Styles"
+      ],
+      "correct": 2,
+      "explanation": "Ed Sheeran released \"Shape of You\" in 2017 and it is one of the most popular songs in the world.",
+      "correctYear": 2017
+    },
+    {
+      "question": "Who painted the Mona Lisa?",
+      "options": [
+        "Michelangelo",
+        "Raphael",
+        "Leonardo da Vinci",
+        "Vincent van Gogh"
+      ],
+      "correct": 2,
+      "explanation": "Leonardo da Vinci painted the Mona Lisa around 1503-1519."
+    },
+    {
+      "question": "Which Portuguese footballer is known as CR7?",
+      "options": [
+        "Cristiano Ronaldo",
+        "Luis Figo",
+        "Neymar",
+        "Zinedine Zidane"
+      ],
+      "correct": 0,
+      "explanation": "Cristiano Ronaldo is known as CR7 by his initials and shirt number."
+    },
+    {
+      "question": "Which YouTuber and singer became famous with the song \"Bad Guy\"?",
+      "options": [
+        "Olivia Rodrigo",
+        "Doja Cat",
+        "Billie Eilish",
+        "Charli XCX"
+      ],
+      "correct": 2,
+      "explanation": "Billie Eilish released the hit song \"Bad Guy\" in 2019 and won several Grammy Awards.",
+      "correctYear": 2019
+    },
+    {
+      "question": "Which basketball player is known by the nickname \"King James\"?",
+      "options": [
+        "Stephen Curry",
+        "Kevin Durant",
+        "Kobe Bryant",
+        "LeBron James"
+      ],
+      "correct": 3,
+      "explanation": "LeBron James is called \"King James\" and is considered one of the best basketball players in history."
+    },
+    {
+      "question": "Who is the Most Followed TikTok Creator (2024)?",
+      "options": [
+        "Addison Rae",
+        "Charlie D'Amelio",
+        "Khaby Lame",
+        "Bella Poarch"
+      ],
+      "correct": 2,
+      "explanation": "Khaby Lame has become the most popular creator on TikTok by number of followers."
+    },
+    {
+      "question": "Which actress played Hermione Granger in the Harry Potter films?",
+      "options": [
+        "Emma Stone",
+        "Scarlett Johansson",
+        "Natalie Portman",
+        "Emma Watson"
+      ],
+      "correct": 3,
+      "explanation": "Emma Watson played Hermione Granger in all eight Harry Potter films."
+    },
+    {
+      "question": "Which rapper legally changed his name to 'Ye' in 2021?",
+      "options": [
+        "Drake",
+        "Kendrick Lamar",
+        "Travis Scott",
+        "Kanye West"
+      ],
+      "correct": 3,
+      "explanation": "Kanye West officially changed his name to Ye in 2021.",
+      "correctYear": 2021
+    }
+  ],
+  "language": "en"
+}

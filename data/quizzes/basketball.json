@@ -1,0 +1,110 @@
+{
+  "id": "basketball",
+  "title": "Basketball",
+  "description": "15 questions about NBA history, legendary players, records, international basketball, and Lithuanian basketball",
+  "emoji": "🏀",
+  "language": "en",
+  "questions": [
+    {
+      "question": "Who holds the NBA record for most points scored in a single game?",
+      "options": ["Kobe Bryant", "Michael Jordan", "Wilt Chamberlain", "LeBron James"],
+      "correct": 2,
+      "explanation": "Wilt Chamberlain scored 100 points for the Philadelphia Warriors against the New York Knicks on March 2, 1962.",
+      "correctYear": 1962
+    },
+    {
+      "question": "Which team has won the most NBA championships?",
+      "options": ["Los Angeles Lakers", "Chicago Bulls", "Boston Celtics", "Golden State Warriors"],
+      "correct": 2,
+      "explanation": "The Boston Celtics have won 18 NBA championships, the most in league history."
+    },
+    {
+      "question": "In which year did Lithuania's national basketball team win their first Olympic medal after independence?",
+      "options": ["1988", "1992", "1996", "2000"],
+      "correct": 1,
+      "explanation": "Lithuania won the bronze medal at the 1992 Barcelona Olympics, their first Games as an independent nation, famously wearing Grateful Dead tie-dye jerseys.",
+      "correctYear": 1992
+    },
+    {
+      "question": "Who is the NBA's all-time leading scorer?",
+      "options": ["Kareem Abdul-Jabbar", "Karl Malone", "LeBron James", "Kobe Bryant"],
+      "correct": 2,
+      "explanation": "LeBron James surpassed Kareem Abdul-Jabbar's record in February 2023, becoming the NBA's all-time leading scorer.",
+      "correctYear": 2023
+    },
+    {
+      "question": "Which Lithuanian player was the first to play in the NBA?",
+      "options": ["Arvydas Sabonis", "Sarunas Marciulionis", "Zydrunas Ilgauskas", "Domantas Sabonis"],
+      "correct": 1,
+      "explanation": "Sarunas Marciulionis joined the Golden State Warriors in 1989, becoming the first Lithuanian (and one of the first Soviets) to play in the NBA.",
+      "correctYear": 1989
+    },
+    {
+      "question": "What is the name of the famous 1992 US Olympic basketball team?",
+      "options": ["The Super Team", "The Dream Team", "The Gold Squad", "The All-Stars"],
+      "correct": 1,
+      "explanation": "The 1992 US Olympic team, featuring Michael Jordan, Magic Johnson, and Larry Bird, was nicknamed 'The Dream Team.'"
+    },
+    {
+      "question": "Which player won 6 NBA Finals MVP awards, all with the Chicago Bulls?",
+      "options": ["Scottie Pippen", "Dennis Rodman", "Michael Jordan", "LeBron James"],
+      "correct": 2,
+      "explanation": "Michael Jordan won 6 NBA Finals MVP awards across the Bulls' two three-peats (1991-93 and 1996-98)."
+    },
+    {
+      "question": "How many Olympic bronze medals has Lithuania's men's basketball team won?",
+      "options": ["1", "2", "3", "4"],
+      "correct": 2,
+      "explanation": "Lithuania won Olympic bronze medals in 1992 (Barcelona), 1996 (Atlanta), and 2000 (Sydney)."
+    },
+    {
+      "question": "Which NBA team went 73-9 in the 2015-16 regular season, setting the all-time wins record?",
+      "options": ["San Antonio Spurs", "Golden State Warriors", "Chicago Bulls", "Los Angeles Lakers"],
+      "correct": 1,
+      "explanation": "The Golden State Warriors went 73-9 in 2015-16, surpassing the 1995-96 Bulls' 72-10 record, but lost the Finals to Cleveland.",
+      "correctYear": 2016
+    },
+    {
+      "question": "Which country won the first ever FIBA Basketball World Cup (then called the World Championship) in 1950?",
+      "options": ["United States", "Brazil", "Argentina", "Soviet Union"],
+      "correct": 2,
+      "explanation": "Argentina won the first FIBA World Championship in 1950, held in Buenos Aires.",
+      "correctYear": 1950
+    },
+    {
+      "question": "Arvydas Sabonis is often considered Lithuania's greatest basketball player. At what age did he finally join the NBA?",
+      "options": ["25", "27", "31", "34"],
+      "correct": 2,
+      "explanation": "Sabonis joined the Portland Trail Blazers in 1995 at age 31, well past his physical prime due to injuries and the Iron Curtain."
+    },
+    {
+      "question": "Which player holds the record for the most assists in NBA history?",
+      "options": ["Magic Johnson", "John Stockton", "Steve Nash", "Chris Paul"],
+      "correct": 1,
+      "explanation": "John Stockton recorded 15,806 assists in his career, a record that is considered nearly unbreakable."
+    },
+    {
+      "question": "In the controversial 1972 Olympic basketball final, which team defeated the USA in the last 3 seconds?",
+      "options": ["Yugoslavia", "Soviet Union", "Cuba", "Brazil"],
+      "correct": 1,
+      "explanation": "The Soviet Union defeated the USA 51-50 after the final 3 seconds were replayed twice, in one of the most controversial endings in Olympic history.",
+      "correctYear": 1972
+    },
+    {
+      "question": "Which NBA player is known for scoring 81 points in a single game in 2006?",
+      "options": ["Kobe Bryant", "LeBron James", "Tracy McGrady", "Allen Iverson"],
+      "correct": 0,
+      "explanation": "Kobe Bryant scored 81 points for the Lakers against the Toronto Raptors on January 22, 2006, the second-highest single-game total in NBA history.",
+      "correctYear": 2006
+    },
+    {
+      "question": "Which Lithuanian basketball club has won the most EuroLeague titles?",
+      "options": ["Lietuvos Rytas", "Zalgiris Kaunas", "Neptunas Klaipeda", "Pieno Zvaigzdes"],
+      "correct": 1,
+      "explanation": "Zalgiris Kaunas won the EuroLeague in 1999, the only Lithuanian club to win European basketball's top competition.",
+      "correctYear": 1999
+    }
+  ],
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z"
+}
