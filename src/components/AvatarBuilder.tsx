@@ -12,16 +12,20 @@ import {
   setFeature,
   variantCount,
   backgroundCount,
+  skinCount,
+  hairColorCount,
 } from "@/lib/avatar-dicebear";
 
 interface AvatarBuilderProps {
   onChange: (encoded: string) => void;
 }
 
-type Tab = "hair" | "eyes" | "eyebrows" | "mouth" | "glasses" | "earrings" | "features" | "bg";
+type Tab = "hair" | "hairColor" | "eyes" | "eyebrows" | "mouth" | "skin" | "glasses" | "earrings" | "features" | "bg";
 
 const TABS: { id: Tab; label: string }[] = [
   { id: "hair", label: "Hair" },
+  { id: "hairColor", label: "Hair color" },
+  { id: "skin", label: "Skin" },
   { id: "eyes", label: "Eyes" },
   { id: "eyebrows", label: "Brows" },
   { id: "mouth", label: "Mouth" },
@@ -34,7 +38,7 @@ const TABS: { id: Tab; label: string }[] = [
 /** Build a preview config with one feature swapped. For optional categories
  *  (glasses/earrings/features) option 0 is the "none" tile. */
 function withFeature(base: DiceBearConfig, cat: Tab, idx: number): DiceBearConfig {
-  if (cat === "bg") return setFeature(base, "bg", idx);
+  if (cat === "bg" || cat === "skin" || cat === "hairColor") return setFeature(base, cat, idx);
   const isOptional = cat === "glasses" || cat === "earrings" || cat === "features";
   if (isOptional) {
     if (idx === 0) return { ...base, [cat]: -1 };
@@ -45,6 +49,8 @@ function withFeature(base: DiceBearConfig, cat: Tab, idx: number): DiceBearConfi
 
 function optionCount(cat: Tab): number {
   if (cat === "bg") return backgroundCount();
+  if (cat === "skin") return skinCount();
+  if (cat === "hairColor") return hairColorCount();
   if (cat === "glasses" || cat === "earrings" || cat === "features") {
     return variantCount(cat) + 1;
   }
@@ -53,6 +59,8 @@ function optionCount(cat: Tab): number {
 
 function isSelected(cat: Tab, idx: number, c: DiceBearConfig): boolean {
   if (cat === "bg") return c.bg === idx;
+  if (cat === "skin") return c.skin === idx;
+  if (cat === "hairColor") return c.hairColor === idx;
   if (cat === "glasses") return idx === 0 ? c.glasses === -1 : c.glasses === idx - 1;
   if (cat === "earrings") return idx === 0 ? c.earrings === -1 : c.earrings === idx - 1;
   if (cat === "features") return idx === 0 ? c.features === -1 : c.features === idx - 1;
