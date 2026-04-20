@@ -34,6 +34,7 @@ interface UseRoomReturn {
   timerReduction: number;
   powerUpEvent: null;
   eliminatedEvent: { playerId: string; playerName: string; playerEmoji: string } | null;
+  playerLeftEvent: { playerId: string; playerName: string; playerEmoji: string } | null;
 }
 
 const MAX_RETRIES = 200;
@@ -55,6 +56,8 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
   const [timerReduction, setTimerReduction] = useState(0);
   const [powerUpEvent] = useState<null>(null);
   const [eliminatedEvent, setEliminatedEvent] = useState<{ playerId: string; playerName: string; playerEmoji: string } | null>(null);
+  const [playerLeftEvent, setPlayerLeftEvent] = useState<{ playerId: string; playerName: string; playerEmoji: string } | null>(null);
+  const leftClearTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const esRef = useRef<EventSource | null>(null);
   const reconnectTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -108,9 +111,21 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
 
     es.addEventListener("player-left", (e) => {
       const { playerId: leftId } = JSON.parse(e.data);
-      setPlayers((prev) =>
-        prev.map((p) => (p.id === leftId ? { ...p, connected: false } : p))
-      );
+      setPlayers((prev) => {
+        const leaver = prev.find((p) => p.id === leftId);
+        if (leaver && leaver.connected) {
+          // Skip the toast for players already marked disconnected (prevents duplicate
+          // popups when the same event arrives via reconnect snapshot + stream).
+          setPlayerLeftEvent({
+            playerId: leaver.id,
+            playerName: leaver.name,
+            playerEmoji: leaver.emoji,
+          });
+          clearTimeout(leftClearTimer.current);
+          leftClearTimer.current = setTimeout(() => setPlayerLeftEvent(null), 4000);
+        }
+        return prev.map((p) => (p.id === leftId ? { ...p, connected: false } : p));
+      });
     });
 
     es.addEventListener("question-start", (e) => {
@@ -262,6 +277,6 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
   return {
     state, players, question, results, leaderboard, answerCount, reactions,
     connected, error, gameMode, teamNames, wager, timerReduction,
-    powerUpEvent, eliminatedEvent,
+    powerUpEvent, eliminatedEvent, playerLeftEvent,
   };
 }

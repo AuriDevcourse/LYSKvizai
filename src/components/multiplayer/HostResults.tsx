@@ -9,6 +9,7 @@ import type { ResultsPayload, QuestionPayload, GameMode } from "@/lib/multiplaye
 import type { EmojiReactionWithId } from "@/hooks/useRoom";
 import EmojiReactions from "./EmojiReactions";
 import Avatar from "@/components/Avatar";
+import AnimatedNumber from "@/components/AnimatedNumber";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 const OPTION_BG = ["bg-[#ff716c]", "bg-[#43a5fc]", "bg-[#66bb6a]", "bg-[#c9a825]"];
@@ -315,7 +316,12 @@ function AnimatedLeaderboardPhase({
                   <span className="text-sm font-bold text-white/50">
                     {absDiff === 0 ? t("hostResults.exact") : `${diff > 0 ? "+" : ""}${diff}`}
                   </span>
-                  <span className="min-w-[3.5rem] text-right text-base font-extrabold text-emerald-300">+{g.points}</span>
+                  <AnimatedNumber
+                    value={g.points}
+                    duration={700}
+                    prefix="+"
+                    className="min-w-[3.5rem] text-right text-base font-extrabold text-emerald-300 tabular-nums"
+                  />
                 </div>
               </div>
             );
@@ -395,7 +401,7 @@ function AnimatedLeaderboardPhase({
                         animationDone ? "animate-bounce-in" : "opacity-0"
                       }`}>
                         <TrendingUp className="h-3.5 w-3.5" />
-                        +{pointsGained}
+                        <AnimatedNumber value={pointsGained} duration={600} prefix="+" />
                       </span>
                     )}
                     {playerResult && !playerResult.correct && (
@@ -405,9 +411,11 @@ function AnimatedLeaderboardPhase({
                 </div>
 
                 {/* Score with count-up animation */}
-                <span className="relative z-10 text-base font-black text-white tabular-nums sm:text-2xl">
-                  {displayScore}
-                </span>
+                <AnimatedNumber
+                  value={displayScore}
+                  duration={900}
+                  className="relative z-10 text-base font-black text-white tabular-nums sm:text-2xl"
+                />
               </div>
             );
           })}

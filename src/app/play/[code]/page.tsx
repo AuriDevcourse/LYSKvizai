@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Loader2, X, AlertTriangle, WifiOff, ArrowRight, Trophy } from "lucide-react";
 import { useRoom } from "@/hooks/useRoom";
 import { useRoomActions } from "@/hooks/useRoomActions";
+import Avatar from "@/components/Avatar";
 import HostLobby from "@/components/multiplayer/HostLobby";
 import PlayerLobby from "@/components/multiplayer/PlayerLobby";
 import HostQuestion from "@/components/multiplayer/HostQuestion";
@@ -120,6 +121,7 @@ export default function GamePage({ params }: PageProps) {
     wager,
     timerReduction,
     eliminatedEvent,
+    playerLeftEvent,
   } = useRoom(code, playerId);
 
   const { startGame, submitAnswer, nextQuestion, sendReaction, submitWager } = useRoomActions();
@@ -350,6 +352,17 @@ export default function GamePage({ params }: PageProps) {
           <div className="flex items-center gap-2 rounded-xl bg-yellow-600 px-4 py-2 shadow-lg">
             <WifiOff className="h-4 w-4 animate-pulse text-white" />
             <span className="text-sm font-bold text-white">Reconnecting...</span>
+          </div>
+        </div>
+      )}
+
+      {/* Player left toast */}
+      {playerLeftEvent && connected && playerLeftEvent.playerId !== playerId && (
+        <div className="fixed left-1/2 top-16 z-[55] -translate-x-1/2 animate-fade-in-up">
+          <div className="flex items-center gap-2 rounded-xl border-[1.5px] border-white/10 bg-black/70 px-3 py-2 shadow-lg backdrop-blur-md">
+            <Avatar value={playerLeftEvent.playerEmoji} size={24} />
+            <span className="text-sm font-bold text-white">{playerLeftEvent.playerName} left</span>
+            <WifiOff className="h-3.5 w-3.5 text-white/50" />
           </div>
         </div>
       )}
