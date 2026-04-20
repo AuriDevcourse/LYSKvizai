@@ -5,6 +5,7 @@ import BottomNav from "@/components/BottomNav";
 import TopNav from "@/components/TopNav";
 import LanguageToggle from "@/components/LanguageToggle";
 import DevAgentation from "@/components/DevAgentation";
+import FeedbackButton from "@/components/FeedbackButton";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import "./globals.css";
 
@@ -62,6 +63,7 @@ export default function RootLayout({
           </div>
           {children}
           <BottomNav />
+          <FeedbackButton />
         </LanguageProvider>
         <DevAgentation />
       </body>
