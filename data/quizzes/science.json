@@ -3,6 +3,7 @@
   "title": "Science",
   "description": "15 questions about science and nature",
   "emoji": "🔬",
+  "icon": "FlaskConical",
   "createdAt": "2026-03-10T22:22:50+01:00",
   "questions": [
     {

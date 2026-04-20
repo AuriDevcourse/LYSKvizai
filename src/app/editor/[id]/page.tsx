@@ -6,6 +6,7 @@ import { ArrowLeft, Plus, Save, Loader2, AlertTriangle } from "lucide-react";
 import type { Question, Quiz } from "@/data/types";
 import QuestionEditor from "@/components/editor/QuestionEditor";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { QUIZ_ICONS, ICON_PICKER_ORDER, type QuizIconName } from "@/lib/quiz-icons";
 
 const EMPTY_QUESTION: Question = {
   question: "",
@@ -14,7 +15,7 @@ const EMPTY_QUESTION: Question = {
   explanation: "",
 };
 
-const EMOJI_OPTIONS = ["🎭", "📝", "🧠", "🌍", "🎬", "🏆", "🔬", "📚", "🎵", "⚽", "🍕", "🐱"];
+const DEFAULT_ICON: QuizIconName = "BookOpen";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -29,7 +30,7 @@ export default function QuizEditorPage({ params }: PageProps) {
   const [quizId, setQuizId] = useState(isNew ? "" : id);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [emoji, setEmoji] = useState("📝");
+  const [icon, setIcon] = useState<QuizIconName>(DEFAULT_ICON);
   const [questions, setQuestions] = useState<Question[]>([{ ...EMPTY_QUESTION }]);
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
@@ -48,7 +49,7 @@ export default function QuizEditorPage({ params }: PageProps) {
         setQuizId(quiz.id);
         setTitle(quiz.title);
         setDescription(quiz.description);
-        setEmoji(quiz.emoji);
+        if (quiz.icon && quiz.icon in QUIZ_ICONS) setIcon(quiz.icon as QuizIconName);
         setQuestions(quiz.questions);
       })
       .catch((e) => setError(e.message))
@@ -99,7 +100,7 @@ export default function QuizEditorPage({ params }: PageProps) {
           id: finalId,
           title: title.trim(),
           description: description.trim(),
-          emoji,
+          icon,
           questions: validQuestions,
         }),
       });
@@ -120,7 +121,7 @@ export default function QuizEditorPage({ params }: PageProps) {
     } finally {
       setSaving(false);
     }
-  }, [isNew, quizId, title, description, emoji, questions, router]);
+  }, [isNew, quizId, title, description, icon, questions, router, t]);
 
   const addQuestion = () => {
     setQuestions([...questions, { ...EMPTY_QUESTION }]);
@@ -237,23 +238,28 @@ export default function QuizEditorPage({ params }: PageProps) {
 
           <div>
             <label className="mb-1 block text-xs font-medium text-white/50">
-              {t("editor.emoji")}
+              Icon
             </label>
-            <div className="flex flex-wrap gap-2">
-              {EMOJI_OPTIONS.map((e) => (
-                <button
-                  key={e}
-                  type="button"
-                  onClick={() => setEmoji(e)}
-                  className={`flex h-10 w-10 items-center justify-center rounded-lg text-xl transition-colors ${
-                    emoji === e
-                      ? "bg-white/5 outline outline-[1.5px] outline-[#ff9062]"
-                      : "bg-white/5 hover:bg-white/5"
-                  }`}
-                >
-                  {e}
-                </button>
-              ))}
+            <div className="grid max-h-56 grid-cols-8 gap-1.5 overflow-y-auto rounded-lg border-[1.5px] border-white/8 bg-white/5 p-2 sm:grid-cols-10">
+              {ICON_PICKER_ORDER.map((name) => {
+                const Icon = QUIZ_ICONS[name];
+                const active = icon === name;
+                return (
+                  <button
+                    key={name}
+                    type="button"
+                    onClick={() => setIcon(name)}
+                    title={name}
+                    className={`flex aspect-square items-center justify-center rounded-lg transition-all ${
+                      active
+                        ? "bg-[#ff9062]/20 outline outline-[1.5px] outline-[#ff9062]"
+                        : "bg-white/5 hover:bg-white/10"
+                    }`}
+                  >
+                    <Icon className={`h-5 w-5 ${active ? "text-[#ff9062]" : "text-white/70"}`} strokeWidth={1.8} />
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>

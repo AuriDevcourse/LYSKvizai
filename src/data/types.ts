@@ -21,7 +21,10 @@ export interface Quiz {
   id: string; // filesystem-safe slug: "uzgavenes-klasika"
   title: string;
   description: string;
+  /** Legacy: Unicode emoji. Kept for backward compat; new quizzes use `icon` instead. */
   emoji: string;
+  /** Lucide icon name (see @/lib/quiz-icons#QUIZ_ICONS). Preferred over emoji. */
+  icon?: string;
   questions: Question[];
   createdAt: string; // ISO date
   updatedAt: string;
@@ -32,6 +35,8 @@ export interface QuizMeta {
   title: string;
   description: string;
   emoji: string;
+  /** Lucide icon name. Preferred over `emoji` when resolving the quiz theme. */
+  icon?: string;
   questionCount: number;
   /** ISO date when the quiz was first added (from git history, or set by editor on save). */
   createdAt?: string;

@@ -3,6 +3,7 @@
   "title": "Year Guesser: Space Exploration",
   "description": "Guess when these space milestones happened",
   "emoji": "🚀",
+  "icon": "Rocket",
   "createdAt": "2026-04-02T11:31:01+02:00",
   "questions": [
     {

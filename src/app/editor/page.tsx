@@ -89,7 +89,7 @@ export default function EditorPage() {
                 className="flex items-center gap-4 rounded-2xl border-[1.5px] border-white/8 bg-white/5 px-5 py-4"
               >
                 {(() => {
-                  const theme = getQuizTheme(quiz.id);
+                  const theme = getQuizTheme(quiz);
                   const Icon = theme.icon;
                   return (
                     <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${theme.bg}`}>

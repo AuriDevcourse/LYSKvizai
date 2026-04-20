@@ -3,7 +3,9 @@
   "title": "Nature",
   "description": "15 questions about nature",
   "emoji": "🌿",
-  "language": "en",
+  "icon": "Trees",
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-16T00:00:00.000Z",
   "questions": [
     {
       "question": "What is the tallest tree species in the world?",
@@ -178,6 +180,5 @@
       "image": "/quiz-images/rainbow.jpg"
     }
   ],
-  "createdAt": "2026-03-15T00:00:00.000Z",
-  "updatedAt": "2026-03-16T00:00:00.000Z"
+  "language": "en"
 }

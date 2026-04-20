@@ -3,99 +3,175 @@
   "title": "News: 2025 Q1",
   "description": "15 questions about major events from January to March 2025",
   "emoji": "📰",
-  "language": "en",
+  "icon": "Newspaper",
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z",
   "questions": [
     {
       "question": "Who was inaugurated as the 47th President of the United States on January 20, 2025?",
-      "options": ["Joe Biden", "Donald Trump", "Kamala Harris", "Ron DeSantis"],
+      "options": [
+        "Joe Biden",
+        "Donald Trump",
+        "Kamala Harris",
+        "Ron DeSantis"
+      ],
       "correct": 1,
       "explanation": "Donald Trump was inaugurated as the 47th President on January 20, 2025, returning to office for a second non-consecutive term."
     },
     {
       "question": "Which Chinese AI startup released a low-cost reasoning model in January 2025 that rivaled top Western AI systems?",
-      "options": ["Baidu", "DeepSeek", "Alibaba", "Tencent"],
+      "options": [
+        "Baidu",
+        "DeepSeek",
+        "Alibaba",
+        "Tencent"
+      ],
       "correct": 1,
       "explanation": "Chinese AI startup DeepSeek released its R1 reasoning model in January 2025, which rivaled top Western AI models at a fraction of the cost."
     },
     {
       "question": "What major executive order did Trump sign on his first day back in office regarding immigration?",
-      "options": ["Built a wall along the Canadian border", "Declared a national emergency at the southern border", "Granted amnesty to all undocumented immigrants", "Closed all ports of entry"],
+      "options": [
+        "Built a wall along the Canadian border",
+        "Declared a national emergency at the southern border",
+        "Granted amnesty to all undocumented immigrants",
+        "Closed all ports of entry"
+      ],
       "correct": 1,
       "explanation": "Trump declared a national emergency at the southern border on his first day, deploying military resources and resuming border wall construction."
     },
     {
       "question": "Which international agreement did the United States withdraw from again under President Trump in January 2025?",
-      "options": ["NATO", "The Paris Climate Agreement", "The United Nations", "The Geneva Convention"],
+      "options": [
+        "NATO",
+        "The Paris Climate Agreement",
+        "The United Nations",
+        "The Geneva Convention"
+      ],
       "correct": 1,
       "explanation": "Trump signed an executive order to withdraw the US from the Paris Climate Agreement for the second time."
     },
     {
       "question": "Which social media platform was briefly banned in the United States in January 2025 before being restored?",
-      "options": ["WeChat", "Telegram", "TikTok", "Instagram"],
+      "options": [
+        "WeChat",
+        "Telegram",
+        "TikTok",
+        "Instagram"
+      ],
       "correct": 2,
       "explanation": "TikTok was briefly banned in the US on January 19, 2025, before Trump signed an executive order to delay enforcement of the ban."
     },
     {
       "question": "Which devastating natural disaster struck the Los Angeles area in January 2025?",
-      "options": ["Earthquake", "Wildfires", "Hurricane", "Flooding"],
+      "options": [
+        "Earthquake",
+        "Wildfires",
+        "Hurricane",
+        "Flooding"
+      ],
       "correct": 1,
       "explanation": "Massive wildfires swept through the Los Angeles area in January 2025, destroying thousands of structures in Pacific Palisades, Altadena, and other communities."
     },
     {
       "question": "Who did Trump nominate as the US Secretary of Defense in early 2025?",
-      "options": ["Matt Gaetz", "Pete Hegseth", "Mike Pompeo", "Marco Rubio"],
+      "options": [
+        "Matt Gaetz",
+        "Pete Hegseth",
+        "Mike Pompeo",
+        "Marco Rubio"
+      ],
       "correct": 1,
       "explanation": "Trump nominated Pete Hegseth, a Fox News host and military veteran, as Secretary of Defense."
     },
     {
       "question": "Which organization did the United States announce its withdrawal from in early 2025?",
-      "options": ["NATO", "World Health Organization", "World Trade Organization", "United Nations"],
+      "options": [
+        "NATO",
+        "World Health Organization",
+        "World Trade Organization",
+        "United Nations"
+      ],
       "correct": 1,
       "explanation": "Trump signed an executive order to withdraw the United States from the World Health Organization (WHO)."
     },
     {
       "question": "What was the name of the AI model released by OpenAI in early 2025 with advanced reasoning capabilities?",
-      "options": ["GPT-5", "o3", "Claude 4", "Gemini Ultra 2"],
+      "options": [
+        "GPT-5",
+        "o3",
+        "Claude 4",
+        "Gemini Ultra 2"
+      ],
       "correct": 1,
       "explanation": "OpenAI released the o3 reasoning model in early 2025, building on their chain-of-thought reasoning approach."
     },
     {
       "question": "Which country's stock market saw significant turbulence after DeepSeek's AI breakthrough rattled tech stocks worldwide?",
-      "options": ["Japan", "United Kingdom", "United States", "Germany"],
+      "options": [
+        "Japan",
+        "United Kingdom",
+        "United States",
+        "Germany"
+      ],
       "correct": 2,
       "explanation": "US tech stocks, particularly NVIDIA, saw major drops after DeepSeek demonstrated competitive AI capabilities at much lower costs."
     },
     {
       "question": "Who was confirmed as US Secretary of State in January 2025?",
-      "options": ["Mike Pompeo", "Marco Rubio", "Nikki Haley", "Vivek Ramaswamy"],
+      "options": [
+        "Mike Pompeo",
+        "Marco Rubio",
+        "Nikki Haley",
+        "Vivek Ramaswamy"
+      ],
       "correct": 1,
       "explanation": "Marco Rubio was confirmed as Secretary of State, becoming the first Hispanic person to hold the position."
     },
     {
       "question": "What executive action did Trump take regarding federal diversity, equity, and inclusion (DEI) programs?",
-      "options": ["Expanded them significantly", "Ordered their elimination across federal agencies", "Made them optional", "Transferred them to state control"],
+      "options": [
+        "Expanded them significantly",
+        "Ordered their elimination across federal agencies",
+        "Made them optional",
+        "Transferred them to state control"
+      ],
       "correct": 1,
       "explanation": "Trump signed executive orders to dismantle DEI programs across federal agencies and placed DEI staff on administrative leave."
     },
     {
       "question": "Which European country held a federal election in February 2025?",
-      "options": ["France", "Italy", "Germany", "Spain"],
+      "options": [
+        "France",
+        "Italy",
+        "Germany",
+        "Spain"
+      ],
       "correct": 2,
       "explanation": "Germany held federal elections on February 23, 2025, following the collapse of the coalition government led by Olaf Scholz."
     },
     {
       "question": "Who won the 2025 German federal election?",
-      "options": ["Olaf Scholz (SPD)", "Friedrich Merz (CDU/CSU)", "Alice Weidel (AfD)", "Robert Habeck (Greens)"],
+      "options": [
+        "Olaf Scholz (SPD)",
+        "Friedrich Merz (CDU/CSU)",
+        "Alice Weidel (AfD)",
+        "Robert Habeck (Greens)"
+      ],
       "correct": 1,
       "explanation": "Friedrich Merz and the CDU/CSU won the German federal election in February 2025."
     },
     {
       "question": "What major policy did Trump announce regarding tariffs in early 2025?",
-      "options": ["Eliminated all tariffs on European goods", "Imposed new tariffs on imports from Canada, Mexico, and China", "Joined a global free trade agreement", "Reduced tariffs on all imports by 50%"],
+      "options": [
+        "Eliminated all tariffs on European goods",
+        "Imposed new tariffs on imports from Canada, Mexico, and China",
+        "Joined a global free trade agreement",
+        "Reduced tariffs on all imports by 50%"
+      ],
       "correct": 1,
       "explanation": "Trump imposed significant new tariffs on imports from Canada, Mexico, and China in early 2025, escalating trade tensions."
     }
   ],
-  "createdAt": "2026-03-15T00:00:00.000Z",
-  "updatedAt": "2026-03-15T00:00:00.000Z"
+  "language": "en"
 }

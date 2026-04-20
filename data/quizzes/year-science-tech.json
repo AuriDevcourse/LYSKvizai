@@ -3,6 +3,7 @@
   "title": "Year Guesser: Science & Technology",
   "description": "Guess when these inventions and discoveries happened",
   "emoji": "🔬",
+  "icon": "Atom",
   "createdAt": "2026-04-02T11:31:01+02:00",
   "questions": [
     {

@@ -138,7 +138,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
           <div className="flex flex-col gap-3 stagger-children">
             {topicQuizzes.map((quiz) => {
               const isSelected = selectedIds.includes(quiz.id);
-              const theme = getQuizTheme(quiz.id);
+              const theme = getQuizTheme(quiz);
               const SubIcon = theme.icon;
               return (
                 <button

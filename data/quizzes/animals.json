@@ -3,7 +3,9 @@
   "title": "Animals",
   "description": "15 questions about animals",
   "emoji": "🦁",
-  "language": "en",
+  "icon": "PawPrint",
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-16T00:00:00.000Z",
   "questions": [
     {
       "question": "What is the fastest land animal?",
@@ -176,6 +178,5 @@
       "explanation": "The sailfish can reach speeds of up to 110 km/h."
     }
   ],
-  "createdAt": "2026-03-15T00:00:00.000Z",
-  "updatedAt": "2026-03-16T00:00:00.000Z"
+  "language": "en"
 }

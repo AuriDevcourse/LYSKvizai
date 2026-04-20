@@ -3,7 +3,9 @@
   "title": "European Geography",
   "description": "15 questions about European geography",
   "emoji": "🇪🇺",
-  "language": "en",
+  "icon": "Globe",
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-16T00:00:00.000Z",
   "questions": [
     {
       "question": "Which is the longest river in Europe?",
@@ -177,6 +179,5 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Plitvice_Lakes_National_Park_%282%29.jpg/800px-Plitvice_Lakes_National_Park_%282%29.jpg"
     }
   ],
-  "createdAt": "2026-03-15T00:00:00.000Z",
-  "updatedAt": "2026-03-16T00:00:00.000Z"
+  "language": "en"
 }

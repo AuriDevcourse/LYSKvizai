@@ -3,103 +3,179 @@
   "title": "Modern Gaming",
   "description": "Games from the 2010s and 2020s",
   "emoji": "🎮",
-  "language": "en",
+  "icon": "Gamepad2",
+  "createdAt": "2026-04-03T00:00:00.000Z",
+  "updatedAt": "2026-04-03T00:00:00.000Z",
   "questions": [
     {
       "question": "What year was Fortnite Battle Royale released?",
-      "options": ["2015", "2017", "2019", "2020"],
+      "options": [
+        "2015",
+        "2017",
+        "2019",
+        "2020"
+      ],
       "correct": 1,
       "explanation": "Fortnite Battle Royale launched in September 2017 as a free mode.",
       "correctYear": 2017
     },
     {
       "question": "Which game features an imposter sabotaging a spaceship crew?",
-      "options": ["Fall Guys", "Among Us", "Devour", "Phasmophobia"],
+      "options": [
+        "Fall Guys",
+        "Among Us",
+        "Devour",
+        "Phasmophobia"
+      ],
       "correct": 1,
       "explanation": "Among Us went viral in 2020, though it was originally released in 2018."
     },
     {
       "question": "Who is the main character in The Witcher 3?",
-      "options": ["Geralt", "Vesemir", "Triss", "Dandelion"],
+      "options": [
+        "Geralt",
+        "Vesemir",
+        "Triss",
+        "Dandelion"
+      ],
       "correct": 0,
       "explanation": "Geralt of Rivia is the monster hunter protagonist of The Witcher series."
     },
     {
       "question": "What year did GTA V first release?",
-      "options": ["2011", "2013", "2015", "2017"],
+      "options": [
+        "2011",
+        "2013",
+        "2015",
+        "2017"
+      ],
       "correct": 1,
       "explanation": "GTA V launched in September 2013 and has sold over 200 million copies.",
       "correctYear": 2013
     },
     {
       "question": "Which game features building, mining, and crafting in a blocky world?",
-      "options": ["Terraria", "Roblox", "Minecraft", "Lego Worlds"],
+      "options": [
+        "Terraria",
+        "Roblox",
+        "Minecraft",
+        "Lego Worlds"
+      ],
       "correct": 2,
       "explanation": "Minecraft, created by Markus 'Notch' Persson, launched fully in 2011."
     },
     {
       "question": "What studio developed Valorant?",
-      "options": ["Blizzard", "Riot Games", "Epic Games", "Ubisoft"],
+      "options": [
+        "Blizzard",
+        "Riot Games",
+        "Epic Games",
+        "Ubisoft"
+      ],
       "correct": 1,
       "explanation": "Valorant was developed by Riot Games (also known for League of Legends) in 2020."
     },
     {
       "question": "Which souls-like game was co-created with author George R.R. Martin?",
-      "options": ["Dark Souls III", "Sekiro", "Elden Ring", "Bloodborne"],
+      "options": [
+        "Dark Souls III",
+        "Sekiro",
+        "Elden Ring",
+        "Bloodborne"
+      ],
       "correct": 2,
       "explanation": "Elden Ring's world and lore were co-created by FromSoftware and George R.R. Martin."
     },
     {
       "question": "What platform is Roblox primarily known as?",
-      "options": ["Battle royale", "Game creation platform", "Social media", "Streaming service"],
+      "options": [
+        "Battle royale",
+        "Game creation platform",
+        "Social media",
+        "Streaming service"
+      ],
       "correct": 1,
       "explanation": "Roblox is a platform where users create and play games made by other users."
     },
     {
       "question": "Which game won Game of the Year at The Game Awards 2022?",
-      "options": ["God of War Ragnarok", "Elden Ring", "Stray", "Horizon Forbidden West"],
+      "options": [
+        "God of War Ragnarok",
+        "Elden Ring",
+        "Stray",
+        "Horizon Forbidden West"
+      ],
       "correct": 1,
       "explanation": "Elden Ring won GOTY at The Game Awards 2022.",
       "correctYear": 2022
     },
     {
       "question": "In Minecraft, what material do you need to build a Nether Portal?",
-      "options": ["Diamond", "Obsidian", "Emerald", "Bedrock"],
+      "options": [
+        "Diamond",
+        "Obsidian",
+        "Emerald",
+        "Bedrock"
+      ],
       "correct": 1,
       "explanation": "You need at least 10 obsidian blocks to build a Nether Portal in Minecraft."
     },
     {
       "question": "What is the maximum number of players in a Fortnite Battle Royale match?",
-      "options": ["50", "75", "100", "150"],
+      "options": [
+        "50",
+        "75",
+        "100",
+        "150"
+      ],
       "correct": 2,
       "explanation": "A standard Fortnite Battle Royale match has 100 players."
     },
     {
       "question": "Which game features the characters Cypher, Jett, and Sage?",
-      "options": ["Overwatch", "Apex Legends", "Valorant", "Rainbow Six"],
+      "options": [
+        "Overwatch",
+        "Apex Legends",
+        "Valorant",
+        "Rainbow Six"
+      ],
       "correct": 2,
       "explanation": "Cypher, Jett, and Sage are agents (characters) in Valorant."
     },
     {
       "question": "What year was the Nintendo Switch released?",
-      "options": ["2015", "2017", "2019", "2021"],
+      "options": [
+        "2015",
+        "2017",
+        "2019",
+        "2021"
+      ],
       "correct": 1,
       "explanation": "The Nintendo Switch launched in March 2017 as a hybrid home/portable console.",
       "correctYear": 2017
     },
     {
       "question": "Which open world game is set on a post-apocalyptic Earth with robot dinosaurs?",
-      "options": ["Death Stranding", "Horizon Zero Dawn", "The Last of Us", "Days Gone"],
+      "options": [
+        "Death Stranding",
+        "Horizon Zero Dawn",
+        "The Last of Us",
+        "Days Gone"
+      ],
       "correct": 1,
       "explanation": "Horizon Zero Dawn features a world where robotic creatures roam a post-apocalyptic Earth."
     },
     {
       "question": "What is the highest rank in Valorant's competitive mode?",
-      "options": ["Immortal", "Champion", "Radiant", "Grand Master"],
+      "options": [
+        "Immortal",
+        "Champion",
+        "Radiant",
+        "Grand Master"
+      ],
       "correct": 2,
       "explanation": "Radiant is the highest competitive rank in Valorant, reserved for the top 500 players per region."
     }
   ],
-  "createdAt": "2026-04-03T00:00:00.000Z",
-  "updatedAt": "2026-04-03T00:00:00.000Z"
+  "language": "en"
 }

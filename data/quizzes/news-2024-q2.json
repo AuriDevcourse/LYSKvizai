@@ -3,99 +3,175 @@
   "title": "News: 2024 Q2",
   "description": "15 questions about Apr-Jun 2024 events",
   "emoji": "📰",
-  "language": "en",
+  "icon": "Newspaper",
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z",
   "questions": [
     {
       "question": "Which country attacked Israel with drones and missiles in April 2024?",
-      "options": ["Syria", "Lebanon", "Iran", "Yemen"],
+      "options": [
+        "Syria",
+        "Lebanon",
+        "Iran",
+        "Yemen"
+      ],
       "correct": 2,
       "explanation": "Iran launched over 300 drones and missiles at Israel on April 13-14, 2024."
     },
     {
       "question": "Which major political event took place across the EU in June 2024?",
-      "options": ["UK General Election", "European Parliament elections", "French Presidential Election", "German Federal Election"],
+      "options": [
+        "UK General Election",
+        "European Parliament elections",
+        "French Presidential Election",
+        "German Federal Election"
+      ],
       "correct": 1,
       "explanation": "European Parliament elections were held June 6-9, 2024, with far-right gains."
     },
     {
       "question": "What was Donald Trump found guilty of in May 2024?",
-      "options": ["Tax evasion", "34 felony counts of falsifying business records", "Obstruction of justice", "Wire fraud"],
+      "options": [
+        "Tax evasion",
+        "34 felony counts of falsifying business records",
+        "Obstruction of justice",
+        "Wire fraud"
+      ],
       "correct": 1,
       "explanation": "Trump was convicted on 34 felony counts in the New York hush money trial on May 30."
     },
     {
       "question": "Which AI company released GPT-4o in May 2024?",
-      "options": ["Google", "Anthropic", "OpenAI", "Meta"],
+      "options": [
+        "Google",
+        "Anthropic",
+        "OpenAI",
+        "Meta"
+      ],
       "correct": 2,
       "explanation": "OpenAI released GPT-4o ('o' for omni) with real-time voice and vision capabilities."
     },
     {
       "question": "Which country's president dissolved parliament and called snap elections in June 2024?",
-      "options": ["UK", "Spain", "France", "Italy"],
+      "options": [
+        "UK",
+        "Spain",
+        "France",
+        "Italy"
+      ],
       "correct": 2,
       "explanation": "President Macron dissolved the French National Assembly after EU election results."
     },
     {
       "question": "Who won the 2024 Eurovision Song Contest?",
-      "options": ["Switzerland", "Croatia", "Ukraine", "Israel"],
+      "options": [
+        "Switzerland",
+        "Croatia",
+        "Ukraine",
+        "Israel"
+      ],
       "correct": 0,
       "explanation": "Nemo from Switzerland won Eurovision 2024 in Malmö with 'The Code'."
     },
     {
       "question": "Which country legalized same-sex marriage in May 2024, a first in Southeast Asia?",
-      "options": ["Vietnam", "Philippines", "Thailand", "Cambodia"],
+      "options": [
+        "Vietnam",
+        "Philippines",
+        "Thailand",
+        "Cambodia"
+      ],
       "correct": 2,
       "explanation": "Thailand's parliament voted to legalize same-sex marriage in June 2024."
     },
     {
       "question": "Apple announced a partnership with which AI company at WWDC in June 2024?",
-      "options": ["Google", "Anthropic", "OpenAI", "Microsoft"],
+      "options": [
+        "Google",
+        "Anthropic",
+        "OpenAI",
+        "Microsoft"
+      ],
       "correct": 2,
       "explanation": "Apple announced Apple Intelligence with OpenAI's ChatGPT integration at WWDC 2024."
     },
     {
       "question": "Which football tournament began in Germany in June 2024?",
-      "options": ["FIFA World Cup", "UEFA Euro 2024", "Copa América", "Champions League"],
+      "options": [
+        "FIFA World Cup",
+        "UEFA Euro 2024",
+        "Copa América",
+        "Champions League"
+      ],
       "correct": 1,
       "explanation": "UEFA Euro 2024 kicked off in Germany on June 14."
     },
     {
       "question": "Who became India's Prime Minister after the 2024 elections?",
-      "options": ["Rahul Gandhi", "Narendra Modi", "Arvind Kejriwal", "Yogi Adityanath"],
+      "options": [
+        "Rahul Gandhi",
+        "Narendra Modi",
+        "Arvind Kejriwal",
+        "Yogi Adityanath"
+      ],
       "correct": 1,
       "explanation": "Narendra Modi won a third term, though with a reduced majority."
     },
     {
       "question": "Which country experienced devastating floods affecting millions in April-May 2024?",
-      "options": ["Bangladesh", "India", "Brazil", "Pakistan"],
+      "options": [
+        "Bangladesh",
+        "India",
+        "Brazil",
+        "Pakistan"
+      ],
       "correct": 2,
       "explanation": "Southern Brazil experienced catastrophic floods in April-May 2024."
     },
     {
       "question": "What major tech milestone did Nvidia reach in June 2024?",
-      "options": ["Released quantum computer", "Became most valuable company", "Launched own phone", "Acquired AMD"],
+      "options": [
+        "Released quantum computer",
+        "Became most valuable company",
+        "Launched own phone",
+        "Acquired AMD"
+      ],
       "correct": 1,
       "explanation": "Nvidia briefly became the world's most valuable company, surpassing Microsoft and Apple."
     },
     {
       "question": "Which volcano erupted in Iceland in early 2024, threatening a town?",
-      "options": ["Eyjafjallajökull", "Hekla", "Grindavík area volcano", "Katla"],
+      "options": [
+        "Eyjafjallajökull",
+        "Hekla",
+        "Grindavík area volcano",
+        "Katla"
+      ],
       "correct": 2,
       "explanation": "Volcanic eruptions near Grindavík on the Reykjanes Peninsula continued into 2024."
     },
     {
       "question": "Who won the French Open (Roland-Garros) men's singles in June 2024?",
-      "options": ["Novak Djokovic", "Carlos Alcaraz", "Jannik Sinner", "Rafael Nadal"],
+      "options": [
+        "Novak Djokovic",
+        "Carlos Alcaraz",
+        "Jannik Sinner",
+        "Rafael Nadal"
+      ],
       "correct": 1,
       "explanation": "Carlos Alcaraz won his first French Open title in 2024."
     },
     {
       "question": "Julian Assange reached a plea deal with the US and was released from prison in which country?",
-      "options": ["Australia", "Ecuador", "United Kingdom", "Sweden"],
+      "options": [
+        "Australia",
+        "Ecuador",
+        "United Kingdom",
+        "Sweden"
+      ],
       "correct": 2,
       "explanation": "Assange was released from Belmarsh Prison in the UK in June 2024 after a plea deal."
     }
   ],
-  "createdAt": "2026-03-15T00:00:00.000Z",
-  "updatedAt": "2026-03-15T00:00:00.000Z"
+  "language": "en"
 }

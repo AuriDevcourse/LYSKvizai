@@ -3,7 +3,9 @@
   "title": "Oceans & Continents",
   "description": "15 questions about oceans and continents",
   "emoji": "🌊",
-  "language": "en",
+  "icon": "Waves",
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-16T00:00:00.000Z",
   "questions": [
     {
       "question": "What is the deepest point in the ocean?",
@@ -173,6 +175,5 @@
       "explanation": "The Ring of Fire circles the Pacific Ocean with 75% of the world's volcanoes."
     }
   ],
-  "createdAt": "2026-03-15T00:00:00.000Z",
-  "updatedAt": "2026-03-16T00:00:00.000Z"
+  "language": "en"
 }

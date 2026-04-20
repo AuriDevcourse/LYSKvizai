@@ -72,7 +72,7 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
       <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3 stagger-children">
         {quizzes.map((quiz) => {
           const isSelected = selectedIds.includes(quiz.id);
-          const theme = getQuizTheme(quiz.id);
+          const theme = getQuizTheme(quiz);
           const Icon = theme.icon;
           return (
             <button

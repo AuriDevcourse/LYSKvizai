@@ -3,6 +3,7 @@
   "title": "Geography",
   "description": "15 questions about world geography",
   "emoji": "🌍",
+  "icon": "Globe",
   "createdAt": "2026-03-10T22:22:50+01:00",
   "questions": [
     {

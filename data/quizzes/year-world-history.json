@@ -3,6 +3,7 @@
   "title": "Year Guesser: World History",
   "description": "Guess the year of major world events",
   "emoji": "🏛️",
+  "icon": "Scroll",
   "createdAt": "2026-04-02T11:31:01+02:00",
   "questions": [
     {

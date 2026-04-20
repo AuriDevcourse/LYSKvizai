@@ -3,6 +3,7 @@
   "title": "Year Guesser: Sports History",
   "description": "Guess the year of iconic sports moments",
   "emoji": "🏆",
+  "icon": "Trophy",
   "createdAt": "2026-04-02T11:31:01+02:00",
   "questions": [
     {

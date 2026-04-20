@@ -3,99 +3,175 @@
   "title": "News: 2024 Q3",
   "description": "15 questions about Jul-Sep 2024 events",
   "emoji": "📰",
-  "language": "en",
+  "icon": "Newspaper",
+  "createdAt": "2026-03-15T00:00:00.000Z",
+  "updatedAt": "2026-03-15T00:00:00.000Z",
   "questions": [
     {
       "question": "Which city hosted the 2024 Summer Olympic Games?",
-      "options": ["Tokyo", "Los Angeles", "Paris", "Brisbane"],
+      "options": [
+        "Tokyo",
+        "Los Angeles",
+        "Paris",
+        "Brisbane"
+      ],
       "correct": 2,
       "explanation": "The 2024 Summer Olympics were held in Paris, France."
     },
     {
       "question": "Which country topped the medal count at the 2024 Paris Olympics?",
-      "options": ["China", "USA", "Great Britain", "France"],
+      "options": [
+        "China",
+        "USA",
+        "Great Britain",
+        "France"
+      ],
       "correct": 1,
       "explanation": "The USA topped the overall medal count at the 2024 Olympics."
     },
     {
       "question": "Who survived an assassination attempt at a rally in Pennsylvania in July 2024?",
-      "options": ["Joe Biden", "Donald Trump", "Kamala Harris", "Ron DeSantis"],
+      "options": [
+        "Joe Biden",
+        "Donald Trump",
+        "Kamala Harris",
+        "Ron DeSantis"
+      ],
       "correct": 1,
       "explanation": "Trump was shot in the ear at a rally in Butler, PA on July 13, 2024."
     },
     {
       "question": "Which US president dropped out of the 2024 presidential race in July?",
-      "options": ["Donald Trump", "Joe Biden", "Robert Kennedy Jr.", "Nikki Haley"],
+      "options": [
+        "Donald Trump",
+        "Joe Biden",
+        "Robert Kennedy Jr.",
+        "Nikki Haley"
+      ],
       "correct": 1,
       "explanation": "President Biden announced on July 21, 2024 that he would not seek re-election."
     },
     {
       "question": "Who replaced Biden as the Democratic presidential nominee?",
-      "options": ["Pete Buttigieg", "Gavin Newsom", "Kamala Harris", "Gretchen Whitmer"],
+      "options": [
+        "Pete Buttigieg",
+        "Gavin Newsom",
+        "Kamala Harris",
+        "Gretchen Whitmer"
+      ],
       "correct": 2,
       "explanation": "Vice President Kamala Harris became the Democratic nominee."
     },
     {
       "question": "Which tech company faced a massive global outage in July 2024 due to a faulty software update?",
-      "options": ["Microsoft Azure", "CrowdStrike", "Amazon AWS", "Google Cloud"],
+      "options": [
+        "Microsoft Azure",
+        "CrowdStrike",
+        "Amazon AWS",
+        "Google Cloud"
+      ],
       "correct": 1,
       "explanation": "A faulty CrowdStrike update caused a global IT outage on July 19, affecting millions."
     },
     {
       "question": "Who won the UEFA Euro 2024 tournament?",
-      "options": ["England", "France", "Spain", "Germany"],
+      "options": [
+        "England",
+        "France",
+        "Spain",
+        "Germany"
+      ],
       "correct": 2,
       "explanation": "Spain defeated England 2-1 in the Euro 2024 final in Berlin."
     },
     {
       "question": "Which South American country won the 2024 Copa América?",
-      "options": ["Brazil", "Argentina", "Uruguay", "Colombia"],
+      "options": [
+        "Brazil",
+        "Argentina",
+        "Uruguay",
+        "Colombia"
+      ],
       "correct": 1,
       "explanation": "Argentina defeated Colombia 1-0 in the Copa América final."
     },
     {
       "question": "Who did Kamala Harris choose as her VP running mate?",
-      "options": ["Josh Shapiro", "Tim Walz", "Mark Kelly", "Andy Beshear"],
+      "options": [
+        "Josh Shapiro",
+        "Tim Walz",
+        "Mark Kelly",
+        "Andy Beshear"
+      ],
       "correct": 1,
       "explanation": "Harris chose Minnesota Governor Tim Walz as her running mate in August 2024."
     },
     {
       "question": "Which messaging app founder was arrested in France in August 2024?",
-      "options": ["Jack Dorsey", "Pavel Durov", "Jan Koum", "Mark Zuckerberg"],
+      "options": [
+        "Jack Dorsey",
+        "Pavel Durov",
+        "Jan Koum",
+        "Mark Zuckerberg"
+      ],
       "correct": 1,
       "explanation": "Telegram founder Pavel Durov was arrested at a Paris airport in August 2024."
     },
     {
       "question": "Which country launched a major ground invasion into Lebanon in September 2024?",
-      "options": ["Syria", "Israel", "Turkey", "Iran"],
+      "options": [
+        "Syria",
+        "Israel",
+        "Turkey",
+        "Iran"
+      ],
       "correct": 1,
       "explanation": "Israel launched a ground operation in southern Lebanon targeting Hezbollah."
     },
     {
       "question": "What unprecedented attack targeted Hezbollah members via everyday devices in September 2024?",
-      "options": ["Drone strikes", "Cyber attack on phones", "Exploding pagers and walkie-talkies", "Poisoning"],
+      "options": [
+        "Drone strikes",
+        "Cyber attack on phones",
+        "Exploding pagers and walkie-talkies",
+        "Poisoning"
+      ],
       "correct": 2,
       "explanation": "Thousands of pagers and walkie-talkies used by Hezbollah exploded in Lebanon."
     },
     {
       "question": "Which AI company raised $6.6 billion in September 2024, its largest funding round?",
-      "options": ["Anthropic", "OpenAI", "Google DeepMind", "Mistral"],
+      "options": [
+        "Anthropic",
+        "OpenAI",
+        "Google DeepMind",
+        "Mistral"
+      ],
       "correct": 1,
       "explanation": "OpenAI raised $6.6 billion at a $157 billion valuation in September 2024."
     },
     {
       "question": "Which swimmer became the most decorated Olympian at Paris 2024?",
-      "options": ["Katie Ledecky", "Caeleb Dressel", "Léon Marchand", "No one broke the record"],
+      "options": [
+        "Katie Ledecky",
+        "Caeleb Dressel",
+        "Léon Marchand",
+        "No one broke the record"
+      ],
       "correct": 3,
       "explanation": "Michael Phelps remains the most decorated Olympian; no one broke his record at Paris 2024."
     },
     {
       "question": "Which major hurricane devastated parts of the southeastern US in September 2024?",
-      "options": ["Hurricane Beryl", "Hurricane Helene", "Hurricane Milton", "Hurricane Francine"],
+      "options": [
+        "Hurricane Beryl",
+        "Hurricane Helene",
+        "Hurricane Milton",
+        "Hurricane Francine"
+      ],
       "correct": 1,
       "explanation": "Hurricane Helene caused catastrophic flooding in the Southeast US in late September 2024."
     }
   ],
-  "createdAt": "2026-03-15T00:00:00.000Z",
-  "updatedAt": "2026-03-15T00:00:00.000Z"
+  "language": "en"
 }

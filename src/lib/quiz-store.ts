@@ -36,6 +36,7 @@ export async function listQuizzes(): Promise<QuizMeta[]> {
         title: quiz.title,
         description: quiz.description,
         emoji: quiz.emoji,
+        icon: quiz.icon,
         questionCount: quiz.questions.length,
         createdAt: quiz.createdAt,
         updatedAt: quiz.updatedAt,

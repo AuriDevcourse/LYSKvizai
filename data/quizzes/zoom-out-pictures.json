@@ -3,144 +3,280 @@
   "title": "Zoom Out: Famous Places",
   "description": "Guess the landmark from a zoomed-in picture",
   "emoji": "🔍",
-  "language": "en",
+  "icon": "ZoomIn",
+  "createdAt": "2026-03-16T00:00:00.000Z",
+  "updatedAt": "2026-03-16T00:00:00.000Z",
   "questions": [
     {
       "question": "What landmark is this?",
-      "options": ["Eiffel Tower", "Big Ben", "Colosseum", "Statue of Liberty"],
+      "options": [
+        "Eiffel Tower",
+        "Big Ben",
+        "Colosseum",
+        "Statue of Liberty"
+      ],
       "correct": 0,
       "explanation": "The Eiffel Tower in Paris, France — built in 1889.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Tour_Eiffel_Wikimedia_Commons.jpg/800px-Tour_Eiffel_Wikimedia_Commons.jpg",
       "type": "zoom-out",
-      "acceptedAnswers": ["Eiffel Tower", "eiffel", "tour eiffel"]
+      "acceptedAnswers": [
+        "Eiffel Tower",
+        "eiffel",
+        "tour eiffel"
+      ]
     },
     {
       "question": "What landmark is this?",
-      "options": ["Colosseum", "Parthenon", "Pantheon", "Circus Maximus"],
+      "options": [
+        "Colosseum",
+        "Parthenon",
+        "Pantheon",
+        "Circus Maximus"
+      ],
       "correct": 0,
       "explanation": "The Colosseum in Rome, Italy — the largest ancient amphitheatre.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/800px-Colosseo_2020.jpg",
       "type": "zoom-out",
-      "acceptedAnswers": ["Colosseum", "coliseum", "colosseo"]
+      "acceptedAnswers": [
+        "Colosseum",
+        "coliseum",
+        "colosseo"
+      ]
     },
     {
       "question": "What landmark is this?",
-      "options": ["Statue of Liberty", "Christ the Redeemer", "Eiffel Tower", "Big Ben"],
+      "options": [
+        "Statue of Liberty",
+        "Christ the Redeemer",
+        "Eiffel Tower",
+        "Big Ben"
+      ],
       "correct": 0,
       "explanation": "The Statue of Liberty in New York — a gift from France in 1886.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Statue_of_Liberty_7.jpg/800px-Statue_of_Liberty_7.jpg",
       "type": "zoom-out",
-      "acceptedAnswers": ["Statue of Liberty", "liberty", "statue of liberty"]
+      "acceptedAnswers": [
+        "Statue of Liberty",
+        "liberty",
+        "statue of liberty"
+      ]
     },
     {
       "question": "What landmark is this?",
-      "options": ["Great Wall of China", "Machu Picchu", "Angkor Wat", "Petra"],
+      "options": [
+        "Great Wall of China",
+        "Machu Picchu",
+        "Angkor Wat",
+        "Petra"
+      ],
       "correct": 0,
       "explanation": "The Great Wall of China — over 21,000 km long.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/The_Great_Wall_of_China_at_Jinshanling-edit.jpg/800px-The_Great_Wall_of_China_at_Jinshanling-edit.jpg",
       "type": "zoom-out",
-      "acceptedAnswers": ["Great Wall of China", "great wall", "chinese wall"]
+      "acceptedAnswers": [
+        "Great Wall of China",
+        "great wall",
+        "chinese wall"
+      ]
     },
     {
       "question": "What landmark is this?",
-      "options": ["Taj Mahal", "Lotus Temple", "Red Fort", "Hawa Mahal"],
+      "options": [
+        "Taj Mahal",
+        "Lotus Temple",
+        "Red Fort",
+        "Hawa Mahal"
+      ],
       "correct": 0,
       "explanation": "The Taj Mahal in Agra, India — built by Shah Jahan in 1632.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Taj_Mahal%2C_Agra%2C_India_edit3.jpg/800px-Taj_Mahal%2C_Agra%2C_India_edit3.jpg",
       "type": "zoom-out",
-      "acceptedAnswers": ["Taj Mahal", "taj mahal"]
+      "acceptedAnswers": [
+        "Taj Mahal",
+        "taj mahal"
+      ]
     },
     {
       "question": "What landmark is this?",
-      "options": ["Big Ben", "Tower of London", "Westminster Abbey", "Buckingham Palace"],
+      "options": [
+        "Big Ben",
+        "Tower of London",
+        "Westminster Abbey",
+        "Buckingham Palace"
+      ],
       "correct": 0,
       "explanation": "Big Ben (Elizabeth Tower) in London — completed in 1859.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Clock_Tower_-_Palace_of_Westminster%2C_London_-_May_2007.jpg/800px-Clock_Tower_-_Palace_of_Westminster%2C_London_-_May_2007.jpg",
       "type": "zoom-out",
-      "acceptedAnswers": ["Big Ben", "big ben", "elizabeth tower"]
+      "acceptedAnswers": [
+        "Big Ben",
+        "big ben",
+        "elizabeth tower"
+      ]
     },
     {
       "question": "What landmark is this?",
-      "options": ["Sydney Opera House", "Harbour Bridge", "Luna Park", "Bondi Beach"],
+      "options": [
+        "Sydney Opera House",
+        "Harbour Bridge",
+        "Luna Park",
+        "Bondi Beach"
+      ],
       "correct": 0,
       "explanation": "The Sydney Opera House — designed by Jørn Utzon, opened in 1973.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Sydney_Australia._%2821339175489%29.jpg/800px-Sydney_Australia._%2821339175489%29.jpg",
       "type": "zoom-out",
-      "acceptedAnswers": ["Sydney Opera House", "opera house", "sydney opera"]
+      "acceptedAnswers": [
+        "Sydney Opera House",
+        "opera house",
+        "sydney opera"
+      ]
     },
     {
       "question": "What landmark is this?",
-      "options": ["Machu Picchu", "Chichen Itza", "Tikal", "Nazca Lines"],
+      "options": [
+        "Machu Picchu",
+        "Chichen Itza",
+        "Tikal",
+        "Nazca Lines"
+      ],
       "correct": 0,
       "explanation": "Machu Picchu in Peru — a 15th-century Inca citadel.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Machu_Picchu%2C_Peru.jpg/800px-Machu_Picchu%2C_Peru.jpg",
       "type": "zoom-out",
-      "acceptedAnswers": ["Machu Picchu", "machu pichu", "macchu picchu"]
+      "acceptedAnswers": [
+        "Machu Picchu",
+        "machu pichu",
+        "macchu picchu"
+      ]
     },
     {
       "question": "What landmark is this?",
-      "options": ["Christ the Redeemer", "Statue of Liberty", "Angel of Independence", "Motherland Calls"],
+      "options": [
+        "Christ the Redeemer",
+        "Statue of Liberty",
+        "Angel of Independence",
+        "Motherland Calls"
+      ],
       "correct": 0,
       "explanation": "Christ the Redeemer in Rio de Janeiro, Brazil — completed in 1931.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Christ_the_Redeemer_-_Cristo_Redentor.jpg/800px-Christ_the_Redeemer_-_Cristo_Redentor.jpg",
       "type": "zoom-out",
-      "acceptedAnswers": ["Christ the Redeemer", "cristo redentor", "christ redeemer"]
+      "acceptedAnswers": [
+        "Christ the Redeemer",
+        "cristo redentor",
+        "christ redeemer"
+      ]
     },
     {
       "question": "What landmark is this?",
-      "options": ["Stonehenge", "Carnac Stones", "Avebury", "Callanish Stones"],
+      "options": [
+        "Stonehenge",
+        "Carnac Stones",
+        "Avebury",
+        "Callanish Stones"
+      ],
       "correct": 0,
       "explanation": "Stonehenge in Wiltshire, England — built around 3000 BC.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Stonehenge2007_07_30.jpg/800px-Stonehenge2007_07_30.jpg",
       "type": "zoom-out",
-      "acceptedAnswers": ["Stonehenge", "stone henge"]
+      "acceptedAnswers": [
+        "Stonehenge",
+        "stone henge"
+      ]
     },
     {
       "question": "What landmark is this?",
-      "options": ["Pyramids of Giza", "Luxor Temple", "Sphinx", "Abu Simbel"],
+      "options": [
+        "Pyramids of Giza",
+        "Luxor Temple",
+        "Sphinx",
+        "Abu Simbel"
+      ],
       "correct": 0,
       "explanation": "The Pyramids of Giza in Egypt — the oldest of the Seven Wonders.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Kheops-Pyramid.jpg/800px-Kheops-Pyramid.jpg",
       "type": "zoom-out",
-      "acceptedAnswers": ["Pyramids of Giza", "pyramids", "giza", "pyramid", "great pyramid"]
+      "acceptedAnswers": [
+        "Pyramids of Giza",
+        "pyramids",
+        "giza",
+        "pyramid",
+        "great pyramid"
+      ]
     },
     {
       "question": "What landmark is this?",
-      "options": ["Leaning Tower of Pisa", "Tower of London", "CN Tower", "Eiffel Tower"],
+      "options": [
+        "Leaning Tower of Pisa",
+        "Tower of London",
+        "CN Tower",
+        "Eiffel Tower"
+      ],
       "correct": 0,
       "explanation": "The Leaning Tower of Pisa in Italy — it leans at about 3.97 degrees.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/The_Leaning_Tower_of_Pisa_SB.jpeg/800px-The_Leaning_Tower_of_Pisa_SB.jpeg",
       "type": "zoom-out",
-      "acceptedAnswers": ["Leaning Tower of Pisa", "tower of pisa", "pisa"]
+      "acceptedAnswers": [
+        "Leaning Tower of Pisa",
+        "tower of pisa",
+        "pisa"
+      ]
     },
     {
       "question": "What landmark is this?",
-      "options": ["Mount Fuji", "Mount Everest", "Kilimanjaro", "Matterhorn"],
+      "options": [
+        "Mount Fuji",
+        "Mount Everest",
+        "Kilimanjaro",
+        "Matterhorn"
+      ],
       "correct": 0,
       "explanation": "Mount Fuji in Japan — the highest peak at 3,776 m.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/080103_hakridge_fuji.jpg/800px-080103_hakridge_fuji.jpg",
       "type": "zoom-out",
-      "acceptedAnswers": ["Mount Fuji", "fuji", "mt fuji", "fujisan"]
+      "acceptedAnswers": [
+        "Mount Fuji",
+        "fuji",
+        "mt fuji",
+        "fujisan"
+      ]
     },
     {
       "question": "What landmark is this?",
-      "options": ["Golden Gate Bridge", "Brooklyn Bridge", "Tower Bridge", "Harbour Bridge"],
+      "options": [
+        "Golden Gate Bridge",
+        "Brooklyn Bridge",
+        "Tower Bridge",
+        "Harbour Bridge"
+      ],
       "correct": 0,
       "explanation": "The Golden Gate Bridge in San Francisco — opened in 1937.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/GoldenGateBridge-001.jpg/800px-GoldenGateBridge-001.jpg",
       "type": "zoom-out",
-      "acceptedAnswers": ["Golden Gate Bridge", "golden gate", "golden gate bridge"]
+      "acceptedAnswers": [
+        "Golden Gate Bridge",
+        "golden gate",
+        "golden gate bridge"
+      ]
     },
     {
       "question": "What landmark is this?",
-      "options": ["Parthenon", "Colosseum", "Pantheon", "Temple of Zeus"],
+      "options": [
+        "Parthenon",
+        "Colosseum",
+        "Pantheon",
+        "Temple of Zeus"
+      ],
       "correct": 0,
       "explanation": "The Parthenon on the Athenian Acropolis — built in 438 BC.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/The_Parthenon_in_Athens.jpg/800px-The_Parthenon_in_Athens.jpg",
       "type": "zoom-out",
-      "acceptedAnswers": ["Parthenon", "acropolis"]
+      "acceptedAnswers": [
+        "Parthenon",
+        "acropolis"
+      ]
     }
   ],
-  "createdAt": "2026-03-16T00:00:00.000Z",
-  "updatedAt": "2026-03-16T00:00:00.000Z"
+  "language": "en"
 }
