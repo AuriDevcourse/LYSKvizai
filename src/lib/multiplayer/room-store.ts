@@ -12,6 +12,7 @@ import type {
   PowerUpEffect,
   WagerPayload,
   WagerType,
+  ServerEvent,
 } from "./types";
 import { ALL_POWER_UPS } from "./types";
 import { generateRoomCode } from "./room-code";
@@ -27,6 +28,13 @@ import { sanitizeName, sanitizeEmoji } from "../sanitize";
 import { broadcast, removeRoomConnections } from "./sse-manager";
 import { getQuiz } from "@/lib/quiz-store";
 import type { Question } from "@/data/types";
+
+/** Broadcast wrapper that also marks the room as active. Use this for every
+ * state-changing event so the idle reaper leaves live games alone. */
+function bcast(room: Room, event: ServerEvent): void {
+  room.lastActivityAt = Date.now();
+  broadcast(room.code, event);
+}
 
 // Persist on globalThis to survive HMR in development
 const g = globalThis as typeof globalThis & {
@@ -73,25 +81,34 @@ export function handleConnectionLost(code: string, playerId: string, hasOtherCon
     if (!player) return;
     // If they already reconnected via a fresh SSE stream, connected stays true in broadcast
     player.connected = false;
-    broadcast(room.code, { type: "player-left", data: { playerId } });
+    bcast(room, { type: "player-left", data: { playerId } });
 
     // During lobby, fully remove the player so the host isn't stuck waiting on ghosts.
     if (room.state === "lobby") {
       room.players.delete(playerId);
-      broadcast(room.code, { type: "room-state", data: getRoomSnapshot(room) });
+      bcast(room, { type: "room-state", data: getRoomSnapshot(room) });
     }
   }, DISCONNECT_GRACE_MS);
 
   pendingDisconnects.set(key, t);
 }
 
-// Auto-cleanup rooms older than 2 hours (only one interval)
-const ROOM_TTL_MS = 2 * 60 * 60 * 1000;
+// Auto-cleanup idle rooms. Previously this ran on `createdAt`, which deleted
+// rooms mid-game once a session passed 2h — players saw "Room not found"
+// and the host's room evaporated. Now we only reap rooms that are either
+// finished or empty AND have been idle (no broadcasts) for the TTL window.
+const ROOM_IDLE_TTL_MS = 2 * 60 * 60 * 1000; // 2h with no activity
+const ROOM_HARD_TTL_MS = 12 * 60 * 60 * 1000; // safety net — never let a room live past 12h
 if (!g.__quiz_cleanup) {
   g.__quiz_cleanup = setInterval(() => {
     const now = Date.now();
     for (const [code, room] of rooms) {
-      if (now - room.createdAt > ROOM_TTL_MS) {
+      const idleMs = now - (room.lastActivityAt ?? room.createdAt);
+      const ageMs = now - room.createdAt;
+      const isAbandoned = room.state === "finished" || room.players.size === 0;
+      const idleTooLong = isAbandoned && idleMs > ROOM_IDLE_TTL_MS;
+      const tooOld = ageMs > ROOM_HARD_TTL_MS;
+      if (idleTooLong || tooOld) {
         if (room.questionTimer) clearTimeout(room.questionTimer);
         removeRoomConnections(code);
         rooms.delete(code);
@@ -605,6 +622,7 @@ export async function createRoom(
     questionStartTime: 0,
     timerDuration: timerDuration ?? 20,
     createdAt: Date.now(),
+    lastActivityAt: Date.now(),
 
     gameMode: gameMode ?? "classic",
     eliminatedPlayers: new Set(),
@@ -739,7 +757,7 @@ export function joinRoom(
   // Cancel any pending disconnect timer for this player
   cancelPendingDisconnect(room.code, playerId);
 
-  broadcast(room.code, { type: "player-joined", data: { player: playerToInfo(player) } });
+  bcast(room, { type: "player-joined", data: { player: playerToInfo(player) } });
   return { room, player };
 }
 
@@ -859,7 +877,7 @@ export function submitAnswer(
     totalEligible++;
     if (p.currentAnswer !== null) answered++;
   }
-  broadcast(room.code, {
+  bcast(room, {
     type: "answer-count",
     data: { count: answered, total: totalEligible },
   });
@@ -944,7 +962,7 @@ export function submitTextAnswer(
     totalEligible++;
     if (p.currentTextAnswer !== null) answered++;
   }
-  broadcast(room.code, { type: "answer-count", data: { count: answered, total: totalEligible } });
+  bcast(room, { type: "answer-count", data: { count: answered, total: totalEligible } });
 
   if (answered >= totalEligible) {
     showResults(room);
@@ -1024,7 +1042,7 @@ export function submitYearAnswer(
     totalEligible++;
     if (p.currentTextAnswer !== null) answered++;
   }
-  broadcast(room.code, { type: "answer-count", data: { count: answered, total: totalEligible } });
+  bcast(room, { type: "answer-count", data: { count: answered, total: totalEligible } });
 
   if (answered >= totalEligible) {
     showResults(room);
@@ -1070,7 +1088,7 @@ function showResults(room: Room): void {
           playerEmoji: toEliminate.emoji,
         }];
 
-        broadcast(room.code, {
+        bcast(room, {
           type: "player-eliminated",
           data: {
             playerId: toEliminate.id,
@@ -1083,15 +1101,15 @@ function showResults(room: Room): void {
         const remaining = getActivePlayers(room);
         if (remaining.length <= 1) {
           room.state = "finished";
-          broadcast(room.code, { type: "results", data: results });
-          broadcast(room.code, { type: "finished", data: { leaderboard: getLeaderboard(room) } });
+          bcast(room, { type: "results", data: results });
+          bcast(room, { type: "finished", data: { leaderboard: getLeaderboard(room) } });
           return;
         }
       }
     }
   }
 
-  broadcast(room.code, { type: "results", data: results });
+  bcast(room, { type: "results", data: results });
 }
 
 export function nextQuestion(code: string, hostId: string, hostToken: string): { error?: string } {
@@ -1102,7 +1120,7 @@ export function nextQuestion(code: string, hostId: string, hostToken: string): {
 
   if (room.currentQuestionIndex + 1 >= room.questionIndices.length) {
     room.state = "finished";
-    broadcast(room.code, { type: "finished", data: { leaderboard: getLeaderboard(room) } });
+    bcast(room, { type: "finished", data: { leaderboard: getLeaderboard(room) } });
     return {};
   }
 
@@ -1122,7 +1140,7 @@ export function nextQuestion(code: string, hostId: string, hostToken: string): {
     room.wagerCount++;
     room.wagerType = "regular";
     room.state = "wager";
-    broadcast(room.code, { type: "wager-start", data: getWagerPayload(room) });
+    bcast(room, { type: "wager-start", data: getWagerPayload(room) });
     return {};
   }
 
@@ -1178,7 +1196,7 @@ function startQuestionRound(room: Room): void {
     rotateTeamAnswerers(room);
   }
 
-  broadcast(room.code, { type: "question-start", data: getQuestionPayload(room) });
+  bcast(room, { type: "question-start", data: getQuestionPayload(room) });
   scheduleQuestionTimer(room);
 }
 
@@ -1231,7 +1249,7 @@ export function disconnectPlayer(code: string, playerId: string): void {
   const player = room.players.get(playerId);
   if (player) {
     player.connected = false;
-    broadcast(room.code, { type: "player-left", data: { playerId } });
+    bcast(room, { type: "player-left", data: { playerId } });
   }
 }
 
@@ -1274,7 +1292,7 @@ export function choosePowerUp(
   // countdown AND the server-side auto-end timer so they end in sync.
   if (powerUp === "freeze" && !room.freezeActive) {
     room.freezeActive = true;
-    broadcast(room.code, { type: "timer-reduced", data: { seconds: 3 } });
+    bcast(room, { type: "timer-reduced", data: { seconds: 3 } });
 
     if (room.questionTimer) {
       clearTimeout(room.questionTimer);
@@ -1290,7 +1308,7 @@ export function choosePowerUp(
   }
 
   // Broadcast updated state so clients get fresh player power-up data
-  broadcast(room.code, {
+  bcast(room, {
     type: "room-state",
     data: getRoomSnapshot(room),
   });

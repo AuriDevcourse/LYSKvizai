@@ -43,6 +43,9 @@ export interface Room {
   questionStartTime: number;
   timerDuration: number;
   createdAt: number;
+  /** Updated on every broadcast (i.e. every state-changing action). Used by the
+   * idle-room reaper so active games are not deleted mid-session. */
+  lastActivityAt: number;
 
   gameMode: GameMode;
 
