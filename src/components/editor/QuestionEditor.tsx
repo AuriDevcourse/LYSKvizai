@@ -16,12 +16,12 @@ interface QuestionEditorProps {
 }
 
 const QUESTION_TYPES: { value: QuestionType; label: string }[] = [
-  { value: "standard", label: "Standartinis" },
-  { value: "bluff", label: "Apgaulė" },
-  { value: "true-false", label: "Tiesa / Melas" },
+  { value: "standard", label: "Standard" },
+  { value: "bluff", label: "Bluff" },
+  { value: "true-false", label: "True / False" },
   { value: "zoom-out", label: "Zoom Out" },
-  { value: "fastest-finger", label: "Greičiausias" },
-  { value: "year-guesser", label: "Metų spėjimas" },
+  { value: "fastest-finger", label: "Fastest finger" },
+  { value: "year-guesser", label: "Year guess" },
   { value: "audio", label: "Audio" },
   { value: "video", label: "Video" },
 ];
@@ -41,7 +41,7 @@ export default function QuestionEditor({
       const updated = { ...question, type: newType };
       // When switching to true-false, clear options C/D and ensure correct is 0 or 1
       if (newType === "true-false") {
-        updated.options = [updated.options[0] || "Tiesa", updated.options[1] || "Melas", "", ""];
+        updated.options = [updated.options[0] || "True", updated.options[1] || "False", "", ""];
         if (updated.correct > 1) updated.correct = 0;
       }
       // When switching to year-guesser, set a default correctYear
@@ -71,7 +71,7 @@ export default function QuestionEditor({
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
         <span className="text-sm font-bold text-white">
-          {index + 1} klausimas
+          Question {index + 1}
         </span>
         <div className="flex items-center gap-1">
           <button
@@ -100,7 +100,7 @@ export default function QuestionEditor({
       {/* Question type */}
       <div className="mb-4">
         <label className="mb-1 block text-xs font-medium text-white/50">
-          Tipas
+          Type
         </label>
         <div className="flex flex-wrap gap-2">
           {QUESTION_TYPES.map((qt) => (
@@ -123,14 +123,14 @@ export default function QuestionEditor({
       {/* Question text */}
       <div className="mb-4">
         <label className="mb-1 block text-xs font-medium text-white/50">
-          Klausimas
+          Question
         </label>
         <textarea
           value={question.question}
           onChange={(e) => updateField("question", e.target.value)}
           rows={2}
           className="w-full rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
-          placeholder="Įvesk klausimą..."
+          placeholder="Enter question..."
         />
       </div>
 
@@ -138,14 +138,14 @@ export default function QuestionEditor({
       {questionType === "bluff" && (
         <div className="mb-4">
           <label className="mb-1 block text-xs font-medium text-purple-300/70">
-            Apgaulės atsakymas
+            Bluff answer
           </label>
           <input
             type="text"
             value={question.bluffAnswer ?? ""}
             onChange={(e) => updateField("bluffAnswer", e.target.value)}
             className="w-full rounded-lg border-2 border-purple-400/30 bg-purple-400/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-purple-400/50 focus:outline-none"
-            placeholder="Netikras atsakymas, kuris pakeis vieną iš neteisingų..."
+            placeholder="A fake answer that will replace one of the wrong ones..."
           />
         </div>
       )}
@@ -154,7 +154,7 @@ export default function QuestionEditor({
       {questionType === "audio" && (
         <div className="mb-4">
           <label className="mb-1 block text-xs font-medium text-cyan-300/70">
-            Audio failas
+            Audio file
           </label>
           <MediaUpload
             type="audio"
@@ -168,7 +168,7 @@ export default function QuestionEditor({
       {questionType === "video" && (
         <div className="mb-4">
           <label className="mb-1 block text-xs font-medium text-cyan-300/70">
-            Video failas / YouTube URL
+            Video file / YouTube URL
           </label>
           <MediaUpload
             type="video"
@@ -182,14 +182,14 @@ export default function QuestionEditor({
       {questionType === "year-guesser" && (
         <div className="mb-4">
           <label className="mb-1 block text-xs font-medium text-amber-300/70">
-            Teisingi metai
+            Correct year
           </label>
           <input
             type="number"
             value={question.correctYear ?? 2000}
             onChange={(e) => updateField("correctYear", parseInt(e.target.value) || 0)}
             className="w-40 rounded-lg border-2 border-amber-400/30 bg-amber-400/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-amber-400/50 focus:outline-none"
-            placeholder="pvz. 1990"
+            placeholder="e.g. 1990"
           />
         </div>
       )}
@@ -198,7 +198,7 @@ export default function QuestionEditor({
       {questionType === "fastest-finger" && (
         <div className="mb-4">
           <label className="mb-1 block text-xs font-medium text-orange-300/70">
-            Priimami atsakymai (po vieną eilutėje, be didžiųjų/mažųjų skirtumo)
+            Accepted answers (one per line, case-insensitive)
           </label>
           <textarea
             value={(question.acceptedAnswers ?? []).join("\n")}
@@ -227,7 +227,7 @@ export default function QuestionEditor({
       {questionType !== "year-guesser" && questionType !== "fastest-finger" && (
       <div className="mb-4 space-y-2">
         <label className="block text-xs font-medium text-white/50">
-          Atsakymai (pasirink teisingą)
+          Answers (pick the correct one)
         </label>
         {question.options.map((opt, i) => {
           // For true-false, only show 2 options
@@ -250,7 +250,7 @@ export default function QuestionEditor({
               value={opt}
               onChange={(e) => updateOption(i, e.target.value)}
               className="flex-1 rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-1.5 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
-              placeholder={questionType === "true-false" ? (i === 0 ? "Tiesa" : "Melas") : `Atsakymas ${["A", "B", "C", "D"][i]}`}
+              placeholder={questionType === "true-false" ? (i === 0 ? "True" : "False") : `Answer ${["A", "B", "C", "D"][i]}`}
             />
           </div>
           );
@@ -261,21 +261,21 @@ export default function QuestionEditor({
       {/* Explanation */}
       <div className="mb-4">
         <label className="mb-1 block text-xs font-medium text-white/50">
-          Paaiškinimas
+          Explanation
         </label>
         <textarea
           value={question.explanation}
           onChange={(e) => updateField("explanation", e.target.value)}
           rows={2}
           className="w-full rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
-          placeholder="Paaiškinimas rodomas po atsakymo..."
+          placeholder="Shown after the answer is revealed..."
         />
       </div>
 
       {/* Image */}
       <div className="mb-4">
         <label className="mb-1 block text-xs font-medium text-white/50">
-          Nuotrauka (neprivaloma)
+          Image (optional)
         </label>
         <ImageUpload
           value={question.image}
@@ -293,7 +293,7 @@ export default function QuestionEditor({
             className="h-4 w-4 rounded accent-white"
           />
           <span className="text-xs font-medium text-white/50">
-            Laipsniškas atskleidimas (tekstas žodis po žodžio, nuotrauka iš sulietos)
+            Progressive reveal (text word-by-word, image fades in from blur)
           </span>
         </label>
       </div>

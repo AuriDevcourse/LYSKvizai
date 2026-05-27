@@ -24,7 +24,7 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
       if (!res.ok) throw new Error(data.error);
       onChange(data.url);
     } catch (e) {
-      alert(e instanceof Error ? e.message : "Klaida įkeliant");
+      alert(e instanceof Error ? e.message : "Upload failed");
     } finally {
       setUploading(false);
     }
@@ -48,7 +48,7 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
       <div className="relative overflow-hidden rounded-xl border-[1.5px] border-white/8 bg-white/5">
         <img
           src={value}
-          alt="Klausimo nuotrauka"
+          alt="Question image"
           className="h-32 w-full object-cover"
         />
         <button
@@ -74,7 +74,7 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
           }`}
         >
           <Upload className="mr-1 inline h-3 w-3" />
-          Failas
+          File
         </button>
         <button
           type="button"
@@ -103,7 +103,7 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
             <>
               <Upload className="h-6 w-6 text-white/40" />
               <p className="text-xs text-white/40">
-                Vilk failą arba paspausk (JPG, PNG, WebP, max 5MB)
+                Drop a file or click (JPG, PNG, WebP, max 5MB)
               </p>
             </>
           )}
@@ -133,7 +133,7 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
             onClick={handleUrlSubmit}
             className="rounded-lg bg-white px-3 py-2 text-sm font-semibold text-[#ff9062] hover:bg-white/90"
           >
-            Pridėti
+            Add
           </button>
         </div>
       )}

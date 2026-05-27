@@ -1,7 +1,7 @@
 {
   "id": "geography",
   "title": "Geography",
-  "description": "15 questions about world geography",
+  "description": "13 questions about world geography",
   "emoji": "🌍",
   "icon": "Globe",
   "createdAt": "2026-03-10T22:22:50+01:00",
@@ -88,17 +88,6 @@
       "explanation": "Everest (8,849 m) is the highest peak in the world, located in the Himalayas."
     },
     {
-      "question": "What is the longest river in Lithuania?",
-      "options": [
-        "Neris",
-        "Šventoji",
-        "Nemunas",
-        "Dubysa"
-      ],
-      "correct": 2,
-      "explanation": "Nemunas is the longest river in Lithuania, its length is about 937 km."
-    },
-    {
       "question": "In which country is the Taj Mahal?",
       "options": [
         "Pakistan",
@@ -120,17 +109,6 @@
       "correct": 1,
       "explanation": "India is the most populated country in the world, surpassing China in 2023.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Crowd_at_Juhu_Beach.jpg/800px-Crowd_at_Juhu_Beach.jpg"
-    },
-    {
-      "question": "What is the biggest lake in Lithuania?",
-      "options": [
-        "Lake Drūkšiai",
-        "Lake Plateliai",
-        "Lake Tauragnas",
-        "Galvė Lake"
-      ],
-      "correct": 0,
-      "explanation": "Lake Drūkšiai is the largest lake in Lithuania, its area is about 44.8 km²."
     },
     {
       "question": "On which continent are the Andes mountains?",

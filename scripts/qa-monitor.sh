@@ -1,5 +1,5 @@
 #!/bin/bash
-# QA Monitor for LYS Kvizai
+# QA Monitor for Quizmo
 # Checks: build, functionality, UI compliance, dead code
 # Run: bash scripts/qa-monitor.sh
 
@@ -12,7 +12,7 @@ NC='\033[0m'
 ISSUES=0
 
 echo "═══════════════════════════════════════"
-echo "  LYS Kvizai — QA Monitor"
+echo "  Quizmo — QA Monitor"
 echo "═══════════════════════════════════════"
 echo ""
 
@@ -59,13 +59,6 @@ if [ "$EMOJI_DECORATIONS" -eq "0" ]; then
 else
   echo -e "  ${YELLOW}⚠ $EMOJI_DECORATIONS decorative emoji element(s) — consider removing${NC}"
   ISSUES=$((ISSUES + EMOJI_DECORATIONS))
-fi
-
-VERBOSE_TEXT=$(grep -rn "Pasirink kvizą ir tikrink\|Žaisk, mokykis, laimėk\|Sukurk naują per redaktorių" src/ 2>/dev/null | wc -l | tr -d ' ')
-if [ "$VERBOSE_TEXT" -eq "0" ]; then
-  echo -e "  ${GREEN}✓ No overly verbose UI text${NC}"
-else
-  echo -e "  ${YELLOW}⚠ $VERBOSE_TEXT verbose text string(s) — simplify${NC}"
 fi
 
 MUTED_COLORS=$(grep -rn "opacity-\(2[0-9]\|1[0-9]\|[0-9]\)\b" src/components/ 2>/dev/null | grep -v "node_modules" | wc -l | tr -d ' ')

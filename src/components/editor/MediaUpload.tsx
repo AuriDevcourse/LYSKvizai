@@ -37,7 +37,7 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
       if (!res.ok) throw new Error(data.error);
       onChange(data.url);
     } catch (e) {
-      alert(e instanceof Error ? e.message : "Klaida įkeliant");
+      alert(e instanceof Error ? e.message : "Upload failed");
     } finally {
       setUploading(false);
     }
@@ -84,7 +84,7 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
           }`}
         >
           <Upload className="mr-1 inline h-3 w-3" />
-          Failas
+          File
         </button>
         <button
           type="button"
@@ -113,7 +113,7 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
             <>
               <Icon className="h-6 w-6 text-white/40" />
               <p className="text-xs text-white/40">
-                Vilk failą arba paspausk ({info.hint})
+                Drop a file or click ({info.hint})
               </p>
             </>
           )}
@@ -143,7 +143,7 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
             onClick={handleUrlSubmit}
             className="rounded-lg bg-white px-3 py-2 text-sm font-semibold text-[#ff9062] hover:bg-white/90"
           >
-            Pridėti
+            Add
           </button>
         </div>
       )}

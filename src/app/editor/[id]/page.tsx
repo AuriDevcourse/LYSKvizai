@@ -65,10 +65,8 @@ export default function QuizEditorPage({ params }: PageProps) {
     const finalId = isNew
       ? title
           .toLowerCase()
-          .replace(/[ąčęėįšųūž]/g, (c) => {
-            const map: Record<string, string> = { ą: "a", č: "c", ę: "e", ė: "e", į: "i", š: "s", ų: "u", ū: "u", ž: "z" };
-            return map[c] || c;
-          })
+          .normalize("NFKD")
+          .replace(/[̀-ͯ]/g, "")
           .replace(/[^a-z0-9]/g, "-")
           .replace(/-+/g, "-")
           .replace(/^-|-$/g, "")

@@ -32,17 +32,17 @@ export async function POST(req: NextRequest) {
     const file = formData.get("file") as File | null;
 
     if (!file) {
-      return json({ error: "Nepateiktas failas" }, 400);
+      return json({ error: "No file provided" }, 400);
     }
 
     const maxSize = ALLOWED_TYPES[file.type];
     if (!maxSize) {
-      return json({ error: "Netinkamas failo tipas. Leidžiami: JPG, PNG, GIF, WebP, MP3, WAV, OGG, MP4, WebM" }, 400);
+      return json({ error: "Unsupported file type. Allowed: JPG, PNG, GIF, WebP, MP3, WAV, OGG, MP4, WebM" }, 400);
     }
 
     if (file.size > maxSize) {
       const maxMB = Math.round(maxSize / 1024 / 1024);
-      return json({ error: `Failas per didelis (max ${maxMB}MB)` }, 400);
+      return json({ error: `File too large (max ${maxMB}MB)` }, 400);
     }
 
     // Ensure upload directory exists
@@ -63,6 +63,6 @@ export async function POST(req: NextRequest) {
 
     return json({ url: `/quiz-images/${unique}` }, 201);
   } catch {
-    return json({ error: "Klaida įkeliant failą" }, 500);
+    return json({ error: "Failed to upload file" }, 500);
   }
 }

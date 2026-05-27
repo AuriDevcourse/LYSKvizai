@@ -14,18 +14,7 @@ export interface AvatarConfig {
   accessory: string;
 }
 
-export const ANIMALS = [
-  { id: "bear", label: "Meška" },
-  { id: "fox", label: "Lapė" },
-  { id: "cat", label: "Katė" },
-  { id: "rabbit", label: "Zuikis" },
-  { id: "owl", label: "Pelėda" },
-  { id: "penguin", label: "Pingvinas" },
-  { id: "dog", label: "Šuo" },
-  { id: "frog", label: "Varlė" },
-] as const;
-
-export const COLORS = [
+const COLORS = [
   { id: "red", fill: "#e21b3c", light: "#ff6b81" },
   { id: "blue", fill: "#1368ce", light: "#5b9bff" },
   { id: "green", fill: "#26890c", light: "#5ec740" },
@@ -34,25 +23,6 @@ export const COLORS = [
   { id: "pink", fill: "#e84393", light: "#fd79a8" },
   { id: "orange", fill: "#e17055", light: "#fab1a0" },
   { id: "teal", fill: "#00b894", light: "#55efc4" },
-] as const;
-
-export const HATS = [
-  { id: "none", label: "None" },
-  { id: "crown", label: "Karūna" },
-  { id: "tophat", label: "Cilindras" },
-  { id: "beanie", label: "Kepurė" },
-  { id: "cap", label: "Kepuraitė" },
-  { id: "wizard", label: "Burtininko" },
-  { id: "party", label: "Vakarėlio" },
-] as const;
-
-export const ACCESSORIES = [
-  { id: "none", label: "None" },
-  { id: "glasses", label: "Akiniai" },
-  { id: "sunglasses", label: "Saulės" },
-  { id: "bowtie", label: "Peteliškė" },
-  { id: "scarf", label: "Šalikas" },
-  { id: "star", label: "Žvaigždė" },
 ] as const;
 
 export function encodeAvatar(config: AvatarConfig): string {

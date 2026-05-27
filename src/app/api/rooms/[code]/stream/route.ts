@@ -22,7 +22,7 @@ export async function GET(
 
   const room = getRoom(code);
   if (!room) {
-    return new Response("Kambarys nerastas", { status: 404 });
+    return new Response("Room not found", { status: 404 });
   }
 
   // New connection for this player — cancel any pending disconnect timer.

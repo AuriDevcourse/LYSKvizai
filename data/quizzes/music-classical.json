@@ -19,17 +19,6 @@
       "correctYear": 1801
     },
     {
-      "question": "Who is M. K. Čiurlionis?",
-      "options": [
-        "Lithuanian poet",
-        "Lithuanian writer",
-        "Lithuanian architect",
-        "Lithuanian painter and composer"
-      ],
-      "correct": 3,
-      "explanation": "M. K. Čiurlionis is a famous Lithuanian painter and composer."
-    },
-    {
       "question": "Which composer wrote The Four Seasons?",
       "options": [
         "Antonio Vivaldi",
@@ -51,18 +40,6 @@
       ],
       "correct": 2,
       "explanation": "Beethoven began composing in 1798, but produced his best works while almost completely deaf."
-    },
-    {
-      "question": "Who created the opera Kermoshius?",
-      "options": [
-        "Juozas Gruodis",
-        "Stasys Šimkus",
-        "Balys Dvarionas",
-        "Mikas Petrauskas"
-      ],
-      "correct": 3,
-      "explanation": "Kermošius is the first Lithuanian opera created by Miko Petrauskas in 1906.",
-      "correctYear": 1906
     },
     {
       "question": "How many strings does a violin have?",
