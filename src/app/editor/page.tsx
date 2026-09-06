@@ -7,6 +7,9 @@ import { Plus, Trash2, Pencil, ArrowLeft, Loader2, FileText } from "lucide-react
 import type { QuizMeta } from "@/data/types";
 import { getQuizTheme } from "@/lib/quiz-theme";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
+import EditorUnlock from "@/components/editor/EditorUnlock";
+import { editorFetch, EditorAuthError } from "@/lib/editor-auth";
 
 export default function EditorPage() {
   const router = useRouter();
@@ -14,6 +17,9 @@ export default function EditorPage() {
   const [quizzes, setQuizzes] = useState<QuizMeta[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<QuizMeta | null>(null);
+  const [authPrompt, setAuthPrompt] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const quizTitles = quizzes.map((q) => q.title);
 
   const fetchQuizzes = () => {
@@ -26,16 +32,27 @@ export default function EditorPage() {
 
   useEffect(fetchQuizzes, [lang]);
 
-  const handleDelete = async (id: string, title: string) => {
-    if (!confirm(`Are you sure you want to delete "${title}"?`)) return;
+  const runDelete = async (id: string) => {
     setDeleting(id);
+    setError(null);
     try {
-      await fetch(`/api/quizzes/${id}`, { method: "DELETE" });
+      const res = await editorFetch(`/api/quizzes/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error ?? "Could not delete this quiz");
+      }
       setQuizzes((prev) => prev.filter((q) => q.id !== id));
-    } catch {
-      alert("Error deleting quiz");
+    } catch (e) {
+      if (e instanceof EditorAuthError) {
+        // Ask for the password, then let them retry.
+        setAuthPrompt(e.message);
+      } else {
+        console.error("Delete failed", e);
+        setError(e instanceof Error ? e.message : "Could not delete this quiz");
+      }
     } finally {
       setDeleting(null);
+      setPendingDelete(null);
     }
   };
 
@@ -59,7 +76,7 @@ export default function EditorPage() {
           </div>
           <button
             onClick={handleCreate}
-            className="flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 font-semibold text-[#ff9062] transition-colors hover:bg-white/90"
+            className="btn-primary flex min-h-[44px] items-center gap-2 !px-5 !py-0 !text-base"
           >
             <Plus className="h-4 w-4" />
             {t("editor.create")}
@@ -68,8 +85,16 @@ export default function EditorPage() {
 
         {/* Quiz list */}
         {loading ? (
-          <div className="flex items-center justify-center py-16">
-            <Loader2 className="h-8 w-8 animate-spin text-white" />
+          <div className="space-y-3" aria-busy="true" aria-label="Loading quizzes">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4 rounded-2xl border-[1.5px] border-white/8 px-5 py-4">
+                <div className="skeleton h-11 w-11 shrink-0 rounded-xl" />
+                <div className="min-w-0 flex-1 space-y-2">
+                  <div className="skeleton h-4 w-1/2 rounded" />
+                  <div className="skeleton h-3 w-24 rounded" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : quizzes.length === 0 ? (
           <div className="py-16 text-center">
@@ -106,14 +131,16 @@ export default function EditorPage() {
                 <div className="flex gap-2">
                   <Link
                     href={`/editor/${quiz.id}`}
-                    className="rounded-lg bg-white/5 p-2 text-white/60 hover:bg-white/20 hover:text-white/80"
+                    aria-label={`Edit ${quiz.title}`}
+                    className="tap-target rounded-lg bg-white/5 text-white/60 hover:bg-white/20 hover:text-white/80"
                   >
                     <Pencil className="h-4 w-4" />
                   </Link>
                   <button
-                    onClick={() => handleDelete(quiz.id, quiz.title)}
+                    onClick={() => setPendingDelete(quiz)}
                     disabled={deleting === quiz.id}
-                    className="rounded-lg bg-white/5 p-2 text-red-400/60 hover:bg-[#ff716c]/20 hover:text-red-400 disabled:opacity-50"
+                    aria-label={`Delete ${quiz.title}`}
+                    className="tap-target rounded-lg bg-white/5 text-red-400/60 hover:bg-[#ff716c]/20 hover:text-red-400 disabled:opacity-50"
                   >
                     {deleting === quiz.id ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -126,6 +153,30 @@ export default function EditorPage() {
             ))}
           </div>
         )}
+
+        {error && (
+          <p role="alert" className="mt-4 rounded-xl border-[1.5px] border-[#ff716c]/30 bg-[#ff716c]/10 px-4 py-3 text-sm text-[#ff716c]">
+            {error}
+          </p>
+        )}
+
+        <ConfirmDialog
+          open={pendingDelete !== null}
+          title="Delete this quiz?"
+          message={pendingDelete ? `"${pendingDelete.title}" and its ${pendingDelete.questionCount} questions will be removed. This cannot be undone.` : undefined}
+          confirmLabel="Delete"
+          destructive
+          busy={deleting !== null}
+          onConfirm={() => pendingDelete && runDelete(pendingDelete.id)}
+          onCancel={() => setPendingDelete(null)}
+        />
+
+        <EditorUnlock
+          open={authPrompt !== null}
+          reason={authPrompt ?? undefined}
+          onUnlocked={() => setAuthPrompt(null)}
+          onCancel={() => setAuthPrompt(null)}
+        />
 
         {/* Back link */}
         <Link

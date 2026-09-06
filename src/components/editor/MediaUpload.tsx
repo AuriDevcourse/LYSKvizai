@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { Upload, X, Link as LinkIcon, Loader2, Music, Video } from "lucide-react";
+import { editorFetch, EditorAuthError } from "@/lib/editor-auth";
 
 interface MediaUploadProps {
   value?: string;
@@ -21,6 +22,7 @@ const LABEL_MAP = {
 
 export default function MediaUpload({ value, onChange, type }: MediaUploadProps) {
   const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [mode, setMode] = useState<"file" | "url">("file");
   const [urlInput, setUrlInput] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
@@ -29,15 +31,21 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
 
   const handleFile = async (file: File) => {
     setUploading(true);
+    setUploadError(null);
     try {
       const form = new FormData();
       form.append("file", file);
-      const res = await fetch("/api/upload", { method: "POST", body: form });
+      const res = await editorFetch("/api/upload", { method: "POST", body: form });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       onChange(data.url);
     } catch (e) {
-      alert(e instanceof Error ? e.message : "Upload failed");
+      console.error("Upload failed", e);
+      setUploadError(
+        e instanceof EditorAuthError
+          ? "Editor password required — save the quiz to unlock, then retry."
+          : e instanceof Error ? e.message : "Upload failed"
+      );
     } finally {
       setUploading(false);
     }
@@ -135,17 +143,27 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleUrlSubmit()}
+            inputMode="url"
+            autoComplete="off"
+            autoCapitalize="none"
+            spellCheck={false}
+            enterKeyHint="done"
             placeholder={type === "video" ? "https://youtube.com/watch?v=..." : "https://example.com/audio.mp3"}
             className="flex-1 rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
           />
           <button
             type="button"
             onClick={handleUrlSubmit}
-            className="rounded-lg bg-white px-3 py-2 text-sm font-semibold text-[#ff9062] hover:bg-white/90"
+            className="min-h-[44px] rounded-lg bg-[#ff9062] px-4 text-sm font-bold text-black transition-colors hover:bg-[#ff793e]"
           >
             Add
           </button>
         </div>
+      )}
+      {uploadError && (
+        <p role="alert" className="mt-2 rounded-lg border-[1.5px] border-[#ff716c]/30 bg-[#ff716c]/10 px-3 py-2 text-xs text-[#ff716c]">
+          {uploadError}
+        </p>
       )}
     </div>
   );

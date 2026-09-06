@@ -1,20 +1,19 @@
 "use client";
 
 import { useMemo, useState, useEffect, useRef } from "react";
-import {
-  CheckCircle, ArrowRight, Trophy, Award, Triangle, Diamond, Circle, Square,
-  Skull, Users, Zap, Sparkles, Calendar, Flame, TrendingUp,
-} from "lucide-react";
+import { CheckCircle, ArrowRight, Trophy, Award, Skull, Users, Zap, Sparkles, Calendar, Flame, TrendingUp } from "lucide-react";
 import type { ResultsPayload, QuestionPayload, GameMode } from "@/lib/multiplayer/types";
 import type { EmojiReactionWithId } from "@/hooks/useRoom";
 import EmojiReactions from "./EmojiReactions";
 import Avatar from "@/components/Avatar";
 import AnimatedNumber from "@/components/AnimatedNumber";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import AnswerDistribution from "./AnswerDistribution";
+import { ANSWER_BG, ANSWER_BG_DIM, ANSWER_ICONS, ANSWER_TEXT } from "@/lib/answer-options";
 
-const OPTION_BG = ["bg-[#ff716c]", "bg-[#43a5fc]", "bg-[#66bb6a]", "bg-[#c9a825]"];
-const OPTION_BG_DIM = ["bg-[#ff716c]/30", "bg-[#43a5fc]/30", "bg-[#66bb6a]/30", "bg-[#c9a825]/30"];
-const OPTION_ICONS = [Triangle, Diamond, Circle, Square];
+const OPTION_BG = ANSWER_BG;
+const OPTION_BG_DIM = ANSWER_BG_DIM;
+const OPTION_ICONS = ANSWER_ICONS;
 
 interface HostResultsProps {
   question: QuestionPayload | null;
@@ -79,7 +78,7 @@ export default function HostResults({
 
           {/* Explanation */}
           {results.explanation && (
-            <p className="max-w-2xl text-center text-sm font-medium text-white/60 sm:text-base">{tExplanation}</p>
+            <p className="max-w-3xl text-center text-base font-medium leading-relaxed text-white/85 sm:text-xl">{tExplanation}</p>
           )}
 
           {/* Year Guesser correct year */}
@@ -129,21 +128,42 @@ export default function HostResults({
                       : `${OPTION_BG_DIM[i]} opacity-40`
                   }`}
                 >
-                  <Icon className="h-5 w-5 shrink-0 text-white/90 sm:h-8 sm:w-8" fill="currentColor" />
-                  <span className="flex-1 text-base font-extrabold text-white sm:text-xl lg:text-2xl">
+                  {/* The correct chip is painted at full saturation, so its text
+                      goes near-black for contrast; the dimmed ones sit on a 30%
+                      wash over the dark page and stay light. */}
+                  <Icon
+                    className={`h-5 w-5 shrink-0 sm:h-8 sm:w-8 ${isCorrect ? ANSWER_TEXT : "text-white/90"}`}
+                    fill="currentColor"
+                  />
+                  <span
+                    className={`flex-1 text-base font-extrabold sm:text-xl lg:text-2xl ${
+                      isCorrect ? ANSWER_TEXT : "text-white"
+                    }`}
+                  >
                     {option}
                   </span>
-                  {isCorrect && <CheckCircle className="h-6 w-6 shrink-0 text-white" />}
+                  {isCorrect && <CheckCircle className={`h-6 w-6 shrink-0 ${ANSWER_TEXT}`} />}
                 </div>
               );
             })}
           </div>
         )}
 
+        {/* How the room split. The server already computed this and it was
+            being thrown away — seeing that 9 people picked the same wrong
+            answer is most of the fun of the reveal. */}
+        {!isYearGuesser && (
+          <AnswerDistribution
+            distribution={results.answerDistribution}
+            correctIndex={results.correctAnswer}
+            className="pt-3 sm:pt-5"
+          />
+        )}
+
         {/* Next → go to leaderboard phase */}
         <button
           onClick={() => setPhase("leaderboard")}
-          className="btn-primary mt-4 flex items-center justify-center gap-2 w-full text-lg"
+          className="btn-primary mt-4 flex min-h-[52px] items-center justify-center gap-2 w-full text-lg"
         >
           {t("hostResults.leaders")}
           <ArrowRight className="h-5 w-5" />

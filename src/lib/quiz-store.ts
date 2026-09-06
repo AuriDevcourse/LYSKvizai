@@ -10,6 +10,22 @@ async function ensureDir() {
   await fs.mkdir(QUIZZES_DIR, { recursive: true });
 }
 
+/**
+ * Metadata cache.
+ *
+ * `listQuizzes` backs the home page and the topic picker. Without this it read
+ * and JSON.parsed all 54 quiz files — and ran three per-question filters over
+ * each — on every single request. The file set only changes when the editor
+ * writes, so cache the result and invalidate on write.
+ *
+ * Held on globalThis so it survives HMR in development.
+ */
+const g = globalThis as typeof globalThis & { __quiz_meta_cache?: QuizMeta[] | null };
+
+export function invalidateQuizCache(): void {
+  g.__quiz_meta_cache = null;
+}
+
 /** Sanitize an ID to be filesystem-safe */
 function sanitizeId(id: string): string {
   return id
@@ -21,6 +37,8 @@ function sanitizeId(id: string): string {
 
 /** List all quizzes (metadata only) */
 export async function listQuizzes(): Promise<QuizMeta[]> {
+  if (g.__quiz_meta_cache) return g.__quiz_meta_cache;
+
   await ensureDir();
   const files = await fs.readdir(QUIZZES_DIR);
   const metas: QuizMeta[] = [];
@@ -53,7 +71,9 @@ export async function listQuizzes(): Promise<QuizMeta[]> {
     }
   }
 
-  return metas.sort((a, b) => a.title.localeCompare(b.title));
+  metas.sort((a, b) => a.title.localeCompare(b.title));
+  g.__quiz_meta_cache = metas;
+  return metas;
 }
 
 /** Get a single quiz by ID */
@@ -75,6 +95,7 @@ export async function saveQuiz(quiz: Quiz): Promise<void> {
   if (!quiz.createdAt) quiz.createdAt = quiz.updatedAt;
   const filePath = path.join(QUIZZES_DIR, `${quiz.id}.json`);
   await fs.writeFile(filePath, JSON.stringify(quiz, null, 2), "utf-8");
+  invalidateQuizCache();
 }
 
 /** Delete a quiz by ID */
@@ -82,6 +103,7 @@ export async function deleteQuiz(id: string): Promise<boolean> {
   const filePath = path.join(QUIZZES_DIR, `${sanitizeId(id)}.json`);
   try {
     await fs.unlink(filePath);
+    invalidateQuizCache();
     return true;
   } catch {
     return false;

@@ -20,10 +20,21 @@ A high-end digital lounge aesthetic — vibrant, translucent, and energetic. Gla
 - Secondary: `#43a5fc` (blue)
 - Tertiary: `#e77fff` (purple)
 - Error: `#ff716c` (red)
-- Answer Blue: `#43a5fc`
-- Answer Green: `#b2ff59`
-- Answer Yellow: `#ffff00`
-- Answer Purple: `#e77fff`
+
+### Answer colours (single source of truth: `src/lib/answer-options.ts`)
+The four answer options, in display order. Do NOT re-spell these in components —
+import `ANSWER_BG` / `ANSWER_COLORS` / `ANSWER_ICONS` / `ANSWER_TEXT`.
+
+| # | Colour | Shape | Text on it |
+|---|---|---|---|
+| 1 | `#ff716c` red | Triangle | `ANSWER_TEXT` (near-black) |
+| 2 | `#43a5fc` blue | Diamond | `ANSWER_TEXT` |
+| 3 | `#66bb6a` green | Circle | `ANSWER_TEXT` |
+| 4 | `#c9a825` gold | Square | `ANSWER_TEXT` |
+
+**Text on these is near-black, never white.** White measures 2.30-2.68:1 against
+them — below even the 3:1 large-text floor. Near-black measures 7.20-8.38:1.
+Purple `#e77fff` is a brand accent, not an answer colour.
 - Surface: white at 4% opacity (glass base)
 - Surface Hover: white at 8% opacity
 - On-surface-variant: `#adaaaa` (secondary text)
@@ -56,6 +67,31 @@ A high-end digital lounge aesthetic — vibrant, translucent, and energetic. Gla
 - Missing animations on state transitions
 - Screens with more than 5 visible elements
 
+## Visual primitives (added in the 2026-09-06 redesign)
+
+Use these instead of hand-rolling. They exist so surfaces stay consistent.
+
+| Class | What it is |
+|---|---|
+| `.aurora` `.vignette` `.grain` | The atmosphere. Mounted once in `layout.tsx`, fixed and `pointer-events:none`. Don't add per-page backgrounds. |
+| `.surface` | The premium glass panel: gradient hairline border + inner specular highlight + depth shadow. Prefer over `.glass` for anything card-sized. |
+| `.surface-hover` | Adds lift + a coloured bloom. Set the colour per element with `--bloom`. |
+| `.neon` | The wordmark treatment. Layered bloom, keeps letterforms crisp. |
+| `.chip` | Accent pill with its own glow. Set `--chip` to the accent colour. |
+| `.rise` | Orchestrated entrance — direct children stagger in. One per screen. |
+| `.answer-btn` | Answer chips: lit top edge, grounded bottom, specular sweep on hover. |
+| `.code-tile` | Room-code tiles. Flip in on a stagger. |
+| `.podium-1` / `.spotlight` | Winner plinth and its light cone. |
+| `.tap-target` | 44px minimum hit area. **Sets size only** — never add `position` to it; it is applied to elements that also carry Tailwind `fixed`/`absolute`. |
+
+Easing tokens: `--ease-spring` (overshoot, for interactions), `--ease-out-soft`
+(entrances). Every decorative animation must be disabled under
+`prefers-reduced-motion` — there is a block at the end of `globals.css`.
+
+Fonts: use `.font-headline` / `.font-body`. **Never** `font-[var(--font-headline)]`
+— Tailwind reads a bare `font-[…]` as the *weight* utility, which silently
+dropped Plus Jakarta Sans from the entire app for months.
+
 ## Tech Stack
 - Next.js 16 (App Router) + React 19 + TypeScript
 - Tailwind CSS 4
@@ -68,3 +104,13 @@ npm run dev    # Dev server
 npm run build  # Production build (MUST pass before deploy)
 npm run lint   # ESLint
 ```
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

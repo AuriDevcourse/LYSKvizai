@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Quizmo
 
-## Getting Started
+Live multiplayer quiz app. A host puts questions on a big screen; players answer
+on their phones. Next.js 16 (App Router) + React 19 + TypeScript, real-time over
+SSE, rooms held in memory.
 
-First, run the development server:
+**Live:** https://quizmo.auridev.com
+
+## Docs
+
+Read these before changing anything — they are kept current.
+
+| File | What it holds |
+|---|---|
+| `CLAUDE.md` | Design system ("Electric Glass") and project conventions. Strict — read it before touching UI. |
+| `progress.md` | Changelog, most recent session first, plus the working backlog. |
+| `audit.md` | Known problems, severity-ranked, with what's fixed and what's still open. |
+| `ideas.md` | Unbuilt ideas, upstream of the backlog. |
+| `AREAS.md` / `IMPROVEMENTS.md` | The ten-area split and the improvement list built from it. |
+
+## Local development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm ci
+cp .env.example .env.local     # fill in EDITOR_SECRET at minimum
+npm run dev                    # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`--hostname 0.0.0.0` is already in the dev script so a phone on the same Wi-Fi
+can join a room — the host lobby shows the LAN URL and a QR code.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Command | Does |
+|---|---|
+| `npm run dev` | Dev server |
+| `npm run build` | Production build — **must pass before deploy** |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run lint` | ESLint |
+| `npm test` | Unit tests (Vitest) |
+| `npm run clean` | Remove `.next` and the TS build cache |
+| `npm run qa` | Project-specific QA sweep (`scripts/qa-monitor.sh`) |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+If the dev server is mysteriously slow to start, run `npm run clean` first — a
+stale `.next` once caused a 210-second cold start.
 
-## Learn More
+## Architecture
 
-To learn more about Next.js, take a look at the following resources:
+```
+Player phone ──┐                        ┌── in-memory room store
+               ├── POST /api/rooms  ────┤   (src/lib/multiplayer/room-store.ts)
+Host screen ───┘                        └── broadcast
+                                              │
+               ◄── GET /api/rooms/[code]/stream  (SSE)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Rooms** live only in the server process (`room-store.ts`). No database.
+- **Quizzes** are JSON files in `data/quizzes/`, read and written through
+  `src/lib/quiz-store.ts`, which caches metadata in memory.
+- **Auth**: players hold a per-player token issued on join; every mutating
+  action verifies it. The editor and upload endpoints require `EDITOR_SECRET`
+  as a bearer token and **fail closed in production** if it is unset.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy
 
-## Deploy on Vercel
+Push to `master` → GitHub Actions (`.github/workflows/deploy.yml`) runs
+typecheck + lint + build, then SSHes a restricted deploy key to the Hetzner box,
+which runs `/opt/lys-kvizai/deploy.sh` and restarts the `lys-kvizai` systemd
+unit.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Set `EDITOR_SECRET` on the server** (`openssl rand -base64 24`) or the editor
+returns 503 there — that is the fail-closed default working as intended.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Two known gaps before you deploy
+
+1. **Live games die on deploy.** The room store is in memory and the deploy
+   restarts the service. Any game in progress is lost.
+2. **Quizzes edited on the live site are reverted by the next deploy.** All 54
+   quiz files are git-tracked and deploy runs `git reset --hard`.
+
+Both are tracked in `audit.md` (I1, I2). There is no rollback mechanism — a bad
+deploy needs a manual SSH and `git checkout <prev-sha>` on the box.

@@ -110,7 +110,7 @@ export default function ReactionPicker({ onReact }: ReactionPickerProps) {
         <button
           type="submit"
           disabled={!text.trim()}
-          className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-white text-[#ff9062] transition-colors hover:bg-white/90 disabled:opacity-30"
+          className="tap-target flex-shrink-0 rounded-xl bg-[#ff9062] text-black transition-colors hover:bg-[#ff793e] disabled:opacity-30"
         >
           <Send className="h-4 w-4" />
         </button>

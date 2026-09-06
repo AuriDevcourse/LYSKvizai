@@ -4,12 +4,27 @@ import { useCallback } from "react";
 import type { GameMode } from "@/lib/multiplayer/types";
 import { MP_API_URL } from "@/lib/multiplayer/config";
 
+/** A stuck request is worse than a failed one — the UI has nothing to react to. */
+const ACTION_TIMEOUT_MS = 8000;
+
 async function postAction(body: Record<string, unknown>) {
-  const res = await fetch(`${MP_API_URL}/rooms`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${MP_API_URL}/rooms`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      // Degraded (not dead) venue wifi can leave a fetch pending indefinitely.
+      // Answering is time-boxed by a countdown, so a request that outlives the
+      // question is useless — fail it and let the caller surface a retry.
+      signal: AbortSignal.timeout(ACTION_TIMEOUT_MS),
+    });
+  } catch (e) {
+    if (e instanceof DOMException && e.name === "TimeoutError") {
+      throw new Error("Connection is slow — try again");
+    }
+    throw e;
+  }
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || "Request failed");
   return data;

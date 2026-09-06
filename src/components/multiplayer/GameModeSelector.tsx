@@ -13,7 +13,6 @@ const MODES = [
   {
     id: "classic" as GameMode,
     labelKey: "gameMode.classic" as const,
-    descKey: "gameMode.classicDesc" as const,
     icon: Swords,
     color: "border-white/35 bg-white/5",
     activeColor: "border-white bg-white/20 outline outline-[1.5px] outline-[#ff9062]/30",
@@ -21,7 +20,6 @@ const MODES = [
   {
     id: "elimination" as GameMode,
     labelKey: "gameMode.elimination" as const,
-    descKey: "gameMode.eliminationDesc" as const,
     icon: Skull,
     color: "border-red-400/50 bg-[#ff716c]/20",
     activeColor: "border-red-400 bg-red-400/20 ring-2 ring-red-400/30",
@@ -29,7 +27,6 @@ const MODES = [
   {
     id: "team" as GameMode,
     labelKey: "gameMode.team" as const,
-    descKey: "gameMode.teamDesc" as const,
     icon: Users,
     color: "border-blue-400/50 bg-blue-400/10",
     activeColor: "border-blue-400 bg-blue-400/20 ring-2 ring-blue-400/30",
@@ -42,17 +39,22 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
   const [teamCount, setTeamCount] = useState(2);
   const [eliminationInterval, setEliminationInterval] = useState(3);
 
-  const handleConfirm = () => {
-    onSelect(selected, {
-      teamCount: selected === "team" ? teamCount : undefined,
-      eliminationInterval: selected === "elimination" ? eliminationInterval : undefined,
+  const handleConfirm = (mode: GameMode = selected) => {
+    onSelect(mode, {
+      teamCount: mode === "team" ? teamCount : undefined,
+      eliminationInterval: mode === "elimination" ? eliminationInterval : undefined,
     });
+  };
+
+  const handlePick = (mode: GameMode) => {
+    setSelected(mode);
+    // Classic has no options to configure, so the extra confirm tap bought
+    // nothing. Team and elimination reveal settings below and still confirm.
+    if (mode === "classic") handleConfirm(mode);
   };
 
   return (
     <div className="flex flex-col gap-4">
-      <h3 className="text-center text-sm font-medium text-white/60">{t("gameMode.title")}</h3>
-
       <div className="grid grid-cols-3 gap-3">
         {MODES.map((mode) => {
           const Icon = mode.icon;
@@ -61,7 +63,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
             <button
               key={mode.id}
               type="button"
-              onClick={() => setSelected(mode.id)}
+              onClick={() => handlePick(mode.id)}
               className={`flex flex-col items-center gap-2 rounded-xl border-2 px-3 py-4 text-center transition-all ${
                 isActive ? mode.activeColor : mode.color
               }`}
@@ -125,13 +127,15 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
         </div>
       )}
 
-      <button
-        type="button"
-        onClick={handleConfirm}
-        className="rounded-xl bg-white text-[#ff9062] px-6 py-3 font-bold transition-colors hover:bg-white/90"
-      >
-        {t("gameMode.select")}
-      </button>
+      {selected !== "classic" && (
+        <button
+          type="button"
+          onClick={() => handleConfirm()}
+          className="btn-primary min-h-[48px] !px-6 !py-0 !text-base"
+        >
+          {t("gameMode.select")}
+        </button>
+      )}
     </div>
   );
 }

@@ -22,6 +22,16 @@ export interface Player {
   eliminated: boolean;
   teamIndex: number | null;
   currentTextAnswer: string | null;
+  /**
+   * Points actually added to `score` for the current question, including the
+   * double multiplier, wager swing and fastest-finger bonus.
+   *
+   * Results used to recompute this from scratch, which drifted from what was
+   * really awarded (the recompute ignored every bonus) and, for the double
+   * power-up, awarded a second helping on top of the doubling already applied
+   * at submit time — 3x instead of 2x. Award once, here, and report it.
+   */
+  lastPointsAwarded: number;
   slowestStreak: number;
   /** Power-up uses remaining (each player gets 3 per game) */
   powerUpUses: number;
@@ -250,7 +260,7 @@ export type ClientAction =
   | { action: "next"; code: string; hostId: string; hostToken: string }
   | { action: "force-results"; code: string; hostId: string; hostToken: string }
   | { action: "react"; code: string; playerId: string; token: string; emoji: string }
-  | { action: "disconnect"; code: string; playerId: string }
+  | { action: "disconnect"; code: string; playerId: string; token: string }
   | { action: "submit-wager"; code: string; playerId: string; token: string; amount: number }
   | { action: "advance-wager"; code: string; hostId: string; hostToken: string }
   | { action: "answer-text"; code: string; playerId: string; token: string; answer: string }

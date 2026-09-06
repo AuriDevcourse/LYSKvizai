@@ -23,13 +23,54 @@
 }
 
 body {
-  background: linear-gradient(135deg, #0e0e0e 0%, #1a0a04 40%, #e8590c 100%);
-  background-attachment: fixed;
-  min-height: 100vh;
+  /* Flat near-black. The old 135deg gradient ran to full #e8590c in the bottom
+     corner, which put a muddy orange haze behind the answer buttons and killed
+     the contrast the four answer colours depend on. Ambient glow now belongs to
+     `.bg-pattern`, applied per-surface where it earns its place. */
+  background: #0e0e0e;
+  min-height: 100svh;
   color: #ffffff;
-  font-family: "Be Vietnam Pro", "Geist Sans", Arial, Helvetica, sans-serif;
+  /* Comes from the next/font loader in layout.tsx. This used to re-spell the
+     family name as a literal, so swapping the typeface there would silently
+     fall through to Arial with no warning. */
+  font-family: var(--font-body), "Be Vietnam Pro", system-ui, sans-serif;
   overflow-x: hidden;
+  /* Stop iOS from auto-inflating text in landscape. */
+  -webkit-text-size-adjust: 100%;
 }
+
+/* Respect the notch / home indicator on every full-bleed surface. */
+.safe-area {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.safe-bottom { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+
+/* Minimum comfortable touch target. WCAG 2.2 asks for 24px, the platform HIGs
+   for 44px; icon buttons in this app were 36px. Expands the hit area without
+   changing the visual size. */
+.tap-target {
+  /* Deliberately sets no `position` and no `display` block-level value: this
+     class is applied to buttons that also carry Tailwind positioning utilities
+     (`fixed`, `absolute`), and a `position` here silently overrides them —
+     which turned the game's exit button into a full-width bar across the top.
+     Size is all this needs to do. */
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Visible focus for keyboard users — previously nothing was styled, so tabbing
+   through the game was invisible. */
+:focus-visible {
+  outline: 2px solid #ff9062;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+:focus:not(:focus-visible) { outline: none; }
 
 /* Logo with animated color-cycling stroke */
 .logo-stroke {
@@ -50,8 +91,23 @@ body {
   83% { -webkit-text-stroke-color: #c9a825; }
 }
 
-/* Bold headings */
+/* --- Typography ------------------------------------------------------------
+   `font-[var(--font-headline)]` was used at 12 call sites and compiled to
+   `font-weight: var(--font-headline)` — Tailwind reads a bare `font-[…]` as
+   the weight utility, not the family one. font-weight given a family name is
+   invalid and dropped, so Plus Jakarta Sans was downloaded on every page load
+   and never rendered anywhere. These are explicit classes so there is nothing
+   left to guess. */
+.font-headline {
+  font-family: var(--font-headline), "Plus Jakarta Sans", system-ui, sans-serif;
+}
+.font-body {
+  font-family: var(--font-body), "Be Vietnam Pro", system-ui, sans-serif;
+}
+
+/* Bold headings — now actually in the headline face. */
 h1, h2, h3 {
+  font-family: var(--font-headline), "Plus Jakarta Sans", system-ui, sans-serif;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
@@ -213,6 +269,34 @@ h1, h2, h3 {
 }
 .btn-primary:active { transform: scale(0.97); }
 
+/* One definition of "disabled". Call sites had invented three different
+   opacities (40/50/60) and applied cursor-not-allowed inconsistently. */
+.btn-primary:disabled,
+.btn-secondary:disabled,
+.btn-danger:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+}
+
+/* Destructive action. ConfirmDialog was hand-rolling this. */
+.btn-danger {
+  background: linear-gradient(to bottom right, #ff8a86, #ff716c);
+  color: #0e0e0e;
+  font-weight: 800;
+  border-radius: 9999px;
+  padding: 1rem 2.5rem;
+  font-size: 1.125rem;
+  box-shadow: 0 12px 30px rgba(255, 113, 108, 0.25);
+  transition: all 0.2s ease;
+}
+.btn-danger:hover {
+  transform: scale(1.03);
+  box-shadow: 0 16px 40px rgba(255, 113, 108, 0.35);
+}
+.btn-danger:active { transform: scale(0.97); }
+
 /* Secondary button — ghost pill */
 .btn-secondary {
   background: transparent;
@@ -240,4 +324,341 @@ h1, h2, h3 {
 /* Timer pulse when low */
 .timer-critical {
   animation: pulse-glow 0.5s ease-in-out infinite;
+}
+
+
+/* --- Reduced motion ---------------------------------------------------------
+   Quizmo animates constantly: staggered lists, count-ups, bounces, confetti,
+   a looping stroke cycle on the logo. For anyone with vestibular sensitivity
+   that is genuinely unpleasant, and the OS-level preference was ignored.
+   Motion collapses to near-instant; nothing disappears, so no state is lost. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .logo-stroke { animation: none; -webkit-text-stroke-color: #ff9062; }
+  .answer-btn:hover { transform: none; }
+  .btn-primary:hover, .btn-primary:active { transform: none; }
+}
+
+/* --- Answer distribution bar ------------------------------------------------
+   Shown on the host results screen. Grows from the baseline so the reveal
+   reads as "here is how the room split". */
+@keyframes bar-grow {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+.animate-bar-grow {
+  transform-origin: bottom;
+  animation: bar-grow 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+/* --- Streak flame ----------------------------------------------------------- */
+@keyframes streak-pulse {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.08); filter: brightness(1.25); }
+}
+.animate-streak { animation: streak-pulse 1.4s ease-in-out infinite; }
+
+/* --- Skeleton shimmer for loading states ------------------------------------ */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.09) 37%,
+    rgba(255, 255, 255, 0.04) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* ===========================================================================
+   ATMOSPHERE
+   ---------------------------------------------------------------------------
+   A flat dark page reads as "unstyled dark mode". What separates a game from a
+   dashboard is depth: something alive behind the content. Three cheap layers,
+   all GPU-composited, none of them intercepting pointer events.
+   =========================================================================== */
+
+/* 1. Aurora — slow-drifting coloured light. Sits behind everything. */
+.aurora {
+  position: fixed;
+  inset: -20%;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.55;
+  background:
+    radial-gradient(38% 44% at 18% 22%, rgba(232, 89, 12, 0.55) 0%, transparent 68%),
+    radial-gradient(34% 40% at 82% 18%, rgba(67, 165, 252, 0.34) 0%, transparent 66%),
+    radial-gradient(42% 46% at 72% 82%, rgba(231, 127, 255, 0.30) 0%, transparent 68%),
+    radial-gradient(30% 34% at 28% 88%, rgba(102, 187, 106, 0.20) 0%, transparent 66%);
+  filter: blur(28px) saturate(140%);
+  animation: aurora-drift 34s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes aurora-drift {
+  0%   { transform: translate3d(-3%, -2%, 0) scale(1.04) rotate(0deg); }
+  50%  { transform: translate3d(3%, 2%, 0) scale(1.12) rotate(2deg); }
+  100% { transform: translate3d(-1%, 3%, 0) scale(1.06) rotate(-2deg); }
+}
+
+/* 2. Vignette — pulls the eye to the middle, where the game is. */
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(120% 100% at 50% 40%, transparent 34%, rgba(0, 0, 0, 0.62) 100%);
+}
+
+/* 3. Grain — the detail that stops large dark areas looking like dead pixels.
+      Generated, not an asset: no extra request, no cache concern. */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ===========================================================================
+   SURFACES
+   ---------------------------------------------------------------------------
+   `.glass` is the flat base. `.surface` is the same idea with the two details
+   that make a panel look manufactured rather than drawn: a gradient hairline
+   border that catches light at the top, and an inner specular highlight.
+   =========================================================================== */
+.surface {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.028) 42%, rgba(255, 255, 255, 0.018) 100%);
+  backdrop-filter: blur(20px) saturate(130%);
+  border-radius: 1.25rem;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.10),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.30),
+    0 18px 50px -18px rgba(0, 0, 0, 0.85);
+  transition: transform 0.4s var(--ease-spring), box-shadow 0.4s ease, background 0.4s ease;
+}
+/* Gradient hairline border, drawn as a masked pseudo-element so it can be a
+   gradient rather than a flat colour. */
+.surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.05) 38%, rgba(255, 255, 255, 0.02) 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Interactive variant — lifts and blooms in its own accent colour.
+   Set `--bloom` per element. */
+.surface-hover {
+  cursor: pointer;
+  --bloom: rgba(255, 144, 98, 0.35);
+}
+.surface-hover:hover {
+  transform: translateY(-4px);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.045) 42%, rgba(255, 255, 255, 0.025) 100%);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.30),
+    0 26px 60px -20px rgba(0, 0, 0, 0.9),
+    0 0 46px -12px var(--bloom);
+}
+.surface-hover:active { transform: translateY(-1px) scale(0.99); }
+
+/* ===========================================================================
+   NEON
+   =========================================================================== */
+:root {
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.5, 1);
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* The wordmark. Layered shadows build an actual sign rather than a text-shadow
+   smudge: tight white core, mid orange bloom, wide atmospheric spill. */
+.neon {
+  /* Warm-white core rather than pure white: the letterforms keep their edges
+     while the bloom does the glowing. An earlier pass pushed the near-field
+     shadows too hard and the counters filled in — a neon sign should still be
+     legible as type first. */
+  color: #fff;
+  text-shadow:
+    0 0 22px rgba(255, 144, 98, 0.38),
+    0 0 60px rgba(232, 89, 12, 0.32),
+    0 0 120px rgba(232, 89, 12, 0.20);
+  animation: neon-breathe 5.5s ease-in-out infinite;
+}
+@keyframes neon-breathe {
+  0%, 100% { opacity: 0.97; }
+  50%      { opacity: 1; }
+}
+
+/* A hairline that fades out at both ends — used to separate sections without
+   drawing a hard rule across the screen. */
+.rule-fade {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent);
+}
+
+/* Accent pill with a soft outer glow, for category / mode chips. */
+.chip {
+  border: 1px solid color-mix(in srgb, var(--chip) 34%, transparent);
+  background: color-mix(in srgb, var(--chip) 12%, transparent);
+  color: var(--chip);
+  box-shadow: 0 0 22px -10px var(--chip), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease, background 0.3s ease;
+}
+.chip:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--chip) 20%, transparent);
+  box-shadow: 0 0 30px -8px var(--chip), inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
+}
+
+/* ===========================================================================
+   ORCHESTRATED ENTRANCE
+   ---------------------------------------------------------------------------
+   One well-timed page load beats a dozen scattered micro-interactions. `.rise`
+   children come up in sequence; the parent sets the rhythm.
+   =========================================================================== */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(26px) scale(0.97); filter: blur(6px); }
+  to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+.rise > * {
+  animation: rise 0.72s var(--ease-out-soft) backwards;
+}
+.rise > *:nth-child(1) { animation-delay: 0.04s; }
+.rise > *:nth-child(2) { animation-delay: 0.13s; }
+.rise > *:nth-child(3) { animation-delay: 0.22s; }
+.rise > *:nth-child(4) { animation-delay: 0.31s; }
+.rise > *:nth-child(5) { animation-delay: 0.40s; }
+.rise > *:nth-child(n+6) { animation-delay: 0.48s; }
+
+/* Everything above is decoration. None of it should move for someone who has
+   asked it not to. */
+@media (prefers-reduced-motion: reduce) {
+  .aurora { animation: none; }
+  .neon { animation: none; }
+  .rise > * { animation: none; }
+  .surface-hover:hover { transform: none; }
+  .chip:hover { transform: none; }
+}
+
+/* ===========================================================================
+   ANSWER BUTTONS
+   ---------------------------------------------------------------------------
+   The core loop. These are the biggest, most-tapped objects in the product, so
+   they get the most craft: a lit top edge, a grounded bottom edge, a coloured
+   shadow that makes them sit on the page rather than in it, and a sweep of
+   light on hover.
+   =========================================================================== */
+.answer-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow:
+    inset 0 2px 0 0 rgba(255, 255, 255, 0.34),
+    inset 0 -3px 0 0 rgba(0, 0, 0, 0.22),
+    0 10px 26px -10px rgba(0, 0, 0, 0.8);
+  transition:
+    transform 0.28s var(--ease-spring),
+    box-shadow 0.28s ease,
+    filter 0.28s ease;
+}
+/* Specular sweep — travels across on hover. Pure transform, no layout. */
+.answer-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 32%, rgba(255, 255, 255, 0.30) 50%, transparent 68%);
+  transform: translateX(-120%);
+  transition: transform 0.7s var(--ease-out-soft);
+}
+.answer-btn:hover::after { transform: translateX(120%); }
+.answer-btn:hover {
+  transform: translateY(-3px) scale(1.015);
+  filter: brightness(1.06) saturate(1.06);
+  box-shadow:
+    inset 0 2px 0 0 rgba(255, 255, 255, 0.42),
+    inset 0 -3px 0 0 rgba(0, 0, 0, 0.22),
+    0 20px 40px -12px rgba(0, 0, 0, 0.85);
+}
+.answer-btn:active {
+  transform: translateY(1px) scale(0.985);
+  box-shadow:
+    inset 0 2px 8px 0 rgba(0, 0, 0, 0.28),
+    0 4px 12px -6px rgba(0, 0, 0, 0.8);
+}
+/* Touch devices get the press state but never the hover sweep. */
+@media (hover: none) {
+  .answer-btn:hover { transform: none; filter: none; }
+  .answer-btn:hover::after { transform: translateX(-120%); }
+}
+
+/* ===========================================================================
+   ROOM CODE
+   ---------------------------------------------------------------------------
+   Read from the back of a room, so it gets to be the loudest thing on screen.
+   =========================================================================== */
+.code-tile {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.035));
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.22),
+    inset 0 -2px 0 0 rgba(0, 0, 0, 0.34),
+    0 16px 38px -16px rgba(232, 89, 12, 0.55);
+  animation: tile-in 0.6s var(--ease-spring) backwards;
+}
+@keyframes tile-in {
+  from { opacity: 0; transform: translateY(-14px) rotateX(-40deg); }
+  to   { opacity: 1; transform: translateY(0) rotateX(0); }
+}
+
+/* ===========================================================================
+   PODIUM
+   =========================================================================== */
+.podium-1 {
+  background: linear-gradient(180deg, rgba(201, 168, 37, 0.24), rgba(201, 168, 37, 0.06));
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 232, 150, 0.42),
+    0 0 60px -14px rgba(201, 168, 37, 0.65);
+}
+
+/* Winner spotlight — a cone of light behind first place. */
+.spotlight::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -60%;
+  width: 190%;
+  height: 190%;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(201, 168, 37, 0.30), transparent 72%);
+  pointer-events: none;
+  z-index: -1;
+  animation: spotlight-in 1.1s var(--ease-out-soft) backwards;
+}
+@keyframes spotlight-in {
+  from { opacity: 0; transform: translateX(-50%) scale(0.6); }
+  to   { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .answer-btn, .answer-btn:hover, .answer-btn:active { transform: none; filter: none; }
+  .answer-btn::after, .answer-btn:hover::after { transform: translateX(-120%); }
+  .code-tile, .spotlight::before { animation: none; }
 }

@@ -2,7 +2,7 @@
 
 import { use, useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, X, AlertTriangle, WifiOff, ArrowRight, Trophy } from "lucide-react";
+import { Loader2, X, AlertTriangle, WifiOff, ArrowRight, Trophy, Skull } from "lucide-react";
 import { useRoom } from "@/hooks/useRoom";
 import { useRoomActions } from "@/hooks/useRoomActions";
 import Avatar from "@/components/Avatar";
@@ -89,9 +89,19 @@ export default function GamePage({ params }: PageProps) {
   // Tell the server when the tab closes / backgrounds so ghost players don't
   // linger in the lobby. sendBeacon works during page unload (fetch doesn't).
   useEffect(() => {
-    if (!playerId) return;
+    if (!playerId || !playerToken) return;
     const notifyDisconnect = () => {
-      const payload = JSON.stringify({ action: "disconnect", code, playerId });
+      // `token` is required — disconnect is token-gated so a stranger with a
+      // room code can't evict players. Without it the beacon is accepted by the
+      // route and then silently dropped by the room store, and a clean exit
+      // falls back to the 120s grace timer: the host's answer count waits on a
+      // player who has already closed the tab.
+      const payload = JSON.stringify({
+        action: "disconnect",
+        code,
+        playerId,
+        token: playerToken,
+      });
       try {
         const blob = new Blob([payload], { type: "application/json" });
         navigator.sendBeacon(`${MP_API_URL}/rooms`, blob);
@@ -101,7 +111,7 @@ export default function GamePage({ params }: PageProps) {
     };
     window.addEventListener("pagehide", notifyDisconnect);
     return () => window.removeEventListener("pagehide", notifyDisconnect);
-  }, [code, playerId]);
+  }, [code, playerId, playerToken]);
 
   const isHost = !!hostId && hostId === playerId && verifiedHost;
   const isHostPlayer = isHost && hostPlaying;
@@ -122,7 +132,8 @@ export default function GamePage({ params }: PageProps) {
     timerReduction,
     eliminatedEvent,
     playerLeftEvent,
-  } = useRoom(code, playerId);
+    myStreak,
+  } = useRoom(code, playerId, playerToken || hostToken);
 
   const { startGame, submitAnswer, nextQuestion, sendReaction, submitWager } = useRoomActions();
 
@@ -157,6 +168,7 @@ export default function GamePage({ params }: PageProps) {
     try {
       await startGame(code, hostId, hostToken);
     } catch (e) {
+      console.error("Failed to start game", e);
       showToast("Failed to start game");
     }
   }, [code, hostId, hostToken, startGame]);
@@ -166,6 +178,7 @@ export default function GamePage({ params }: PageProps) {
       try {
         await submitAnswer(code, playerId, playerToken, index);
       } catch (e) {
+        console.error("Failed to submit answer", e);
         showToast("Failed to submit answer");
       }
     },
@@ -182,6 +195,7 @@ export default function GamePage({ params }: PageProps) {
           body: JSON.stringify({ action: "answer-year", code, playerId, token: playerToken, year }),
         });
       } catch (e) {
+        console.error("Failed to submit answer", e);
         showToast("Failed to submit answer");
       }
     },
@@ -198,6 +212,7 @@ export default function GamePage({ params }: PageProps) {
           body: JSON.stringify({ action: "answer-text", code, playerId, token: playerToken, answer: text }),
         });
       } catch (e) {
+        console.error("Failed to submit answer", e);
         showToast("Failed to submit answer");
       }
     },
@@ -208,6 +223,7 @@ export default function GamePage({ params }: PageProps) {
     try {
       await nextQuestion(code, hostId, hostToken);
     } catch (e) {
+      console.error("Failed to advance", e);
       showToast("Failed to advance");
     }
   }, [code, hostId, hostToken, nextQuestion]);
@@ -217,6 +233,7 @@ export default function GamePage({ params }: PageProps) {
       try {
         await sendReaction(code, playerId, playerToken, emoji);
       } catch (e) {
+        console.error("Failed to send reaction", e);
         showToast("Failed to send reaction");
       }
     },
@@ -228,6 +245,7 @@ export default function GamePage({ params }: PageProps) {
       try {
         await submitWager(code, playerId, playerToken, amount);
       } catch (e) {
+        console.error("Failed to submit wager", e);
         showToast("Failed to submit wager");
       }
     },
@@ -242,6 +260,7 @@ export default function GamePage({ params }: PageProps) {
         body: JSON.stringify({ action: "advance-wager", code, hostId, hostToken }),
       });
     } catch (e) {
+      console.error("Failed to advance from wager", e);
       showToast("Failed to advance from wager");
     }
   }, [code, hostId, hostToken]);
@@ -256,6 +275,7 @@ export default function GamePage({ params }: PageProps) {
           body: JSON.stringify({ action: "choose-powerup", code, playerId, token: playerToken, powerUp }),
         });
       } catch (e) {
+        console.error("Failed to activate power-up", e);
         showToast("Failed to activate power-up");
       }
     },
@@ -282,6 +302,7 @@ export default function GamePage({ params }: PageProps) {
         body: JSON.stringify({ action: "force-results", code, hostId, hostToken }),
       });
     } catch (e) {
+      console.error("Failed to end timer", e);
       showToast("Failed to end timer");
     }
   }, [isHost, code, hostId, hostToken]);
@@ -357,6 +378,23 @@ export default function GamePage({ params }: PageProps) {
       )}
 
       {/* Player left toast */}
+      {/* Someone was knocked out. The server has always broadcast this and the
+          hook has always stored it, but nothing rendered it — in elimination
+          mode a player simply stopped being able to play, unannounced. */}
+      {eliminatedEvent && connected && (
+        <div className="fixed left-1/2 top-16 z-[56] -translate-x-1/2 animate-bounce-in">
+          <div className="flex items-center gap-2.5 rounded-xl border-[1.5px] border-[#ff716c]/40 bg-[#ff716c]/15 px-4 py-2.5 shadow-lg backdrop-blur-md">
+            <Skull className="h-4 w-4 shrink-0 text-[#ff716c]" />
+            <Avatar value={eliminatedEvent.playerEmoji} size={24} />
+            <span className="text-sm font-bold text-white">
+              {eliminatedEvent.playerId === playerId
+                ? "You're out!"
+                : `${eliminatedEvent.playerName} is out`}
+            </span>
+          </div>
+        </div>
+      )}
+
       {playerLeftEvent && connected && playerLeftEvent.playerId !== playerId && (
         <div className="fixed left-1/2 top-16 z-[55] -translate-x-1/2 animate-fade-in-up">
           <div className="flex items-center gap-2 rounded-xl border-[1.5px] border-white/10 bg-black/70 px-3 py-2 shadow-lg backdrop-blur-md">
@@ -370,7 +408,7 @@ export default function GamePage({ params }: PageProps) {
       {/* Exit button */}
       <button
         onClick={handleExit}
-        className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
+        className="tap-target fixed right-4 top-4 z-50 rounded-full bg-white/5 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
       >
         <X className="h-5 w-5" />
       </button>
@@ -453,6 +491,7 @@ export default function GamePage({ params }: PageProps) {
               canAnswer={canAnswer}
               waitingPlayerName={waitingPlayerName}
               onChoosePowerUp={handleChoosePowerUp}
+              streak={myStreak}
             />
           )
         )}
@@ -485,6 +524,7 @@ export default function GamePage({ params }: PageProps) {
               canAnswer={canAnswer}
               waitingPlayerName={waitingPlayerName}
               onChoosePowerUp={handleChoosePowerUp}
+              streak={myStreak}
             />
           )
         )}

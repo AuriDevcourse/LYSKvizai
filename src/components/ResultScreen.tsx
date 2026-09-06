@@ -85,7 +85,7 @@ export default function ResultScreen({ score, total, onRestart }: ResultScreenPr
         className="mb-2 transition-[opacity,transform] duration-500"
         style={{ opacity: step >= 2 ? 1 : 0, transform: step >= 2 ? "translateY(0)" : "translateY(20px)" }}
       >
-        <span className="font-[var(--font-headline)] text-7xl font-extrabold text-white sm:text-8xl">
+        <span className="font-headline text-7xl font-extrabold text-white sm:text-8xl">
           {displayScore}
         </span>
         <span className="text-3xl font-bold text-white/40 sm:text-4xl">
@@ -112,7 +112,7 @@ export default function ResultScreen({ score, total, onRestart }: ResultScreenPr
 
       {/* Message */}
       <h2
-        className="mb-8 font-[var(--font-headline)] text-3xl font-extrabold text-white sm:text-4xl transition-[opacity,transform] duration-500"
+        className="mb-8 font-headline text-3xl font-extrabold text-white sm:text-4xl transition-[opacity,transform] duration-500"
         style={{ opacity: step >= 4 ? 1 : 0, transform: step >= 4 ? "translateY(0)" : "translateY(12px)" }}
       >
         {title}

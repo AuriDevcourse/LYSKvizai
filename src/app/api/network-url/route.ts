@@ -33,11 +33,25 @@ function scoreInterfaceName(name: string): number {
 }
 
 export async function GET(req: NextRequest) {
-  // If there's a Host header (production behind nginx), use that
+  // If there's a Host header (production behind nginx), use that.
   const host = req.headers.get("host");
   if (host && !host.includes("localhost") && !host.includes("127.0.0.1")) {
     const protocol = req.headers.get("x-forwarded-proto") || "http";
     return NextResponse.json({ url: `${protocol}://${host}` });
+  }
+
+  // Everything below enumerates the machine's real network interfaces so a
+  // phone on the same Wi-Fi can reach `npm run dev`. That is a local-dev
+  // convenience and infrastructure recon anywhere else, so it is refused in
+  // production — the Host branch above is the one that serves prod, and it has
+  // already returned by this point for any real request.
+  //
+  // Answering with the request's own host keeps the QR code working even if a
+  // production request somehow lands here, rather than handing the client
+  // `undefined`.
+  if (process.env.NODE_ENV === "production") {
+    const protocol = req.headers.get("x-forwarded-proto") || "https";
+    return NextResponse.json({ url: host ? `${protocol}://${host}` : "" });
   }
 
   // Fallback: LAN IP detection for local dev

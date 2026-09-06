@@ -44,7 +44,7 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
         <p className="text-white/50">{t("wager.noPoints")}</p>
         <button
           onClick={() => handleSubmit(0)}
-          className="rounded-xl bg-white text-[#ff9062] px-8 py-3 font-bold transition-colors hover:bg-white/90"
+          className="btn-primary min-h-[48px] !px-8 !py-0 !text-base"
         >
           {t("wager.continue")}
         </button>

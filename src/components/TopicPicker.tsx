@@ -113,7 +113,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
           <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${activeTopic.bg}`}>
             <Icon className="h-5 w-5 text-white" />
           </div>
-          <h2 className="font-[var(--font-headline)] text-2xl font-extrabold text-white">
+          <h2 className="font-headline text-2xl font-extrabold text-white">
             {t(activeTopic.labelKey as never)}
           </h2>
         </div>
@@ -199,7 +199,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
           {t("nav.back")}
         </button>
 
-        <h2 className="font-[var(--font-headline)] text-3xl font-extrabold text-white mb-1 sm:text-4xl">
+        <h2 className="font-headline text-3xl font-extrabold text-white mb-1 sm:text-4xl">
           Select <span className="text-[#43a5fc]">Topic</span>
         </h2>
         <p className="text-sm text-white/30 mb-6">Pick a topic to start building your challenge.</p>
@@ -247,7 +247,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
   // === Level 1: Game type list ===
   return (
     <div className="animate-fade-in-up">
-      <h2 className="font-[var(--font-headline)] text-3xl font-extrabold text-white mb-1 sm:text-4xl">
+      <h2 className="font-headline text-3xl font-extrabold text-white mb-1 sm:text-4xl">
         Choose Game <span className="text-[#ff9062]">Type</span>
       </h2>
       <p className="text-sm text-white/30 mb-6">Select a game mode to start building your quiz experience.</p>
@@ -266,7 +266,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
                 <Icon className={`h-5 w-5 ${gt.color.split(" ").slice(1).join(" ")}`} />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="font-[var(--font-headline)] text-base font-extrabold text-white">
+                <p className="font-headline text-base font-extrabold text-white">
                   {t(nameKey as never)}
                 </p>
                 <p className="text-xs text-white/30 mt-0.5">{gt.desc}</p>

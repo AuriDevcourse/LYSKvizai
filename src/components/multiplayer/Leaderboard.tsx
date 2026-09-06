@@ -5,6 +5,7 @@ import { Trophy, Crown, Award, Medal } from "lucide-react";
 import type { LeaderboardEntry } from "@/lib/multiplayer/types";
 import Avatar from "@/components/Avatar";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import Confetti from "./Confetti";
 
 interface LeaderboardProps {
   leaderboard: LeaderboardEntry[];
@@ -68,21 +69,34 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
           )}
         </div>
 
-        {/* 1st place */}
-        <div className="flex w-1/3 flex-col items-center" style={{ opacity: revealStep >= 3 ? 1 : 0, transition: "opacity 0.5s" }}>
+        {/* Winner reveal — the confetti-fall keyframe finally gets used. */}
+        <Confetti active={revealStep >= 3} />
+
+        {/* 1st place — the payoff. Gets a spotlight cone behind it, a gold-lit
+            plinth and the only crown on screen. */}
+        <div
+          className="spotlight relative flex w-1/3 flex-col items-center"
+          style={{ opacity: revealStep >= 3 ? 1 : 0, transition: "opacity 0.5s" }}
+        >
           {top3[0] && (
             <>
-              <Crown className="h-9 w-9 text-[#c9a825] animate-bounce-in" />
+              <Crown className="animate-bounce-in h-10 w-10 text-[#c9a825] drop-shadow-[0_0_16px_rgba(201,168,37,0.8)] sm:h-12 sm:w-12" />
               <div
-                className={`mt-2 flex w-full flex-col items-center rounded-t-2xl px-2 py-6 animate-fade-in-up ${
-                  isMe(top3[0].playerId) ? "bg-white/20 outline outline-2 outline-white" : "glass"
+                className={`podium-1 animate-fade-in-up mt-2 flex w-full flex-col items-center rounded-t-2xl px-2 py-7 ${
+                  isMe(top3[0].playerId) ? "outline outline-2 outline-white" : ""
                 }`}
-                style={{ minHeight: 130 }}
+                style={{ minHeight: 150 }}
               >
-                <div className="text-3xl font-extrabold text-[#c9a825] mb-1">1</div>
-                <Avatar value={top3[0].emoji} size={52} />
-                <p className="mt-1.5 text-base font-extrabold text-white text-center truncate w-full">{top3[0].name}</p>
-                <p className="text-xl font-extrabold text-[#c9a825]">{top3[0].score}</p>
+                <div className="font-headline mb-1 text-4xl font-extrabold leading-none text-[#c9a825] drop-shadow-[0_0_12px_rgba(201,168,37,0.6)]">
+                  1
+                </div>
+                <Avatar value={top3[0].emoji} size={56} />
+                <p className="mt-2 w-full truncate text-center text-base font-extrabold text-white sm:text-lg">
+                  {top3[0].name}
+                </p>
+                <p className="font-headline text-2xl font-extrabold tabular-nums text-[#c9a825]">
+                  {top3[0].score}
+                </p>
               </div>
             </>
           )}

@@ -37,23 +37,30 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
   };
 
   useEffect(() => {
+    // The QR code is the whole join flow, so never let a bad response through:
+    // `.catch` only fires on a network error, so a 200 carrying no url used to
+    // render "undefined/play?code=XXXX" into the QR.
+    const fallback = `${window.location.origin}/play?code=${code}`;
     fetch("/api/network-url")
       .then((r) => r.json())
-      .then((data) => setJoinUrl(`${data.url}/play?code=${code}`))
-      .catch(() => {
-        setJoinUrl(`${window.location.origin}/play?code=${code}`);
-      });
+      .then((data) => {
+        const base = typeof data?.url === "string" && data.url ? data.url : window.location.origin;
+        setJoinUrl(`${base}/play?code=${code}`);
+      })
+      .catch(() => setJoinUrl(fallback));
   }, [code]);
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-8">
+    <div className="flex flex-1 flex-col items-center justify-center gap-7">
       <div className="flex items-center gap-3">
-        <h1 className="text-3xl font-bold text-white sm:text-4xl">
+        <h1 className="neon font-headline text-4xl font-extrabold tracking-tight sm:text-5xl">
           Quizmo
         </h1>
         <button
           onClick={toggleMute}
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
+          aria-label={muted ? "Unmute" : "Mute"}
+          aria-pressed={muted}
+          className="tap-target rounded-full bg-white/5 text-white/50 transition-colors hover:bg-white/15 hover:text-white"
         >
           {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
         </button>
@@ -71,33 +78,46 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
         </div>
       )}
 
-      <div className="flex flex-col items-center gap-6 sm:flex-row sm:gap-12">
+      <div className="flex flex-col items-center gap-7 sm:flex-row sm:items-start sm:gap-10 lg:gap-14">
         {/* Left: code + QR */}
         <div className="flex flex-col items-center gap-4">
           <RoomCodeDisplay code={code} />
-          {joinUrl && <QRCodeComponent url={joinUrl} size={200} />}
-          <div className="flex items-center gap-1.5 text-sm text-white/40">
+          {joinUrl && (
+            <div className="surface rounded-3xl p-3">
+              <div className="overflow-hidden rounded-2xl bg-white p-2.5">
+                <QRCodeComponent url={joinUrl} size={196} />
+              </div>
+            </div>
+          )}
+          <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.16em] text-white/45">
             <QrCode className="h-3.5 w-3.5" />
             <span>{t("lobby.scanQR")}</span>
           </div>
-          {joinUrl && (
-            <p className="max-w-xs break-all text-center font-mono text-xs text-white/30">
-              {joinUrl}
-            </p>
-          )}
+          {/* The raw URL used to be printed here at 12px / 30% opacity —
+              unreadable from across a room and redundant with the QR code and
+              the big room code above it. Kept for screen readers and
+              copy/paste, hidden from the projected view. */}
+          {joinUrl && <p className="sr-only">{joinUrl}</p>}
         </div>
 
         {/* Right: player list */}
-        <div className="flex w-full flex-col gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 sm:min-w-[260px]">
-          <div className="flex items-center justify-center gap-2 text-sm font-extrabold uppercase tracking-wider text-white/60">
+        <div className="surface flex w-full flex-col gap-4 rounded-3xl p-6 sm:min-w-[300px] sm:max-w-[340px]">
+          <div className="flex items-center justify-center gap-2 text-xs font-extrabold uppercase tracking-[0.18em] text-white/55">
             <Users className="h-5 w-5" />
             <span>{t("lobby.players")} ({players.length})</span>
           </div>
 
           {players.length === 0 ? (
-            <div className="flex flex-col items-center gap-2 py-6 text-white/40">
-              <Users className="h-8 w-8" />
+            <div className="flex flex-col items-center gap-3 py-8 text-white/40">
+              <div className="relative">
+                <Users className="h-8 w-8" />
+                <span className="absolute -right-1 -top-1 flex h-2.5 w-2.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#ff9062] opacity-60" />
+                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#ff9062]" />
+                </span>
+              </div>
               <p className="font-bold">{t("lobby.waitingForPlayers")}</p>
+              <p className="text-xs text-white/30">Scan the code to join</p>
             </div>
           ) : (
             <div className="flex flex-wrap gap-2 justify-center">
@@ -117,14 +137,18 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
             </div>
           )}
 
-          <button
-            onClick={onStart}
-            disabled={players.length === 0}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-white text-[#ff9062] px-10 py-4 text-xl font-bold transition-colors hover:bg-white/90 disabled:opacity-50"
-          >
-            <Play className="h-6 w-6" />
-            {t("lobby.start")}
-          </button>
+          {/* The Start button animates in with player #1 rather than sitting
+              there greyed out. Until then the QR code is the only thing on
+              screen worth looking at, which is the point. */}
+          {players.length > 0 && (
+            <button
+              onClick={onStart}
+              className="btn-primary animate-fade-in-up flex min-h-[56px] w-full items-center justify-center gap-2 !px-10 !text-xl"
+            >
+              <Play className="h-6 w-6" />
+              {t("lobby.start")}
+            </button>
+          )}
         </div>
       </div>
     </div>

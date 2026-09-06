@@ -10,7 +10,31 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Gate the deploy on a build that actually succeeds.
+  #
+  # This job did not exist: every push to master went straight to `ssh … deploy`,
+  # which restarts the systemd unit. A broken build shipped and the service came
+  # back up into it — while CLAUDE.md has said all along that the build MUST pass
+  # before deploy. Now it has to.
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Typecheck
+        run: npx tsc --noEmit
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
+
   deploy:
+    needs: verify
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

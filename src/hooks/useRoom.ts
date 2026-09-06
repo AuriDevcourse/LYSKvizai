@@ -35,16 +35,27 @@ interface UseRoomReturn {
   powerUpEvent: null;
   eliminatedEvent: { playerId: string; playerName: string; playerEmoji: string } | null;
   playerLeftEvent: { playerId: string; playerName: string; playerEmoji: string } | null;
+  /** This player's current answer streak, for the live badge on their phone. */
+  myStreak: number;
 }
 
 const MAX_RETRIES = 200;
 const PERMANENT_DISCONNECT_TIMEOUT = 180_000;
 
-export function useRoom(code: string | null, playerId: string | null): UseRoomReturn {
+/**
+ * @param token The caller's session token — a player token, or the host token
+ *   when the host is driving the big screen. The stream is membership-gated, so
+ *   without it the server returns 403.
+ */
+export function useRoom(code: string | null, playerId: string | null, token = ""): UseRoomReturn {
   const [state, setState] = useState<RoomState | null>(null);
   const [players, setPlayers] = useState<PlayerInfo[]>([]);
   const [question, setQuestion] = useState<QuestionPayload | null>(null);
   const [results, setResults] = useState<ResultsPayload | null>(null);
+  /** This player's answer streak, latched across rounds. `results` is cleared
+   *  on every question-start, so the question screen has nothing to read from
+   *  unless we hold onto it here. */
+  const [myStreak, setMyStreak] = useState(0);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[] | null>(null);
   const [answerCount, setAnswerCount] = useState<{ count: number; total: number } | null>(null);
   const [reactions, setReactions] = useState<EmojiReactionWithId[]>([]);
@@ -76,7 +87,8 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
       return { ...q, startTime: q.startTime + clockOffset };
     }
 
-    const url = `${MP_SSE_URL}/${code.toUpperCase()}${SSE_SUFFIX}?playerId=${playerId}`;
+    const url = `${MP_SSE_URL}/${code.toUpperCase()}${SSE_SUFFIX}`
+      + `?playerId=${encodeURIComponent(playerId)}&token=${encodeURIComponent(token)}`;
     const es = new EventSource(url);
     esRef.current = es;
 
@@ -145,6 +157,8 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
       const payload: ResultsPayload = JSON.parse(e.data);
       setState("results");
       setResults(payload);
+      const mine = payload.playerResults.find((r) => r.playerId === playerId);
+      if (mine) setMyStreak(mine.streak);
       setQuestion(null);
       setWager(null);
       setPlayers((prev) =>
@@ -228,13 +242,19 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
         }, PERMANENT_DISCONNECT_TIMEOUT);
       }
 
-      // Quick reconnect (Vercel may drop SSE after ~25s, this is expected)
-      const delay = Math.min(500 * Math.pow(1.5, Math.min(retriesRef.current - 1, 5)), 4000);
+      // Quick reconnect (Vercel may drop SSE after ~25s, this is expected).
+      //
+      // Jittered: when venue wifi blips, every phone in the room starts the
+      // identical deterministic backoff sequence and retries in near-lockstep
+      // against one small box — exactly when it is already absorbing the whole
+      // room's reconnect wave. The random factor spreads them out.
+      const base = Math.min(500 * Math.pow(1.5, Math.min(retriesRef.current - 1, 5)), 4000);
+      const delay = Math.round(base * (0.5 + Math.random()));
       reconnectTimeout.current = setTimeout(() => {
         connectRef.current?.();
       }, delay);
     };
-  }, [code, playerId]);
+  }, [code, playerId, token]);
 
   useEffect(() => {
     connectRef.current = connect;
@@ -272,11 +292,11 @@ export function useRoom(code: string | null, playerId: string | null): UseRoomRe
       window.removeEventListener("pageshow", eager);
       window.removeEventListener("online", eager);
     };
-  }, [code, playerId]);
+  }, [code, playerId, token]);
 
   return {
     state, players, question, results, leaderboard, answerCount, reactions,
     connected, error, gameMode, teamNames, wager, timerReduction,
-    powerUpEvent, eliminatedEvent, playerLeftEvent,
+    powerUpEvent, eliminatedEvent, playerLeftEvent, myStreak,
   };
 }

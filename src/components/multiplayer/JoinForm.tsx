@@ -46,7 +46,10 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
           autoComplete="off"
           autoCorrect="off"
           spellCheck={false}
-          className="w-full rounded-xl border-[1.5px] border-white/8 bg-white/5 px-4 py-3 text-center text-2xl font-bold uppercase tracking-widest text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
+          inputMode="text"
+          enterKeyHint="next"
+          aria-label="Room code"
+          className="min-h-[56px] w-full rounded-xl border-[1.5px] border-white/8 bg-white/5 px-4 py-3 text-center text-2xl font-bold uppercase tracking-widest text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
         />
       </div>
 
@@ -63,7 +66,10 @@ export default function JoinForm({ initialCode, onJoin, loading, error }: JoinFo
           autoCapitalize="words"
           autoCorrect="off"
           spellCheck={false}
-          className="w-full rounded-xl border-[1.5px] border-white/8 bg-white/5 px-4 py-3 text-lg text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
+          autoComplete="nickname"
+          enterKeyHint="go"
+          aria-label="Your name"
+          className="min-h-[52px] w-full rounded-xl border-[1.5px] border-white/8 bg-white/5 px-4 py-3 text-lg text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
         />
       </div>
 

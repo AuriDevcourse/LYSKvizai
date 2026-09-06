@@ -11,14 +11,20 @@ import GameSettings from "@/components/GameSettings";
 import type { QuizMeta } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
-const GAME_MODES = [
-  { icon: HelpCircle, name: "Classic", color: "bg-[#43a5fc]/15 border-[#43a5fc]/20 text-[#43a5fc]" },
-  { icon: ToggleLeft, name: "True/False", color: "bg-[#e77fff]/15 border-[#e77fff]/20 text-[#e77fff]" },
-  { icon: ZoomOut, name: "Zoom Out", color: "bg-[#ff9062]/15 border-[#ff9062]/20 text-[#ff9062]" },
-  { icon: Keyboard, name: "Rapid Fire", color: "bg-[#ff716c]/15 border-[#ff716c]/20 text-[#ff716c]" },
-  { icon: Calendar, name: "Year Guesser", color: "bg-[#66bb6a]/15 border-[#66bb6a]/20 text-[#66bb6a]" },
-  { icon: Shuffle, name: "Mixed Mode", color: "bg-[#e77fff]/15 border-[#e77fff]/20 text-[#e77fff]" },
-  { icon: Smartphone, name: "Charades", color: "bg-[#43a5fc]/15 border-[#43a5fc]/20 text-[#43a5fc]" },
+/**
+ * These were decoration — seven chips that looked clickable and did nothing
+ * (flagged in the backlog as "wire them up or remove them"). Each one now
+ * carries the game type it names and drops you straight into the picker with
+ * that mode chosen, which is the fastest route into a game on the whole page.
+ */
+const GAME_MODES: { icon: typeof HelpCircle; name: string; type: SelectedGameType; accent: string }[] = [
+  { icon: HelpCircle, name: "Classic", type: "standard", accent: "#43a5fc" },
+  { icon: ToggleLeft, name: "True/False", type: "true-false", accent: "#e77fff" },
+  { icon: ZoomOut, name: "Zoom Out", type: "zoom-out", accent: "#ff9062" },
+  { icon: Keyboard, name: "Rapid Fire", type: "fastest-finger", accent: "#ff716c" },
+  { icon: Calendar, name: "Year Guesser", type: "year-guesser", accent: "#66bb6a" },
+  { icon: Shuffle, name: "Mixed Mode", type: "mixed", accent: "#e77fff" },
+  { icon: Smartphone, name: "Charades", type: "charades", accent: "#43a5fc" },
 ];
 
 function HomeInner() {
@@ -63,58 +69,93 @@ function HomeInner() {
     <div className="relative flex min-h-svh flex-col overflow-hidden">
 
       {mode === "menu" && (
-        <div className="flex flex-1 flex-col items-center justify-center px-5 py-10 animate-fade-in-up">
-          {/* Logo */}
-          <div className="mb-3 flex flex-col items-center">
-            <h1 className="font-[var(--font-headline)] text-6xl font-extrabold tracking-tighter text-white sm:text-8xl lg:text-[8rem] logo-stroke">
+        <div className="rise flex flex-1 flex-col items-center justify-center px-5 py-8">
+          {/* Wordmark. Oversized on purpose — this is the one moment the app
+              gets to be a poster before it becomes a utility. */}
+          <div className="flex flex-col items-center">
+            <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/55 backdrop-blur-md">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#ff9062] opacity-70" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#ff9062]" />
+              </span>
+              Live quiz night
+            </span>
+            <h1 className="neon font-headline text-6xl font-extrabold leading-[0.85] tracking-tighter sm:text-[7rem] lg:text-[8.5rem]">
               Quizmo
             </h1>
-            <p className="mt-2 text-center text-sm font-medium text-white/40 sm:text-base lg:text-lg">
-              Step into the high-energy arena. Play, create, and conquer.
+            <p className="mt-4 max-w-md text-center text-sm font-medium leading-relaxed text-white/55 sm:text-base">
+              Put the questions on the big screen.
+              <br className="hidden sm:block" />
+              {" "}Everyone else plays from their phone.
             </p>
           </div>
 
-          {/* Action cards */}
-          <div className="mt-10 grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 sm:mt-12">
+          {/* Two doors. Each blooms in its own colour so the choice reads
+              instantly from across a room. */}
+          <div className="mt-9 grid w-full max-w-3xl grid-cols-1 gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-5">
             <button
               onClick={() => setMode("choose")}
-              className="group flex flex-col items-center gap-5 rounded-2xl bg-white/4 p-8 text-center backdrop-blur-2xl border-[1.5px] border-white/8 transition-all duration-300 hover:bg-white/8 hover:border-white/8 active:scale-[0.98] sm:p-10"
+              style={{ ["--bloom" as string]: "rgba(255,144,98,0.45)" }}
+              className="surface surface-hover group flex items-center gap-5 p-6 text-left sm:flex-col sm:items-start sm:gap-5 sm:p-7"
             >
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#ff9062]/15 transition-all group-hover:bg-[#ff9062]/25 sm:h-16 sm:w-16">
-                <Plus className="h-7 w-7 text-[#ff9062] sm:h-8 sm:w-8" />
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff9062] to-[#e8590c] shadow-[0_10px_30px_-8px_rgba(232,89,12,0.75)] transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 sm:h-16 sm:w-16">
+                <Plus className="h-7 w-7 text-[#0e0e0e] sm:h-8 sm:w-8" strokeWidth={2.75} />
               </div>
-              <div>
-                <p className="font-[var(--font-headline)] text-xl font-extrabold text-white sm:text-2xl">{t("home.createGame")}</p>
-                <p className="mt-1 text-sm text-white/40">Design your own logic & challenges</p>
+              <div className="min-w-0">
+                <p className="font-headline text-2xl font-extrabold tracking-tight text-white sm:text-[1.75rem]">
+                  {t("home.createGame")}
+                </p>
+                <p className="mt-1 text-sm leading-snug text-white/55">
+                  Pick a topic, set the pace, share the code
+                </p>
               </div>
+              <Play className="ml-auto h-5 w-5 shrink-0 text-white/25 transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#ff9062] sm:hidden" />
             </button>
+
             <button
               onClick={() => router.push("/play?join=1")}
-              className="group flex flex-col items-center gap-5 rounded-2xl bg-white/4 p-8 text-center backdrop-blur-2xl border-[1.5px] border-white/8 transition-all duration-300 hover:bg-white/8 hover:border-white/8 active:scale-[0.98] sm:p-10"
+              style={{ ["--bloom" as string]: "rgba(67,165,252,0.45)" }}
+              className="surface surface-hover group flex items-center gap-5 p-6 text-left sm:flex-col sm:items-start sm:gap-5 sm:p-7"
             >
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#43a5fc]/15 transition-all group-hover:bg-[#43a5fc]/25 sm:h-16 sm:w-16">
-                <LogIn className="h-7 w-7 text-[#43a5fc] sm:h-8 sm:w-8" />
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#7cc0ff] to-[#43a5fc] shadow-[0_10px_30px_-8px_rgba(67,165,252,0.7)] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3 sm:h-16 sm:w-16">
+                <LogIn className="h-7 w-7 text-[#0e0e0e] sm:h-8 sm:w-8" strokeWidth={2.75} />
               </div>
-              <div>
-                <p className="font-[var(--font-headline)] text-xl font-extrabold text-white sm:text-2xl">{t("home.joinGame")}</p>
-                <p className="mt-1 text-sm text-white/40">Enter code to join the party</p>
+              <div className="min-w-0">
+                <p className="font-headline text-2xl font-extrabold tracking-tight text-white sm:text-[1.75rem]">
+                  {t("home.joinGame")}
+                </p>
+                <p className="mt-1 text-sm leading-snug text-white/55">
+                  Got a four-letter code? You&apos;re thirty seconds away
+                </p>
               </div>
+              <Play className="ml-auto h-5 w-5 shrink-0 text-white/25 transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#43a5fc] sm:hidden" />
             </button>
           </div>
 
-          {/* Trending modes chips — hidden on mobile to avoid overlapping bottom nav */}
-          <div className="mt-10 hidden flex-col items-center gap-4 sm:flex sm:mt-12">
-            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/30">
-              Trending modes
-            </p>
+          {/* Jump straight into a mode. Hidden on mobile so it can't collide
+              with the bottom nav. */}
+          <div className="mt-9 hidden w-full max-w-3xl flex-col items-center gap-4 sm:flex sm:mt-10">
+            <div className="flex w-full items-center gap-4">
+              <div className="rule-fade flex-1" />
+              <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-white/45">
+                Jump into a mode
+              </p>
+              <div className="rule-fade flex-1" />
+            </div>
             <div className="flex flex-wrap justify-center gap-2.5">
               {GAME_MODES.map((m) => {
                 const Icon = m.icon;
                 return (
-                  <div key={m.name} className={`flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-bold backdrop-blur-md ${m.color}`}>
+                  <button
+                    key={m.name}
+                    type="button"
+                    onClick={() => { setGameType(m.type); setMode("choose"); }}
+                    style={{ ["--chip" as string]: m.accent }}
+                    className="chip flex min-h-[38px] items-center gap-2 rounded-full px-4 py-2 text-xs font-bold backdrop-blur-md"
+                  >
                     <Icon className="h-3.5 w-3.5" />
                     <span>{m.name}</span>
-                  </div>
+                  </button>
                 );
               })}
             </div>
@@ -124,7 +165,7 @@ function HomeInner() {
 
       {mode === "choose" && (
         <div className="flex flex-1 flex-col items-center justify-center px-5 py-10 animate-fade-in-up">
-          <h1 className="mb-8 font-[var(--font-headline)] text-2xl font-extrabold text-white sm:text-3xl">
+          <h1 className="mb-8 font-headline text-2xl font-extrabold text-white sm:text-3xl">
             {t("home.createGame")}
           </h1>
 

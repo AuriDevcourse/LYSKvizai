@@ -14,7 +14,6 @@ import type {
   WagerType,
   ServerEvent,
 } from "./types";
-import { ALL_POWER_UPS } from "./types";
 import { generateRoomCode } from "./room-code";
 import { randomBytes } from "crypto";
 
@@ -52,7 +51,16 @@ function disconnectKey(code: string, playerId: string) {
   return `${code.toUpperCase()}:${playerId}`;
 }
 
-/** Cancel any pending disconnect for this player (called on reconnect) */
+/**
+ * A player's stream came back. Cancel any pending disconnect and, if the grace
+ * period had already elapsed, mark them present again.
+ *
+ * Restoring `connected` used to be missing entirely: only `joinRoom` ever set it
+ * to true, and the play page re-opens SSE on reconnect without re-joining. So a
+ * phone that locked for more than the 120s grace window came back to a room that
+ * still believed it was gone — permanently excluded from team-mode answerer
+ * rotation, greyed out for everyone, with no path back short of a full rejoin.
+ */
 export function cancelPendingDisconnect(code: string, playerId: string) {
   const key = disconnectKey(code, playerId);
   const t = pendingDisconnects.get(key);
@@ -60,6 +68,14 @@ export function cancelPendingDisconnect(code: string, playerId: string) {
     clearTimeout(t);
     pendingDisconnects.delete(key);
   }
+
+  const room = rooms.get(code.toUpperCase());
+  if (!room) return;
+  const player = room.players.get(playerId);
+  if (!player || player.connected) return;
+
+  player.connected = true;
+  bcast(room, { type: "player-joined", data: { player: playerToInfo(player) } });
 }
 
 /**
@@ -255,8 +271,14 @@ function getResultsPayload(room: Room): ResultsPayload {
   const wagerResults: WagerResult[] = [];
   const powerUpEffects: PowerUpEffect[] = [];
 
+  // Text and year questions reuse `currentAnswer` as a 0/-1 "has answered" flag,
+  // so counting it here piled every correct text answer onto option A. Only
+  // multiple-choice rounds have a distribution at all.
+  const hasChoices = q.type !== "fastest-finger" && q.type !== "year-guesser";
+
   for (const player of room.players.values()) {
-    if (player.currentAnswer !== null && player.currentAnswer >= 0) {
+    if (hasChoices && player.currentAnswer !== null
+        && player.currentAnswer >= 0 && player.currentAnswer < distribution.length) {
       distribution[player.currentAnswer]++;
     }
 
@@ -302,19 +324,11 @@ function getResultsPayload(room: Room): ResultsPayload {
       });
     }
 
-    let basePts: number;
-    if (q.type === "year-guesser" && player.currentTextAnswer && q.correctYear != null) {
-      const guessed = parseInt(player.currentTextAnswer, 10);
-      basePts = !isNaN(guessed) ? scoreYearGuess(guessed, q.correctYear) : 0;
-    } else {
-      basePts = correct ? calculateScore(
-        true,
-        (player.answerTime ?? room.questionStartTime) - room.questionStartTime,
-        room.timerDuration * 1000,
-        player.streak - 1,
-        room.currentQuestionIndex
-      ).points : 0;
-    }
+    // Report exactly what was added to `score` when the answer came in.
+    // Recomputing here silently dropped the double multiplier, the wager swing
+    // and the fastest-finger bonus, so the "+points" a player saw never matched
+    // the jump in their total.
+    const basePts = player.lastPointsAwarded;
 
     playerResults.push({
       playerId: player.id,
@@ -341,6 +355,7 @@ function getResultsPayload(room: Room): ResultsPayload {
       const fastest = correctAnswerers[0];
       const SPEED_BONUS = 150;
       fastest.score += SPEED_BONUS;
+      fastest.lastPointsAwarded += SPEED_BONUS;
       const fastestResult = playerResults.find((r) => r.playerId === fastest.id);
       if (fastestResult) {
         fastestResult.points += SPEED_BONUS;
@@ -359,11 +374,10 @@ function getResultsPayload(room: Room): ResultsPayload {
     pr.powerUp = pu;
 
     if (pu === "double" && pr.correct) {
-      // Award a second copy of the points just earned this round
-      const bonus = pr.points;
-      player.score += bonus;
-      pr.points += bonus;
-      pr.totalScore = player.score;
+      // Reporting only. The multiplier is applied once, at submit time
+      // (submitAnswer / submitTextAnswer / submitYearAnswer). This block used
+      // to add a *second* helping on top of that, so Double paid 3x while the
+      // UI announced 2x.
       pr.powerUpEffect = "Double points!";
       powerUpEffects.push({ playerId: pid, playerName: player.name, powerUp: "double", effect: "2x points!" });
     }
@@ -389,13 +403,9 @@ function getResultsPayload(room: Room): ResultsPayload {
 
   // Fastest finger data
   if (q.type === "fastest-finger") {
-    const accepted = q.acceptedAnswers ?? [q.options[q.correct].toLowerCase()];
+    const accepted = q.acceptedAnswers ?? [q.options[q.correct]];
     const correctPlayers = [...room.players.values()]
-      .filter(p => {
-        if (!p.currentTextAnswer) return false;
-        const norm = p.currentTextAnswer.toLowerCase();
-        return accepted.some(a => a.toLowerCase().trim() === norm);
-      })
+      .filter(p => p.currentTextAnswer != null && fuzzyMatch(p.currentTextAnswer, accepted))
       .sort((a, b) => (a.answerTime ?? Infinity) - (b.answerTime ?? Infinity));
 
     if (correctPlayers.length > 0) {
@@ -747,6 +757,7 @@ export function joinRoom(
       eliminated: false,
       teamIndex: null,
       currentTextAnswer: null,
+      lastPointsAwarded: 0,
       slowestStreak: 0,
       powerUpUses: 3,
       usedPowerUpTypes: [],
@@ -852,7 +863,9 @@ export function submitAnswer(
     const wagerBonus = (room.isWagerRound && room.wagers.has(playerId))
       ? room.wagers.get(playerId)!
       : 0;
-    player.score += finalPoints + wagerBonus;
+    const awarded = finalPoints + wagerBonus;
+    player.score += awarded;
+    player.lastPointsAwarded = awarded;
     player.streak = newStreak;
   } else {
     // Wrong answer
@@ -864,30 +877,57 @@ export function submitAnswer(
     // Wager round: subtract wager
     if (room.isWagerRound && room.wagers.has(playerId)) {
       const wager = room.wagers.get(playerId)!;
-      player.score = Math.max(0, player.score - wager);
+      const lost = Math.min(wager, player.score);
+      player.score -= lost;
+      player.lastPointsAwarded = -lost;
+    } else {
+      player.lastPointsAwarded = 0;
     }
   }
 
-  // Broadcast answer count — only count active (non-eliminated) players
-  let answered = 0;
-  let totalEligible = 0;
-  for (const p of room.players.values()) {
-    if (p.eliminated) continue;
-    if (room.gameMode === "team" && ![...room.currentTeamAnswerer.values()].includes(p.id)) continue;
-    totalEligible++;
-    if (p.currentAnswer !== null) answered++;
-  }
-  bcast(room, {
-    type: "answer-count",
-    data: { count: answered, total: totalEligible },
-  });
-
-  // Auto-advance if everyone answered
-  if (answered >= totalEligible) {
-    showResults(room);
-  }
+  countAndMaybeAdvance(room, (p) => p.currentAnswer !== null);
 
   return {};
+}
+
+/**
+ * Count who still owes an answer, tell the room, and advance if nobody does.
+ *
+ * This used to be three near-identical copies, one per submit function, and they
+ * had silently diverged:
+ *
+ *   - The text and year copies never applied the team-mode filter, so in team
+ *     mode only the designated teammate is *allowed* to answer but everyone was
+ *     *counted* — `answered >= totalEligible` could never become true and every
+ *     round hung until the raw timer expired. Any team game on a year-* quiz hit
+ *     this on every single question.
+ *   - None of the three skipped players whose disconnect grace period had already
+ *     elapsed. Those players are certain not to answer, but still counted, so one
+ *     dropped phone made every remaining round burn its full timer.
+ *
+ * One implementation, so the next question type cannot drift again.
+ */
+function countAndMaybeAdvance(room: Room, hasAnswered: (p: Player) => boolean): void {
+  let answered = 0;
+  let totalEligible = 0;
+
+  for (const p of room.players.values()) {
+    if (p.eliminated) continue;
+    // Grace period already elapsed — they are not coming back for this round.
+    if (!p.connected) continue;
+    // Team mode: only the designated answerer for each team is eligible.
+    if (room.gameMode === "team" && ![...room.currentTeamAnswerer.values()].includes(p.id)) continue;
+    totalEligible++;
+    if (hasAnswered(p)) answered++;
+  }
+
+  bcast(room, { type: "answer-count", data: { count: answered, total: totalEligible } });
+
+  // `totalEligible === 0` would auto-advance instantly (0 >= 0). That happens if
+  // everyone eligible has dropped; let the question timer close it out instead.
+  if (totalEligible > 0 && answered >= totalEligible) {
+    showResults(room);
+  }
 }
 
 export function submitTextAnswer(
@@ -914,10 +954,12 @@ export function submitTextAnswer(
   player.currentTextAnswer = answer.trim();
   player.answerTime = Date.now();
 
-  // Check correctness
-  const normalizedAnswer = answer.trim().toLowerCase();
-  const acceptedAnswers = q.acceptedAnswers ?? [q.options[q.correct].toLowerCase()];
-  const correct = acceptedAnswers.some(a => a.toLowerCase().trim() === normalizedAnswer);
+  // Grade with fuzzyMatch — the same function results uses. These used to
+  // disagree: submit graded on an exact string match while results graded
+  // fuzzily, so a near-miss ("Beatles" for "The Beatles") was announced as
+  // CORRECT on screen and awarded nothing.
+  const acceptedAnswers = q.acceptedAnswers ?? [q.options[q.correct]];
+  const correct = fuzzyMatch(player.currentTextAnswer, acceptedAnswers);
 
   // Use same scoring as regular answers
   const elapsed = player.answerTime - room.questionStartTime;
@@ -936,12 +978,13 @@ export function submitTextAnswer(
     const isFirstCorrect = ![...room.players.values()].some(p => {
       if (p.id === playerId) return false;
       if (!p.currentTextAnswer) return false;
-      const pNorm = p.currentTextAnswer.toLowerCase();
-      return acceptedAnswers.some(a => a.toLowerCase().trim() === pNorm);
+      return fuzzyMatch(p.currentTextAnswer, acceptedAnswers);
     });
     const fastestBonus = isFirstCorrect ? 150 : 0;
 
-    player.score += finalPoints + fastestBonus;
+    const awarded = finalPoints + fastestBonus;
+    player.score += awarded;
+    player.lastPointsAwarded = awarded;
     player.streak = newStreak;
   } else {
     if (activePU === "shield") {
@@ -949,24 +992,13 @@ export function submitTextAnswer(
     } else {
       player.streak = 0;
     }
+    player.lastPointsAwarded = 0;
   }
 
   // Set currentAnswer to a dummy value to mark as answered (for answer count tracking)
   player.currentAnswer = correct ? 0 : -1;
 
-  // Broadcast answer count
-  let answered = 0;
-  let totalEligible = 0;
-  for (const p of room.players.values()) {
-    if (p.eliminated) continue;
-    totalEligible++;
-    if (p.currentTextAnswer !== null) answered++;
-  }
-  bcast(room, { type: "answer-count", data: { count: answered, total: totalEligible } });
-
-  if (answered >= totalEligible) {
-    showResults(room);
-  }
+  countAndMaybeAdvance(room, (p) => p.currentTextAnswer !== null);
 
   return {};
 }
@@ -1020,6 +1052,7 @@ export function submitYearAnswer(
   }
 
   player.score += finalPoints;
+  player.lastPointsAwarded = finalPoints;
 
   if (points > 0) {
     player.streak += 1;
@@ -1034,19 +1067,7 @@ export function submitYearAnswer(
   // Mark as answered for answer count tracking
   player.currentAnswer = points > 0 ? 0 : -1;
 
-  // Broadcast answer count
-  let answered = 0;
-  let totalEligible = 0;
-  for (const p of room.players.values()) {
-    if (p.eliminated) continue;
-    totalEligible++;
-    if (p.currentTextAnswer !== null) answered++;
-  }
-  bcast(room, { type: "answer-count", data: { count: answered, total: totalEligible } });
-
-  if (answered >= totalEligible) {
-    showResults(room);
-  }
+  countAndMaybeAdvance(room, (p) => p.currentTextAnswer !== null);
 
   return {};
 }
@@ -1141,6 +1162,7 @@ export function nextQuestion(code: string, hostId: string, hostToken: string): {
     room.wagerType = "regular";
     room.state = "wager";
     bcast(room, { type: "wager-start", data: getWagerPayload(room) });
+    scheduleWagerTimer(room);
     return {};
   }
 
@@ -1167,6 +1189,26 @@ function scheduleQuestionTimer(room: Room): void {
   }, ms);
 }
 
+/**
+ * Safety net for the wager phase.
+ *
+ * Every other state that waits on players has a server-side timer. `wager` had
+ * none: it advanced only when every active player had submitted, so a single
+ * client that never sent one wedged the room indefinitely. This is the one place
+ * in the state machine that could hang with no automatic recovery.
+ */
+function scheduleWagerTimer(room: Room): void {
+  if (room.questionTimer) {
+    clearTimeout(room.questionTimer);
+    room.questionTimer = null;
+  }
+  const ms = (room.timerDuration + 10) * 1000;
+  room.questionTimer = setTimeout(() => {
+    room.questionTimer = null;
+    if (room.state === "wager") advanceFromWager(room);
+  }, ms);
+}
+
 function startQuestionRound(room: Room): void {
   // Capture leaderboard before this round (for animated transitions)
   room.previousLeaderboard = getLeaderboard(room);
@@ -1182,6 +1224,7 @@ function startQuestionRound(room: Room): void {
     p.currentAnswer = null;
     p.answerTime = null;
     p.currentTextAnswer = null;
+    p.lastPointsAwarded = 0;
   }
 
   // Power-ups: players choose their own (via choose-powerup action during question phase)
@@ -1217,10 +1260,14 @@ export function submitWager(
   const clamped = Math.max(0, Math.min(amount, maxWager));
   room.wagers.set(playerId, clamped);
 
-  // Check if all active players submitted wagers
-  const activePlayers = getActivePlayers(room);
-  const allWagered = activePlayers.every((p) => room.wagers.has(p.id));
-  if (allWagered) {
+  // Advance once everyone who *can* still wager has. Players whose disconnect
+  // grace period has elapsed are never going to submit; including them meant one
+  // dropped phone froze the wager screen for the entire room with no recovery
+  // except the host noticing and advancing by hand.
+  const pending = getActivePlayers(room).filter(
+    (p) => p.connected && !room.wagers.has(p.id)
+  );
+  if (pending.length === 0) {
     advanceFromWager(room);
   }
 
@@ -1242,15 +1289,18 @@ function advanceFromWager(room: Room): void {
   startQuestionRound(room);
 }
 
-export function disconnectPlayer(code: string, playerId: string): void {
+export function disconnectPlayer(code: string, playerId: string, token: string): void {
   const room = rooms.get(code.toUpperCase());
   if (!room) return;
 
   const player = room.players.get(playerId);
-  if (player) {
-    player.connected = false;
-    bcast(room, { type: "player-left", data: { playerId } });
-  }
+  // Token-gated: without this, anyone holding a room code could mark other
+  // players as gone (and during lobby the grace-period reaper removes them
+  // from the room entirely).
+  if (!player || player.token !== token) return;
+
+  player.connected = false;
+  bcast(room, { type: "player-left", data: { playerId } });
 }
 
 export function forceShowResults(code: string, hostId: string, hostToken: string): { error?: string } {

@@ -4,13 +4,9 @@ import { CheckCircle, XCircle, Clock, Flame, Skull, Sparkles, Zap, TrendingDown 
 import type { ResultsPayload, QuestionPayload } from "@/lib/multiplayer/types";
 import ReactionPicker from "./ReactionPicker";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { ANSWER_BG } from "@/lib/answer-options";
 
-const ANSWER_COLORS = [
-  "bg-[#ff716c]",
-  "bg-[#43a5fc]",
-  "bg-[#66bb6a]",
-  "bg-[#c9a825]",
-];
+const ANSWER_COLORS = ANSWER_BG;
 
 interface PlayerResultsProps {
   playerId: string;

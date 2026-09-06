@@ -44,6 +44,15 @@ export function removeConnection(connectionId: string): Connection | undefined {
   return conn;
 }
 
+/** Count every active SSE connection for a room. Used to cap fan-out. */
+export function countRoomConnections(roomCode: string): number {
+  let n = 0;
+  for (const conn of connections.values()) {
+    if (conn.roomCode === roomCode) n++;
+  }
+  return n;
+}
+
 /** Count active SSE connections for a specific player in a room */
 export function countPlayerConnections(roomCode: string, playerId: string): number {
   let count = 0;

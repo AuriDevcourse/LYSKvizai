@@ -86,7 +86,7 @@ export default function FeedbackButton() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="font-[var(--font-headline)] text-xl font-extrabold tracking-tight text-white">
+              <h2 className="font-headline text-xl font-extrabold tracking-tight text-white">
                 Send feedback
               </h2>
               <button

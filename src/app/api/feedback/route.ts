@@ -2,19 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { sanitizeText } from "@/lib/sanitize";
+import { getClientIp } from "@/lib/client-ip";
 
 export const dynamic = "force-dynamic";
 
 const MAX_MESSAGE_LEN = 2000;
 const MAX_FROM_LEN = 200;
-
-function getClientIp(req: NextRequest): string {
-  return (
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    req.headers.get("x-real-ip") ??
-    "unknown"
-  );
-}
 
 function escapeHtml(s: string): string {
   return s

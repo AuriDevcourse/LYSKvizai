@@ -1,6 +1,6 @@
 "use client";
 
-import { Triangle, Square, Circle, Diamond, Snowflake, Shield, Repeat } from "lucide-react";
+import { Snowflake, Shield, Repeat } from "lucide-react";
 import type { QuestionPayload, PowerUpType } from "@/lib/multiplayer/types";
 import { useCountdown } from "@/hooks/useCountdown";
 import { useProgressiveReveal } from "@/hooks/useProgressiveReveal";
@@ -9,15 +9,10 @@ import ProgressiveImage from "./ProgressiveImage";
 import AudioPlayer from "./AudioPlayer";
 import VideoPlayer from "./VideoPlayer";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { ANSWER_BG, ANSWER_ICONS, ANSWER_TEXT } from "@/lib/answer-options";
 
-const OPTION_BG = [
-  "bg-[#ff716c]",
-  "bg-[#43a5fc]",
-  "bg-[#66bb6a]",
-  "bg-[#c9a825]",
-];
-
-const OPTION_ICONS = [Triangle, Diamond, Circle, Square];
+const OPTION_BG = ANSWER_BG;
+const OPTION_ICONS = ANSWER_ICONS;
 
 const PU_ICONS: Record<PowerUpType, { icon: typeof Snowflake; color: string }> = {
   freeze: { icon: Snowflake, color: "text-cyan-300" },
@@ -65,7 +60,7 @@ export default function HostQuestion({
       {/* TOP: Question number + timer bar */}
       <div className="flex items-center gap-4 pb-3">
         <div className="flex items-center gap-2">
-          <div className="rounded-lg bg-white/5 px-3 py-1 text-sm font-extrabold text-white/70">
+          <div className="rounded-lg bg-white/[0.07] px-3 py-1 text-sm font-extrabold tabular-nums text-white/75">
             {question.index + 1} / {question.total}
           </div>
           {question.isWagerRound && (
@@ -111,15 +106,15 @@ export default function HostQuestion({
       )}
 
       {/* CENTER: Timer | Question + Media | Answer count */}
-      <div className="flex flex-1 items-center gap-4 sm:gap-8">
+      <div className="flex flex-1 items-center gap-4 py-2 sm:gap-8">
         {/* Timer circle */}
         <div
           className={`flex h-18 w-18 shrink-0 items-center justify-center rounded-full text-3xl font-black sm:h-22 sm:w-22 sm:text-4xl ${
             isCritical
-              ? "bg-[#ff716c] text-white timer-critical"
+              ? "timer-critical bg-[#ff716c] text-[#0e0e0e] shadow-[0_0_38px_-6px_rgba(255,113,108,0.85)]"
               : fraction > 0.5
-                ? "bg-[#66bb6a] text-white"
-                : "bg-[#c9a825] text-white"
+                ? "bg-[#66bb6a] text-[#0e0e0e] shadow-[0_0_32px_-8px_rgba(102,187,106,0.75)]"
+                : "bg-[#c9a825] text-[#0e0e0e] shadow-[0_0_32px_-8px_rgba(201,168,37,0.8)]"
           }`}
         >
           {displaySeconds}
@@ -127,8 +122,8 @@ export default function HostQuestion({
 
         {/* Question + media */}
         <div className="flex flex-1 flex-col items-center justify-center gap-4">
-          <div className="glass max-w-3xl rounded-2xl px-8 py-6">
-            <h2 className="text-center text-2xl font-extrabold leading-snug text-white sm:text-3xl lg:text-4xl">
+          <div className="surface max-w-4xl rounded-3xl px-10 py-8">
+            <h2 className="font-headline text-center text-3xl font-extrabold leading-[1.15] tracking-tight text-white sm:text-4xl lg:text-5xl">
               {isProgressive ? (
                 <ProgressiveText text={qText} visibleWordCount={visibleWordCount} />
               ) : (
@@ -183,7 +178,7 @@ export default function HostQuestion({
       </div>
 
       {/* BOTTOM: answer blocks (2×2 grid) */}
-      <div className={`grid min-h-[30vh] grid-cols-2 gap-2 pt-4 sm:gap-3 ${
+      <div className={`grid min-h-[38vh] grid-cols-2 gap-2.5 pt-4 sm:gap-3.5 ${
         qOptions.filter(Boolean).length <= 2 ? "grid-rows-1" : "grid-rows-2"
       } stagger-children`}>
         {qOptions.map((option, i) => {
@@ -192,10 +187,10 @@ export default function HostQuestion({
           return (
             <div
               key={i}
-              className={`answer-btn flex items-center gap-4 rounded-2xl px-5 py-4 sm:px-8 sm:py-5 ${OPTION_BG[i]}`}
+              className={`answer-btn flex items-center gap-4 rounded-2xl px-6 py-5 sm:gap-5 sm:px-9 sm:py-6 ${OPTION_BG[i]}`}
             >
-              <Icon className="h-7 w-7 shrink-0 text-white/90 sm:h-8 sm:w-8" fill="currentColor" />
-              <span className="text-lg font-extrabold text-white sm:text-xl lg:text-2xl">
+              <Icon className={`h-7 w-7 shrink-0 sm:h-8 sm:w-8 ${ANSWER_TEXT}`} fill="currentColor" />
+              <span className={`font-headline text-xl font-extrabold tracking-tight sm:text-2xl lg:text-[1.75rem] ${ANSWER_TEXT}`}>
                 {option}
               </span>
             </div>

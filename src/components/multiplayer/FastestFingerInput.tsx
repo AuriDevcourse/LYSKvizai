@@ -132,15 +132,19 @@ export default function FastestFingerInput({
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={t("fastestFinger.placeholder")}
-          className="w-full rounded-2xl border-[1.5px] border-white/8 bg-white/5 px-5 py-4 text-lg font-bold text-white placeholder-white/40 outline-none transition-colors focus:border-white/50 focus:bg-white/5"
+          className="min-h-[56px] w-full rounded-2xl border-[1.5px] border-white/8 bg-white/5 px-5 py-4 text-lg font-bold text-white placeholder-white/40 outline-none transition-colors focus:border-white/50 focus:bg-white/5"
           autoComplete="off"
           autoCapitalize="off"
+          autoCorrect="off"
           spellCheck={false}
+          enterKeyHint="send"
+          aria-label="Your answer"
+          maxLength={200}
         />
         <button
           onClick={handleSubmit}
           disabled={!text.trim()}
-          className="w-full rounded-2xl bg-[#5a9e3e] px-6 py-4 text-lg font-extrabold text-white transition-all hover:brightness-110 active:brightness-90 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="min-h-[56px] w-full rounded-2xl bg-[#5a9e3e] px-6 py-4 text-lg font-extrabold text-white transition-all hover:brightness-110 active:brightness-90 disabled:cursor-not-allowed disabled:opacity-40"
         >
           {t("fastestFinger.submit")}
         </button>

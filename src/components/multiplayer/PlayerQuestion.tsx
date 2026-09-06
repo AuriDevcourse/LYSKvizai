@@ -11,13 +11,15 @@ import ProgressiveImage from "./ProgressiveImage";
 import AudioPlayer from "./AudioPlayer";
 import VideoPlayer from "./VideoPlayer";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import StreakBadge from "./StreakBadge";
+import { haptic } from "@/lib/haptics";
+import { ANSWER_BG, ANSWER_TEXT } from "@/lib/answer-options";
 
-const BUTTON_COLORS = [
-  "bg-[#d9534f] hover:brightness-110 active:brightness-90",
-  "bg-[#3a8fd9] hover:brightness-110 active:brightness-90",
-  "bg-[#5a9e3e] hover:brightness-110 active:brightness-90",
-  "bg-[#c9a825] hover:brightness-110 active:brightness-90",
-];
+// The phone used its own darker shades, so the answer a player tapped was a
+// different colour from the same answer on the host screen. Same palette now.
+const BUTTON_COLORS = ANSWER_BG.map(
+  (bg) => `${bg} hover:brightness-110 active:brightness-90`
+);
 
 const BUTTON_ICONS = [
   <Triangle key="t" className="h-7 w-7" fill="currentColor" />,
@@ -42,6 +44,8 @@ interface PlayerQuestionProps {
   canAnswer?: boolean;
   waitingPlayerName?: string;
   onChoosePowerUp?: (powerUp: "freeze" | "shield" | "double") => void;
+  /** The player's current answer streak, for the live badge. */
+  streak?: number;
 }
 
 export default function PlayerQuestion({
@@ -54,6 +58,7 @@ export default function PlayerQuestion({
   canAnswer = true,
   waitingPlayerName,
   onChoosePowerUp,
+  streak = 0,
 }: PlayerQuestionProps) {
   const { t } = useTranslation();
   const qText = question.en?.question ?? question.question;
@@ -94,6 +99,9 @@ export default function PlayerQuestion({
   const handleSelect = (index: number) => {
     if (selected !== null || eliminated || !canAnswer) return;
     setSelected(index);
+    // Confirm the tap in the hand — players are watching the host screen, not
+    // their own phone, at the moment they commit.
+    haptic("commit");
     onAnswer(index);
   };
 
@@ -114,11 +122,11 @@ export default function PlayerQuestion({
           {qText}
         </h2>
 
-        <div className={`grid gap-3 opacity-40 ${visibleOptions.length <= 2 ? "grid-cols-2" : "grid-cols-2"}`}>
+        <div className={`grid gap-3 opacity-40 ${visibleOptions.length <= 2 ? "grid-cols-1 max-w-sm mx-auto w-full" : "grid-cols-2"}`}>
           {visibleOptions.map(({ opt, i }) => (
             <div
               key={i}
-              className={`flex flex-col items-center justify-center gap-2 rounded-2xl px-3 py-6 text-center font-bold text-white ${BUTTON_COLORS[i].split(" ")[0]}`}
+              className={`flex flex-col items-center justify-center gap-2 rounded-2xl px-3 py-6 text-center font-bold ${ANSWER_TEXT} ${BUTTON_COLORS[i].split(" ")[0]}`}
             >
               {BUTTON_ICONS[i]}
               <span className="text-sm leading-tight sm:text-base">{opt}</span>
@@ -166,6 +174,7 @@ export default function PlayerQuestion({
         </div>
         <p className="text-xl font-extrabold text-white">{t("playerQuestion.lockedIn")}</p>
         <p className="font-bold text-white/50">{t("playerQuestion.waitingForOthers")}</p>
+        <StreakBadge streak={streak} />
         {myPowerUp && (
           <div className={`flex items-center gap-3 rounded-2xl border-2 px-5 py-3 ${POWER_UP_INFO[myPowerUp].bg}`}>
             <div className={POWER_UP_INFO[myPowerUp].color}>
@@ -183,14 +192,17 @@ export default function PlayerQuestion({
 
   return (
     <div className="flex flex-1 flex-col gap-4">
-      {/* Timer + question number */}
-      <div className="text-center text-sm font-bold text-white/50">
-        {question.index + 1} / {question.total}
+      {/* Timer + question number + live streak */}
+      <div className="flex items-center justify-center gap-3 text-sm font-bold text-white/50">
+        <span>
+          {question.index + 1} / {question.total}
+        </span>
         {question.isWagerRound && (
-          <span className="ml-2 rounded-lg bg-[#c9a825]/20 px-2 py-0.5 text-xs font-extrabold text-[#c9a825]">
+          <span className="rounded-lg bg-[#c9a825]/20 px-2 py-0.5 text-xs font-extrabold text-[#c9a825]">
             {t("hostQuestion.wager")}
           </span>
         )}
+        <StreakBadge streak={streak} />
       </div>
 
       <Timer
@@ -265,7 +277,7 @@ export default function PlayerQuestion({
           <button
             key={i}
             onClick={() => handleSelect(i)}
-            className={`answer-btn flex flex-col items-center justify-center gap-2 rounded-2xl px-3 py-5 text-center font-bold text-white min-h-[4.5rem] ${BUTTON_COLORS[i]}`}
+            className={`answer-btn flex min-h-[4.5rem] flex-col items-center justify-center gap-2 rounded-2xl px-3 py-5 text-center font-bold ${ANSWER_TEXT} ${BUTTON_COLORS[i]}`}
           >
             {BUTTON_ICONS[i]}
             <span className="text-sm leading-tight sm:text-base">{opt}</span>

@@ -53,7 +53,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${plusJakartaSans.variable} ${beVietnamPro.variable} font-[var(--font-body)] antialiased`}>
+      <body className={`${geistSans.variable} ${plusJakartaSans.variable} ${beVietnamPro.variable} font-body antialiased`}>
+        {/* Atmosphere. Fixed, pointer-events:none, GPU-composited — they sit
+            behind (aurora, vignette) and above (grain) every screen so the app
+            reads as one lit space rather than a stack of dark pages. */}
+        <div className="aurora" aria-hidden="true" />
+        <div className="vignette" aria-hidden="true" />
+        <div className="grain" aria-hidden="true" />
         <LanguageProvider>
           {children}
           <BottomNav />

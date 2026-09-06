@@ -29,6 +29,8 @@ function PlayPageInner() {
     codeFromUrl || joinFromUrl ? "join" : createFromUrl ? "pick-quiz" : "menu"
   );
   const [selectedQuizIds, setSelectedQuizIds] = useState<string[]>([]);
+  /** True while TopicPicker is showing its top-level game-type grid. */
+  const [pickerAtRoot, setPickerAtRoot] = useState(true);
   const [selectedGameMode, setSelectedGameMode] = useState<GameMode>("classic");
   const [gameModeOptions, setGameModeOptions] = useState<{ teamCount?: number; eliminationInterval?: number }>({});
   const [timer, setTimer] = useState(20);
@@ -174,7 +176,12 @@ function PlayPageInner() {
           )}
 
           <div className="w-full">
-            <TopicPicker onSelect={setSelectedQuizIds} selectedIds={selectedQuizIds} onQuizMetaLoad={handleQuizMetaLoad} />
+            <TopicPicker
+              onSelect={setSelectedQuizIds}
+              selectedIds={selectedQuizIds}
+              onQuizMetaLoad={handleQuizMetaLoad}
+              onGameTypeChange={(gt) => setPickerAtRoot(gt === null)}
+            />
           </div>
 
           {selectedQuizIds.length > 0 && (
@@ -195,13 +202,18 @@ function PlayPageInner() {
             {t("play.next")}{selectedQuizIds.length > 1 ? ` (${selectedQuizIds.length} quizzes)` : ""}
           </button>
 
-          <button
-            onClick={() => { setMode("menu"); setError(null); setSelectedQuizIds([]); }}
-            className="flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            {t("play.back")}
-          </button>
+          {/* Only at the picker's top level. Deeper in, TopicPicker renders its
+              own Back that steps up one level — two links labelled "Back" that
+              went to different places was the confusing part, not the pixel. */}
+          {pickerAtRoot && (
+            <button
+              onClick={() => { setMode("menu"); setError(null); setSelectedQuizIds([]); }}
+              className="flex items-center gap-1.5 text-sm font-bold text-white/40 transition-colors hover:text-white/70"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              {t("play.back")}
+            </button>
+          )}
         </div>
       )}
 
@@ -291,7 +303,13 @@ function PlayPageInner() {
                   onChange={(e) => setHostName(e.target.value)}
                   placeholder={t("play.namePlaceholder")}
                   maxLength={20}
-                  className="w-full rounded-xl border-[1.5px] border-white/8 bg-white/5 px-4 py-3 text-lg text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
+                  autoComplete="nickname"
+                  autoCapitalize="words"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  enterKeyHint="go"
+                  aria-label="Your name"
+                  className="min-h-[52px] w-full rounded-xl border-[1.5px] border-white/8 bg-white/5 px-4 py-3 text-lg text-white placeholder:text-white/20 focus:border-white/35 focus:outline-none"
                 />
               </div>
               <div>

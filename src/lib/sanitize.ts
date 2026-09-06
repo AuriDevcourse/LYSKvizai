@@ -4,7 +4,13 @@
  */
 export function sanitizeText(input: string, maxLength = 50): string {
   return input
-    .replace(/[<>"'&]/g, "") // strip chars that could form HTML/script
+    // `&` deliberately NOT stripped. This runs on `answer-text` submissions
+    // before fuzzyMatch, so stripping it silently mangled legitimately correct
+    // answers — "Fish & Chips" and "AT&T" became "Fish  Chips" and "ATT" and
+    // scored zero. It also mangled feedback text. JSX escapes on render and the
+    // feedback route runs its own escapeHtml, so removing `&` here bought
+    // nothing and cost correctness.
+    .replace(/[<>"']/g, "")
     .trim()
     .slice(0, maxLength);
 }

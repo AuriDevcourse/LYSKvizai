@@ -4,6 +4,7 @@ import type { ClientAction } from "@/lib/multiplayer/types";
 export const dynamic = "force-dynamic";
 import { sanitizeEmoji, sanitizeText } from "@/lib/sanitize";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { validateAction } from "@/lib/multiplayer/validate";
 import {
   createRoom,
   getRoom,
@@ -22,34 +23,39 @@ import {
   isHostOf,
 } from "@/lib/multiplayer/room-store";
 import { broadcast } from "@/lib/multiplayer/sse-manager";
+import { getClientIp } from "@/lib/client-ip";
 
 function json(data: unknown, status = 200) {
   return NextResponse.json(data, { status });
 }
 
-function getClientIp(req: NextRequest): string {
-  return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
-    ?? req.headers.get("x-real-ip")
-    ?? "unknown";
-}
-
 export async function POST(req: NextRequest) {
-  let body: ClientAction;
+  const ip = getClientIp(req);
+
+  // Rate limit on the IP, which the client cannot choose.
+  //
+  // This used to key on `body.playerId ?? body.hostId ?? ip` so that friends
+  // behind one NAT didn't share a bucket. But the client picks its own playerId,
+  // so a fresh random id per request bought a fresh window — the limiter was a
+  // no-op against anyone who wanted around it, and every made-up id also leaked
+  // a Map entry. The NAT ceiling is raised instead: 240 requests per 10s is far
+  // above what a full room of real players generates.
+  if (!checkRateLimit(`post:${ip}`, 240, 10_000)) {
+    return json({ error: "Too many requests" }, 429);
+  }
+
+  let parsed: unknown;
   try {
-    body = await req.json();
+    parsed = await req.json();
   } catch {
     return json({ error: "Invalid request format" }, 400);
   }
 
-  // Rate limit per-actor (playerId/hostId) so friends behind the same NAT don't
-  // share a bucket. Falls back to IP for anonymous requests.
-  const actor =
-    ("playerId" in body && body.playerId) ||
-    ("hostId" in body && body.hostId) ||
-    getClientIp(req);
-  if (!checkRateLimit(`post:${actor}`, 120, 10_000)) {
-    return json({ error: "Too many requests" }, 429);
-  }
+  // Validate before anything touches the room store. `req.json()` is `any`;
+  // the ClientAction cast alone proves nothing at runtime.
+  const validated = validateAction(parsed);
+  if ("error" in validated) return json({ error: validated.error }, 400);
+  const body: ClientAction = validated.action;
 
   switch (body.action) {
     case "create": {
@@ -156,13 +162,14 @@ export async function POST(req: NextRequest) {
     }
 
     case "disconnect": {
-      // Fire-and-forget. Best-effort, not auth-gated — it only marks connection state.
-      disconnectPlayer(body.code, body.playerId);
+      // Fire-and-forget, but token-gated: only the player themselves can say
+      // they're leaving. Silently a no-op on a bad token.
+      disconnectPlayer(body.code, body.playerId, body.token);
       return json({ ok: true });
     }
 
     case "choose-powerup": {
-      const result = choosePowerUp(body.code, body.playerId, body.token, body.powerUp as "freeze" | "shield" | "double");
+      const result = choosePowerUp(body.code, body.playerId, body.token, body.powerUp);
       if (result.error) return json({ error: result.error }, 400);
       return json({ ok: true });
     }

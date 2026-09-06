@@ -7,6 +7,8 @@ import type { Question, Quiz } from "@/data/types";
 import QuestionEditor from "@/components/editor/QuestionEditor";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 import { QUIZ_ICONS, ICON_PICKER_ORDER, type QuizIconName } from "@/lib/quiz-icons";
+import { editorFetch, EditorAuthError } from "@/lib/editor-auth";
+import EditorUnlock from "@/components/editor/EditorUnlock";
 
 const EMPTY_QUESTION: Question = {
   question: "",
@@ -35,6 +37,7 @@ export default function QuizEditorPage({ params }: PageProps) {
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [authPrompt, setAuthPrompt] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
 
   // Load existing quiz
@@ -77,10 +80,14 @@ export default function QuizEditorPage({ params }: PageProps) {
       return;
     }
 
-    // Filter out empty questions
-    const validQuestions = questions.filter(
-      (q) => q.question.trim() && q.options.some((o) => o.trim())
-    );
+    // Keep any question that has text. Do NOT also require a non-blank option:
+    // year-guesser and fastest-finger questions are answered by typing, so
+    // QuestionEditor hides the options grid entirely and their `options` stay
+    // ["","","",""] in the real data. The old filter dropped exactly those —
+    // opening year-world-history.json, fixing a typo and hitting Save silently
+    // deleted all 15 questions. Six quiz files (81 questions) were exposed.
+    // Type-specific requirements are enforced by the server validator.
+    const validQuestions = questions.filter((q) => q.question.trim());
     if (validQuestions.length === 0) {
       setError(t("editor.addOneQuestion"));
       return;
@@ -91,7 +98,7 @@ export default function QuizEditorPage({ params }: PageProps) {
     try {
       const method = isNew ? "POST" : "PUT";
       const url = isNew ? "/api/quizzes" : `/api/quizzes/${finalId}`;
-      const res = await fetch(url, {
+      const res = await editorFetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -115,7 +122,12 @@ export default function QuizEditorPage({ params }: PageProps) {
         router.replace(`/editor/${finalId}`);
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Error");
+      if (e instanceof EditorAuthError) {
+        setAuthPrompt(e.message);
+      } else {
+        console.error("Save failed", e);
+        setError(e instanceof Error ? e.message : "Error");
+      }
     } finally {
       setSaving(false);
     }
@@ -296,7 +308,7 @@ export default function QuizEditorPage({ params }: PageProps) {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-2 rounded-xl bg-white px-8 py-3 font-semibold text-[#ff9062] transition-colors hover:bg-white/90 disabled:opacity-50"
+            className="btn-primary flex min-h-[48px] items-center gap-2 !px-8 !py-0 !text-base disabled:opacity-50"
           >
             {saving ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -306,6 +318,16 @@ export default function QuizEditorPage({ params }: PageProps) {
             {saved ? t("editor.saved") : t("editor.saveQuiz")}
           </button>
         </div>
+
+        <EditorUnlock
+          open={authPrompt !== null}
+          reason={authPrompt ?? undefined}
+          onUnlocked={() => {
+            setAuthPrompt(null);
+            handleSave();
+          }}
+          onCancel={() => setAuthPrompt(null)}
+        />
       </main>
     </div>
   );
