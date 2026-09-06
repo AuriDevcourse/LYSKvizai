@@ -2,8 +2,9 @@
 
 import { Suspense, useState, useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import {
-  Play, Plus, LogIn, ArrowLeft, Users, User,
+  Play, Plus, LogIn, ArrowLeft, Users, User, Ruler, Palette,
   HelpCircle, ToggleLeft, ZoomOut, Calendar, Keyboard, Shuffle, Smartphone,
 } from "lucide-react";
 import TopicPicker, { type SelectedGameType } from "@/components/TopicPicker";
@@ -130,6 +131,33 @@ function HomeInner() {
               </div>
               <Play className="ml-auto h-5 w-5 shrink-0 text-white/25 transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#43a5fc] sm:hidden" />
             </button>
+          </div>
+
+          {/* Solo mini-games. Different shape of play from the quiz, so they
+              get their own row rather than being buried in the mode list. */}
+          <div className="mt-8 grid w-full max-w-3xl grid-cols-2 gap-3 sm:mt-9">
+            <Link
+              href="/scale"
+              style={{ ["--bloom" as string]: "rgba(102,187,106,0.4)" }}
+              className="surface surface-hover group flex items-center gap-3.5 p-4 sm:p-5"
+            >
+              <Ruler className="h-5 w-5 shrink-0 text-[#66bb6a] transition-transform duration-300 group-hover:scale-110" />
+              <div className="min-w-0">
+                <p className="text-sm font-extrabold text-white">Scale</p>
+                <p className="truncate text-xs text-white/45">How big is it, really?</p>
+              </div>
+            </Link>
+            <Link
+              href="/tint"
+              style={{ ["--bloom" as string]: "rgba(231,127,255,0.4)" }}
+              className="surface surface-hover group flex items-center gap-3.5 p-4 sm:p-5"
+            >
+              <Palette className="h-5 w-5 shrink-0 text-[#e77fff] transition-transform duration-300 group-hover:scale-110" />
+              <div className="min-w-0">
+                <p className="text-sm font-extrabold text-white">Tint</p>
+                <p className="truncate text-xs text-white/45">Restore the real colours</p>
+              </div>
+            </Link>
           </div>
 
           {/* Jump straight into a mode. Hidden on mobile so it can't collide

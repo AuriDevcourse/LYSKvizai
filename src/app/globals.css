@@ -1,4 +1,15 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
+
+/* Only scan application source for class names.
+ *
+ * Tailwind v4 scans the whole project by default, including markdown. The
+ * design notes in CLAUDE.md / progress.md quote the arbitrary-value font
+ * utility as an example of what NOT to write, and Tailwind read those quotes
+ * as real class names — emitting an invalid font-weight declaration that
+ * hard-failed the dev server. Docs are documentation, not markup.
+ *
+ * (Which is also why this comment describes the syntax instead of quoting it.) */
+@source "../../src";
 
 @theme inline {
   --color-background: #0e0e0e;
@@ -92,8 +103,8 @@ body {
 }
 
 /* --- Typography ------------------------------------------------------------
-   `font-[var(--font-headline)]` was used at 12 call sites and compiled to
-   `font-weight: var(--font-headline)` — Tailwind reads a bare `font-[…]` as
+   The arbitrary-value font utility was used at 12 call sites and compiled to
+   `font-weight` rather than `font-family` — Tailwind reads that shorthand as
    the weight utility, not the family one. font-weight given a family name is
    invalid and dropped, so Plus Jakarta Sans was downloaded on every page load
    and never rendered anywhere. These are explicit classes so there is nothing

@@ -48,6 +48,63 @@ chart · streak badge on phones · confetti on the podium · 44px tap targets ·
 
 ---
 
+## 2026-09-06 (night) — Two solo mini-games: Scale and Tint
+
+Both are single-player, no room, no server state — they slot in beside the quiz
+rather than into it.
+
+**Research first, because both games make factual claims.**
+- Colour scoring uses **CIEDE2000**, implemented from Sharma, Wu & Dalal (2005)
+  and validated in `src/lib/color/ciede2000.test.ts` against all 33 published
+  reference pairs to 4 decimal places, plus an independent value from
+  python-colormath. Those pairs exist specifically to catch the two classic
+  bugs — hue angles straddling the 0/360 seam, and undefined hue at zero chroma
+  — so passing them is meaningful rather than decorative.
+- Every size in `lib/games/creatures.ts` is a real measurement with its source
+  and, crucially, *which* measurement it is recorded next to it. Shoulder height
+  and total height are very different numbers for an elephant, and picking the
+  wrong one makes the game teach something false.
+
+**Scale** (`/scale`) — a reference creature is drawn at a fixed size with its
+real height labelled; you scale a second creature next to it until it looks
+right. Scoring is done on the log of the ratio, so 2× too big scores the same as
+half too small, and the same ratio scores the same whether the answer is 1 m or
+1000 m. A linear score would have called the large-number mistake ten times
+worse for no reason.
+
+**Tint** (`/tint`) — a character's palette is scrambled by hue rotation,
+saturation scale and lightness offset; three sliders apply the *same* transform,
+so an exact undo always exists. Closeness is the mean ΔE₀₀ across all four
+palette slots, and the reveal names the worst slot.
+
+**Three things the work turned up**
+1. A unit test caught that some scrambles were **unwinnable**. HSL clamps at 0
+   and 100, so a scramble that pushes a colour against a boundary destroys
+   information no slider can recover — while still showing the player a score.
+   `randomScramble` now applies its own inverse and measures the round trip,
+   damping the lossy axes until it verifies clean. Hue-only is the fallback,
+   since rotation never clamps.
+2. The scale game was **comparing different quantities**: the blue whale's 30 m
+   is a length, not a height, so it rendered smaller than a 3.2 m elephant.
+   It's now excluded from that game (it stays in Tint) and every creature
+   carries an `artFraction` — the share of its square canvas the measured
+   dimension actually spans — so a cat drawn in the lower half of its box no
+   longer renders as tall as a giraffe that fills its own.
+3. **Every character is drawn from scratch.** That's a legal constraint, not an
+   aesthetic one: a "guess the cartoon character" game built on real cartoon
+   characters is trademark and copyright infringement. These are original
+   archetypes — a knight, a robot, a service droid — which aren't protectable.
+
+Also fixed: Tailwind v4 scans markdown by default, so the design notes quoting
+the arbitrary-value font utility as an example of what *not* to write were read
+as real class names and emitted invalid CSS that hard-failed `next dev`.
+Scanning is now scoped to `src/` with `source(none)`.
+
+**Verified:** 30 unit tests, typecheck, lint (0 errors) and build all clean;
+both games played through in the browser.
+
+---
+
 ## 2026-09-06 (evening) — Visual redesign
 
 Pushed the visual craft up to the level the product deserves, without abandoning
