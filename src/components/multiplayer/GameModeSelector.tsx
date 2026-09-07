@@ -48,9 +48,20 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
 
   const handlePick = (mode: GameMode) => {
     setSelected(mode);
-    // Classic has no options to configure, so the extra confirm tap bought
-    // nothing. Team and elimination reveal settings below and still confirm.
-    if (mode === "classic") handleConfirm(mode);
+    /*
+     * Commit on every pick, not just Classic.
+     *
+     * Elimination and Team used to require the separate `Select` tap, which
+     * was safe only because that tap also advanced to the next screen — you
+     * could not proceed without it. Now that the mode picker shares a screen
+     * with the presentation choice, nothing forces it: picking Elimination and
+     * then pressing "Big screen" recorded no mode at all and silently started
+     * a Classic game.
+     *
+     * Committing here means the mode is always recorded. The option controls
+     * below re-commit when changed, so the count or interval is never stale.
+     */
+    handleConfirm(mode);
   };
 
   return (
@@ -88,7 +99,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
               <button
                 key={n}
                 type="button"
-                onClick={() => setTeamCount(n)}
+                onClick={() => { setTeamCount(n); onSelect("team", { teamCount: n }); }}
                 className={`flex-1 rounded-lg py-2 text-sm font-bold transition-colors ${
                   teamCount === n
                     ? "bg-blue-500 text-white"
@@ -113,7 +124,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
               <button
                 key={n}
                 type="button"
-                onClick={() => setEliminationInterval(n)}
+                onClick={() => { setEliminationInterval(n); onSelect("elimination", { eliminationInterval: n }); }}
                 className={`flex-1 rounded-lg py-2 text-sm font-bold transition-colors ${
                   eliminationInterval === n
                     ? "bg-red-500 text-white"
@@ -127,15 +138,7 @@ export default function GameModeSelector({ onSelect }: GameModeSelectorProps) {
         </div>
       )}
 
-      {selected !== "classic" && (
-        <button
-          type="button"
-          onClick={() => handleConfirm()}
-          className="btn-primary min-h-[48px] !px-6 !py-0 !text-base"
-        >
-          {t("gameMode.select")}
-        </button>
-      )}
+
     </div>
   );
 }

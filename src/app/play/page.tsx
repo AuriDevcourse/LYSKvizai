@@ -201,7 +201,7 @@ function PlayPageInner() {
               onSelect={setSelectedQuizIds}
               selectedIds={selectedQuizIds}
               onQuizMetaLoad={handleQuizMetaLoad}
-              onGameTypeChange={(gt) => setPickerAtRoot(gt === null)}
+              onAtRootChange={setPickerAtRoot}
               // Tapping a topic is the last decision — straight to how the
               // game runs, no quiz list and no "Next".
               onCommit={(ids) => { setSelectedQuizIds(ids); setError(null); setMode("host-join"); }}
@@ -231,7 +231,10 @@ function PlayPageInner() {
               went to different places was the confusing part, not the pixel. */}
           {pickerAtRoot && (
             <button
-              onClick={() => { setMode("menu"); setError(null); setSelectedQuizIds([]); }}
+              // Home, not `menu`. That screen is the pre-redesign
+              // "Play with friends" chooser, which the three home cards
+              // replaced — landing on it was going backwards into a dead end.
+              onClick={() => router.push("/")}
               className="flex items-center gap-1.5 text-sm font-bold text-white/50 transition-colors hover:text-white/70"
             >
               <ArrowLeft className="h-3.5 w-3.5" />

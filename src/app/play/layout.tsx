@@ -6,8 +6,8 @@ import type { Metadata } from "next";
  * in the root layout.
  */
 export const metadata: Metadata = {
-  title: "Join a game",
-  description: "Enter a room code to join, or start a new game.",
+  title: "Play",
+  description: "Host a game on the big screen, or join one with a four-letter code.",
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

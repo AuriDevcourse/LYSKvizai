@@ -51,6 +51,17 @@ interface TopicPickerProps {
    * each tile, for the rare time you want one specific set.
    */
   onCommit?: (quizIds: string[]) => void;
+  /**
+   * Whether the picker is showing its top level (the topic grid).
+   *
+   * The parent used to infer this from `onGameTypeChange` firing with `null` —
+   * which happened when you stepped back from the topic grid to the old game
+   * type screen. Removing that screen removed the only `null`, so the flag
+   * latched to false on the first chip tap and the parent's Back button
+   * vanished: on desktop, where the bottom nav is hidden, that was a dead end
+   * with no way out of the flow.
+   */
+  onAtRootChange?: (atRoot: boolean) => void;
 }
 
 type GameTypeOption = {
@@ -94,7 +105,7 @@ function eligibleFor(q: QuizMeta, mode: string | undefined): boolean {
   return true;
 }
 
-export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onGameTypeChange, onCommit }: TopicPickerProps) {
+export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onGameTypeChange, onCommit, onAtRootChange }: TopicPickerProps) {
   const { t, lang } = useTranslation();
   /**
    * The game type, defaulting to Classic rather than being asked for.
@@ -133,6 +144,9 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
 
 
   const isQuizEligible = (q: QuizMeta): boolean => eligibleFor(q, activeGameType.id as string);
+
+  // `activeTopic` is the only thing that changes the picker's depth.
+  useEffect(() => { onAtRootChange?.(activeTopic === null); }, [activeTopic, onAtRootChange]);
 
   /**
    * The topics actually offered: the hand-maintained list, plus one synthetic
