@@ -29,7 +29,7 @@ export default function DevFlagsPage() {
               <FlagArt id={flag.id} colors={officialPalette(flag)} width={200} title={flag.name} />
             </div>
             <p className="mt-2 text-sm font-extrabold text-white">{flag.name}</p>
-            <p className="text-xs text-white/40">
+            <p className="text-xs text-white/50">
               {playableRegions(flag).length} playable
             </p>
           </div>

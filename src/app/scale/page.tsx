@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, RotateCcw, Ruler, Check, Trophy } from "lucide-react";
 import CreatureArt from "@/components/games/CreatureArt";
@@ -48,19 +48,35 @@ interface Round {
   target: Creature;
 }
 
-function newRound(seen: Set<string>): Round {
-  const [reference, target] = pickPair(SCALE_POOL, seen);
+function newRound(seen: Set<string>, choose?: (count: number) => number): Round {
+  const [reference, target] = pickPair(SCALE_POOL, seen, choose);
   return { reference, target };
 }
 
 export default function ScaleGamePage() {
   const [seen, setSeen] = useState<Set<string>>(new Set());
-  const [round, setRound] = useState<Round>(() => newRound(new Set()));
+  /**
+   * The first pair is fixed, not random.
+   *
+   * `pickPair` normally draws at random, which in a state initialiser means the
+   * server renders one pair and the client another — a hydration mismatch that
+   * makes React discard the tree. So the server-rendered round is deterministic
+   * and the effect below swaps in a random one once we're on the client.
+   */
+  const [round, setRound] = useState<Round>(() => newRound(new Set(), () => 0));
   const [slider, setSlider] = useState(0.5);
   const [result, setResult] = useState<ScaleResult | null>(null);
   const [roundNo, setRoundNo] = useState(1);
   const [total, setTotal] = useState(0);
   const [done, setDone] = useState(false);
+
+  // Deferred a microtask rather than set during render: this is the point where
+  // the randomness is safe, because only the client runs it.
+  useEffect(() => {
+    let cancelled = false;
+    Promise.resolve().then(() => { if (!cancelled) setRound(newRound(new Set())); });
+    return () => { cancelled = true; };
+  }, []);
 
   const ratio = useMemo(() => ratioFromSlider(slider), [slider]);
   const targetPx = REF_PX * ratio;
@@ -110,7 +126,7 @@ export default function ScaleGamePage() {
     const avg = Math.round(total / ROUNDS);
     return (
       <div className="rise flex min-h-svh flex-col items-center justify-center gap-7 px-5 py-10">
-        <Trophy className="h-14 w-14 text-[#c9a825] drop-shadow-[0_0_20px_rgba(201,168,37,0.7)]" />
+        <Trophy className="h-14 w-14 text-answer-yellow drop-shadow-[0_0_20px_rgba(201,168,37,0.7)]" />
         <div className="text-center">
           <h1 className="font-headline neon text-5xl font-extrabold tracking-tight sm:text-6xl">{total}</h1>
           <p className="mt-2 text-white/55">out of {ROUNDS * 100} · {avg}% average accuracy</p>
@@ -144,7 +160,7 @@ export default function ScaleGamePage() {
       <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-8">
         <h1 className="text-center text-lg font-bold text-white/85 sm:text-xl">
           How big is the{" "}
-          <span className="text-[#ff9062]">{round.target.name.toLowerCase()}</span>{" "}
+          <span className="text-primary">{round.target.name.toLowerCase()}</span>{" "}
           next to the {round.reference.name.toLowerCase()}?
         </h1>
 
@@ -195,13 +211,13 @@ export default function ScaleGamePage() {
           <div className="absolute inset-x-0 bottom-3 flex justify-center gap-10 px-6 text-center sm:gap-20">
             <div className="w-28">
               <p className="truncate text-xs font-extrabold text-white">{round.reference.name}</p>
-              <p className="font-headline text-base font-extrabold text-[#43a5fc]">
+              <p className="font-headline text-base font-extrabold text-secondary">
                 {formatHeight(round.reference.heightM)}
               </p>
             </div>
             <div className="w-28">
               <p className="truncate text-xs font-extrabold text-white">{round.target.name}</p>
-              <p className="font-headline text-base font-extrabold tabular-nums text-[#ff9062]">
+              <p className="font-headline text-base font-extrabold tabular-nums text-primary">
                 {result ? formatHeight(result.actualM) : formatHeight(guessedM)}
               </p>
             </div>
@@ -233,7 +249,7 @@ export default function ScaleGamePage() {
           </div>
         ) : (
           <div className="w-full max-w-lg text-center">
-            <p className={`font-headline text-4xl font-extrabold ${result.isBullseye ? "text-[#66bb6a]" : "text-white"}`}>
+            <p className={`font-headline text-4xl font-extrabold ${result.isBullseye ? "text-answer-green" : "text-white"}`}>
               +{result.points}
             </p>
             <p className="mt-1 text-white/70">

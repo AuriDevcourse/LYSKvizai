@@ -118,7 +118,7 @@ export default function ImageTint({
   if (failed) {
     return (
       <div
-        className={`flex items-center justify-center rounded-xl border border-dashed border-white/15 text-center text-xs text-white/40 ${className}`}
+        className={`flex items-center justify-center rounded-xl border border-dashed border-white/15 text-center text-xs text-white/50 ${className}`}
         style={{ width, height: width * 0.75 }}
       >
         Couldn&apos;t load {src.split("/").pop()}

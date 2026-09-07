@@ -1,4 +1,17 @@
 /**
+ * PARKED — not wired into any game.
+ *
+ * The Tint game deliberately carries two categories only: flags (published
+ * specs) and cartoon characters the player imports themselves. Transit lines
+ * were a third; they were removed from the rotation on 2026-09-07 at the
+ * project owner's request, not because anything here is wrong.
+ *
+ * Every value below was verified character-by-character against the official
+ * Issue 11 PDF on 2026-09-07 — all 23 lines, hex and Pantone. If the category
+ * is ever wanted back, re-add `transitRound` to src/app/tint/page.tsx; nothing
+ * else needs to change. Until then this file is data at rest.
+ */
+/**
  * Transport for London line colours.
  *
  * Source: TfL "Colour standard", Issue 11 — the document TfL issues to its own

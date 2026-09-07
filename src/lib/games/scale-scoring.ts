@@ -82,7 +82,13 @@ export function formatHeight(m: number): string {
  */
 export function pickPair<T extends { id: string; heightM: number }>(
   pool: T[],
-  exclude: Set<string> = new Set()
+  exclude: Set<string> = new Set(),
+  /**
+   * Picks among the valid pairs. Random by default; the first round of a game
+   * passes a fixed choice so the server and the client render the same pair
+   * instead of disagreeing and tripping a hydration mismatch.
+   */
+  choose: (count: number) => number = (n) => Math.floor(Math.random() * n)
 ): [T, T] {
   const usable = pool.filter((c) => !exclude.has(c.id));
   const candidates = usable.length >= 2 ? usable : pool;
@@ -99,5 +105,5 @@ export function pickPair<T extends { id: string; heightM: number }>(
     // Fall back to any two distinct entries rather than throwing mid-game.
     return [candidates[0], candidates[1] ?? pool[1]];
   }
-  return pairs[Math.floor(Math.random() * pairs.length)];
+  return pairs[choose(pairs.length)];
 }

@@ -2,13 +2,13 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Palette as PaletteIcon, RotateCcw, Check, Trophy, Eye } from "lucide-react";
+import { ArrowLeft, Palette as PaletteIcon, RotateCcw, Check, Trophy, Eye, Plus } from "lucide-react";
 import FlagArt from "@/components/games/FlagArt";
 import ImageTint from "@/components/games/ImageTint";
-import TransitDiagram from "@/components/games/TransitDiagram";
 import { FLAGS, officialPalette, playableRegions, type Flag, type FlagRegion } from "@/lib/games/flags";
 import { loadLocalRounds, type LocalImageRound } from "@/lib/games/local-images";
-import { playableLines, diagramFor, TFL_STANDARD, type TransitLine } from "@/lib/games/transit";
+import { loadMyReferences, type MyReference } from "@/lib/games/my-references";
+import ReferenceImporter from "@/components/games/ReferenceImporter";
 import { adjustHex } from "@/lib/color/convert";
 import { scoreSingle, scrambleOne, type TintScramble, type TintResult } from "@/lib/games/tint-scoring";
 
@@ -17,20 +17,24 @@ const ROUNDS = 5;
 /**
  * The game
  * --------
- * One region of a flag is shown in the wrong colour; every other region is
- * correct. Three sliders — hue, saturation, lightness — move that one region.
+ * One region of the subject is shown in the wrong colour; everything around it
+ * is correct. Three sliders — hue, saturation, lightness — move that region.
  *
  * The point is recall, not guesswork: you already know roughly what colour the
- * Brazilian green is, and the question is how precisely. That only works with a
- * reference the player has seen a thousand times, which is why these are flags
- * and not invented characters. It's also why the correct answer can be a
- * published Pantone spec rather than an opinion.
- */
-/**
- * A round is either a flag or one of the player's own local images. Both work
- * the same way — one colour region is wrong, the sliders move it, the score is
- * ΔE₀₀ against the correct value — so the rest of the screen doesn't care which
- * it's looking at.
+ * Brazilian green is, and the question is how precisely. That only works on
+ * something the player has seen a thousand times, which is why there are two
+ * categories and no third:
+ *
+ *   - **Flags**, where the right answer is a published Pantone or RAL spec
+ *     rather than an opinion.
+ *   - **Cartoon characters**, which the player adds themselves. The answer is
+ *     sampled from their own image, so it's measured rather than asserted —
+ *     and the artwork stays in their browser, never in this repo, because
+ *     every push to master deploys publicly.
+ *
+ * A round is therefore either a flag or an image, and both work identically:
+ * one region is wrong, the sliders move it, the score is ΔE₀₀ against the
+ * correct value. The rest of the screen doesn't care which it's looking at.
  */
 type Round =
   | {
@@ -48,18 +52,6 @@ type Round =
       /** Where the correct value comes from. */
       spec: string;
       /** The scramble, so the image renderer can start from it. */
-      scramble: TintScramble;
-    }
-  | {
-      kind: "transit";
-      target: TransitLine;
-      /** Lines drawn alongside it, in their true colours. */
-      diagram: TransitLine[];
-      start: string;
-      truth: string;
-      title: string;
-      label: string;
-      spec: string;
       scramble: TintScramble;
     }
   | {
@@ -93,20 +85,21 @@ function flagRound(seenFlags: Set<string>): Round {
   };
 }
 
-function transitRound(seen: Set<string>): Round {
-  const pool = playableLines().filter((l) => !seen.has(l.id));
-  const source = pool.length ? pool : playableLines();
-  const target = source[Math.floor(Math.random() * source.length)];
-  const scramble = scrambleOne(target.hex);
+/**
+ * A reference the player added themselves. It reuses the image round wholesale
+ * — the only difference is that `src` is a data URL from localStorage rather
+ * than a path under public/.
+ */
+function myRound(ref: MyReference): Round {
+  const scramble = scrambleOne(ref.hex);
   return {
-    kind: "transit",
-    target,
-    diagram: diagramFor(target),
-    start: adjustHex(target.hex, scramble.hue, scramble.sat, scramble.light),
-    truth: target.hex,
-    title: "Transport for London",
-    label: `the ${target.name.replace(/ line$/, "")} line`,
-    spec: `${target.spec} (${TFL_STANDARD})`,
+    kind: "image",
+    image: { file: ref.dataUrl, name: ref.name, label: ref.label, hex: ref.hex, tolerance: ref.tolerance },
+    start: adjustHex(ref.hex, scramble.hue, scramble.sat, scramble.light),
+    truth: ref.hex,
+    title: ref.name,
+    label: ref.label,
+    spec: ref.hex,
     scramble,
   };
 }
@@ -129,21 +122,65 @@ export default function TintGamePage() {
   const [seen, setSeen] = useState<Set<string>>(new Set());
   const [locals, setLocals] = useState<LocalImageRound[]>([]);
   const [localIndex, setLocalIndex] = useState(0);
-  const [round, setRound] = useState<Round>(() => flagRound(new Set()));
+  const [mine, setMine] = useState<MyReference[]>([]);
+  // Which of the player's own references this session has already served.
+  // An index can't do the job: saving a reference mid-session inserts into the
+  // list, and a positional cursor would then skip whatever it displaced.
+  const [playedMine, setPlayedMine] = useState<Set<string>>(new Set());
+  const [importing, setImporting] = useState(false);
+  /**
+   * `null` until the client mounts, and deliberately so.
+   *
+   * Every way of building a round draws on `Math.random()` — which flag, which
+   * region, and the scramble itself. Doing that in a state initialiser means
+   * the server renders one colour and the client another, which React reports
+   * as a hydration mismatch and repairs by throwing the whole tree away. So
+   * the server renders no round at all, and the effect below picks the first
+   * one.
+   */
+  const [round, setRound] = useState<Round | null>(null);
 
   // Local images are opt-in and gitignored, so most installs have none. If a
   // manifest is there, its rounds go first — they're the ones the player
   // deliberately set up.
   useEffect(() => {
     let cancelled = false;
-    loadLocalRounds().then((rounds) => {
-      if (cancelled || rounds.length === 0) return;
-      setLocals(rounds);
-      setRound(imageRound(rounds[0]));
-      setLocalIndex(1);
+
+    // Deferred rather than read during render or synchronously in this effect.
+    // localStorage is only available on the client, so a lazy state initialiser
+    // would render a flag on the server and a personal reference on the client
+    // — a hydration mismatch. Reading it a microtask later sidesteps both that
+    // and the cascading-render warning.
+    Promise.resolve().then(() => {
+      if (cancelled) return;
+      // The player's own references come first: they went to the trouble of
+      // adding them, so they're what they want to play.
+      const own = loadMyReferences();
+      if (own.length > 0) {
+        setMine(own);
+        setRound(myRound(own[0]));
+        setPlayedMine(new Set([own[0].id]));
+        return;
+      }
+      return loadLocalRounds().then(
+        (rounds) => {
+          if (cancelled) return;
+          if (rounds.length === 0) {
+            setRound(flagRound(new Set()));
+            return;
+          }
+          setLocals(rounds);
+          setRound(imageRound(rounds[0]));
+          setLocalIndex(1);
+        },
+        // A missing or unreadable manifest is the normal case, not an error.
+        () => { if (!cancelled) setRound(flagRound(new Set())); }
+      );
     });
+
     return () => { cancelled = true; };
   }, []);
+
   const [tint, setTint] = useState<TintScramble>({ hue: 0, sat: 1, light: 0 });
   const [result, setResult] = useState<TintResult | null>(null);
   const [roundNo, setRoundNo] = useState(1);
@@ -151,10 +188,27 @@ export default function TintGamePage() {
   const [done, setDone] = useState(false);
   const [peeking, setPeeking] = useState(false);
 
+  /**
+   * Re-read after the importer saves or deletes, so the rotation stays current.
+   *
+   * A freshly saved reference also takes over the current round while that
+   * round is still unanswered: you just built it, so waiting for round 2 to
+   * see it reads as the save having done nothing.
+   */
+  const refreshMine = useCallback((saved?: MyReference) => {
+    setMine(loadMyReferences());
+    if (!saved || result) return;
+    setRound(myRound(saved));
+    setTint({ hue: 0, sat: 1, light: 0 });
+    setPeeking(false);
+    // It counts as played now, so the rotation won't serve it twice.
+    setPlayedMine((played) => new Set(played).add(saved.id));
+  }, [result]);
+
   /** The player's current colour for the scrambled region. */
   const attempt = useMemo(
-    () => adjustHex(round.start, tint.hue, tint.sat, tint.light),
-    [round.start, tint]
+    () => (round ? adjustHex(round.start, tint.hue, tint.sat, tint.light) : "#000000"),
+    [round, tint]
   );
 
   const showTruth = (peeking && !result) || result !== null;
@@ -170,56 +224,65 @@ export default function TintGamePage() {
    * sliders look broken.
    */
   const playerShift = useMemo<TintScramble>(() => ({
-    hue: round.scramble.hue + tint.hue,
-    sat: round.scramble.sat * tint.sat,
-    light: round.scramble.light + tint.light,
-  }), [round.scramble, tint]);
+    hue: (round?.scramble.hue ?? 0) + tint.hue,
+    sat: (round?.scramble.sat ?? 1) * tint.sat,
+    light: (round?.scramble.light ?? 0) + tint.light,
+  }), [round, tint]);
 
   const lockIn = useCallback(() => {
-    if (result) return;
+    if (result || !round) return;
     const r = scoreSingle(round.truth, attempt);
     setResult(r);
     setTotal((t) => t + r.points);
-  }, [result, round.truth, attempt]);
+  }, [result, round, attempt]);
 
   const next = useCallback(() => {
+    if (!round) return;
     if (roundNo >= ROUNDS) { setDone(true); return; }
-    // Work through the player's own images first, then fall back to flags.
-    if (localIndex < locals.length) {
+    // Your own references, then any files in public/tint-local, then the
+    // built-in sets alternating between categories.
+    const unplayed = mine.find((r) => !playedMine.has(r.id));
+    if (unplayed) {
+      setRound(myRound(unplayed));
+      setPlayedMine(new Set(playedMine).add(unplayed.id));
+    } else if (localIndex < locals.length) {
       setRound(imageRound(locals[localIndex]));
       setLocalIndex((i) => i + 1);
     } else {
-      // Alternate categories, so a five-round session isn't all flags or all
-      // transit lines. `seen` is shared: ids don't collide across categories.
       const nextSeen = new Set(seen);
       if (round.kind === "flag") nextSeen.add(round.flag.id);
-      if (round.kind === "transit") nextSeen.add(round.target.id);
       setSeen(nextSeen);
-      setRound(round.kind === "flag" ? transitRound(nextSeen) : flagRound(nextSeen));
+      setRound(flagRound(nextSeen));
     }
     setTint({ hue: 0, sat: 1, light: 0 });
     setResult(null);
     setRoundNo((n) => n + 1);
-  }, [roundNo, seen, round, locals, localIndex]);
+  }, [roundNo, seen, round, locals, localIndex, mine, playedMine]);
 
   const restart = useCallback(() => {
     setSeen(new Set());
-    if (locals.length > 0) {
+    if (mine.length > 0) {
+      setRound(myRound(mine[0]));
+      setPlayedMine(new Set([mine[0].id]));
+      setLocalIndex(0);
+    } else if (locals.length > 0) {
       setRound(imageRound(locals[0]));
       setLocalIndex(1);
+      setPlayedMine(new Set());
     } else {
       setRound(flagRound(new Set()));
       setLocalIndex(0);
+      setPlayedMine(new Set());
     }
     setTint({ hue: 0, sat: 1, light: 0 });
     setResult(null);
     setRoundNo(1); setTotal(0); setDone(false);
-  }, [locals]);
+  }, [locals, mine]);
 
   if (done) {
     return (
       <div className="rise flex min-h-svh flex-col items-center justify-center gap-7 px-5 py-10">
-        <Trophy className="h-14 w-14 text-[#c9a825] drop-shadow-[0_0_20px_rgba(201,168,37,0.7)]" />
+        <Trophy className="h-14 w-14 text-answer-yellow drop-shadow-[0_0_20px_rgba(201,168,37,0.7)]" />
         <div className="text-center">
           <h1 className="font-headline neon text-5xl font-extrabold tracking-tight sm:text-6xl">{total}</h1>
           <p className="mt-2 text-white/55">out of {ROUNDS * 100}</p>
@@ -244,14 +307,39 @@ export default function TintGamePage() {
           <PaletteIcon className="h-3.5 w-3.5" />
           Round {roundNo} / {ROUNDS}
         </div>
-        <div className="font-headline text-lg font-extrabold tabular-nums text-white">{total}</div>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => setImporting(true)}
+            aria-label="Add your own reference"
+            title="Add your own reference"
+            className="tap-target rounded-full text-white/50 transition-colors hover:text-primary"
+          >
+            <Plus className="h-4 w-4" />
+          </button>
+          <span className="font-headline text-lg font-extrabold tabular-nums text-white">{total}</span>
+        </div>
       </div>
 
+      <ReferenceImporter
+        open={importing}
+        onClose={() => setImporting(false)}
+        onSaved={refreshMine}
+      />
+
+      {!round ? (
+        /* One frame at most — the mount effect picks a round immediately. A
+           spinner would only flash, so this just holds the stage's footprint
+           so nothing jumps when the round arrives. */
+        <div className="mx-auto flex w-full max-w-xl flex-1 items-center justify-center">
+          <div className="h-64 w-64 rounded-3xl bg-white/[0.03]" />
+        </div>
+      ) : (
       <div className="mx-auto flex w-full max-w-xl flex-1 flex-col items-center justify-center gap-4 sm:gap-5">
         <div className="text-center">
           <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-white/45">{round.title}</p>
           <h1 className="mt-1 text-lg font-bold text-white/90 sm:text-xl">
-            Find <span className="text-[#ff9062]">{round.label}</span>
+            Find <span className="text-primary">{round.label}</span>
           </h1>
         </div>
 
@@ -277,7 +365,7 @@ export default function TintGamePage() {
             <Compare caption="Yours" hex={attempt} tone="text-white/60">
               <Subject round={round} shown={attempt} width={215} imageShift={playerShift} />
             </Compare>
-            <Compare caption="Official" hex={round.truth} tone="text-[#66bb6a]" highlight>
+            <Compare caption="Official" hex={round.truth} tone="text-answer-green" highlight>
               <Subject round={round} shown={round.truth} width={215} imageShift={playerShift} />
             </Compare>
           </div>
@@ -321,10 +409,26 @@ export default function TintGamePage() {
                 <Check className="h-5 w-5" /> Lock it in
               </button>
             </div>
+
+            {/* Cartoon characters are half the game, but the repo can't ship
+                the artwork, so they only exist once the player adds one. With
+                nothing added, every round is a flag and the `+` in the header
+                is easy to miss entirely — hence one nudge, shown only while
+                the shelf is empty. */}
+            {mine.length === 0 && (
+              <button
+                type="button"
+                onClick={() => setImporting(true)}
+                className="mx-auto flex items-center gap-1.5 pt-1 text-xs font-bold text-white/35 transition-colors hover:text-primary"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                Play a cartoon character instead
+              </button>
+            )}
           </div>
         ) : (
           <div className="w-full max-w-lg text-center">
-            <p className={`font-headline text-4xl font-extrabold ${result.points >= 90 ? "text-[#66bb6a]" : "text-white"}`}>
+            <p className={`font-headline text-4xl font-extrabold ${result.points >= 90 ? "text-answer-green" : "text-white"}`}>
               +{result.points}
             </p>
             <p className="mt-1 text-white/70">{result.verdict}</p>
@@ -333,13 +437,6 @@ export default function TintGamePage() {
                 <>
                   {round.flag.name} specifies {round.label} as{" "}
                   <span className="font-bold text-white/70">{round.spec}</span>.
-                </>
-              )}
-              {round.kind === "transit" && (
-                <>
-                  TfL specifies {round.label} as{" "}
-                  <span className="font-bold text-white/70">{round.target.spec}</span>{" "}
-                  — {round.truth}, per the {TFL_STANDARD}.
                 </>
               )}
               {round.kind === "image" && (
@@ -355,6 +452,7 @@ export default function TintGamePage() {
           </div>
         )}
       </div>
+      )}
     </div>
   );
 }
@@ -389,27 +487,12 @@ function Subject({
     );
   }
 
-  if (round.kind === "transit") {
-    return (
-      <TransitDiagram
-        lines={round.diagram}
-        colors={{
-          ...Object.fromEntries(round.diagram.map((l) => [l.id, l.hex])),
-          [round.target.id]: shown,
-        }}
-        targetId={round.target.id}
-        width={width}
-        title={withTitle ? `Transit diagram highlighting ${round.target.name}` : undefined}
-      />
-    );
-  }
-
   // Images recolour pixels rather than swapping a fill, so the transform has to
   // be expressed as a shift from the original rather than an absolute colour.
   const atTruth = shown === round.truth;
   return (
     <ImageTint
-      src={`/tint-local/${round.image.file}`}
+      src={round.image.file.startsWith("data:") ? round.image.file : `/tint-local/${round.image.file}`}
       targetHex={round.truth}
       tolerance={round.image.tolerance ?? 22}
       hueShift={atTruth ? 0 : imageShift.hue}
@@ -433,12 +516,12 @@ function Compare({
 }) {
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className={`surface rounded-2xl p-2 ${highlight ? "outline outline-2 outline-[#66bb6a]/60" : ""}`}>
+      <div className={`surface rounded-2xl p-2 ${highlight ? "outline outline-2 outline-answer-green/60" : ""}`}>
         <div className="overflow-hidden rounded-lg">{children}</div>
       </div>
       <div className="flex items-center gap-2">
         <span
-          className="h-4 w-4 rounded-md shadow-[inset_0_1px_0_0_rgba(255,255,255,0.3)]"
+          className="h-4 w-4 rounded-lg shadow-[inset_0_1px_0_0_rgba(255,255,255,0.3)]"
           style={{ backgroundColor: hex }}
         />
         <span className={`font-headline text-[11px] font-bold uppercase tracking-[0.16em] ${tone}`}>

@@ -1,3 +1,14 @@
+/**
+ * PARKED — not wired into any game.
+ *
+ * The Tint game deliberately carries two categories only: flags (published
+ * specs) and cartoon characters the player imports themselves. Transit lines
+ * were a third; they were removed from the rotation on 2026-09-07 at the
+ * project owner's request, not because anything here is wrong.
+ *
+ * Renders the generic route diagram those lines were shown on. Kept beside
+ * src/lib/games/transit.ts so the pair can be revived together.
+ */
 "use client";
 
 import type { TransitLine } from "@/lib/games/transit";
