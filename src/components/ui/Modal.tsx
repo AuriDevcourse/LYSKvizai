@@ -100,7 +100,7 @@ export default function Modal({
         className="glass animate-fade-in-up safe-bottom w-full max-w-md rounded-3xl p-6 outline-none"
       >
         <div className="mb-4 flex items-start justify-between gap-4">
-          <h2 className="text-xl font-extrabold tracking-tight text-white">{title}</h2>
+          <h2 className="font-headline text-xl font-extrabold tracking-tight text-white">{title}</h2>
           {dismissible && (
             <button
               type="button"

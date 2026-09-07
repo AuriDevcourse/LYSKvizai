@@ -46,7 +46,7 @@ export default function PlayerLobby({
         <div className="rounded-full bg-white/5 p-1.5">
           <Avatar value={playerEmoji} size={88} />
         </div>
-        <h1 className="text-3xl font-extrabold text-white">{playerName}</h1>
+        <h1 className="font-headline text-3xl font-extrabold text-white">{playerName}</h1>
       </div>
 
       {/* Status */}

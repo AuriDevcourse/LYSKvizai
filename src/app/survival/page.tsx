@@ -213,7 +213,7 @@ function SurvivalInner() {
       <main className="relative z-10 flex w-full max-w-xl flex-1 flex-col justify-center px-5 py-8 sm:px-8">
         {gameOver ? (
           <div className="flex flex-col items-center gap-6 animate-fade-in-up">
-            <h2 className="text-3xl font-extrabold text-white">{t("survival.gameOver")}</h2>
+            <h2 className="font-headline text-3xl font-extrabold text-white">{t("survival.gameOver")}</h2>
 
             <div className="flex flex-col items-center gap-1">
               <span className="text-6xl font-extrabold text-yellow-300 animate-bounce-in">

@@ -40,10 +40,28 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
   const isMe = (id: string) => id === currentPlayerId;
 
   return (
-    <div className="flex w-full flex-col items-center gap-6">
+    <div className="relative flex w-full flex-col items-center gap-6">
+      {/*
+       * The celebration plate: shapes bursting from below, with the centre left
+       * clear for the winner's name and score.
+       *
+       * Confetti already fires here, and for a while that was my reason not to
+       * add this. They do different jobs: Confetti is a two-second burst, this
+       * is the ground the whole screen stands on for as long as the results are
+       * up. An overlay with no ground of its own, so the aurora still shows.
+       */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -inset-x-16 -inset-y-10 -z-10 motion-reduce:opacity-60"
+        style={{
+          backgroundImage: "url(/bg-celebrate.svg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
       {/* Trophy icon */}
       <Trophy className="h-12 w-12 text-answer-yellow animate-bounce-in" />
-      <h2 className="text-3xl font-extrabold text-white sm:text-4xl animate-fade-in-up">
+      <h2 className="font-headline text-3xl font-extrabold text-white sm:text-4xl animate-fade-in-up">
         {t("leaderboard.finalResults")}
       </h2>
 

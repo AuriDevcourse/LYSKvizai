@@ -75,7 +75,7 @@ export default function FastestFingerInput({
           {question.index + 1} / {question.total}
         </div>
         <div className="glass rounded-2xl px-5 py-4 text-center">
-          <h2 className="text-lg font-extrabold text-white">{qText}</h2>
+          <h2 className="font-headline text-lg font-extrabold text-white">{qText}</h2>
         </div>
         <div className="flex items-center justify-center gap-2 rounded-xl bg-answer-yellow/20 px-4 py-2 text-sm font-bold text-answer-yellow">
           <Zap className="h-4 w-4" />
@@ -119,7 +119,7 @@ export default function FastestFingerInput({
 
       {/* Question text */}
       <div className="glass rounded-2xl px-5 py-4 text-center">
-        <h2 className="text-lg font-extrabold text-white">{qText}</h2>
+        <h2 className="font-headline text-lg font-extrabold text-white">{qText}</h2>
       </div>
 
       {/* Image */}
@@ -150,7 +150,7 @@ export default function FastestFingerInput({
         <button
           onClick={handleSubmit}
           disabled={!text.trim()}
-          className="min-h-[56px] w-full rounded-2xl bg-[#5a9e3e] px-6 py-4 text-lg font-extrabold text-white transition-all hover:brightness-110 active:brightness-90 disabled:cursor-not-allowed disabled:opacity-40"
+          className="min-h-[56px] w-full rounded-2xl bg-answer-green px-6 py-4 text-lg font-extrabold text-background transition-all hover:brightness-110 active:brightness-90 disabled:cursor-not-allowed disabled:opacity-40"
         >
           {t("fastestFinger.submit")}
         </button>

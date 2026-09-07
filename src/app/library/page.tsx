@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { isOrphan } from "@/lib/library-types";
 import type { LibraryQuestionsPayload, LibraryAssetsPayload, LibraryAsset } from "@/lib/library-types";
+import { EmptyPile } from "@/components/BrandArt";
 
 /**
  * The library — one place to actually look at what the app contains.
@@ -103,7 +104,19 @@ export default function LibraryPage() {
 /* ------------------------------------------------------------------ shared */
 
 function Empty({ children }: { children: React.ReactNode }) {
-  return <p className="py-16 text-center text-white/50">{children}</p>;
+  return (
+    <div className="flex flex-col items-center gap-5 py-14 text-center">
+      {/*
+       * The empty-state plate: a few chunky shapes set down in a pile. An
+       * overlay with no ground of its own, so the page's atmosphere shows
+       * through it. `xMidYMax meet` inside the file, because it is one
+       * illustration rather than a texture. Inlined as a component so the fills
+       * come from palette tokens and it costs no extra request.
+       */}
+      <EmptyPile className="pointer-events-none h-[110px] w-[180px] select-none" />
+      <p className="font-headline text-base font-extrabold text-white/60">{children}</p>
+    </div>
+  );
 }
 
 function Loading() {
@@ -386,7 +399,7 @@ function QuestionRow({
                     key={i}
                     className={`rounded-lg px-3 py-1.5 text-sm ${
                       highlight
-                        ? "bg-answer-green/18 font-bold text-[#8fdd93]"
+                        ? "bg-answer-green/18 font-bold text-answer-green-lit"
                         : "bg-white/[0.04] text-white/55"
                     }`}
                   >
@@ -402,7 +415,7 @@ function QuestionRow({
                `correct: 0` as a meaningless default. Rendering that grid drew
                four blank pills with a tick on the first, which reads as "the
                answer is blank". So the real answer is shown instead. */
-            <p className="rounded-lg bg-answer-green/15 px-3 py-2 text-sm font-bold text-[#8fdd93]">
+            <p className="rounded-lg bg-answer-green/15 px-3 py-2 text-sm font-bold text-answer-green-lit">
               {!showAnswer
                 ? "Answer hidden"
                 : item.correctYear !== undefined

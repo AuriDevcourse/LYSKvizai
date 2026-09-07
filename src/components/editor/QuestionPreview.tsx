@@ -94,12 +94,12 @@ export default function QuestionPreview({
 
         {/* Types that aren't multiple choice show what they actually need. */}
         {type === "year-guesser" && (
-          <p className="text-center text-sm font-bold text-[#8fdd93]">
+          <p className="text-center text-sm font-bold text-answer-green-lit">
             Answer: {question.correctYear ?? "— no year set, this question can't be scored"}
           </p>
         )}
         {type === "fastest-finger" && (
-          <p className="text-center text-sm font-bold text-[#8fdd93]">
+          <p className="text-center text-sm font-bold text-answer-green-lit">
             Accepts: {question.acceptedAnswers?.join(" · ") ?? "— nothing set, no answer can be right"}
           </p>
         )}

@@ -64,7 +64,7 @@ export default function HostResults({
         {/* Question text */}
         <div className="flex flex-1 flex-col items-center justify-center gap-2 sm:gap-4">
           <div className="glass max-w-3xl rounded-2xl px-5 py-3 sm:px-8 sm:py-6">
-            <h2 className="text-center text-lg font-extrabold leading-snug text-white sm:text-3xl lg:text-4xl">
+            <h2 className="font-headline text-center text-lg font-extrabold leading-snug text-white sm:text-3xl lg:text-4xl">
               {qText}
             </h2>
           </div>

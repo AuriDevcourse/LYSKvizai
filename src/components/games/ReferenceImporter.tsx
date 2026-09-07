@@ -142,7 +142,7 @@ export default function ReferenceImporter({ open, onClose, onSaved }: ReferenceI
             colour by clicking it, so the answer is measured from the image
             rather than typed.
           </p>
-          <label className="flex min-h-[120px] cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-[1.5px] border-dashed border-white/15 bg-white/[0.03] transition-colors hover:border-[#ff9062]/50 hover:bg-white/[0.06]">
+          <label className="flex min-h-[120px] cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-[1.5px] border-dashed border-white/15 bg-white/[0.03] transition-colors hover:border-primary/50 hover:bg-white/[0.06]">
             <Upload className="h-6 w-6 text-white/50" />
             <span className="text-sm font-bold text-white/70">Choose an image</span>
             <input
@@ -172,7 +172,7 @@ export default function ReferenceImporter({ open, onClose, onSaved }: ReferenceI
                   <button
                     onClick={() => remove(r.id)}
                     aria-label={`Delete ${r.name}`}
-                    className="tap-target -mr-2 shrink-0 rounded-lg text-white/35 hover:text-[#ff716c]"
+                    className="tap-target -mr-2 shrink-0 rounded-lg text-white/35 hover:text-error"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -241,19 +241,19 @@ export default function ReferenceImporter({ open, onClose, onSaved }: ReferenceI
                 <input
                   value={name} onChange={(e) => setName(e.target.value)}
                   placeholder="Subject" aria-label="Subject name" maxLength={40}
-                  className="min-h-[44px] rounded-xl border-[1.5px] border-white/10 bg-white/5 px-3 text-sm text-white placeholder:text-white/45 focus:border-[#ff9062]/50 focus:outline-none"
+                  className="min-h-[44px] rounded-xl border-[1.5px] border-white/10 bg-white/5 px-3 text-sm text-white placeholder:text-white/45 focus:border-primary/50 focus:outline-none"
                 />
                 <input
                   value={label} onChange={(e) => setLabel(e.target.value)}
                   placeholder="e.g. the yellow body" aria-label="What to restore" maxLength={40}
-                  className="min-h-[44px] rounded-xl border-[1.5px] border-white/10 bg-white/5 px-3 text-sm text-white placeholder:text-white/45 focus:border-[#ff9062]/50 focus:outline-none"
+                  className="min-h-[44px] rounded-xl border-[1.5px] border-white/10 bg-white/5 px-3 text-sm text-white placeholder:text-white/45 focus:border-primary/50 focus:outline-none"
                 />
               </div>
             </>
           )}
 
           {error && (
-            <p role="alert" className="rounded-xl border-[1.5px] border-[#ff716c]/30 bg-[#ff716c]/10 px-3 py-2 text-xs text-[#ff716c]">
+            <p role="alert" className="rounded-xl border-[1.5px] border-error/30 bg-error/10 px-3 py-2 text-xs text-error">
               {error}
             </p>
           )}

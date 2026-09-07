@@ -60,7 +60,7 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-6">
         <Flame className="h-14 w-14 text-red-400" />
-        <h2 className="text-2xl font-extrabold text-white">SUPER WAGER</h2>
+        <h2 className="font-headline text-2xl font-extrabold text-white">SUPER WAGER</h2>
 
         <div className="rounded-xl border-[1.5px] border-white/8 bg-white/5 px-6 py-3 text-center">
           <p className="text-xs text-white/50">{t("wager.yourPoints")}</p>
@@ -98,7 +98,7 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-5">
       <Coins className="h-12 w-12 text-answer-yellow" />
-      <h2 className="text-2xl font-extrabold text-white">{t("wager.roundExclaim")}</h2>
+      <h2 className="font-headline text-2xl font-extrabold text-white">{t("wager.roundExclaim")}</h2>
 
       <div className="rounded-xl border-[1.5px] border-white/8 bg-white/5 px-6 py-3 text-center">
         <p className="text-xs text-white/50">{t("wager.yourPoints")}</p>

@@ -8,6 +8,7 @@ import { useTranslation } from "@/lib/i18n/LanguageContext";
 import QRCodeComponent from "./QRCode";
 import RoomCodeDisplay from "./RoomCodeDisplay";
 import Avatar from "@/components/Avatar";
+import Logo from "@/components/Logo";
 
 interface HostLobbyProps {
   code: string;
@@ -51,10 +52,25 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
   }, [code]);
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-7">
+    <div className="relative flex flex-1 flex-col items-center justify-center gap-7">
+      {/*
+       * The lobby plate: dim shapes scattered clear of the middle band, where
+       * the room code sits. An overlay with no ground of its own, so the global
+       * aurora still shows through it. The results screen deliberately does not
+       * get one, since Confetti and .spotlight already treat that moment.
+       */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-100 motion-reduce:opacity-60"
+        style={{
+          backgroundImage: "url(/bg-lobby.svg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
       <div className="flex items-center gap-3">
-        <h1 className="neon font-headline text-4xl font-extrabold tracking-tight sm:text-5xl">
-          Quizmo
+        <h1 className="logo-glow text-4xl sm:text-5xl">
+          <Logo />
         </h1>
         <button
           onClick={toggleMute}

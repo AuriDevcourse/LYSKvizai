@@ -90,7 +90,7 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
                 </div>
               )}
               <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${theme.bg}`}>
-                <Icon className="h-6 w-6 text-white" />
+                <Icon className="h-6 w-6" />
               </div>
               <span className="text-[11px] font-bold text-white/50">
                 {quiz.questionCount} {t("quizPicker.q")}

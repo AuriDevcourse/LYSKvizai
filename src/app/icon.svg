@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Quizmo">
+  <title>Quizmo</title>
+  <!--
+    The Quizmo mark: a fat rounded Q, tilted six degrees so it sits in motion
+    rather than at attention.
+
+    The counter is knocked out, not filled, so the mark drops onto any ground.
+    Nothing sits inside it: every variant with a shape in the counter read as a
+    magnifying glass once reduced to 32px, which is the failure this drawing went
+    through three rounds to escape (thin ring plus long tail reads as a magnifier;
+    thick ring plus small counter reads as a balloon).
+
+    The counter is a rounded square rather than a circle, which echoes the fourth
+    answer shape without reproducing Kahoot's four-shape grid.
+
+    Geometry on a 512 grid; the PNG ladder rasterises from these same numbers.
+  -->
+  <defs>
+    <mask id="q-counter-primary" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <rect width="512" height="512" fill="#fff"/>
+      <rect x="170" y="162" width="172" height="172" rx="44" fill="#000"/>
+    </mask>
+  </defs>
+  <g transform="rotate(-6 256 248)">
+    <g mask="url(#q-counter-primary)">
+      <line x1="326.7" y1="318.7" x2="410.1" y2="402.1" stroke="#ff9062"
+            stroke-width="104" stroke-linecap="round"/>
+      <circle cx="256" cy="248" r="168" fill="#ff9062"/>
+    </g>
+  </g>
+</svg>

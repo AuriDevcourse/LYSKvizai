@@ -276,7 +276,7 @@ function CharadesInner() {
           <Smartphone className="h-14 w-14 text-white/50" />
           <Smartphone className="h-14 w-14 text-white rotate-90" />
         </div>
-        <h1 className="text-4xl font-extrabold text-white">
+        <h1 className="font-headline text-4xl font-extrabold text-white">
           {t("charades.title")}
         </h1>
         <div className="flex flex-col items-center gap-3 text-center">
@@ -327,7 +327,7 @@ function CharadesInner() {
   if (phase === "results") {
     return (
       <div className="flex min-h-svh flex-col items-center justify-center gap-6 px-6">
-        <h1 className="text-3xl font-extrabold text-white">
+        <h1 className="font-headline text-3xl font-extrabold text-white">
           {t("charades.timeUp")}
         </h1>
 
@@ -419,7 +419,7 @@ function CharadesInner() {
             )}
           </div>
         ) : (
-          <h1 className="text-center text-5xl font-black leading-tight text-white sm:text-7xl lg:text-8xl animate-fade-in-up">
+          <h1 className="font-headline text-center text-5xl font-black leading-tight text-white sm:text-7xl lg:text-8xl animate-fade-in-up">
             {currentWord}
           </h1>
         )}

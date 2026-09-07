@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans, Be_Vietnam_Pro } from "next/font/google";
+import { Baloo_2, Be_Vietnam_Pro } from "next/font/google";
 import BottomNav from "@/components/BottomNav";
 import DevAgentation from "@/components/DevAgentation";
 import FeedbackButton from "@/components/FeedbackButton";
@@ -17,8 +17,13 @@ import "./globals.css";
  *
  * `latin-ext` stays. Lithuanian removed as an *interface* language, but player
  * names are free text and Bačiauskas needs the č.
+ *
+ * The display face is Baloo 2, not Plus Jakarta Sans. The logo's drawn Q is the
+ * capital of the typeset word rather than a mark sitting beside it, so the drawn
+ * letter and the typeset ones have to belong to one alphabet: Baloo's rounded
+ * terminals are the same gesture as the mark's tail. See BRAND.md revision 03.
  */
-const plusJakartaSans = Plus_Jakarta_Sans({
+const baloo2 = Baloo_2({
   variable: "--font-headline",
   subsets: ["latin", "latin-ext"],
 });
@@ -53,6 +58,10 @@ export const metadata: Metadata = {
   description: "Interactive quizzes. Play solo or with friends!",
   manifest: "/manifest.json",
   icons: {
+    /**
+     * `src/app/icon.svg` is picked up automatically and served first. This
+     * entry is the fallback for clients that will not take an SVG favicon.
+     */
     icon: "/favicon.png",
     apple: "/icons/apple-touch-icon.png",
   },
@@ -77,11 +86,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${plusJakartaSans.variable} ${beVietnamPro.variable} font-body antialiased`}>
+      <body className={`${baloo2.variable} ${beVietnamPro.variable} font-body antialiased`}>
         {/* Atmosphere. Fixed, pointer-events:none, GPU-composited — they sit
             behind (aurora, vignette) and above (grain) every screen so the app
             reads as one lit space rather than a stack of dark pages. */}
         <div className="aurora" aria-hidden="true" />
+        <div className="shapes" aria-hidden="true" />
         <div className="vignette" aria-hidden="true" />
         <div className="grain" aria-hidden="true" />
         <LanguageProvider>

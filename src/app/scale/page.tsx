@@ -158,7 +158,7 @@ export default function ScaleGamePage() {
       </div>
 
       <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-8">
-        <h1 className="text-center text-lg font-bold text-white/85 sm:text-xl">
+        <h1 className="font-headline text-center text-lg font-bold text-white/85 sm:text-xl">
           How big is the{" "}
           <span className="text-primary">{round.target.name.toLowerCase()}</span>{" "}
           next to the {round.reference.name.toLowerCase()}?

@@ -26,7 +26,7 @@ export default function StreakBadge({ streak, className = "" }: StreakBadgeProps
     <div
       className={`animate-streak flex items-center gap-1.5 rounded-full border-[1.5px] px-3 py-1 ${
         hot
-          ? "border-primary/50 bg-primary-dim/25 text-[#ffb08c]"
+          ? "border-primary/50 bg-primary-dim/25 text-primary-lit"
           : "border-white/10 bg-white/5 text-orange-300"
       } ${className}`}
       title={`${streak} correct in a row`}

@@ -121,14 +121,14 @@ export default function PlayerResults({ playerId, results, question, onReact, ch
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/5">
             <Eye className="h-9 w-9 text-white/70" />
           </div>
-          <h2 className="text-xl font-extrabold text-white/70">Spectating</h2>
+          <h2 className="font-headline text-xl font-extrabold text-white/70">Spectating</h2>
         </div>
       ) : (
         <div className="flex flex-col items-center gap-2">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/5">
             <Clock className="h-9 w-9 text-white" />
           </div>
-          <h2 className="text-xl font-extrabold text-white">{t("playerResults.noAnswer")}</h2>
+          <h2 className="font-headline text-xl font-extrabold text-white">{t("playerResults.noAnswer")}</h2>
         </div>
       )}
 

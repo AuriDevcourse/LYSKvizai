@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <!--
+    Quizmo background plate: celebrate. Burst from below for results and winner screens. Central band left clear.
+
+    Authored, not generated. No opaque ground of its own, so whatever sits behind
+    it still shows through; the app mounts its atmosphere once in layout.tsx and
+    forbids per page backgrounds. Drop it in as an absolutely positioned,
+    pointer-events none overlay and set its own opacity to taste.
+  -->
+  <defs><radialGradient id="cel-glow" cx="50%" cy="98%" r="55%"><stop offset="0" stop-color="#ff793e" stop-opacity=".45"/><stop offset="1" stop-color="#ff793e" stop-opacity="0"/></radialGradient></defs>
+  <rect width="1600" height="900" fill="url(#cel-glow)"/>
+  <rect x="46" y="410" width="82" height="82" rx="23" transform="rotate(45 87 451)" fill="#c9a825" opacity="0.96"/>
+  <rect x="1492" y="523" width="42" height="42" rx="12" transform="rotate(7 1513 544)" fill="#66bb6a" opacity="0.89"/>
+  <rect x="1067" y="759" width="67" height="67" rx="19" transform="rotate(-2 1101 793)" fill="#ff716c" opacity="0.78"/>
+  <rect x="119" y="268" width="62" height="62" rx="17" transform="rotate(-19 150 299)" fill="#ff9062" opacity="1.00"/>
+  <rect x="707" y="34" width="54" height="54" rx="15" transform="rotate(45 734 61)" fill="#43a5fc" opacity="0.97"/>
+  <rect x="149" y="79" width="82" height="82" rx="23" transform="rotate(45 190 120)" fill="#66bb6a" opacity="1.00"/>
+  <rect x="156" y="196" width="59" height="59" rx="16" transform="rotate(3 186 225)" fill="#c9a825" opacity="0.75"/>
+  <rect x="445" y="715" width="73" height="73" rx="20" transform="rotate(9 482 752)" fill="#c9a825" opacity="0.84"/>
+  <g opacity="0.75"><path d="M512,56 L437,-57 L573,-65 Z" fill="#ff9062" stroke="#ff9062" stroke-width="46" stroke-linejoin="round"/></g>
+  <rect x="285" y="726" width="43" height="43" rx="12" transform="rotate(45 307 748)" fill="#c9a825" opacity="0.81"/>
+  <g opacity="0.97"><path d="M842,123 L883,113 L872,154 Z" fill="#43a5fc" stroke="#43a5fc" stroke-width="14" stroke-linejoin="round"/></g>
+  <rect x="1478" y="528" width="63" height="63" rx="18" transform="rotate(45 1510 560)" fill="#ff9062" opacity="0.98"/>
+  <rect x="1080" y="778" width="50" height="50" rx="14" transform="rotate(45 1105 804)" fill="#43a5fc" opacity="0.96"/>
+  <rect x="1160" y="723" width="30" height="30" rx="8" transform="rotate(45 1174 738)" fill="#ff716c" opacity="0.80"/>
+  <rect x="454" y="8" width="89" height="89" rx="25" transform="rotate(45 499 53)" fill="#43a5fc" opacity="0.80"/>
+  <rect x="56" y="313" width="109" height="109" rx="30" transform="rotate(15 110 368)" fill="#ff9062" opacity="0.93"/>
+  <circle cx="119" cy="771" r="20" fill="#ff9062" opacity="0.79"/>
+  <rect x="172" y="709" width="49" height="49" rx="14" transform="rotate(45 196 733)" fill="#66bb6a" opacity="0.95"/>
+  <g opacity="0.90"><path d="M1157,749 L1197,794 L1139,806 Z" fill="#ff9062" stroke="#ff9062" stroke-width="20" stroke-linejoin="round"/></g>
+  <rect x="1357" y="737" width="56" height="56" rx="16" transform="rotate(8 1385 765)" fill="#c9a825" opacity="0.78"/>
+  <rect x="1075" y="57" width="132" height="132" rx="37" transform="rotate(9 1141 123)" fill="#ff9062" opacity="0.91"/>
+  <g opacity="0.76"><path d="M1097,739 L1116,720 L1123,746 Z" fill="#c9a825" stroke="#c9a825" stroke-width="9" stroke-linejoin="round"/></g>
+  <g opacity="0.85"><path d="M1513,452 L1468,388 L1546,382 Z" fill="#43a5fc" stroke="#43a5fc" stroke-width="26" stroke-linejoin="round"/></g>
+  <g opacity="0.79"><path d="M1173,32 L1212,-3 L1223,49 Z" fill="#c9a825" stroke="#c9a825" stroke-width="18" stroke-linejoin="round"/></g>
+  <g opacity="0.92"><path d="M1708,516 L1628,565 L1625,471 Z" fill="#ff9062" stroke="#ff9062" stroke-width="32" stroke-linejoin="round"/></g>
+  <circle cx="1682" cy="317" r="72" fill="#ff716c" opacity="0.79"/>
+  <circle cx="1680" cy="633" r="41" fill="#ff716c" opacity="1.00"/>
+  <circle cx="1346" cy="738" r="25" fill="#43a5fc" opacity="0.97"/>
+  <rect x="1242" y="760" width="53" height="53" rx="15" transform="rotate(-5 1269 786)" fill="#66bb6a" opacity="0.75"/>
+  <rect x="1158" y="723" width="88" height="88" rx="25" transform="rotate(-6 1202 766)" fill="#43a5fc" opacity="0.86"/>
+  <g opacity="0.96"><path d="M31,439 L-37,528 L-80,425 Z" fill="#ff9062" stroke="#ff9062" stroke-width="37" stroke-linejoin="round"/></g>
+  <rect x="1495" y="263" width="130" height="130" rx="36" transform="rotate(-21 1560 328)" fill="#ff716c" opacity="0.91"/>
+  <rect x="1593" y="498" width="94" height="94" rx="26" transform="rotate(45 1640 545)" fill="#43a5fc" opacity="0.79"/>
+  <g opacity="0.92"><path d="M1469,428 L1433,505 L1384,435 Z" fill="#c9a825" stroke="#c9a825" stroke-width="29" stroke-linejoin="round"/></g>
+  <rect x="124" y="468" width="61" height="61" rx="17" transform="rotate(-13 154 498)" fill="#c9a825" opacity="0.79"/>
+  <circle cx="-39" cy="285" r="44" fill="#66bb6a" opacity="0.96"/>
+  <g opacity="0.76"><path d="M809,181 L761,105 L851,101 Z" fill="#43a5fc" stroke="#43a5fc" stroke-width="30" stroke-linejoin="round"/></g>
+  <circle cx="-29" cy="390" r="60" fill="#66bb6a" opacity="0.92"/>
+  <rect x="382" y="33" width="54" height="54" rx="15" transform="rotate(45 409 60)" fill="#66bb6a" opacity="0.90"/>
+  <rect x="878" y="-2" width="56" height="56" rx="16" transform="rotate(45 906 26)" fill="#ff9062" opacity="0.89"/>
+  <circle cx="1452" cy="207" r="40" fill="#ff716c" opacity="0.81"/>
+  <circle cx="1032" cy="-38" r="69" fill="#ff9062" opacity="0.94"/>
+  <rect x="362" y="-27" width="66" height="66" rx="18" transform="rotate(45 395 6)" fill="#43a5fc" opacity="0.81"/>
+  <circle cx="89" cy="340" r="37" fill="#c9a825" opacity="0.95"/>
+  <g opacity="0.76"><path d="M1466,173 L1463,92 L1534,130 Z" fill="#c9a825" stroke="#c9a825" stroke-width="27" stroke-linejoin="round"/></g>
+  <rect x="1241" y="794" width="38" height="38" rx="11" transform="rotate(45 1260 813)" fill="#ff9062" opacity="0.95"/>
+  <rect x="301" y="711" width="33" height="33" rx="9" transform="rotate(45 317 728)" fill="#66bb6a" opacity="0.93"/>
+  <rect x="1562" y="239" width="65" height="65" rx="18" transform="rotate(12 1595 272)" fill="#66bb6a" opacity="0.97"/>
+  <circle cx="1164" cy="771" r="32" fill="#43a5fc" opacity="0.88"/>
+  <g opacity="0.98"><path d="M796,106 L822,157 L764,154 Z" fill="#66bb6a" stroke="#66bb6a" stroke-width="19" stroke-linejoin="round"/></g>
+  <circle cx="1540" cy="252" r="58" fill="#66bb6a" opacity="0.87"/>
+  <rect x="243" y="752" width="77" height="77" rx="22" transform="rotate(-2 281 790)" fill="#66bb6a" opacity="0.80"/>
+  <rect x="554" y="694" width="35" height="35" rx="10" transform="rotate(-17 572 712)" fill="#43a5fc" opacity="0.81"/>
+  <circle cx="23" cy="517" r="30" fill="#ff716c" opacity="0.77"/>
+  <g opacity="0.85"><path d="M551,77 L670,56 L628,169 Z" fill="#ff716c" stroke="#ff716c" stroke-width="40" stroke-linejoin="round"/></g>
+  <rect x="1288" y="98" width="73" height="73" rx="20" transform="rotate(45 1325 135)" fill="#ff9062" opacity="0.87"/>
+  <circle cx="1142" cy="770" r="41" fill="#c9a825" opacity="0.93"/>
+  <rect x="102" y="145" width="74" height="74" rx="21" transform="rotate(-1 140 182)" fill="#ff716c" opacity="0.82"/>
+  <rect x="1283" y="84" width="51" height="51" rx="14" transform="rotate(6 1308 109)" fill="#c9a825" opacity="0.88"/>
+  <rect x="24" y="255" width="66" height="66" rx="18" transform="rotate(45 57 288)" fill="#43a5fc" opacity="0.96"/>
+  <rect x="67" y="355" width="102" height="102" rx="28" transform="rotate(45 117 406)" fill="#43a5fc" opacity="0.92"/>
+  <circle cx="-60" cy="634" r="34" fill="#ff9062" opacity="0.84"/>
+  <circle cx="335" cy="788" r="27" fill="#43a5fc" opacity="0.87"/>
+  <rect x="1595" y="668" width="66" height="66" rx="18" transform="rotate(45 1628 701)" fill="#66bb6a" opacity="0.94"/>
+  <rect x="-109" y="610" width="92" height="92" rx="26" transform="rotate(45 -63 656)" fill="#43a5fc" opacity="0.86"/>
+  <rect x="-22" y="650" width="42" height="42" rx="12" transform="rotate(45 -1 672)" fill="#ff9062" opacity="0.90"/>
+</svg>

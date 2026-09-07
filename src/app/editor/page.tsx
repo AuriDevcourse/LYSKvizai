@@ -129,7 +129,7 @@ export default function EditorPage() {
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white">{t("editor.title")}</h1>
+            <h1 className="font-headline text-2xl font-bold text-white">{t("editor.title")}</h1>
             <p className="text-sm text-white/50">{t("editor.quizLibrary")}</p>
           </div>
           <div className="flex items-center gap-2">
@@ -205,7 +205,7 @@ export default function EditorPage() {
                   const Icon = theme.icon;
                   return (
                     <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${theme.bg}`}>
-                      <Icon className="h-6 w-6 text-white" />
+                      <Icon className="h-6 w-6" />
                     </div>
                   );
                 })()}

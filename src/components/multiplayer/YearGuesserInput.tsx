@@ -118,7 +118,7 @@ export default function YearGuesserInput({
           <Calendar className="h-3.5 w-3.5" />
           {t("yearGuesser.title")}
         </div>
-        <h2 className="text-lg font-extrabold text-white">
+        <h2 className="font-headline text-lg font-extrabold text-white">
           {qText}
         </h2>
       </div>

@@ -183,7 +183,7 @@ export default function PlayerQuestion({
           {question.index + 1} / {question.total}
         </div>
 
-        <h2 className="text-center text-lg font-extrabold text-white/60">
+        <h2 className="font-headline text-center text-lg font-extrabold text-white/60">
           {qText}
         </h2>
 
@@ -305,7 +305,7 @@ export default function PlayerQuestion({
 
       {/* Question text */}
       <div className="glass rounded-2xl px-5 py-4 text-center">
-        <h2 className="text-lg font-extrabold text-white">
+        <h2 className="font-headline text-lg font-extrabold text-white">
           {isProgressive ? (
             <ProgressiveText text={qText} visibleWordCount={visibleWordCount} />
           ) : (

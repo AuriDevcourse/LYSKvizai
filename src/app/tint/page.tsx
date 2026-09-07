@@ -338,7 +338,7 @@ export default function TintGamePage() {
       <div className="mx-auto flex w-full max-w-xl flex-1 flex-col items-center justify-center gap-4 sm:gap-5">
         <div className="text-center">
           <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-white/45">{round.title}</p>
-          <h1 className="mt-1 text-lg font-bold text-white/90 sm:text-xl">
+          <h1 className="font-headline mt-1 text-lg font-bold text-white/90 sm:text-xl">
             Find <span className="text-primary">{round.label}</span>
           </h1>
         </div>

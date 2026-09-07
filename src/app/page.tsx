@@ -7,6 +7,7 @@ import {
   Play, Plus, LogIn, ArrowLeft, User, Ruler, Palette, Heart,
   HelpCircle, ToggleLeft, ZoomOut, Calendar, Keyboard, Shuffle, Smartphone,
 } from "lucide-react";
+import Logo from "@/components/Logo";
 import TopicPicker, { type SelectedGameType } from "@/components/TopicPicker";
 import GameSettings from "@/components/GameSettings";
 import type { QuizMeta } from "@/data/types";
@@ -80,32 +81,22 @@ function HomeInner() {
 
       {mode === "menu" && (
         <div className="rise flex flex-1 flex-col items-center justify-center px-5 py-8">
-          {/* Wordmark. Oversized on purpose — this is the one moment the app
-              gets to be a poster before it becomes a utility. */}
-          <div className="flex flex-col items-center">
-            <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/55 backdrop-blur-md">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-70" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
-              </span>
-              Live quiz night
-            </span>
-            <h1 className="neon font-headline text-6xl font-extrabold leading-[0.85] tracking-tighter sm:text-[7rem] lg:text-[8.5rem]">
-              Quizmo
-            </h1>
-            <p className="mt-4 max-w-md text-center text-sm font-medium leading-relaxed text-white/55 sm:text-base">
-              Put the questions on the big screen.
-              <br className="hidden sm:block" />
-              {" "}Everyone else plays from their phone.
-            </p>
-          </div>
+          {/* Wordmark, alone. Oversized on purpose — this is the one moment the
+              app gets to be a poster before it becomes a utility.
+
+              The "Live quiz night" badge and the tagline below it were both cut:
+              the three cards under this say what the app does more plainly than
+              a sentence about it did. */}
+          <h1 className="logo-glow text-6xl leading-[0.85] sm:text-[7rem] lg:text-[8.5rem]">
+            <Logo />
+          </h1>
 
           {/* Three doors, each its own colour so the choice reads instantly
               from across a room.
               "Create game" used to lead to a screen asking solo-or-friends —
               a question the cards themselves can answer, so it is asked here
               and that screen is gone. */}
-          <div className="mt-9 grid w-full max-w-3xl grid-cols-1 gap-4 sm:mt-10 sm:grid-cols-3 sm:gap-4">
+          <div className="mt-11 grid w-full max-w-3xl grid-cols-1 gap-4 sm:mt-14 sm:grid-cols-3 sm:gap-4">
             <button
               onClick={() => router.push("/play?create=1")}
               style={{ ["--bloom" as string]: "rgba(255,144,98,0.45)" }}
@@ -130,7 +121,7 @@ function HomeInner() {
               style={{ ["--bloom" as string]: "rgba(102,187,106,0.4)" }}
               className="surface surface-hover group flex items-center gap-5 p-6 text-left sm:flex-col sm:items-start sm:gap-5 sm:p-7"
             >
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8fdd93] to-answer-green shadow-[0_10px_30px_-8px_rgba(102,187,106,0.6)] transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 sm:h-16 sm:w-16">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-answer-green-lit to-answer-green shadow-[0_10px_30px_-8px_rgba(102,187,106,0.6)] transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 sm:h-16 sm:w-16">
                 <User className="h-7 w-7 text-background sm:h-8 sm:w-8" strokeWidth={2.75} />
               </div>
               <div className="min-w-0">
@@ -149,7 +140,7 @@ function HomeInner() {
               style={{ ["--bloom" as string]: "rgba(67,165,252,0.45)" }}
               className="surface surface-hover group flex items-center gap-5 p-6 text-left sm:flex-col sm:items-start sm:gap-5 sm:p-7"
             >
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#7cc0ff] to-secondary shadow-[0_10px_30px_-8px_rgba(67,165,252,0.7)] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3 sm:h-16 sm:w-16">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-secondary-lit to-secondary shadow-[0_10px_30px_-8px_rgba(67,165,252,0.7)] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3 sm:h-16 sm:w-16">
                 <LogIn className="h-7 w-7 text-background sm:h-8 sm:w-8" strokeWidth={2.75} />
               </div>
               <div className="min-w-0">

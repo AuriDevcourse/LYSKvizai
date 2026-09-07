@@ -327,7 +327,7 @@ export default function QuizEditorPage({ params }: PageProps) {
         </div>
 
         {/* Questions */}
-        <h2 className="mb-4 text-lg font-bold text-white">
+        <h2 className="font-headline mb-4 text-lg font-bold text-white">
           {t("editor.questions")} ({questions.length})
         </h2>
 

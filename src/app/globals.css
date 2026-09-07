@@ -29,6 +29,23 @@
   --color-answer-green: #66bb6a;
   --color-answer-yellow: #c9a825;
   --color-answer-purple: #e77fff;
+
+  /*
+   * Lit variants: a palette colour raised for use *on* the dark ground, as
+   * small bold text or the top stop of a gradient.
+   *
+   * They are not decoration. Measured against #0e0e0e:
+   *   primary      8.66:1   ->  primary-lit      10.88:1
+   *   secondary    9.97:1       (secondary-lit is the gradient top only)
+   *   answer-green 8.16:1   ->  answer-green-lit 11.89:1
+   *
+   * These three shipped as loose hexes in six places (`#ffb08c`, `#8fdd93`,
+   * `#7cc0ff`) with nothing naming them, so nobody could tell they were a set.
+   * Use the base token for fills and the lit one for text on dark.
+   */
+  --color-primary-lit: #ffb08c;
+  --color-secondary-lit: #7cc0ff;
+  --color-answer-green-lit: #8fdd93;
   /* Was `var(--font-geist-sans)` / `var(--font-geist-mono)` — Geist was
      downloaded on every page and applied to nothing, and Geist Mono was never
      even imported, so `font-mono` resolved to an undefined variable. Point
@@ -114,7 +131,7 @@ body {
    and never rendered anywhere. These are explicit classes so there is nothing
    left to guess. */
 .font-headline {
-  font-family: var(--font-headline), "Plus Jakarta Sans", system-ui, sans-serif;
+  font-family: var(--font-headline), "Baloo 2", system-ui, sans-serif;
 }
 .font-body {
   font-family: var(--font-body), "Be Vietnam Pro", system-ui, sans-serif;
@@ -122,7 +139,7 @@ body {
 
 /* Bold headings — now actually in the headline face. */
 h1, h2, h3 {
-  font-family: var(--font-headline), "Plus Jakarta Sans", system-ui, sans-serif;
+  font-family: var(--font-headline), "Baloo 2", system-ui, sans-serif;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
@@ -439,7 +456,76 @@ h1, h2, h3 {
   100% { transform: translate3d(-1%, 3%, 0) scale(1.06) rotate(-2deg); }
 }
 
-/* 2. Vignette — pulls the eye to the middle, where the game is. */
+/* 2. Shape field — the brand's own shapes, on every screen.
+      This is the layer that makes the identity present rather than filed away
+      in an assets folder. It belongs in the atmosphere for the same reason the
+      aurora does: mounted once here, so no page has to remember it and no page
+      can drift.
+
+      Applied as a mask so the colour comes from the token.
+
+      The opacity took several passes. At 0.055 flat it was invisible. At 0.16
+      flat it read straight *through* the glass panels on the editor and library,
+      which are 4% white, and text sat on noise. A flat value has to be tuned for
+      its worst case, so it ends up too quiet everywhere else.
+
+      Fading it downward removes that compromise, which is why 0.06 works here
+      where 0.055 did not: the shapes are strongest at the top of the viewport
+      and gone by the reading area.
+
+      The poster screens carry the strong version instead: the lobby and results
+      plates and the winner's plinth, none of which have dense text over them. */
+.shapes {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.06;
+  background-color: var(--color-primary);
+
+  /*
+   * Two mask layers, intersected: the shape tile, and a top-to-bottom fade.
+   *
+   * The fade is what lets the field exist at all. A flat pattern has to be
+   * quiet enough for its *worst* case, which is behind a panel of body text
+   * near the bottom of a long page. Fading it out downward means the top of a
+   * screen — where a wordmark or a room code sits, and where there is room to
+   * breathe — can carry more shape than the reading area below it does.
+   *
+   * `mask-composite: intersect` is the standard; the `-webkit-` line is the
+   * legacy equivalent for older WebKit, where the keyword is `source-in`.
+   */
+  mask-image: url("/pattern-scatter.svg"), linear-gradient(to bottom, #000 0%, transparent 78%);
+  -webkit-mask-image: url("/pattern-scatter.svg"), linear-gradient(to bottom, #000 0%, transparent 78%);
+  mask-size: 300px 300px, 100% 100%;
+  -webkit-mask-size: 300px 300px, 100% 100%;
+  mask-repeat: repeat, no-repeat;
+  -webkit-mask-repeat: repeat, no-repeat;
+  mask-position: 0 0, 0 0;
+  -webkit-mask-position: 0 0, 0 0;
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
+
+  animation: shapes-drift 90s linear infinite;
+  will-change: mask-position;
+}
+
+/* A very slow drift, one tile over a minute and a half. Enough that the
+   background is alive on a big screen, slow enough that nobody notices it
+   during a question. */
+@keyframes shapes-drift {
+  from {
+    mask-position: 0 0, 0 0;
+    -webkit-mask-position: 0 0, 0 0;
+  }
+  to {
+    /* Only the first layer moves. The fade is anchored to the viewport. */
+    mask-position: 300px 300px, 0 0;
+    -webkit-mask-position: 300px 300px, 0 0;
+  }
+}
+
+/* 3. Vignette — pulls the eye to the middle, where the game is. */
 .vignette {
   position: fixed;
   inset: 0;
@@ -448,7 +534,7 @@ h1, h2, h3 {
   background: radial-gradient(120% 100% at 50% 40%, transparent 34%, rgba(0, 0, 0, 0.62) 100%);
 }
 
-/* 3. Grain — the detail that stops large dark areas looking like dead pixels.
+/* 4. Grain — the detail that stops large dark areas looking like dead pixels.
       Generated, not an asset: no extra request, no cache concern. */
 .grain {
   position: fixed;
@@ -534,6 +620,23 @@ h1, h2, h3 {
     0 0 120px rgba(232, 89, 12, 0.20);
   animation: neon-breathe 5.5s ease-in-out infinite;
 }
+/*
+ * The logo's glow.
+ *
+ * `.neon` is layered `text-shadow`, which does nothing to the SVG half of the
+ * lockup: the drawn Q would sit flat beside a glowing word. `drop-shadow`
+ * applies to the rendered element, so mark and letters bloom together.
+ */
+.logo-glow {
+  filter:
+    drop-shadow(0 0 18px rgba(232, 89, 12, 0.34))
+    drop-shadow(0 0 48px rgba(232, 89, 12, 0.18));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Static, so it stays — listed here only to note it was considered. */
+}
+
 @keyframes neon-breathe {
   0%, 100% { opacity: 0.97; }
   50%      { opacity: 1; }
@@ -584,6 +687,7 @@ h1, h2, h3 {
    asked it not to. */
 @media (prefers-reduced-motion: reduce) {
   .aurora { animation: none; }
+  .shapes { animation: none; }
   .neon { animation: none; }
   .rise > * { animation: none; }
   .surface-hover:hover { transform: none; }
@@ -664,10 +768,39 @@ h1, h2, h3 {
    PODIUM
    =========================================================================== */
 .podium-1 {
+  position: relative;
   background: linear-gradient(180deg, rgba(201, 168, 37, 0.24), rgba(201, 168, 37, 0.06));
   box-shadow:
     inset 0 1px 0 0 rgba(255, 232, 150, 0.42),
     0 0 60px -14px rgba(201, 168, 37, 0.65);
+}
+
+/*
+ * The winner's plinth carries the burst pattern, and it is the only surface in
+ * the app that carries a pattern at all.
+ *
+ * That restraint is the point: a pattern everywhere is texture, but a pattern on
+ * exactly one surface is hierarchy. First place gets something second and third
+ * do not.
+ *
+ * Applied as a mask rather than a background image, so the gold comes from the
+ * token here instead of being frozen into the SVG. An SVG used as
+ * `background-image` is its own document and would render black.
+ */
+.podium-1::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background-color: var(--color-answer-yellow);
+  opacity: 0.3;
+  mask-image: url("/pattern-burst.svg");
+  -webkit-mask-image: url("/pattern-burst.svg");
+  mask-size: 120px 120px;
+  -webkit-mask-size: 120px 120px;
+  mask-repeat: repeat;
+  -webkit-mask-repeat: repeat;
 }
 
 /* Winner spotlight — a cone of light behind first place. */
@@ -694,3 +827,6 @@ h1, h2, h3 {
   .answer-btn::after, .answer-btn:hover::after { transform: translateX(-120%); }
   .code-tile, .spotlight::before { animation: none; }
 }
+
+
+
