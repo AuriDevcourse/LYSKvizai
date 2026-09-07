@@ -77,8 +77,8 @@ export const FLAGS: Flag[] = [
     ratio: "2:1",
     regions: [
       { id: "gold", label: "the gold saltire", hex: "#ffd100", spec: "Pantone 109 C", playable: true },
-      { id: "green", label: "the green triangles", hex: "#009639", spec: "Pantone 355 C", playable: true },
-      { id: "black", label: "the black triangles", hex: "#000000", spec: "100% black", playable: false },
+      { id: "green", label: "the green triangles, top and bottom", hex: "#009639", spec: "Pantone 355 C", playable: true },
+      { id: "black", label: "the black triangles, hoist and fly", hex: "#000000", spec: "100% black", playable: false },
     ],
   },
   {

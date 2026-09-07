@@ -34,13 +34,18 @@ const Nordic = ({ c, field, cross }: Props & { field: string; cross: string }) =
   </>
 );
 
+/**
+ * Jamaica: gold saltire, BLACK triangles at the hoist and fly, GREEN at top and
+ * bottom. These were the wrong way round — worth stating, because a colour game
+ * that shows the wrong flag is scoring you against the wrong answer.
+ */
 const Jamaica = ({ c }: Props) => (
   <>
     <rect width="100" height="70" fill={c.gold} />
-    <path d="M0 0 L46 35 L0 70 Z" fill={c.green} />
-    <path d="M100 0 L54 35 L100 70 Z" fill={c.green} />
-    <path d="M0 0 L50 31 L100 0 Z" fill={c.black} />
-    <path d="M0 70 L50 39 L100 70 Z" fill={c.black} />
+    <path d="M0 0 L44 35 L0 70 Z" fill={c.black} />
+    <path d="M100 0 L56 35 L100 70 Z" fill={c.black} />
+    <path d="M0 0 L50 30 L100 0 Z" fill={c.green} />
+    <path d="M0 70 L50 40 L100 70 Z" fill={c.green} />
   </>
 );
 
@@ -147,22 +152,49 @@ const Kenya = ({ c }: Props) => (
   </>
 );
 
-/** South Africa: the six-colour Y, with white and gold fimbriations. */
-const SouthAfrica = ({ c }: Props) => (
-  <>
-    <rect width="100" height="35" fill={c.red} />
-    <rect y="35" width="100" height="35" fill={c.blue} />
-    {/* White pall */}
-    <path d="M0 0 L44 35 L0 70 L0 55 L26 35 L0 15 Z" fill={c.white} />
-    <path d="M0 0 L14 0 L58 28 L100 28 L100 42 L58 42 L14 70 L0 70 L44 35 Z" fill={c.white} />
-    {/* Green Y inside it */}
-    <path d="M0 6 L38 35 L0 64 L0 54 L24 35 L0 16 Z" fill={c.green} />
-    <path d="M0 6 L8 6 L52 31 L100 31 L100 39 L52 39 L8 64 L0 64 L38 35 Z" fill={c.green} />
-    {/* Black triangle with its gold fimbriation */}
-    <path d="M0 0 L30 21 L30 49 L0 70 Z" fill={c.yellow} />
-    <path d="M0 4 L24 21 L24 49 L0 66 Z" fill={c.black} />
-  </>
-);
+/**
+ * South Africa, built from Schedule One of the Constitution (1996).
+ *
+ * The spec is given as fractions of the flag's hoist (its "width", H below):
+ * the green pall is H/5, each fimbriation H/15, and the red and blue bands H/3
+ * — which is the published 5:1:3:1:5 stack down the fly edge. The pall's centre
+ * lines "start in the top and bottom corners next to the flag post, converge in
+ * the centre of the flag, and continue horizontally to the middle of the free
+ * edge".
+ *
+ * Drawn with strokes rather than polygons. An earlier hand-built version
+ * self-intersected and filled the whole area between the arms as solid green,
+ * which is not this flag. A stroked polyline keeps both arms at a constant
+ * width and mitres the join at the centre for free.
+ */
+const SouthAfrica = ({ c }: Props) => {
+  const H = 70;
+  const pall = H / 5;                 // green band, 14
+  const edging = H / 15;              // each fimbriation, 4.67
+  const pallOuter = pall + edging * 2; // white band behind it, 23.33
+
+  // The black triangle's edges run parallel to the arms, offset from each
+  // centre line by half the green band plus one edging. Extending those offset
+  // lines back to the hoist gives the y values below; the gold triangle is the
+  // same construction one edging further out.
+  const goldTop = 8.6, goldApex = 37.8;
+  const blackTop = 14.3, blackApex = 29.6;
+
+  return (
+    <>
+      <rect width="100" height="35" fill={c.red} />
+      <rect y="35" width="100" height="35" fill={c.blue} />
+      <g fill="none" strokeLinejoin="miter">
+        <path d="M0 0 L50 35 L100 35" stroke={c.white} strokeWidth={pallOuter} />
+        <path d="M0 70 L50 35 L100 35" stroke={c.white} strokeWidth={pallOuter} />
+        <path d="M0 0 L50 35 L100 35" stroke={c.green} strokeWidth={pall} />
+        <path d="M0 70 L50 35 L100 35" stroke={c.green} strokeWidth={pall} />
+      </g>
+      <path d={`M0 ${goldTop} L${goldApex} 35 L0 ${70 - goldTop} Z`} fill={c.yellow} />
+      <path d={`M0 ${blackTop} L${blackApex} 35 L0 ${70 - blackTop} Z`} fill={c.black} />
+    </>
+  );
+};
 
 /** Ethiopia: three bands with the emblem disc and pentagram. */
 const Ethiopia = ({ c }: Props) => (

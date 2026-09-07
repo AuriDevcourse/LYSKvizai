@@ -72,7 +72,19 @@ crash mid-round), and every playable colour cites something checkable — a spec
 matching Pantone/RAL/TCX/Decree, not the word "white".
 
 `/dev-flags` is an unlinked contact sheet for checking the artwork against the
-real flags at a glance. Returns null in production.
+real flags at a glance. Returns null in production. It earned its place
+immediately — Auri spotted that my South Africa was wrong from a game
+screenshot, and checking the sheet turned up a second error nobody had noticed:
+
+- **South Africa** was built from hand-written polygons that self-intersected,
+  filling the whole area between the pall's arms as solid green. Rebuilt from
+  Schedule One of the Constitution (green pall H/5, each fimbriation H/15, red
+  and blue bands H/3 — the published 5:1:3:1:5 stack) and drawn with stroked
+  polylines instead, so both arms keep a constant width and the centre join
+  mitres itself.
+- **Jamaica** had its triangles the wrong way round: green at the hoist and fly,
+  black top and bottom. It is the reverse. A colour game showing the wrong flag
+  is scoring you against the wrong answer, which is worse than looking odd.
 
 51 tests, typecheck, lint and build all clean.
 
