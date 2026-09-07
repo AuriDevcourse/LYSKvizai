@@ -5,6 +5,23 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+
+    /* Stricter checks, each measured before being turned on (improvement 10.2).
+       These five cost nothing — the codebase already satisfied them, bar eight
+       dead locals and parameters that were removed to get here.
+
+       `noUncheckedIndexedAccess` is the one 10.2 actually named, and it is
+       deliberately NOT enabled: it reports **163 errors**. Almost all would be
+       silenced with a `!`, which buys no safety and hides the handful of sites
+       where an out-of-range index is genuinely reachable. Enabling it is worth
+       doing as its own focused piece of work, not as a footnote to this one.
+       Same reasoning for `noPropertyAccessFromIndexSignature` (194) and
+       `exactOptionalPropertyTypes` (23). Counts measured 2026-09-07. */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",

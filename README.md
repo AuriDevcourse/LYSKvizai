@@ -62,9 +62,40 @@ Host screen ───┘                        └── broadcast
 ## Deploy
 
 Push to `master` → GitHub Actions (`.github/workflows/deploy.yml`) runs
-typecheck + lint + build, then SSHes a restricted deploy key to the Hetzner box,
-which runs `/opt/lys-kvizai/deploy.sh` and restarts the `lys-kvizai` systemd
-unit.
+typecheck + lint + tests + build, then SSHes a restricted deploy key to the
+Hetzner box, which runs `/opt/lys-kvizai/deploy.sh` and restarts the
+`lys-kvizai` systemd unit — and then **polls the live site until it answers
+200**, failing the run if it never does.
+
+### Before you commit
+
+    git config core.hooksPath .githooks
+
+One-time, per clone. The hook runs typecheck, lint and tests in seconds, and
+refuses to commit build output or the `" 2"` conflict copies iCloud creates in
+this directory. `git commit --no-verify` bypasses it.
+
+### Rolling back a bad deploy
+
+Deploy follows `master`, so the rollback is a commit, not an SSH session:
+
+    git revert --no-edit <bad-sha>    # or: git revert --no-edit HEAD
+    git push
+
+That re-runs the full pipeline against the reverted tree and redeploys. Use this
+in preference to touching the box: an SSH `git checkout <sha>` leaves the server
+on a detached HEAD that the *next* deploy silently overwrites, so the fix looks
+like it worked and then undoes itself.
+
+Only SSH in if `master` itself is fine and the box is wedged — then
+`systemctl restart lys-kvizai` on the server, and check
+`journalctl -u lys-kvizai -n 100` (which is where `logServerError` output now
+goes).
+
+Wrong editor passwords are throttled: 10 failures per IP per 5 minutes, counting
+failures only, and a correct password clears the record. Use the generated random
+value rather than something memorable — the throttle is a backstop, the entropy
+is the protection.
 
 **Set `EDITOR_SECRET` on the server** (`openssl rand -base64 24`) or the editor
 returns 503 there — that is the fail-closed default working as intended.
@@ -76,5 +107,5 @@ returns 503 there — that is the fail-closed default working as intended.
 2. **Quizzes edited on the live site are reverted by the next deploy.** All 54
    quiz files are git-tracked and deploy runs `git reset --hard`.
 
-Both are tracked in `audit.md` (I1, I2). There is no rollback mechanism — a bad
-deploy needs a manual SSH and `git checkout <prev-sha>` on the box.
+Both are tracked in `audit.md` (I1, I2). For rolling back, see above — revert
+and push rather than SSHing in.

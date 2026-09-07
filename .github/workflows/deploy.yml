@@ -29,7 +29,14 @@ jobs:
       - name: Typecheck
         run: npx tsc --noEmit
       - name: Lint
+        # `npm run lint` carries `--max-warnings 19`, the count at the time this
+        # was added. Warnings used to be unbounded and failed nothing, so the
+        # number only ever went up. Lower the cap as they are fixed; never raise
+        # it to make a build pass.
         run: npm run lint
+      - name: Test
+        # The suite existed and CI never ran it.
+        run: npm test
       - name: Build
         run: npm run build
 
@@ -49,3 +56,34 @@ jobs:
           # The server-side key is restricted (command="/opt/lys-kvizai/deploy.sh"),
           # so any SSH command lands straight in deploy.sh regardless of what we pass.
           ssh -i ~/.ssh/deploy_key -o BatchMode=yes root@46.225.135.183 deploy
+
+      # 10.9 — prove the site actually came back.
+      #
+      # A green tick used to mean only that `ssh` returned 0, which it does
+      # even if the app then fails to boot and systemd leaves it down. This
+      # polls the live URL until it answers, and fails the workflow if it
+      # never does — so the run reflects reality rather than the deploy
+      # script's exit code.
+      - name: Health check
+        run: |
+          set -u
+          URL="https://quizmo.auridev.com"
+          for attempt in $(seq 1 20); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 "$URL" || echo 000)
+            if [ "$code" = "200" ]; then
+              echo "✓ $URL answered 200 on attempt $attempt"
+              # The room API is what a deploy most often breaks, since it
+              # touches the quiz files on disk.
+              api=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 "$URL/api/quizzes" || echo 000)
+              if [ "$api" != "200" ]; then
+                echo "::error::Site is up but /api/quizzes returned $api"
+                exit 1
+              fi
+              echo "✓ /api/quizzes answered 200"
+              exit 0
+            fi
+            echo "attempt $attempt: $code — waiting"
+            sleep 6
+          done
+          echo "::error::$URL never returned 200 after 20 attempts. See the rollback steps in README.md."
+          exit 1

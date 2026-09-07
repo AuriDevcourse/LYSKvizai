@@ -1,0 +1,12 @@
+# Generated or vendored — never reformat.
+.next/
+node_modules/
+public/
+*.tsbuildinfo
+
+# Quiz content is data, and the diffs are reviewed by eye. Reformatting 54
+# files would bury every real content change in whitespace noise.
+data/quizzes/
+
+# Written by `next dev`, which rewrites the agent-rules block.
+CLAUDE.md

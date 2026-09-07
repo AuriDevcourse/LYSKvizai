@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# Pre-commit gate.
+#
+# CI was the only backstop, which means finding out minutes later, after a
+# push, and after the deploy job has already started queueing behind it. This
+# catches the same three classes of problem in seconds.
+#
+# Deliberately does NOT run `next build` — that takes long enough that people
+# start using --no-verify, and a hook everyone bypasses is worse than none.
+#
+# Install with:  git config core.hooksPath .githooks
+# Bypass once:   git commit --no-verify
+
+set -e
+
+echo "pre-commit: typecheck…"
+npx tsc --noEmit
+
+echo "pre-commit: lint…"
+npm run lint
+
+echo "pre-commit: tests…"
+npm test --silent
+
+# Generated artifacts should never be committed. iCloud syncs this directory
+# and creates " 2" conflict copies inside .next, which have already broken
+# `tsc` twice; catch them before they reach a commit.
+if git diff --cached --name-only | grep -qE '(^|/)\.next/|/[^/]* 2\.[a-z]+$'; then
+  echo "pre-commit: refusing to commit build output or an iCloud ' 2' conflict copy" >&2
+  git diff --cached --name-only | grep -E '(^|/)\.next/|/[^/]* 2\.[a-z]+$' >&2
+  exit 1
+fi
+
+echo "pre-commit: ok"
