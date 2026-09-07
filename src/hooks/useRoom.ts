@@ -12,7 +12,7 @@ import type {
   GameMode,
   WagerPayload,
 } from "@/lib/multiplayer/types";
-import { MP_SSE_URL, SSE_SUFFIX } from "@/lib/multiplayer/config";
+import { MP_API_URL, MP_SSE_URL, SSE_SUFFIX } from "@/lib/multiplayer/config";
 
 export interface EmojiReactionWithId extends EmojiReaction {
   id: string;
@@ -30,6 +30,14 @@ interface UseRoomReturn {
   error: string | null;
   gameMode: GameMode;
   teamNames: string[];
+  /**
+   * How many questions the game has, straight from the room snapshot.
+   *
+   * This was in every snapshot and never read, so callers guessed: the play
+   * page fell back to a hardcoded 15, which is wrong for any other length and
+   * is the only number available in the lobby, before a question exists.
+   */
+  totalQuestions: number;
   wager: WagerPayload | null;
   timerReduction: number;
   powerUpEvent: null;
@@ -39,8 +47,21 @@ interface UseRoomReturn {
   myStreak: number;
 }
 
-const MAX_RETRIES = 200;
-const PERMANENT_DISCONNECT_TIMEOUT = 180_000;
+/**
+ * Reconnection never gives up entirely.
+ *
+ * It used to stop dead after 200 attempts or three minutes, and nothing
+ * rescheduled — so a phone that locked during a long question came back to a
+ * permanently broken screen even though the room was still running and the
+ * grace timer had not necessarily expired. The visibility/online listeners
+ * could revive it, but only if the user happened to switch away and back.
+ *
+ * Now the fast backoff is bounded, and past that point it keeps trying on a
+ * slow steady interval — cheap enough to run indefinitely, and the only thing
+ * that can recover a phone left face-down.
+ */
+const FAST_RETRIES = 20;
+const SLOW_RETRY_MS = 15_000;
 
 /**
  * @param token The caller's session token — a player token, or the host token
@@ -63,6 +84,7 @@ export function useRoom(code: string | null, playerId: string | null, token = ""
   const [error, setError] = useState<string | null>(null);
   const [gameMode, setGameMode] = useState<GameMode>("classic");
   const [teamNames, setTeamNames] = useState<string[]>([]);
+  const [totalQuestions, setTotalQuestions] = useState(0);
   const [wager, setWager] = useState<WagerPayload | null>(null);
   const [timerReduction, setTimerReduction] = useState(0);
   const [powerUpEvent] = useState<null>(null);
@@ -72,7 +94,6 @@ export function useRoom(code: string | null, playerId: string | null, token = ""
 
   const esRef = useRef<EventSource | null>(null);
   const reconnectTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const disconnectTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const retriesRef = useRef(0);
   const reactionIdRef = useRef(0);
   const connectRef = useRef<() => void>(undefined);
@@ -102,6 +123,9 @@ export function useRoom(code: string | null, playerId: string | null, token = ""
       setAnswerCount(null);
       setGameMode(snapshot.gameMode ?? "classic");
       setTeamNames(snapshot.teamNames ?? []);
+      setTotalQuestions(snapshot.totalQuestions ?? 0);
+      // Rebuild the freeze from state, not from the event we may have missed.
+      setTimerReduction(snapshot.timerReduction ?? 0);
       setWager(snapshot.wager ?? null);
       setConnected(true);
       setError(null);
@@ -212,15 +236,39 @@ export function useRoom(code: string | null, playerId: string | null, token = ""
       setTimerReduction((prev) => prev + data.seconds);
     });
 
+    /**
+     * Patch the two places power-up state is read, rather than replacing the
+     * whole room. `roundPowerUps` drives the host's chips; `powerUpUsesLeft`
+     * and `usedPowerUpTypes` are this player's own budget, so they're only
+     * applied when the event is about them.
+     */
+    es.addEventListener("power-up-used", (e) => {
+      const data = JSON.parse(e.data);
+      setQuestion((prev) =>
+        prev
+          ? {
+              ...prev,
+              roundPowerUps: data.roundPowerUps,
+              ...(data.playerId === playerId
+                ? { powerUpUsesLeft: data.usesLeft, usedPowerUpTypes: data.usedTypes }
+                : {}),
+            }
+          : prev
+      );
+      setPlayers((prev) =>
+        prev.map((p) =>
+          p.id === data.playerId
+            ? { ...p, powerUpUses: data.usesLeft, usedPowerUpTypes: data.usedTypes }
+            : p
+        )
+      );
+    });
+
     es.onopen = () => {
       setConnected(true);
       setError(null);
       retriesRef.current = 0;
       // Clear permanent disconnect timer on successful connection
-      if (disconnectTimer.current) {
-        clearTimeout(disconnectTimer.current);
-        disconnectTimer.current = undefined;
-      }
     };
 
     es.onerror = () => {
@@ -228,31 +276,44 @@ export function useRoom(code: string | null, playerId: string | null, token = ""
       es.close();
 
       retriesRef.current++;
-      if (retriesRef.current >= MAX_RETRIES) {
-        setError("Connection lost permanently. Go back to /play and try again.");
-        return;
-      }
 
-      // Start permanent disconnect timer on first failure
-      if (!disconnectTimer.current) {
-        disconnectTimer.current = setTimeout(() => {
-          setError("Connection lost for too long. Go back to /play and try again.");
-          clearTimeout(reconnectTimeout.current);
-          esRef.current?.close();
-        }, PERMANENT_DISCONNECT_TIMEOUT);
-      }
+      /*
+       * Distinguish "the room is gone" from "the network blipped".
+       *
+       * `EventSource` exposes no status code, so a 404 for a reaped room and a
+       * dropped wifi packet arrive as the identical `onerror` — and the client
+       * would retry a room that no longer exists forever while telling the
+       * player "connection lost". One cheap probe settles it: `GET /api/rooms`
+       * answers 404 only when the room is really gone.
+       */
+      fetch(`${MP_API_URL}/rooms?code=${encodeURIComponent(code)}`)
+        .then((r) => {
+          if (r.status === 404) {
+            setError("This game has ended.");
+            clearTimeout(reconnectTimeout.current);
+            return true;
+          }
+          return false;
+        })
+        .catch(() => false)
+        .then((gone) => {
+          if (gone) return;
 
-      // Quick reconnect (Vercel may drop SSE after ~25s, this is expected).
-      //
-      // Jittered: when venue wifi blips, every phone in the room starts the
-      // identical deterministic backoff sequence and retries in near-lockstep
-      // against one small box — exactly when it is already absorbing the whole
-      // room's reconnect wave. The random factor spreads them out.
-      const base = Math.min(500 * Math.pow(1.5, Math.min(retriesRef.current - 1, 5)), 4000);
-      const delay = Math.round(base * (0.5 + Math.random()));
-      reconnectTimeout.current = setTimeout(() => {
-        connectRef.current?.();
-      }, delay);
+          // Quick reconnect (a proxy may drop SSE after ~25s; that is normal).
+          //
+          // Jittered: when venue wifi blips, every phone starts the identical
+          // deterministic backoff and retries in near-lockstep against one
+          // small box — exactly when it is already absorbing the whole room's
+          // reconnect wave. The random factor spreads them out.
+          const fast = retriesRef.current <= FAST_RETRIES;
+          const base = fast
+            ? Math.min(500 * Math.pow(1.5, Math.min(retriesRef.current - 1, 5)), 4000)
+            : SLOW_RETRY_MS;
+          const delay = Math.round(base * (0.5 + Math.random()));
+          reconnectTimeout.current = setTimeout(() => {
+            connectRef.current?.();
+          }, delay);
+        });
     };
   }, [code, playerId, token]);
 
@@ -264,7 +325,6 @@ export function useRoom(code: string | null, playerId: string | null, token = ""
     connect();
     return () => {
       clearTimeout(reconnectTimeout.current);
-      clearTimeout(disconnectTimer.current);
       esRef.current?.close();
     };
   }, [connect]);
@@ -296,7 +356,7 @@ export function useRoom(code: string | null, playerId: string | null, token = ""
 
   return {
     state, players, question, results, leaderboard, answerCount, reactions,
-    connected, error, gameMode, teamNames, wager, timerReduction,
+    connected, error, gameMode, teamNames, totalQuestions, wager, timerReduction,
     powerUpEvent, eliminatedEvent, playerLeftEvent, myStreak,
   };
 }

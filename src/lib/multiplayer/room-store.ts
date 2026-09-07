@@ -21,10 +21,13 @@ import { randomBytes } from "crypto";
 function generateToken(): string {
   return randomBytes(24).toString("base64url");
 }
-import { calculateScore, getQuestionValues } from "./scoring";
+import {
+  calculateScore, getQuestionValues, competitionRanks,
+  FASTEST_BONUS, POWER_UP_USES, FREEZE_SECONDS, maxWagerFor, lowestScorers,
+} from "./scoring";
 import { fuzzyMatch } from "../fuzzy-match";
 import { sanitizeName, sanitizeEmoji } from "../sanitize";
-import { broadcast, removeRoomConnections } from "./sse-manager";
+import { broadcast, removeRoomConnections, setPrunedHandler } from "./sse-manager";
 import { getQuiz } from "@/lib/quiz-store";
 import type { Question } from "@/data/types";
 
@@ -82,6 +85,13 @@ export function cancelPendingDisconnect(code: string, playerId: string) {
  * Called when an SSE connection for a player closes. If the player has no other
  * active connections after a grace period, mark them disconnected.
  */
+/*
+ * A connection found dead while broadcasting gets the same treatment as one
+ * the heartbeat notices — without this, the grace timer started up to a
+ * heartbeat late (see `setPrunedHandler`).
+ */
+setPrunedHandler((code, playerId, hasOthers) => handleConnectionLost(code, playerId, hasOthers));
+
 export function handleConnectionLost(code: string, playerId: string, hasOtherConnections: boolean) {
   if (hasOtherConnections) return; // still connected elsewhere
 
@@ -162,6 +172,9 @@ function playerToInfo(p: Player): PlayerInfo {
 function getLeaderboard(room: Room): LeaderboardEntry[] {
   const sorted = [...room.players.values()].sort((a, b) => b.score - a.score);
   const prev = room.previousLeaderboard ?? [];
+  // Ties share a place. This was `i + 1`, which showed two players on the same
+  // score as 2nd and 3rd.
+  const ranks = competitionRanks(sorted);
   return sorted.map((p, i) => {
     const prevEntry = prev.find((e) => e.playerId === p.id);
     return {
@@ -169,7 +182,7 @@ function getLeaderboard(room: Room): LeaderboardEntry[] {
       name: p.name,
       emoji: p.emoji,
       score: p.score,
-      rank: i + 1,
+      rank: ranks[i],
       previousRank: prevEntry?.rank,
       previousScore: prevEntry?.score,
     };
@@ -341,29 +354,8 @@ function getResultsPayload(room: Room): ResultsPayload {
     });
   }
 
-  // --- Fastest answerer bonus (only for standard multiple-choice, 3+ players) ---
-  if (q.type !== "fastest-finger" && q.type !== "year-guesser") {
-    const correctAnswerers = [...room.players.values()]
-      .filter((p) => !p.eliminated && p.currentAnswer !== null && p.answerTime !== null)
-      .filter((p) => {
-        const origIdx = displayToOriginal(room, p.currentAnswer!);
-        return origIdx === q.correct;
-      })
-      .sort((a, b) => a.answerTime! - b.answerTime!);
-
-    if (correctAnswerers.length >= 2) {
-      const fastest = correctAnswerers[0];
-      const SPEED_BONUS = 150;
-      fastest.score += SPEED_BONUS;
-      fastest.lastPointsAwarded += SPEED_BONUS;
-      const fastestResult = playerResults.find((r) => r.playerId === fastest.id);
-      if (fastestResult) {
-        fastestResult.points += SPEED_BONUS;
-        fastestResult.totalScore = fastest.score;
-        fastestResult.speedBonus = SPEED_BONUS;
-      }
-    }
-  }
+  // The fastest-answerer bonus is deliberately NOT applied here — see
+  // `applyFastestBonus`. This function must stay free of score writes.
 
   // --- Power-up effects (freeze, shield, double) ---
   for (const [pid, pu] of room.activePowerUps) {
@@ -412,7 +404,7 @@ function getResultsPayload(room: Room): ResultsPayload {
       result.fastestFinger = {
         playerId: correctPlayers[0].id,
         playerName: correctPlayers[0].name,
-        bonusPoints: 150,
+        bonusPoints: FASTEST_BONUS,
       };
     }
     // Include the correct answer text for display
@@ -467,13 +459,10 @@ function getResultsPayload(room: Room): ResultsPayload {
     result.powerUpEffects = powerUpEffects;
   }
 
-  // Include English options in results (so PlayerResults doesn't depend on question payload)
+  // The options in display order, so the results screen doesn't depend on the
+  // question payload still being around.
   const optShuffle = room.optionShuffles[room.currentQuestionIndex];
-  result.en = {
-    correctAnswerText: result.correctAnswerText,
-    explanation: q.explanation,
-    options: optShuffle.map((origIdx) => q.options[origIdx]),
-  };
+  result.options = optShuffle.map((origIdx) => q.options[origIdx]);
 
   return result;
 }
@@ -482,7 +471,13 @@ export function getRoomSnapshot(room: Room): RoomSnapshot {
   const snapshot: RoomSnapshot = {
     code: room.code,
     state: room.state,
-    players: [...room.players.values()].map(playerToInfo),
+    players: [...room.players.values()].map((p) => ({
+      ...playerToInfo(p),
+      // Whether they've locked a wager in, so the host screen can show
+      // progress instead of a static row of avatars. Deliberately a boolean
+      // and never the amount — the amount is the whole bluff.
+      hasWagered: room.isWagerRound ? room.wagers.has(p.id) : undefined,
+    })),
     currentQuestionIndex: room.currentQuestionIndex,
     totalQuestions: room.questionIndices.length,
     gameMode: room.gameMode,
@@ -494,8 +489,12 @@ export function getRoomSnapshot(room: Room): RoomSnapshot {
 
   if (room.state === "question") {
     snapshot.question = getQuestionPayload(room);
+    // Replay the freeze as state rather than relying on the one-shot event.
+    snapshot.timerReduction = room.freezeActive ? FREEZE_SECONDS : 0;
   } else if (room.state === "results") {
     // Use cached payload — do NOT call getResultsPayload here (it mutates scores)
+    // Safe to recompute now that `getResultsPayload` writes nothing. Before
+    // the split, an empty cache here re-awarded the fastest bonus.
     snapshot.results = room.cachedResults ?? getResultsPayload(room);
   } else if (room.state === "finished") {
     snapshot.leaderboard = getLeaderboard(room);
@@ -507,9 +506,13 @@ export function getRoomSnapshot(room: Room): RoomSnapshot {
 }
 
 function getWagerPayload(room: Room): WagerPayload {
+  // No `maxWager` here: the cap is per-player and this payload is broadcast to
+  // the whole room. The field used to be shipped as a literal `0`, which no
+  // consumer read and which implied a room-wide limit that never existed. Each
+  // client derives its own with `maxWagerFor(score)` — the same function the
+  // server clamps with.
   return {
     questionIndex: room.currentQuestionIndex,
-    maxWager: 0, // per-player max is sent client-side from their own score
     wagerType: room.wagerType,
   };
 }
@@ -657,7 +660,6 @@ export async function createRoom(
     bluffDisplayIndex: null,
     bluffReplacedOriginalIndex: null,
 
-    mysteryMultipliers: new Map(),
     previousLeaderboard: [],
     cachedResults: null,
   };
@@ -759,7 +761,7 @@ export function joinRoom(
       currentTextAnswer: null,
       lastPointsAwarded: 0,
       slowestStreak: 0,
-      powerUpUses: 3,
+      powerUpUses: POWER_UP_USES,
       usedPowerUpTypes: [],
     };
     room.players.set(playerId, player);
@@ -786,7 +788,7 @@ export async function startGame(code: string, hostId: string, hostToken: string)
     p.answerTime = null;
     p.currentTextAnswer = null;
     p.slowestStreak = 0;
-    p.powerUpUses = 3;
+    p.powerUpUses = POWER_UP_USES;
     p.usedPowerUpTypes = [];
   }
 
@@ -801,7 +803,6 @@ export async function startGame(code: string, hostId: string, hostToken: string)
   }
 
   // Mystery multipliers removed — escalating question values replace them
-  room.mysteryMultipliers.clear();
 
   room.currentQuestionIndex = 0;
   startQuestionRound(room);
@@ -974,13 +975,13 @@ export function submitTextAnswer(
       finalPoints = Math.min(points * 2, cap * 2);
     }
 
-    // Fastest finger bonus: flat +150
+    // Fastest finger bonus: flat FASTEST_BONUS
     const isFirstCorrect = ![...room.players.values()].some(p => {
       if (p.id === playerId) return false;
       if (!p.currentTextAnswer) return false;
       return fuzzyMatch(p.currentTextAnswer, acceptedAnswers);
     });
-    const fastestBonus = isFirstCorrect ? 150 : 0;
+    const fastestBonus = isFirstCorrect ? FASTEST_BONUS : 0;
 
     const awarded = finalPoints + fastestBonus;
     player.score += awarded;
@@ -1072,6 +1073,48 @@ export function submitYearAnswer(
   return {};
 }
 
+/**
+ * Awards the fastest-correct-answerer bonus. **Mutates scores.**
+ *
+ * This used to live inside `getResultsPayload`, which made that function a
+ * getter that silently paid out points. `getRoomSnapshot` calls
+ * `room.cachedResults ?? getResultsPayload(room)` — so any player opening a
+ * stream while the cache happened to be empty would have re-awarded this
+ * bonus, inflating a score just by connecting. Only the cache-is-never-null
+ * invariant stood between that and a corrupted leaderboard.
+ *
+ * Now the payout is a separate, obviously-named call that `showResults` makes
+ * exactly once per round, and `getResultsPayload` is safe to call as often as
+ * anyone likes.
+ *
+ * Requires only two correct answers, not three: with a single correct answer
+ * there is nobody to be faster than.
+ */
+function applyFastestBonus(room: Room, results: ResultsPayload): void {
+  const qIndex = room.questionIndices[room.currentQuestionIndex];
+  const q = room.questions[qIndex];
+  if (!q) return;
+  if (q.type === "fastest-finger" || q.type === "year-guesser") return;
+
+  const correctAnswerers = [...room.players.values()]
+    .filter((p) => !p.eliminated && p.currentAnswer !== null && p.answerTime !== null)
+    .filter((p) => displayToOriginal(room, p.currentAnswer!) === q.correct)
+    .sort((a, b) => a.answerTime! - b.answerTime!);
+
+  if (correctAnswerers.length < 2) return;
+
+  const fastest = correctAnswerers[0];
+  fastest.score += FASTEST_BONUS;
+  fastest.lastPointsAwarded += FASTEST_BONUS;
+
+  const fastestResult = results.playerResults.find((r) => r.playerId === fastest.id);
+  if (fastestResult) {
+    fastestResult.points += FASTEST_BONUS;
+    fastestResult.totalScore = fastest.score;
+    fastestResult.speedBonus = FASTEST_BONUS;
+  }
+}
+
 function showResults(room: Room): void {
   // Idempotent: if we've already resolved results for this round, don't recompute
   // (prevents score inflation from re-applying fastest/double bonuses).
@@ -1088,6 +1131,9 @@ function showResults(room: Room): void {
   // branch that would otherwise fall through to a second getResultsPayload call
   // and mutate scores a second time.
   const results = getResultsPayload(room);
+  // The one place the bonus is paid. Ordered before the cache is set so the
+  // cached payload is the one that includes it.
+  applyFastestBonus(room, results);
   room.cachedResults = results;
   room.state = "results";
 
@@ -1097,9 +1143,11 @@ function showResults(room: Room): void {
     if (roundNum % room.eliminationInterval === 0) {
       const activePlayers = getActivePlayers(room);
       if (activePlayers.length > 1) {
-        // Find the lowest-scoring non-eliminated player
-        const sorted = [...activePlayers].sort((a, b) => a.score - b.score);
-        const toEliminate = sorted[0];
+        // The lowest scorer — with ties broken at random rather than by join
+        // order, which is what a stable sort over an insertion-ordered list was
+        // silently doing.
+        const tied = lowestScorers(activePlayers);
+        const toEliminate = tied[Math.floor(Math.random() * tied.length)];
         toEliminate.eliminated = true;
         room.eliminatedPlayers.add(toEliminate.id);
 
@@ -1255,8 +1303,9 @@ export function submitWager(
   if (room.state !== "wager") return { error: "Can't wager right now" };
   if (player.eliminated) return { error: "You are eliminated" };
 
-  // Clamp wager to [0, max(500, 30% of score)] — low-scorers still get meaningful stakes
-  const maxWager = Math.max(500, Math.floor(player.score * 0.3));
+  // Clamp to the shared cap. The client renders its slider from the same
+  // function, so the range it offers is the range the server accepts.
+  const maxWager = maxWagerFor(player.score);
   const clamped = Math.max(0, Math.min(amount, maxWager));
   room.wagers.set(playerId, clamped);
 
@@ -1333,6 +1382,18 @@ export function choosePowerUp(
   if (room.activePowerUps.has(playerId)) return { error: "Already used a power-up this round" };
   if (player.usedPowerUpTypes.includes(powerUp)) return { error: "Already used this power-up type" };
 
+  // Refuse a second Freeze in the same round *before* charging for it.
+  //
+  // Only the first Freeze of a round actually shortens the clock — the effect
+  // is guarded by `room.freezeActive` below. But the use was deducted and the
+  // type marked spent before that guard ran, and the results screen then told
+  // the player "Froze the timer!" regardless. So a player could spend one of
+  // their three power-ups, be congratulated for it, and have changed nothing.
+  // Failing here instead means they keep the use and can pick something else.
+  if (powerUp === "freeze" && room.freezeActive) {
+    return { error: "The timer is already frozen this round" };
+  }
+
   // Deduct use and record
   player.powerUpUses--;
   player.usedPowerUpTypes.push(powerUp);
@@ -1340,14 +1401,16 @@ export function choosePowerUp(
 
   // Freeze auto-applies immediately — cut 3s off both the client-visible
   // countdown AND the server-side auto-end timer so they end in sync.
+  // `!room.freezeActive` is guaranteed by the guard above; kept as a belt-and-
+  // braces check so a future caller can't double-apply the timer cut.
   if (powerUp === "freeze" && !room.freezeActive) {
     room.freezeActive = true;
-    bcast(room, { type: "timer-reduced", data: { seconds: 3 } });
+    bcast(room, { type: "timer-reduced", data: { seconds: FREEZE_SECONDS } });
 
     if (room.questionTimer) {
       clearTimeout(room.questionTimer);
       const originalEndMs = room.questionStartTime + (room.timerDuration + 2) * 1000;
-      const remainingMs = Math.max(500, originalEndMs - 3000 - Date.now());
+      const remainingMs = Math.max(500, originalEndMs - FREEZE_SECONDS * 1000 - Date.now());
       room.questionTimer = setTimeout(() => {
         room.questionTimer = null;
         if (room.state === "question") {
@@ -1357,10 +1420,21 @@ export function choosePowerUp(
     }
   }
 
-  // Broadcast updated state so clients get fresh player power-up data
+  // Only what changed. This was a full `getRoomSnapshot` broadcast — every
+  // player, the entire question payload and the leaderboard, sent to every
+  // client, for a tap that alters one player's counter.
   bcast(room, {
-    type: "room-state",
-    data: getRoomSnapshot(room),
+    type: "power-up-used",
+    data: {
+      playerId,
+      powerUp,
+      usesLeft: player.powerUpUses,
+      usedTypes: [...player.usedPowerUpTypes],
+      roundPowerUps: [...room.activePowerUps.entries()].map(([pid, pu]) => ({
+        playerId: pid,
+        powerUp: pu,
+      })),
+    },
   });
 
   return {};

@@ -62,6 +62,34 @@ export function countPlayerConnections(roomCode: string, playerId: string): numb
   return count;
 }
 
+/**
+ * Called when a connection is found dead while sending to it.
+ *
+ * A dropped connection was only *deleted* here — the room store never heard
+ * about it, so the disconnect grace timer didn't start until the stream
+ * route's heartbeat noticed, up to 15 seconds later. For those 15 seconds the
+ * departed player still counted toward `totalEligible`, so the whole room sat
+ * waiting on someone who had already gone.
+ *
+ * A registered hook rather than a direct import: `room-store` imports this
+ * module, so importing it back would be circular.
+ */
+type PrunedHandler = (roomCode: string, playerId: string, hasOtherConnections: boolean) => void;
+let onPruned: PrunedHandler | null = null;
+
+export function setPrunedHandler(handler: PrunedHandler): void {
+  onPruned = handler;
+}
+
+/** Drops a connection found dead mid-send and reports it. */
+function prune(id: string, conn: Connection): void {
+  connections.delete(id);
+  if (!onPruned) return;
+  // Counted *after* the delete, so a player with one tab open reports zero.
+  const remaining = countPlayerConnections(conn.roomCode, conn.playerId);
+  onPruned(conn.roomCode, conn.playerId, remaining > 0);
+}
+
 /** Broadcast an event to all connections in a room */
 export function broadcast(roomCode: string, event: ServerEvent): void {
   const message = encoder.encode(formatSSE(event));
@@ -70,8 +98,7 @@ export function broadcast(roomCode: string, event: ServerEvent): void {
       try {
         conn.controller.enqueue(message);
       } catch {
-        // Connection closed, clean up
-        connections.delete(id);
+        prune(id, conn);
       }
     }
   }
@@ -84,7 +111,7 @@ export function sendTo(connectionId: string, event: ServerEvent): void {
   try {
     conn.controller.enqueue(encoder.encode(formatSSE(event)));
   } catch {
-    connections.delete(connectionId);
+    prune(connectionId, conn);
   }
 }
 

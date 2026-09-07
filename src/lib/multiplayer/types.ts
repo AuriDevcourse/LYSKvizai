@@ -88,7 +88,6 @@ export interface Room {
   bluffReplacedOriginalIndex: number | null;
 
   // Mystery Multiplier
-  mysteryMultipliers: Map<number, number>;
 
   // Leaderboard snapshot (captured at question start, before answers)
   previousLeaderboard: LeaderboardEntry[];
@@ -119,6 +118,24 @@ export type ServerEvent =
   | { type: "wager-start"; data: WagerPayload }
   | { type: "player-eliminated"; data: { playerId: string; playerName: string; playerEmoji: string } }
   | { type: "timer-reduced"; data: { seconds: number } }
+  /**
+   * Someone spent a power-up.
+   *
+   * Choosing one used to trigger a full `room-state` broadcast — every player,
+   * the whole question payload and the leaderboard, to every connected client,
+   * mid-question. This carries only what actually changed: who spent what, and
+   * that player's remaining budget.
+   */
+  | {
+      type: "power-up-used";
+      data: {
+        playerId: string;
+        powerUp: PowerUpType;
+        usesLeft: number;
+        usedTypes: PowerUpType[];
+        roundPowerUps: { playerId: string; powerUp: PowerUpType }[];
+      };
+    }
   | { type: "ping"; data: null };
 
 export interface PlayerInfo {
@@ -131,6 +148,11 @@ export interface PlayerInfo {
   teamIndex?: number | null;
   powerUpUses?: number;
   usedPowerUpTypes?: string[];
+  /**
+   * Set during a wager round: whether this player has submitted. The amount is
+   * never sent — knowing what someone wagered would break the round.
+   */
+  hasWagered?: boolean;
 }
 
 export interface RoomSnapshot {
@@ -142,6 +164,15 @@ export interface RoomSnapshot {
   gameMode: GameMode;
   teamNames?: string[];
   question?: QuestionPayload;
+  /**
+   * Seconds already cut from the current question's clock by a Freeze.
+   *
+   * `timer-reduced` is a one-shot event, so a player who reconnected after
+   * someone froze the timer rebuilt their countdown from the original
+   * duration and ran several seconds behind everyone else — then had their
+   * answer refused by a question that had already closed.
+   */
+  timerReduction?: number;
   results?: ResultsPayload;
   leaderboard?: LeaderboardEntry[];
   wager?: WagerPayload;
@@ -169,7 +200,6 @@ export interface QuestionPayload {
   powerUpUsesLeft?: number;
   /** Power-up types already used by requesting player */
   usedPowerUpTypes?: PowerUpType[];
-  en?: { question: string; options: [string, string, string, string] };
 }
 
 export interface AnswerResult {
@@ -202,11 +232,20 @@ export interface ResultsPayload {
   teamScores?: TeamScore[];
   wagerResults?: WagerResult[];
   powerUpEffects?: PowerUpEffect[];
-  mysteryMultiplier?: number;
   fastestFinger?: { playerId: string; playerName: string; bonusPoints: number };
   correctAnswerText?: string;
   yearGuesses?: { playerId: string; playerName: string; guessedYear: number; correctYear: number; points: number }[];
-  en?: { correctAnswerText?: string; explanation?: string; options?: string[] };
+  /**
+   * The options in the order they were shown, so the results screen doesn't
+   * have to still be holding the question payload.
+   *
+   * This used to live under `en`, alongside copies of `correctAnswerText` and
+   * `explanation` that duplicated the fields right next to them — a
+   * translation envelope left over from when the app was bilingual. Lithuanian
+   * was removed end-to-end, so the envelope was shipping two redundant strings
+   * to every player on every question.
+   */
+  options?: string[];
 }
 
 export interface LeaderboardEntry {
@@ -225,7 +264,6 @@ export type WagerType = "regular" | "super";
 
 export interface WagerPayload {
   questionIndex: number;
-  maxWager: number;
   wagerType: WagerType;
 }
 

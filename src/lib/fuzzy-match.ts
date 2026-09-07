@@ -25,9 +25,20 @@ function normalize(s: string): string {
   return stripAccents(s.toLowerCase().trim()).replace(/\s+/g, " ");
 }
 
-/** Check if two strings match within a Levenshtein distance threshold */
+/**
+ * Whether two strings match within a Levenshtein distance threshold.
+ *
+ * The `Math.max(1, …)` floor exists so short words still tolerate one typo —
+ * but with nothing else guarding it, one edit was allowed no matter how short
+ * the words were. On a two-letter answer that meant **any single letter
+ * matched**: a fastest-finger question accepting "Au" was won by typing "a",
+ * and a player could simply spam vowels. Below four characters the answer now
+ * has to be exact, which is the only threshold at which "one edit" isn't most
+ * of the word.
+ */
 function isWithinDistance(a: string, b: string, maxRatio = 0.25): boolean {
   const maxLen = Math.max(a.length, b.length);
+  if (maxLen < 4) return a === b;
   const maxDist = Math.max(1, Math.floor(maxLen * maxRatio));
   return levenshtein(a, b) <= maxDist;
 }
