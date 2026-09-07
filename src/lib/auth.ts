@@ -1,5 +1,7 @@
 import { timingSafeEqual } from "crypto";
 import type { NextRequest } from "next/server";
+import { peekRateLimit, recordAttempt, clearRateLimit } from "./rate-limit";
+import { getClientIp } from "./client-ip";
 
 /**
  * Editor authentication.
@@ -55,4 +57,59 @@ export function checkEditorAuth(req: NextRequest): AuthResult {
     return { ok: false, status: 403, error: "Wrong editor password" };
   }
   return { ok: true };
+}
+
+/* --------------------------------------------------------------- throttling */
+
+/**
+ * Failed password attempts allowed per IP, and over how long.
+ *
+ * Ten is generous for someone mistyping a password they have, and useless to
+ * anyone guessing. Five minutes is long enough to make a sustained attempt
+ * pointless without stranding an editor who fat-fingered it twice.
+ */
+const MAX_AUTH_FAILURES = 10;
+const AUTH_FAILURE_WINDOW_MS = 5 * 60 * 1000;
+
+/**
+ * `checkEditorAuth` plus brute-force protection.
+ *
+ * Every editor endpoint called `checkEditorAuth` *before* any rate limit, so a
+ * wrong password cost the caller nothing and could be retried without limit.
+ * With a `openssl rand -base64 24` secret that is academic — 192 bits is not
+ * getting guessed — but a shared editor password is exactly the kind that gets
+ * quietly replaced with something memorable, and at that point unlimited
+ * attempts matter a great deal.
+ *
+ * Only **failures** are counted, so an editor saving fifty quizzes in a session
+ * never approaches the limit. A correct password clears the record, so someone
+ * who mistypes twice and then gets it right starts clean.
+ *
+ * The 503 for an unconfigured server is deliberately not counted: that is the
+ * server's state, not the caller's fault, and charging for it would let anyone
+ * lock out the real editor for five minutes before the secret was even set.
+ */
+export function checkEditorAuthThrottled(req: NextRequest): AuthResult {
+  const key = `editor-auth:${getClientIp(req)}`;
+
+  if (!peekRateLimit(key, MAX_AUTH_FAILURES, AUTH_FAILURE_WINDOW_MS)) {
+    return {
+      ok: false,
+      status: 429,
+      error: "Too many failed attempts. Wait a few minutes and try again.",
+    };
+  }
+
+  const result = checkEditorAuth(req);
+
+  if (result.ok) {
+    clearRateLimit(key);
+    return result;
+  }
+
+  if (result.status === 401 || result.status === 403) {
+    recordAttempt(key, AUTH_FAILURE_WINDOW_MS);
+  }
+
+  return result;
 }

@@ -1,5 +1,11 @@
 import fs from "fs/promises";
 import path from "path";
+import { logServerError } from "./http";
+
+/** ENOENT is an expected outcome here, not a failure worth logging. */
+function isNotFound(e: unknown): boolean {
+  return typeof e === "object" && e !== null && (e as { code?: string }).code === "ENOENT";
+}
 import type { Quiz, QuizMeta } from "@/data/types";
 import { isGoodZoomImage } from "./question-transform";
 
@@ -53,7 +59,6 @@ export async function listQuizzes(): Promise<QuizMeta[]> {
         id: quiz.id,
         title: quiz.title,
         description: quiz.description,
-        emoji: quiz.emoji,
         icon: quiz.icon,
         questionCount: quiz.questions.length,
         createdAt: quiz.createdAt,
@@ -66,8 +71,11 @@ export async function listQuizzes(): Promise<QuizMeta[]> {
           return a.length > 0 && a.length <= 25 && a.split(/\s+/).length <= 3;
         }).length,
       });
-    } catch {
-      // skip invalid files
+    } catch (e) {
+      // A quiz that fails to parse silently disappeared from every list —
+      // the same shape of failure as the save path that used to drop
+      // questions without saying so. Say something.
+      logServerError("listQuizzes: unreadable quiz file", e, { file });
     }
   }
 
@@ -82,7 +90,10 @@ export async function getQuiz(id: string): Promise<Quiz | null> {
   try {
     const raw = await fs.readFile(filePath, "utf-8");
     return JSON.parse(raw) as Quiz;
-  } catch {
+  } catch (e) {
+    // A missing file is normal (a deleted quiz); anything else is not, and
+    // returning null for both made a read failure look like a 404.
+    if (!isNotFound(e)) logServerError("getQuiz: read failed", e, { id });
     return null;
   }
 }
@@ -105,7 +116,8 @@ export async function deleteQuiz(id: string): Promise<boolean> {
     await fs.unlink(filePath);
     invalidateQuizCache();
     return true;
-  } catch {
+  } catch (e) {
+    if (!isNotFound(e)) logServerError("deleteQuiz: unlink failed", e, { id });
     return false;
   }
 }

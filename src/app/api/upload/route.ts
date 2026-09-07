@@ -1,8 +1,9 @@
+import { logServerError } from "@/lib/http";
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import { randomBytes } from "crypto";
-import { checkEditorAuth } from "@/lib/auth";
+import { checkEditorAuthThrottled } from "@/lib/auth";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { getClientIp } from "@/lib/client-ip";
 
@@ -63,7 +64,7 @@ function json(data: unknown, status = 200) {
 /** POST /api/upload — upload quiz media. Editor-only. */
 export async function POST(req: NextRequest) {
   // Writing into the public web root is admin surface, not player surface.
-  const auth = checkEditorAuth(req);
+  const auth = checkEditorAuthThrottled(req);
   if (!auth.ok) return json({ error: auth.error }, auth.status);
 
   const ip = getClientIp(req);
@@ -128,7 +129,8 @@ export async function POST(req: NextRequest) {
     await fs.writeFile(filePath, buffer);
 
     return json({ url: `/quiz-images/${unique}` }, 201);
-  } catch {
+  } catch (e) {
+    logServerError("upload: write failed", e);
     return json({ error: "Failed to upload file" }, 500);
   }
 }

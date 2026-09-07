@@ -24,9 +24,22 @@ import {
 } from "@/lib/multiplayer/room-store";
 import { broadcast } from "@/lib/multiplayer/sse-manager";
 import { getClientIp } from "@/lib/client-ip";
+import { readJsonBody, logServerError } from "@/lib/http";
 
 function json(data: unknown, status = 200) {
   return NextResponse.json(data, { status });
+}
+
+/**
+ * Maps a room-store error to a status code.
+ *
+ * The host actions all returned **403** for every failure, including "Room not
+ * found" — so a host whose room had been reaped (or lost on a deploy, since
+ * the store is in memory) was told they lacked permission for their own game.
+ * That sends you looking for an auth bug instead of a missing room.
+ */
+function statusFor(error: string): number {
+  return /not found/i.test(error) ? 404 : 403;
 }
 
 export async function POST(req: NextRequest) {
@@ -44,12 +57,11 @@ export async function POST(req: NextRequest) {
     return json({ error: "Too many requests" }, 429);
   }
 
-  let parsed: unknown;
-  try {
-    parsed = await req.json();
-  } catch {
-    return json({ error: "Invalid request format" }, 400);
-  }
+  // Bounded before parsing. `req.json()` has no size limit of its own, so an
+  // oversized body was buffered in full and only then rejected for its shape.
+  const body_ = await readJsonBody(req);
+  if (!body_.ok) return json({ error: body_.error }, body_.status);
+  const parsed: unknown = body_.value;
 
   // Validate before anything touches the room store. `req.json()` is `any`;
   // the ClientAction cast alone proves nothing at runtime.
@@ -77,6 +89,10 @@ export async function POST(req: NextRequest) {
           snapshot: getRoomSnapshot(room),
         });
       } catch (e) {
+        // A create failure is usually a bad quiz id (a client problem, hence
+        // 400), but a filesystem or parse failure lands here too and left no
+        // trace at all.
+        logServerError("createRoom failed", e);
         return json({ error: e instanceof Error ? e.message : "Error creating room" }, 400);
       }
     }
@@ -92,7 +108,7 @@ export async function POST(req: NextRequest) {
 
     case "start": {
       const result = await startGame(body.code, body.hostId, body.hostToken);
-      if (result.error) return json({ error: result.error }, 403);
+      if (result.error) return json({ error: result.error }, statusFor(result.error));
       return json({ ok: true });
     }
 
@@ -104,13 +120,13 @@ export async function POST(req: NextRequest) {
 
     case "next": {
       const result = nextQuestion(body.code, body.hostId, body.hostToken);
-      if (result.error) return json({ error: result.error }, 403);
+      if (result.error) return json({ error: result.error }, statusFor(result.error));
       return json({ ok: true });
     }
 
     case "force-results": {
       const result = forceShowResults(body.code, body.hostId, body.hostToken);
-      if (result.error) return json({ error: result.error }, 403);
+      if (result.error) return json({ error: result.error }, statusFor(result.error));
       return json({ ok: true });
     }
 
@@ -122,7 +138,7 @@ export async function POST(req: NextRequest) {
 
     case "advance-wager": {
       const result = advanceFromWagerAction(body.code, body.hostId, body.hostToken);
-      if (result.error) return json({ error: result.error }, 403);
+      if (result.error) return json({ error: result.error }, statusFor(result.error));
       return json({ ok: true });
     }
 
@@ -196,9 +212,45 @@ export async function GET(req: NextRequest) {
   const room = getRoom(code);
   if (!room) return json({ error: "Room not found" }, 404);
 
-  const hostId = req.nextUrl.searchParams.get("hostId");
-  const hostToken = req.nextUrl.searchParams.get("hostToken");
+  /*
+   * Credentials come from headers, not the query string.
+   *
+   * The host token used to be passed as `?hostToken=…`, which puts a
+   * credential everywhere URLs get written down: proxy access logs, browser
+   * history, `Referer`. Headers are not logged by default.
+   */
+  const hostId = req.headers.get("x-host-id");
+  const hostToken = req.headers.get("x-host-token");
   const isHost = !!(hostId && hostToken && isHostOf(code, hostId, hostToken));
 
-  return json({ snapshot: getRoomSnapshot(room), isHost });
+  const playerId = req.headers.get("x-player-id");
+  const playerToken = req.headers.get("x-player-token");
+  const player = playerId ? room.players.get(playerId) : undefined;
+  const isMember = !!(player && playerToken && player.token === playerToken);
+
+  /*
+   * Room codes are four characters — about 1.7M combinations, with no
+   * per-code lockout. This route used to hand the **entire snapshot** to
+   * anyone who guessed one: every player's name, the live question, and during
+   * the results phase `correctAnswer` itself. Scanning for active rooms was a
+   * matter of patience.
+   *
+   * Unauthenticated callers now get only what the join screen legitimately
+   * needs to know — that the room is real and whether it has started.
+   */
+  if (!isHost && !isMember) {
+    return json({
+      exists: true,
+      state: room.state,
+      playerCount: room.players.size,
+      isHost: false,
+    });
+  }
+
+  return json({
+    exists: true,
+    state: room.state,
+    isHost,
+    snapshot: getRoomSnapshot(room),
+  });
 }

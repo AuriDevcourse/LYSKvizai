@@ -1,3 +1,4 @@
+import { logServerError } from "@/lib/http";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -75,7 +76,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Failed to send" }, { status: 502 });
     }
     return NextResponse.json({ ok: true });
-  } catch {
+  } catch (e) {
+    logServerError("feedback: send failed", e);
     return NextResponse.json({ error: "Failed to send" }, { status: 502 });
   }
 }

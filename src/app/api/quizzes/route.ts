@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { listQuizzes, saveQuiz } from "@/lib/quiz-store";
 import { checkRateLimit } from "@/lib/rate-limit";
-import { checkEditorAuth } from "@/lib/auth";
+import { checkEditorAuthThrottled } from "@/lib/auth";
 import { validateQuizInput } from "@/lib/quiz-validate";
 import type { Quiz } from "@/data/types";
 import { getClientIp } from "@/lib/client-ip";
@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   // saveQuiz is create-or-update, so an open POST let anyone overwrite any
   // existing quiz by reusing its id.
-  const auth = checkEditorAuth(req);
+  const auth = checkEditorAuthThrottled(req);
   if (!auth.ok) return json({ error: auth.error }, auth.status);
 
   const ip = getClientIp(req);
@@ -48,7 +48,6 @@ export async function POST(req: NextRequest) {
     id: v.id,
     title: v.title,
     description: v.description,
-    emoji: v.emoji,
     icon: v.icon,
     questions: v.questions,
     createdAt: new Date().toISOString(),

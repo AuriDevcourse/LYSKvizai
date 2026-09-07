@@ -26,7 +26,6 @@ export interface ValidatedQuiz {
   id: string;
   title: string;
   description: string;
-  emoji: string;
   icon: string;
   questions: Question[];
 }
@@ -129,6 +128,22 @@ function validateQuestion(raw: unknown, i: number): { question: Question } | { e
     return { error: `${at}: bluff questions need a bluff answer` };
   }
 
+  /*
+   * The remaining types that can be saved in an unplayable state.
+   *
+   * `year-guesser` and `bluff` above were already checked; these two were not,
+   * so the editor would happily save a zoom-out round with no picture (there
+   * is nothing to zoom) or a fastest-finger round with nothing to accept (no
+   * answer can ever be right). Both fail at runtime, mid-game, in front of
+   * everyone — which is the worst possible place to find out.
+   */
+  if (type === "zoom-out" && !image) {
+    return { error: `${at}: zoom-out questions need an image to zoom out of` };
+  }
+  if (type === "fastest-finger" && (!acceptedAnswers || acceptedAnswers.length === 0)) {
+    return { error: `${at}: fastest-finger questions need at least one accepted answer` };
+  }
+
   const out: Question = {
     question,
     options: options as [string, string, string, string],
@@ -171,8 +186,7 @@ export function validateQuizInput(body: unknown): { quiz: ValidatedQuiz } | { er
   }
 
   const description = typeof b.description === "string" ? b.description.slice(0, MAX_DESCRIPTION) : "";
-  const emoji = typeof b.emoji === "string" ? b.emoji.slice(0, 16) : "";
   const icon = typeof b.icon === "string" && /^[A-Za-z0-9]{1,40}$/.test(b.icon) ? b.icon : "BookOpen";
 
-  return { quiz: { id, title, description, emoji, icon, questions } };
+  return { quiz: { id, title, description, icon, questions } };
 }
