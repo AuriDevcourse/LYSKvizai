@@ -1,10 +1,12 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Palette as PaletteIcon, RotateCcw, Check, Trophy, Eye } from "lucide-react";
 import FlagArt from "@/components/games/FlagArt";
+import ImageTint from "@/components/games/ImageTint";
 import { FLAGS, officialPalette, playableRegions, type Flag, type FlagRegion } from "@/lib/games/flags";
+import { loadLocalRounds, type LocalImageRound } from "@/lib/games/local-images";
 import { adjustHex } from "@/lib/color/convert";
 import { scoreSingle, scrambleOne, type TintScramble, type TintResult } from "@/lib/games/tint-scoring";
 
@@ -22,26 +24,94 @@ const ROUNDS = 5;
  * and not invented characters. It's also why the correct answer can be a
  * published Pantone spec rather than an opinion.
  */
-interface Round {
-  flag: Flag;
-  region: FlagRegion;
-  /** Colour the region starts at. */
-  start: string;
-}
+/**
+ * A round is either a flag or one of the player's own local images. Both work
+ * the same way — one colour region is wrong, the sliders move it, the score is
+ * ΔE₀₀ against the correct value — so the rest of the screen doesn't care which
+ * it's looking at.
+ */
+type Round =
+  | {
+      kind: "flag";
+      flag: Flag;
+      region: FlagRegion;
+      /** Colour the region starts at. */
+      start: string;
+      /** The correct colour. */
+      truth: string;
+      /** Heading above the question. */
+      title: string;
+      /** What the player is restoring. */
+      label: string;
+      /** Where the correct value comes from. */
+      spec: string;
+      /** The scramble, so the image renderer can start from it. */
+      scramble: TintScramble;
+    }
+  | {
+      kind: "image";
+      image: LocalImageRound;
+      start: string;
+      truth: string;
+      title: string;
+      label: string;
+      spec: string;
+      scramble: TintScramble;
+    };
 
-function newRound(seenFlags: Set<string>): Round {
+function flagRound(seenFlags: Set<string>): Round {
   const pool = FLAGS.filter((f) => !seenFlags.has(f.id));
   const source = pool.length ? pool : FLAGS;
   const flag = source[Math.floor(Math.random() * source.length)];
   const options = playableRegions(flag);
   const region = options[Math.floor(Math.random() * options.length)];
   const scramble = scrambleOne(region.hex);
-  return { flag, region, start: adjustHex(region.hex, scramble.hue, scramble.sat, scramble.light) };
+  return {
+    kind: "flag",
+    flag,
+    region,
+    start: adjustHex(region.hex, scramble.hue, scramble.sat, scramble.light),
+    truth: region.hex,
+    title: flag.name,
+    label: region.label,
+    spec: region.spec,
+    scramble,
+  };
+}
+
+function imageRound(image: LocalImageRound): Round {
+  const scramble = scrambleOne(image.hex);
+  return {
+    kind: "image",
+    image,
+    start: adjustHex(image.hex, scramble.hue, scramble.sat, scramble.light),
+    truth: image.hex,
+    title: image.name,
+    label: image.label,
+    spec: image.hex,
+    scramble,
+  };
 }
 
 export default function TintGamePage() {
   const [seen, setSeen] = useState<Set<string>>(new Set());
-  const [round, setRound] = useState<Round>(() => newRound(new Set()));
+  const [locals, setLocals] = useState<LocalImageRound[]>([]);
+  const [localIndex, setLocalIndex] = useState(0);
+  const [round, setRound] = useState<Round>(() => flagRound(new Set()));
+
+  // Local images are opt-in and gitignored, so most installs have none. If a
+  // manifest is there, its rounds go first — they're the ones the player
+  // deliberately set up.
+  useEffect(() => {
+    let cancelled = false;
+    loadLocalRounds().then((rounds) => {
+      if (cancelled || rounds.length === 0) return;
+      setLocals(rounds);
+      setRound(imageRound(rounds[0]));
+      setLocalIndex(1);
+    });
+    return () => { cancelled = true; };
+  }, []);
   const [tint, setTint] = useState<TintScramble>({ hue: 0, sat: 1, light: 0 });
   const [result, setResult] = useState<TintResult | null>(null);
   const [roundNo, setRoundNo] = useState(1);
@@ -55,37 +125,74 @@ export default function TintGamePage() {
     [round.start, tint]
   );
 
-  // Every other region stays official — only the target moves.
+  const showTruth = (peeking && !result) || result !== null;
+
+  // Flags only: every other region stays official, so the real palette is right
+  // there to judge against — only the target moves.
   const colors = useMemo(() => {
+    if (round.kind !== "flag") return {};
     const base = officialPalette(round.flag);
-    const showTruth = (peeking && !result) || result !== null;
-    return { ...base, [round.region.id]: showTruth ? round.region.hex : attempt };
-  }, [round, attempt, peeking, result]);
+    return { ...base, [round.region.id]: showTruth ? round.truth : attempt };
+  }, [round, attempt, showTruth]);
+
+  /**
+   * Canvas transform for image rounds.
+   *
+   * The canvas always starts from the *original* pixels, so getting to what the
+   * player currently sees means applying the scramble AND their correction on
+   * top of it — the same composition `attempt` performs on a single hex value,
+   * applied to every masked pixel. Returning just the scramble left the canvas
+   * frozen at its starting colour while the swatch moved, which made the
+   * sliders look broken.
+   *
+   * Showing the truth is the identity transform: no scramble, no correction.
+   */
+  const imageTint = useMemo(() => {
+    if (round.kind !== "image") return { hue: 0, sat: 1, light: 0 };
+    if (showTruth) return { hue: 0, sat: 1, light: 0 };
+    return {
+      hue: round.scramble.hue + tint.hue,
+      sat: round.scramble.sat * tint.sat,
+      light: round.scramble.light + tint.light,
+    };
+  }, [round, showTruth, tint]);
 
   const lockIn = useCallback(() => {
     if (result) return;
-    const r = scoreSingle(round.region.hex, attempt);
+    const r = scoreSingle(round.truth, attempt);
     setResult(r);
     setTotal((t) => t + r.points);
-  }, [result, round.region.hex, attempt]);
+  }, [result, round.truth, attempt]);
 
   const next = useCallback(() => {
     if (roundNo >= ROUNDS) { setDone(true); return; }
-    const nextSeen = new Set(seen).add(round.flag.id);
-    setSeen(nextSeen);
-    setRound(newRound(nextSeen));
+    // Work through the player's own images first, then fall back to flags.
+    if (localIndex < locals.length) {
+      setRound(imageRound(locals[localIndex]));
+      setLocalIndex((i) => i + 1);
+    } else {
+      const nextSeen = round.kind === "flag" ? new Set(seen).add(round.flag.id) : seen;
+      setSeen(nextSeen);
+      setRound(flagRound(nextSeen));
+    }
     setTint({ hue: 0, sat: 1, light: 0 });
     setResult(null);
     setRoundNo((n) => n + 1);
-  }, [roundNo, seen, round]);
+  }, [roundNo, seen, round, locals, localIndex]);
 
   const restart = useCallback(() => {
     setSeen(new Set());
-    setRound(newRound(new Set()));
+    if (locals.length > 0) {
+      setRound(imageRound(locals[0]));
+      setLocalIndex(1);
+    } else {
+      setRound(flagRound(new Set()));
+      setLocalIndex(0);
+    }
     setTint({ hue: 0, sat: 1, light: 0 });
     setResult(null);
     setRoundNo(1); setTotal(0); setDone(false);
-  }, []);
+  }, [locals]);
 
   if (done) {
     return (
@@ -120,46 +227,90 @@ export default function TintGamePage() {
 
       <div className="mx-auto flex w-full max-w-xl flex-1 flex-col items-center justify-center gap-4 sm:gap-5">
         <div className="text-center">
-          <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-white/45">{round.flag.name}</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-white/45">{round.title}</p>
           <h1 className="mt-1 text-lg font-bold text-white/90 sm:text-xl">
-            Find <span className="text-[#ff9062]">{round.region.label}</span>
+            Find <span className="text-[#ff9062]">{round.label}</span>
           </h1>
         </div>
 
-        {/* The flag. Everything except the target region is already correct, so
-            the eye has the real palette right there to judge against. */}
-        <div className="surface rounded-3xl p-3">
-          <div className="overflow-hidden rounded-xl shadow-[0_16px_40px_-16px_rgba(0,0,0,0.9)]">
-            <FlagArt
-              id={round.flag.id}
-              colors={colors}
-              width={300}
-              title={`Flag of ${round.flag.name}`}
-            />
+        {/* While playing: one flag, with every region except the target already
+            correct — so the real palette is right there to judge against.
+            After locking in: both versions side by side at the same size. A pair
+            of small swatches told you the numbers; two full flags let you
+            actually see how far off you were, which is the whole point. */}
+        {!result ? (
+          <div className="surface rounded-3xl p-3">
+            <div className="overflow-hidden rounded-xl shadow-[0_16px_40px_-16px_rgba(0,0,0,0.9)]">
+              {round.kind === "flag" ? (
+                <FlagArt
+                  id={round.flag.id}
+                  colors={colors}
+                  width={300}
+                  title={`Flag of ${round.flag.name}`}
+                />
+              ) : (
+                <ImageTint
+                  src={`/tint-local/${round.image.file}`}
+                  targetHex={round.truth}
+                  tolerance={round.image.tolerance ?? 22}
+                  hueShift={imageTint.hue}
+                  satScale={imageTint.sat}
+                  lightShift={imageTint.light}
+                  width={300}
+                  alt={round.image.name}
+                />
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex w-full flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-5">
+            <Compare caption="Yours" hex={attempt} tone="text-white/60">
+              {round.kind === "flag" ? (
+                <FlagArt
+                  id={round.flag.id}
+                  colors={{ ...officialPalette(round.flag), [round.region.id]: attempt }}
+                  width={215}
+                />
+              ) : (
+                <ImageTint
+                  src={`/tint-local/${round.image.file}`}
+                  targetHex={round.truth}
+                  tolerance={round.image.tolerance ?? 22}
+                  hueShift={round.scramble.hue + tint.hue}
+                  satScale={round.scramble.sat * tint.sat}
+                  lightShift={round.scramble.light + tint.light}
+                  width={215}
+                />
+              )}
+            </Compare>
+            <Compare caption="Official" hex={round.truth} tone="text-[#66bb6a]" highlight>
+              {round.kind === "flag" ? (
+                <FlagArt id={round.flag.id} colors={officialPalette(round.flag)} width={215} />
+              ) : (
+                <ImageTint
+                  src={`/tint-local/${round.image.file}`}
+                  targetHex={round.truth}
+                  tolerance={round.image.tolerance ?? 22}
+                  hueShift={0}
+                  satScale={1}
+                  lightShift={0}
+                  width={215}
+                />
+              )}
+            </Compare>
+          </div>
+        )}
 
-        {/* Swatch: what the player currently has vs, after locking in, the truth. */}
-        <div className="flex items-center gap-5">
+        {/* Live swatch while playing. */}
+        {!result && (
           <div className="flex flex-col items-center gap-1.5">
             <div
-              className="h-10 w-14 rounded-xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.25)]"
+              className="h-10 w-16 rounded-xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.25)]"
               style={{ backgroundColor: attempt }}
             />
-            <span className="font-headline text-[11px] font-bold uppercase tracking-wider text-white/45">yours</span>
             <span className="font-mono text-[10px] text-white/35">{attempt}</span>
           </div>
-          {result && (
-            <div className="flex flex-col items-center gap-1.5">
-              <div
-                className="h-10 w-14 rounded-xl outline outline-2 outline-[#66bb6a] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.25)]"
-                style={{ backgroundColor: round.region.hex }}
-              />
-              <span className="font-headline text-[11px] font-bold uppercase tracking-wider text-white/45">official</span>
-              <span className="font-mono text-[10px] text-white/35">{round.region.hex}</span>
-            </div>
-          )}
-        </div>
+        )}
 
         {!result ? (
           <div className="w-full max-w-lg space-y-3">
@@ -196,15 +347,52 @@ export default function TintGamePage() {
             </p>
             <p className="mt-1 text-white/70">{result.verdict}</p>
             <p className="mt-3 text-sm leading-relaxed text-white/45">
-              {round.flag.name} specifies {round.region.label} as{" "}
-              <span className="font-bold text-white/70">{round.region.spec}</span>. You were
-              ΔE{"₀₀"} {result.meanDeltaE.toFixed(1)} away.
+              {round.kind === "flag" ? (
+                <>
+                  {round.flag.name} specifies {round.label} as{" "}
+                  <span className="font-bold text-white/70">{round.spec}</span>.
+                </>
+              ) : (
+                <>
+                  {round.label} is <span className="font-bold text-white/70">{round.truth}</span>.
+                </>
+              )}{" "}
+              You were ΔE{"₀₀"} {result.meanDeltaE.toFixed(1)} away.
             </p>
             <button onClick={next} className="btn-primary mt-6 flex min-h-[52px] w-full items-center justify-center !text-lg">
-              {roundNo >= ROUNDS ? "See results" : "Next flag"}
+              {roundNo >= ROUNDS ? "See results" : "Next round"}
             </button>
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * One half of the side-by-side. Same flag, same size, one colour different —
+ * so the eye compares the thing itself rather than two abstract chips.
+ */
+function Compare({
+  caption, hex, tone, highlight = false, children,
+}: {
+  caption: string; hex: string; tone: string; highlight?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className={`surface rounded-2xl p-2 ${highlight ? "outline outline-2 outline-[#66bb6a]/60" : ""}`}>
+        <div className="overflow-hidden rounded-lg">{children}</div>
+      </div>
+      <div className="flex items-center gap-2">
+        <span
+          className="h-4 w-4 rounded-md shadow-[inset_0_1px_0_0_rgba(255,255,255,0.3)]"
+          style={{ backgroundColor: hex }}
+        />
+        <span className={`font-headline text-[11px] font-bold uppercase tracking-[0.16em] ${tone}`}>
+          {caption}
+        </span>
+        <span className="font-mono text-[10px] text-white/35">{hex}</span>
       </div>
     </div>
   );

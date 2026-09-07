@@ -41,3 +41,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local-only game images.
+#
+# The colour game can load your own character images from here. Nothing in this
+# folder is committed or deployed, which is the point: you can drop in whatever
+# reference art you like for local play without it ending up in the repo or on
+# quizmo.auridev.com. See src/lib/games/local-images.ts.
+/public/tint-local/
