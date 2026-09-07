@@ -25,6 +25,7 @@ import type { GameMode } from "@/lib/multiplayer/types";
 import { MAX_QUESTION_COUNT } from "@/lib/multiplayer/validate";
 import type { QuizMeta } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { Mark } from "@/components/Logo";
 
 function generateId() {
   return Math.random().toString(36).slice(2, 10);
@@ -151,7 +152,7 @@ function PlayPageInner() {
     <main className="relative z-10 flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-5 pt-12 pb-8 sm:pt-8">
       {mode === "menu" && (
         <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
-          <h1 className="text-3xl font-extrabold text-white sm:text-4xl">
+          <h1 className="font-headline text-3xl font-extrabold text-white sm:text-4xl">
             {t("play.playWithFriends")}
           </h1>
 
@@ -246,7 +247,7 @@ function PlayPageInner() {
 
       {mode === "host-join" && (
         <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
-          <h1 className="text-2xl font-extrabold text-white">{t("play.howWillYouPlay")}</h1>
+          <h1 className="font-headline text-2xl font-extrabold text-white">{t("play.howWillYouPlay")}</h1>
 
           {error && (
             <p className="w-full rounded-xl bg-error/20 px-4 py-3 text-center text-sm font-bold text-white">
@@ -356,13 +357,37 @@ function PlayPageInner() {
       )}
 
       {mode === "join" && (
-        <div className="relative flex w-full flex-col items-center gap-6 animate-fade-in-up self-start -mt-8 sm:self-center sm:mt-0">
+        <div className="relative flex w-full flex-col items-center gap-5 animate-fade-in-up self-center">
+          {/*
+            * One close control, at 44px, on every size.
+            *
+            * It was a 36x36 button hidden above `sm`, with desktop relying on a
+            * small "Back" link at the bottom of the form — which the avatar
+            * grid pushed off the screen entirely, so on a laptop there was no
+            * visible way out of this screen at all.
+            */}
           <button
             onClick={() => { setMode("menu"); setError(null); }}
-            className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-white/60 transition-colors hover:bg-white/20 hover:text-white sm:hidden"
+            aria-label={t("play.back")}
+            className="tap-target fixed right-4 top-4 z-50 flex items-center justify-center rounded-full bg-white/5 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
           >
             <X className="h-5 w-5" />
           </button>
+
+          {/*
+            * A heading, and the mark.
+            *
+            * This screen had no `h1`, `h2` or `h3` at all — it opened on the
+            * word "Room code" with no title and no branding, and it is the
+            * screen most players actually see, on their own phone.
+            */}
+          <div className="flex flex-col items-center gap-2 text-center">
+            <Mark className="h-11 w-11 text-primary" />
+            <h1 className="font-headline text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+              {t("play.joinTitle")}
+            </h1>
+            <p className="text-sm font-medium text-white/50">{t("play.joinSubtitle")}</p>
+          </div>
 
           <JoinForm
             initialCode={codeFromUrl}
@@ -371,13 +396,6 @@ function PlayPageInner() {
             error={error}
           />
 
-          <button
-            onClick={() => { setMode("menu"); setError(null); }}
-            className="hidden sm:flex items-center gap-1.5 text-sm font-bold text-white/50 hover:text-white/70 transition-colors"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            {t("play.back")}
-          </button>
         </div>
       )}
 

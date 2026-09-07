@@ -18,6 +18,16 @@ import {
 
 interface AvatarBuilderProps {
   onChange: (encoded: string) => void;
+  /**
+   * Hide the tab row and the option grid, leaving the preview and the dice.
+   *
+   * The grid is roughly 450px tall, which on a phone-sized viewport is most of
+   * the screen — and on the join form it sat above the Join button and pushed
+   * it off. Collapsing keeps this component mounted, which matters: it emits
+   * the randomised avatar on mount, so the form has a valid one without the
+   * player touching anything.
+   */
+  collapsed?: boolean;
 }
 
 type Tab = "hair" | "hairColor" | "eyes" | "eyebrows" | "mouth" | "skin" | "glasses" | "earrings" | "features" | "bg";
@@ -67,7 +77,7 @@ function isSelected(cat: Tab, idx: number, c: DiceBearConfig): boolean {
   return c[cat] === idx;
 }
 
-export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
+export default function AvatarBuilder({ onChange, collapsed = false }: AvatarBuilderProps) {
   const [config, setConfig] = useState<DiceBearConfig>(DEFAULT_CONFIG);
   const [tab, setTab] = useState<Tab>("hair");
 
@@ -137,7 +147,10 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
       </div>
 
       {/* Tabs */}
-      <div className="-mx-1 flex gap-1 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div
+        hidden={collapsed}
+        className="-mx-1 flex gap-1 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
         {TABS.map((t) => (
           <button
             key={t.id}
@@ -155,7 +168,10 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
       </div>
 
       {/* Option grid */}
-      <div className="grid max-h-56 grid-cols-4 gap-1.5 overflow-y-auto pr-0.5 sm:grid-cols-5">
+      <div
+        hidden={collapsed}
+        className="grid max-h-56 grid-cols-4 gap-1.5 overflow-y-auto pr-0.5 sm:grid-cols-5"
+      >
         {Array.from({ length: optionCount(tab) }, (_, i) => {
           const preview = withFeature(config, tab, i);
           const selected = isSelected(tab, i, config);

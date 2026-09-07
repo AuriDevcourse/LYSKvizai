@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { ArrowLeft, Check, Shuffle, ToggleLeft, Calendar, Keyboard, HelpCircle, ZoomOut, Smartphone, Sparkles, FolderPlus, SlidersHorizontal } from "lucide-react";
-import { TOPICS, topicHasQuiz, quizIdsForTopic, unlistedQuizIds, type Topic } from "@/lib/topics";
+import { MoreIcon } from "@/components/icons/TopicIcons";
+import { ArrowLeft, Check, Play, Shuffle, ToggleLeft, Calendar, Keyboard, HelpCircle, ZoomOut, Smartphone, Sparkles, SlidersHorizontal } from "lucide-react";
+import { TOPICS, NEUTRAL_ACCENT, topicHasQuiz, quizIdsForTopic, unlistedQuizIds, type Topic } from "@/lib/topics";
 import type { QuizMeta } from "@/data/types";
 import type { QuestionType } from "@/data/types";
 import { getQuizTheme } from "@/lib/quiz-theme";
@@ -165,8 +166,8 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
       {
         id: "__unlisted",
         labelKey: "topics.more",
-        icon: FolderPlus,
-        bg: "bg-[#64748b]",
+        icon: MoreIcon,
+        accent: NEUTRAL_ACCENT,
         quizIds: unlisted,
       },
     ];
@@ -189,8 +190,8 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
         </button>
 
         <div className="mb-6 flex items-center gap-3">
-          <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${activeTopic.bg}`}>
-            <Icon className="h-5 w-5 text-white" />
+          <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${activeTopic.accent}`}>
+            <Icon className="h-5 w-5" />
           </div>
           <h2 className="font-headline text-2xl font-extrabold text-white">
             {t(activeTopic.labelKey as never)}
@@ -230,7 +231,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
                   }`}
                 >
                   <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${theme.bg}`}>
-                    <SubIcon className="h-5 w-5 text-white" />
+                    <SubIcon className="h-5 w-5" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1.5">
@@ -331,15 +332,54 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
               const meta = allQuizzes.find((q) => q.id === id);
               return sum + (meta ? countFor(meta, activeGameType.id as string) : 0);
             }, 0);
+            const isSelected = selectedCount > 0;
             return (
               <div
                 key={topic.id}
-                className={`group relative rounded-xl transition-all duration-300 ${
-                  selectedCount > 0
-                    ? "bg-primary-dim/12 border-[1.5px] border-primary/40"
-                    : "bg-white/4 border-[1.5px] border-white/5 hover:bg-white/8 hover:border-white/10"
+                /*
+                 * `.surface` + `.surface-hover`, not a hand-rolled
+                 * `bg-white/4 + border-white/5`. CLAUDE.md warns against
+                 * duplicating that recipe and this tile had drifted from it:
+                 * it was missing the gradient hairline, the inner specular
+                 * highlight, the depth shadow and the lift.
+                 *
+                 * `--bloom` carries the topic's own accent, so each tile glows
+                 * its own colour on hover instead of all fourteen glowing
+                 * orange. `--tile` is the same colour, used for the wash, the
+                 * watermark and the ring below.
+                 */
+                style={{
+                  ["--bloom" as string]: `color-mix(in srgb, ${topic.accent.css} 55%, transparent)`,
+                  ["--tile" as string]: topic.accent.css,
+                }}
+                className={`surface surface-hover group relative isolate overflow-hidden rounded-2xl ${
+                  isSelected ? "ring-2 ring-[var(--tile)]" : ""
                 }`}
               >
+                {/* A wash of the topic's colour across the face, so a tile reads
+                    as a coloured object rather than another grey box. */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 -z-10 opacity-70 transition-opacity duration-500 group-hover:opacity-100"
+                  style={{
+                    background: `linear-gradient(150deg, color-mix(in srgb, var(--tile) 14%, transparent), transparent 62%)`,
+                  }}
+                />
+
+                {/*
+                  * The topic's own icon, oversized and bleeding off the corner.
+                  *
+                  * This is the tile's texture, and deliberately not one of the
+                  * brand patterns: `.podium-1` is the only panel that carries a
+                  * pattern, and putting one on fourteen tiles is the sprinkling
+                  * that rule exists to prevent. An outsized version of the
+                  * topic's own mark says something the pattern could not — it
+                  * makes Science identifiable from across the room.
+                  */}
+                <Icon
+                  className="pointer-events-none absolute -bottom-5 -right-4 -z-10 h-24 w-24 opacity-[0.07] transition-all duration-500 group-hover:scale-110 group-hover:opacity-[0.13] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                />
+
                 {/* The tile plays the topic. Every eligible quiz in it, mixed —
                     which is the whole point of choosing "Science". */}
                 <button
@@ -350,16 +390,44 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
                     // `selectedIds` has not flushed yet in this same tick.
                     onCommit?.(eligible);
                   }}
-                  className="flex w-full flex-col items-center gap-3 p-4 text-center sm:items-start sm:p-5 sm:text-left"
+                  className="flex w-full flex-col items-center gap-2.5 rounded-2xl p-4 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--tile)] sm:items-start sm:p-5 sm:text-left"
                 >
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${topic.bg}`}>
-                    <Icon className="h-5 w-5 text-white" />
-                  </div>
-                  <span className="text-sm font-bold text-white/80 transition-colors group-hover:text-white">
+                  <span
+                    className={`flex h-11 w-11 items-center justify-center rounded-xl transition-transform duration-500 ease-[var(--ease-spring)] group-hover:-rotate-6 group-hover:scale-110 motion-reduce:transition-none motion-reduce:group-hover:rotate-0 motion-reduce:group-hover:scale-100 ${topic.accent.classes}`}
+                  >
+                    <Icon className="h-6 w-6" />
+                  </span>
+
+                  {/* Display face and full white: this is the tile's headline,
+                      and it was set in the body face at 80% opacity. */}
+                  {/* Two lines reserved. "Animals & Nature" wraps and the
+                      others do not, so without this the chip below sits at a
+                      different height on that one tile and the row stops
+                      reading as a row. */}
+                  <span className="font-headline flex min-h-[2.4em] items-start text-[15px] font-extrabold leading-tight text-white sm:text-base">
                     {t(topic.labelKey as never)}
                   </span>
-                  <span className="text-[11px] font-bold text-white/40">
-                    {questionTotal} questions
+
+                  {/* The count as an accent chip, not grey micro-text. It is the
+                      one number on the tile, so it gets to look like one. */}
+                  <span
+                    /* `.chip` carries colour and glow only; the caller supplies
+                       the pill shape, matching how the home mode chips use it. */
+                    className="chip rounded-full px-2.5 py-1 text-[11px] font-extrabold leading-none"
+                    style={{ ["--chip" as string]: "var(--tile)" }}
+                  >
+                    {questionTotal} Qs
+                  </span>
+
+                  {/* Reads as a button: the play cue arrives on hover, in the
+                      topic's colour, rather than the tile sitting inert. */}
+                  <span
+                    aria-hidden="true"
+                    className="mt-0.5 flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-[0.14em] opacity-0 transition-opacity duration-300 group-hover:opacity-90 motion-reduce:transition-none"
+                    style={{ color: "var(--tile)" }}
+                  >
+                    <Play className="h-3 w-3" fill="currentColor" />
+                    {t("topicPicker.play" as never)}
                   </span>
                 </button>
 
