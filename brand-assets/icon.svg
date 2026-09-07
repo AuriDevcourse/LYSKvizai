@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Quizmo">
+  <title>Quizmo</title>
+  <!--
+    The Quizmo mark: a printer's colour specimen chip.
+
+    An orange field over a near-black label band carrying three measured
+    swatches in three of the four answer colours. It says "this colour has a
+    published value", which is the one thing Quizmo does that no other quiz app
+    does: it grades an answer against a specification and reports the CIEDE2000
+    delta.
+
+    Why this and not the four answer shapes in a 2x2 grid (the earlier
+    proposal): that grid is Kahoot's. See BRAND.md revision 02.
+
+    Why three swatches and not four: at 16px a fourth loses the gutters and the
+    row reads as one grey smear. Three is the most that survives. Verified by
+    downscaling all three candidate directions to 16, 24 and 32px before
+    choosing; the registration-mark direction is prettier at 128px and illegible
+    at 16px, because hairlines cannot survive that reduction.
+
+    Geometry is on a 512 grid. Swatch row and hairline rule share the same
+    x-extent (96 to 416), so the margins stay symmetric at any size.
+  -->
+  <defs>
+    <clipPath id="q-chip">
+      <rect width="512" height="512" rx="112" ry="112"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#q-chip)">
+    <rect width="512" height="512" fill="#ff9062"/>
+    <rect y="336" width="512" height="176" fill="#0e0e0e"/>
+    <rect x="96" y="366" width="320" height="4" fill="#f4f2f0" opacity="0.28"/>
+    <rect x="96" y="398" width="80" height="80" fill="#ff716c"/>
+    <rect x="216" y="398" width="80" height="80" fill="#43a5fc"/>
+    <rect x="336" y="398" width="80" height="80" fill="#66bb6a"/>
+  </g>
+</svg>

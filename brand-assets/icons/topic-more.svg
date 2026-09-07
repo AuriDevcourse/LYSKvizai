@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="More">
+  <!-- Quizmo topic icon: More. Three dots for the catch-all tile holding quizzes no topic claims. Stroke weight 7 on a 64 grid; colour via currentColor. -->
+  <circle cx="15" cy="32" r="6" fill="currentColor" stroke="none"/>
+  <circle cx="32" cy="32" r="6" fill="currentColor" stroke="none"/>
+  <circle cx="49" cy="32" r="6" fill="currentColor" stroke="none"/>
+</svg>

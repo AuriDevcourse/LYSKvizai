@@ -66,7 +66,50 @@ count. Added to the rules: cut adverbs, cut em dashes, cut any sentence that
 reads like a pull quote. Revision 02 of the review page holds to it.
 
 Sections 3 and 4 below still describe the shipped product correctly. Section 4's
-mark proposal is superseded by the directions above.
+mark proposal is superseded by the directions above. Section 5a records what those
+directions produced and which one won.
+
+---
+
+## Revision 03 (2026-09-07) — Specimen rejected, playful adopted
+
+Auri's verdict on revision 02, after seeing it built: too clinical, and an icon
+is not a logo. Both are right. Specimen described what the product *does* and
+ignored what it *feels like* — a game played in a room with friends does not want
+to look like a calibration target — and the deliverable stopped at a favicon
+when what was needed was a mark plus a wordmark.
+
+**What is dropped:** hairlines, crop marks, registration ticks, the chip-book
+visual language, and the Pantone-chip mark. Section 5a's chosen mark is
+superseded.
+
+**What survives:** the palette, unchanged. Near-black ground, `#ff9062` primary,
+the four answer colours. The argument in revision 02 problem 3 — that the
+identity should refer to the CIEDE2000 grading — turned out to be an idea for a
+brand book rather than for a logo, and is retired.
+
+**The direction now:** chunky, rounded, tilted, generous radii, no fine detail.
+Playful without going childish.
+
+### The logo
+
+A fat rounded **Q**, counter knocked out, tilted 6°, which *is* the capital of
+**Quizmo** set in **Baloo 2 ExtraBold** — not a mark placed beside the word. See
+the correction in section 5c for why. Details and geometry there too.
+
+### Type, revised again
+
+| Role | Now | Proposed | Why |
+|---|---|---|---|
+| Display / logo | Plus Jakarta Sans 800 | **Baloo 2 800** | Rounded terminals are the same gesture as the mark's tail, so mark and word read as one object. |
+| Body | Be Vietnam Pro | **unchanged** | Still earns its place. |
+| Values | (none) | **dropped** | Martian Mono belonged to Specimen. A monospace room code is a spec-sheet idea. |
+
+**This conflicts with revision 02's Archivo proposal, and Archivo loses.** It was
+chosen for an industrial, wide, spec-sheet feel that is exactly what got
+rejected. The evidence gathered for it in section 5a stands and is now moot.
+
+Both remain proposals. Nothing in the app has changed.
 
 ---
 
@@ -359,6 +402,57 @@ copy stays editable and correctly kerned rather than hallucinated.
 
 ---
 
+## 5a. Generation run 01 (2026-09-07)
+
+Seven prompts, two variants each, `gemini-3-pro-image`. All 14 returned. The
+executable form of the prompts is `scripts/generate-brand-assets.mjs`; when it
+and this file disagree, this file wins. Review sheet:
+<https://claude.ai/code/artifact/08250701-a03b-4278-9848-9c2b85d79984>
+
+**Superseded by section 5c.** The mark below was chosen well, for a direction
+that was then rejected. The 16px method it established still applies.
+
+**The mark: direction A, the colour chip.** Chosen on the 16px test, which
+reversed the expected answer. All three directions were downscaled to 16, 24 and
+32px before choosing:
+
+| Direction | 16px | Outcome |
+|---|---|---|
+| A · colour chip | Holds. Field, band and three swatches stay distinct. | **Adopted.** |
+| B · registration mark | Fails. Hairlines reduce to pale grey mush. | Kept for large decorative use only. |
+| C · four chips, one measured | Fails. Collapses to one orange dot. | Loading motif, as section 4 predicted. |
+
+B is the best drawing of the three and the worst icon. That is not a judgement
+the prompt could have made; it needed the reduction.
+
+**The generated mark is not the shipped mark.** The API returns JPEG with no
+format control, and a favicon with JPEG artefacts on its hairlines is not a
+favicon. Direction A was redrawn by hand as SVG on a 512 grid, and the PNG
+ladder is rasterised from the same geometry constants so the two cannot drift.
+Three swatches rather than four: a fourth loses its gutters at 16px and the row
+reads as one smear.
+
+**Banners.** Every plate was generated with no lettering, by instruction, and
+the wordmark composited afterwards in the real face at the product's -0.02em
+tracking. Four cards: dark with bloom (recommended), dark with crop marks,
+paper, and a 2100x900 wide hero.
+
+**An unplanned finding on the type proposal.** Revision 02 argued for Archivo
+wdth 125 / wght 800 on reasoning alone. Setting the same wordmark at the same
+size in both faces settles it: Archivo fills the measure and its Q is a letter
+someone could recognise; Plus Jakarta Sans is the blander of the two. The
+proposal now has evidence. It is still a proposal — nothing in the app changed.
+
+**Not generated, deliberately:** quiz images (section 5.4 — they are evidence,
+and the 30 dead ones are a sourcing job), and player avatars (the DiceBear
+builder stays). One Science topic tile was generated to test the direction and
+not adopted; the Lucide icons work.
+
+**Where it is.** Session scratchpad only. Nothing written into `public/`, the
+favicon untouched, nothing committed.
+
+---
+
 ## 5b. Correction to the flow analysis
 
 An earlier note in this session claimed True/False and Fastest Finger had "one
@@ -373,6 +467,175 @@ The conclusion still holds &mdash; a mandatory game-type screen ahead of the
 topics taxed every player &mdash; but for a different reason: it is a
 *refinement*, not a prerequisite. Only Zoom Out is genuinely content-limited
 (one topic).
+
+## 5c. Generation run 02 — playful (2026-09-07)
+
+Five playful mark directions plus two banner plates, two variants each,
+`gemini-3-pro-image`. Review sheet:
+<https://claude.ai/code/artifact/25414c4e-5e45-4f43-8a88-078924c481b8>
+
+| Direction | Outcome |
+|---|---|
+| B · chunky Q | **Won.** Became the drawn mark. |
+| A · tumbling answer shapes | Kept, but not as a mark — four overlapping shapes mush at 16px. Right art for an empty state, a loading screen, or a results card header. |
+| C · the chip loosened up | No. The clinical chip in a costume. |
+| D · burst | No. Reads as a rocket. |
+| E · buzzer | No. The gameshow trope the brief set out to avoid. |
+
+**The API gave the idea and could not give the letter.** Direction B's own second
+variant came back as a literal magnifying glass, which exposed the failure mode
+before any drawing started. The mark took three rounds:
+
+1. Thin ring, long 45° tail → **magnifying glass.** A ring on a stick.
+2. Thick ring, small counter, stub tail → **balloon.** The bowl stopped reading
+   as a ring.
+3. Fat ring, large counter, short tail clearing the bowl's edge → **a Q.** All
+   three variables had to move together.
+
+**Nothing goes in the counter.** Every variant with a shape inside it slid back
+to the magnifier at 32px. The counter is also knocked out rather than filled, so
+the mark drops onto any ground, and it is a rounded square rather than a circle —
+which echoes the fourth answer shape without reproducing Kahoot's grid.
+
+Geometry, on a 512 grid: ring r 168; counter 172 square, radius 44; tail at 45°,
+width 104, round caps; tilt −6°. The SVG carries these numbers and the PNG ladder
+rasterises from the same constants, so the two cannot drift.
+
+### Correction: the mark is the word's capital
+
+Auri's note on the first lockup: the Q mark placed beside "Quizmo" reads as
+**"Q Quizmo"** — the letter twice. Correct, and it is the standard trap for any
+brand whose mark is its own initial. It does not show up while you are drawing
+the mark alone.
+
+**The fix:** the drawn Q *is* the word's capital. The logo is an orange drawn Q
+followed by "uizmo". One letter doing both jobs, and the mark now has a reason to
+be a Q at all.
+
+**Which forces one rule: there is no mark-plus-Quizmo lockup.** For a square
+space, use the mark alone, or the stacked version, which sets the name lowercase
+so a drawn Q and a typeset Q never meet.
+
+The alternative fix was to make the mark stop being a letter. Shape clusters were
+drawn and lose: three coloured shapes on a diagonal could belong to any app. They
+solve the duplication by making the mark say nothing. Kept in
+`brand-assets/playful/superseded/` as a real option.
+
+**This also settles the typeface.** Baloo 2 was chosen because its rounded
+terminals match the mark's tail. That mattered moderately when the mark sat
+beside the word; now that the mark is a letter *in* the word, the drawn Q and the
+typeset letters must belong to one alphabet, and only Baloo does. Lilita One is
+no longer a viable runner-up.
+
+**The logo ships as outlines, not a webfont reference,** so it renders anywhere
+with no font to load and no licence to ship. Source: Baloo 2 instanced at weight
+800 (OFL). The mark's ink is 1.04x the letter's height — an optical bump, because
+round forms read small beside flat-sided ones.
+
+**One thing to remember:** on an orange ground the Q must be near-black. The
+first pass left it orange-on-orange and the letter vanished. Caught by looking at
+the rendered banner, not by reading the code. That cut is `logo-mono-black.svg`.
+
+**Banners** were regenerated in the playful direction — chunky shapes scattered
+off the top right, left and lower thirds kept clear — and the logo composited
+afterwards, never generated. Two of the four came back matted inside a frame the
+prompt never asked for; the inner card is detected and cropped programmatically
+rather than binned.
+
+**Where it is.** `brand-assets/playful/`, untracked. `public/` untouched, favicon
+unchanged, nothing committed.
+
+---
+
+## 5d. Surface kit — icons, patterns, plates (2026-09-07)
+
+Review sheet: <https://claude.ai/code/artifact/3ca15700-25e3-4ef4-8969-917940f55c4f>
+
+**Almost all authored SVG, not generated raster.** Generation earned its place
+for the logo direction and the banner plates. For a repeating tile, an icon set
+or a plate that needs exact palette colours, it loses to code on every axis that
+matters: seamlessness, file size, scaling, colour control, and consistency across
+a set.
+
+### Topic icons (14)
+
+`brand-assets/icons/topic-*.svg`. The app uses Lucide line icons today; they are
+good icons and wrong for this brand, hairline strokes beside a mark built from
+fat rounded forms. These use one stroke weight held as a single constant, which
+is the property a hand-drawn set usually loses partway through.
+
+Three were redrawn only after seeing the set together: **maths** was a lopsided
+blob and then a clover, **gaming** was a d-pad and therefore the same cross as
+maths (now a ghost), **science** had a T-junction that read as a notch. Holes are
+knockouts via `fill-rule="evenodd"`, never a second colour — a hardcoded dark eye
+vanishes the moment the icon itself is dark.
+
+### An unrelated finding: the topic colours are off-palette
+
+Every topic in `src/lib/topics.ts` carries a `bg`, and **none of those colours
+are in the brand palette**: `#ef4444` and `#8b5cf6` and `#a855f7` are Tailwind
+defaults, `#26890c` is Kahoot's green. Fourteen off-palette flat colour fields is
+a large part of why the app reads as a Kahoot clone. Two systems proposed on the
+sheet; the recommendation is **tinted glass** — the accent at 14% over the dark
+ground with the icon in the accent, so six palette colours cover fourteen topics
+without fourteen flat fields shouting at once.
+
+### Patterns (5)
+
+`brand-assets/patterns/pattern-*.svg`, under 2KB each, seamless by construction:
+a shape reaching past a tile edge is drawn again on the opposite edge.
+
+**Colour comes from CSS via `mask-image`, not from the file.** This cost a round.
+Built with `currentColor` they all rendered black, because an SVG referenced as
+`background-image` is its own document and never sees the page's colour. Masking
+uses only the tile's alpha, so one file serves every colour and ground. Recipe in
+the folder README.
+
+### Background plates (3)
+
+`brand-assets/backgrounds/bg-*.svg`. Overlays with **no ground of their own**,
+which the app requires: `CLAUDE.md` mounts the atmosphere once in `layout.tsx`
+and forbids per-page backgrounds.
+
+The trap worth recording: `slice` crops a short wide container to the *vertical
+middle*, which is exactly where a room code or a winner's name sits. The clear
+zone has to be a central band, not a region near the burst's origin. The first
+version reserved the wrong place and a shape landed on the winner's name. The
+empty-state plate uses `meet` instead, because slicing cropped the illustration
+out entirely.
+
+Generated attempts: one of six usable. Squiggly noodles instead of shapes for the
+celebration plate, grey pebbles for the empty state, and four of six matted
+inside a frame the prompt never asked for.
+
+---
+
+## 5e. Wired into the app (2026-09-07)
+
+Everything above stopped being a proposal. Baloo 2 is the display face,
+`<Logo />` is on the home hero and the host lobby, the app icons and OG images
+come from the mark, the fourteen topic icons replace Lucide, and `Topic.bg`
+became `Topic.accent` on palette tokens. Rules live in `CLAUDE.md`.
+
+Two things the integration settled that the design work had left open:
+
+**The display face is now load-bearing.** While the mark sat beside the word,
+Baloo was a preference. Now that the drawn Q is the word's capital, the two must
+belong to one alphabet: changing the display face means redrawing the mark.
+
+**Maskable icons need an opaque ground.** `manifest.json` declares the PWA icons
+`any maskable`, and a launcher may crop them to a circle. The mark's counter is
+knocked out to transparency, so a transparent maskable icon renders as a
+coloured blob on whatever the launcher paints. The PWA and apple-touch icons
+therefore sit on an opaque `#0e0e0e` ground inside a safe zone; only the browser
+favicon keeps transparency.
+
+The results screen deliberately has no background plate. `Confetti` and
+`.spotlight` already treat that moment, and adding one would break the app's own
+limit of three elements per section. Patterns are shipped to `public/` but not
+yet used anywhere.
+
+---
 
 ## 6. How to assess this
 

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="History">
+  <!-- Quizmo topic icon: History. An arch on two legs: the oldest building there is. Stroke weight 7 on a 64 grid; colour via currentColor. -->
+  <path d="M14 32 A 18 18 0 0 1 50 32"  />
+  <line x1="18" y1="32" x2="18" y2="48"/>
+  <line x1="46" y1="32" x2="46" y2="48"/>
+  <line x1="10" y1="52" x2="54" y2="52"/>
+</svg>

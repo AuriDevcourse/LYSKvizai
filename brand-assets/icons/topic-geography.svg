@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Geography">
+  <!-- Quizmo topic icon: Geography. A globe: equator and one meridian. Stroke weight 7 on a 64 grid; colour via currentColor. -->
+  <circle cx="32" cy="32" r="21" />
+  <line x1="11" y1="32" x2="53" y2="32"/>
+  <path d="M32 11 C 20 20, 20 44, 32 53 C 44 44, 44 20, 32 11 Z"  />
+</svg>

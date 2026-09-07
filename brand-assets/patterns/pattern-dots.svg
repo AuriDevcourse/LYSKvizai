@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <!--
+    Quizmo pattern: dots. Large soft dots. The calmest of the set.
+
+    Seamless by construction: a shape reaching past a tile edge is drawn
+    again on the opposite edge.
+
+    COLOUR COMES FROM CSS. Apply it with mask-image and set background-color;
+    an SVG used as background-image is its own document, so currentColor in
+    here never sees the page colour. Recipe in the folder README.
+  -->
+  <g fill="currentColor" stroke="none">
+    <circle cx="60.0" cy="60.0" r="22" opacity="1.0"/>
+    <circle cx="180.0" cy="120.0" r="14" opacity="1.0"/>
+    <circle cx="100.0" cy="190.0" r="18" opacity="1.0"/>
+    <circle cx="220.0" cy="20.0" r="10" opacity="1.0"/>
+  </g>
+</svg>

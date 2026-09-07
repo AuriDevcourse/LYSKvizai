@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Science">
+  <!-- Quizmo topic icon: Science. A flask with liquid in it; the lip sits clear of the neck. Stroke weight 7 on a 64 grid; colour via currentColor. -->
+  <path d="M26 15 L26 28 L15 47 A 5 5 0 0 0 19 54 L45 54 A 5 5 0 0 0 49 47 L38 28 L38 15"/>
+  <line x1="22" y1="11" x2="42" y2="11"/>
+  <line x1="26" y1="15" x2="38" y2="15" stroke-width="0" stroke="none"/>
+  <path d="M21 42 L43 42 L47 49 A 5 5 0 0 1 43 54 L21 54 A 5 5 0 0 1 17 49 Z" fill="currentColor" stroke="none"/>
+</svg>

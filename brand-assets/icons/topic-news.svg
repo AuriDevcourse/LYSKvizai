@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="News">
+  <!-- Quizmo topic icon: News. A sheet with a headline and a line of body. Stroke weight 7 on a 64 grid; colour via currentColor. -->
+  <rect x="9" y="14" width="46" height="37" rx="8" />
+  <line x1="19" y1="27" x2="37" y2="27"/>
+  <line x1="19" y1="38" x2="45" y2="38"/>
+</svg>

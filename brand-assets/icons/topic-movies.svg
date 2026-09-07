@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Movies and TV">
+  <!-- Quizmo topic icon: Movies and TV. A screen and a play triangle. Stroke weight 7 on a 64 grid; colour via currentColor. -->
+  <rect x="8" y="17" width="48" height="32" rx="7" />
+  <path d="M28 28 L42 33 L28 38 Z" fill="currentColor" stroke="currentColor" />
+</svg>

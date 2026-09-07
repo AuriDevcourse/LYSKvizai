@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Sports">
+  <!-- Quizmo topic icon: Sports. A cup with handles. Stroke weight 7 on a 64 grid; colour via currentColor. -->
+  <path d="M19 12 L45 12 L45 26 A 13 13 0 0 1 19 26 Z"  />
+  <path d="M19 17 L12 17 A 7 7 0 0 0 19 24"  />
+  <path d="M45 17 L52 17 A 7 7 0 0 1 45 24"  />
+  <line x1="32" y1="39" x2="32" y2="48"/>
+  <line x1="20" y1="54" x2="44" y2="54"/>
+</svg>

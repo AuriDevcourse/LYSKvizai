@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Animals and nature">
+  <!-- Quizmo topic icon: Animals and nature. A paw: three toes and a pad. Stroke weight 7 on a 64 grid; colour via currentColor. -->
+  <circle cx="19" cy="25" r="7" fill="currentColor" stroke="none"/>
+  <circle cx="32" cy="19" r="7" fill="currentColor" stroke="none"/>
+  <circle cx="45" cy="25" r="7" fill="currentColor" stroke="none"/>
+  <path d="M32 34 C 44 34, 50 42, 50 47 C 50 53, 42 55, 32 55 C 22 55, 14 53, 14 47 C 14 42, 20 34, 32 34 Z" fill="currentColor" stroke="currentColor" />
+</svg>

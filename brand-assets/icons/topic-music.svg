@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Music">
+  <!-- Quizmo topic icon: Music. One note with a flag. Stroke weight 7 on a 64 grid; colour via currentColor. -->
+  <circle cx="22" cy="46" r="10" fill="currentColor" stroke="none"/>
+  <line x1="32" y1="44" x2="32" y2="14"/>
+  <path d="M32 14 C 42 16, 48 20, 48 28"  />
+</svg>

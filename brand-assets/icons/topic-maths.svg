@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Maths">
+  <!-- Quizmo topic icon: Maths. A plus over an equals, centred on one axis. Stroke weight 7 on a 64 grid; colour via currentColor. -->
+  <rect x="26.5" y="9" width="11" height="27" rx="3" fill="currentColor" stroke="none"/>
+  <rect x="18.5" y="17" width="27" height="11" rx="3" fill="currentColor" stroke="none"/>
+  <rect x="20" y="45" width="24" height="6" rx="3" fill="currentColor" stroke="none"/>
+  <rect x="20" y="55" width="24" height="6" rx="3" fill="currentColor" stroke="none"/>
+</svg>

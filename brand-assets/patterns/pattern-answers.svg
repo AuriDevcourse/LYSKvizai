@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <!--
+    Quizmo pattern: answers. One of each answer shape per tile: triangle, diamond, circle, square.
+
+    Seamless by construction: a shape reaching past a tile edge is drawn
+    again on the opposite edge.
+
+    COLOUR COMES FROM CSS. Apply it with mask-image and set background-color;
+    an SVG used as background-image is its own document, so currentColor in
+    here never sees the page colour. Recipe in the folder README.
+  -->
+  <g fill="currentColor" stroke="none">
+    <path d="M58.0,34.0 L78.8,70.0 L37.2,70.0 Z" stroke="currentColor" stroke-width="16" stroke-linejoin="round" stroke-linecap="round" opacity="1.0"/>
+    <rect x="161.0" y="41.0" width="34" height="34" rx="9" transform="rotate(45 178.0 58.0)" opacity="1.0"/>
+    <circle cx="58.0" cy="178.0" r="20" opacity="1.0"/>
+    <rect x="160.0" y="160.0" width="36" height="36" rx="10" transform="rotate(0 178.0 178.0)" opacity="1.0"/>
+  </g>
+</svg>

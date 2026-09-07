@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <!--
+    Quizmo background plate: lobby. Quiet scatter for lobby and waiting screens. Central band left clear.
+
+    Authored, not generated. No opaque ground of its own, so whatever sits behind
+    it still shows through; the app mounts its atmosphere once in layout.tsx and
+    forbids per page backgrounds. Drop it in as an absolutely positioned,
+    pointer-events none overlay and set its own opacity to taste.
+  -->
+  <rect x="423" y="20" width="148" height="148" rx="41" transform="rotate(-7 497 94)" fill="#4a4340" opacity="0.58"/>
+  <rect x="3" y="420" width="74" height="74" rx="21" transform="rotate(-13 40 458)" fill="#4a4340" opacity="0.75"/>
+  <rect x="819" y="-69" width="138" height="138" rx="39" transform="rotate(4 888 0)" fill="#4a4340" opacity="0.98"/>
+  <g opacity="0.94"><path d="M643,972 L581,935 L644,900 Z" fill="#4a4340" stroke="#4a4340" stroke-width="24" stroke-linejoin="round"/></g>
+  <rect x="1044" y="-24" width="139" height="139" rx="39" transform="rotate(2 1113 45)" fill="#4a4340" opacity="0.63"/>
+  <rect x="7" y="-40" width="81" height="81" rx="23" transform="rotate(45 48 1)" fill="#4a4340" opacity="0.86"/>
+  <g opacity="0.77"><path d="M1223,31 L1304,-30 L1317,70 Z" fill="#4a4340" stroke="#4a4340" stroke-width="34" stroke-linejoin="round"/></g>
+  <g opacity="0.74"><path d="M473,913 L440,986 L393,920 Z" fill="#4a4340" stroke="#4a4340" stroke-width="27" stroke-linejoin="round"/></g>
+  <g opacity="0.58"><path d="M1499,473 L1555,342 L1641,456 Z" fill="#4a4340" stroke="#4a4340" stroke-width="48" stroke-linejoin="round"/></g>
+  <g opacity="0.72"><path d="M1656,722 L1693,814 L1595,800 Z" fill="#4a4340" stroke="#4a4340" stroke-width="33" stroke-linejoin="round"/></g>
+  <g opacity="0.58"><path d="M768,80 L745,156 L690,98 Z" fill="#4a4340" stroke="#4a4340" stroke-width="27" stroke-linejoin="round"/></g>
+  <rect x="1385" y="701" width="149" height="149" rx="42" transform="rotate(45 1459 776)" fill="#4a4340" opacity="0.68"/>
+  <rect x="1579" y="579" width="116" height="116" rx="32" transform="rotate(-16 1637 636)" fill="#4a4340" opacity="0.65"/>
+  <circle cx="118" cy="587" r="39" fill="#4a4340" opacity="0.58"/>
+  <g opacity="0.65"><path d="M785,907 L820,806 L890,887 Z" fill="#4a4340" stroke="#4a4340" stroke-width="36" stroke-linejoin="round"/></g>
+  <circle cx="1197" cy="949" r="82" fill="#4a4340" opacity="0.76"/>
+  <rect x="1029" y="721" width="69" height="69" rx="19" transform="rotate(45 1063 756)" fill="#4a4340" opacity="0.85"/>
+  <rect x="102" y="654" width="84" height="84" rx="24" transform="rotate(-14 144 696)" fill="#ff9062" opacity="0.62"/>
+</svg>

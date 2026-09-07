@@ -49,3 +49,12 @@ next-env.d.ts
 # reference art you like for local play without it ending up in the repo or on
 # quizmo.auridev.com. See src/lib/games/local-images.ts.
 /public/tint-local/
+
+# Raw generated brand candidates: every rejected mark, banner and plate.
+#
+# The chosen assets and the READMEs explaining why they won are committed; these
+# are the working dumps behind them, about 9MB. Repo weight is permanent and
+# every clone pays it, so the reasoning is kept and the raw output is not.
+# Regenerate with `node scripts/generate-brand-assets.mjs`.
+brand-assets/**/candidates/
+brand-assets/candidates/
