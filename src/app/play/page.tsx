@@ -73,14 +73,14 @@ function PlayPageInner() {
 
   const handleQuizNext = () => {
     if (selectedQuizIds.length === 0) return;
-    setMode("pick-mode");
+    setMode("host-join");
   };
 
   const handleGameModeSelect = (gameMode: GameMode, options: { teamCount?: number; eliminationInterval?: number }) => {
+    // Records only. The mode picker now sits on the same screen as the
+    // presentation choice, so selecting a mode must not navigate away from it.
     setSelectedGameMode(gameMode);
     setGameModeOptions(options);
-    // Ask if host wants to play too (mobile/bar mode)
-    setMode("host-join");
   };
 
   const handleCreateRoom = async () => {
@@ -238,30 +238,6 @@ function PlayPageInner() {
         </div>
       )}
 
-      {mode === "pick-mode" && (
-        <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
-          <h1 className="text-2xl font-extrabold text-white">{t("play.pickMode")}</h1>
-
-          {error && (
-            <p className="w-full rounded-xl bg-error/20 px-4 py-3 text-center text-sm font-bold text-white">
-              {error}
-            </p>
-          )}
-
-          <div className="w-full">
-            <GameModeSelector onSelect={handleGameModeSelect} />
-          </div>
-
-          <button
-            onClick={() => { setMode("pick-quiz"); setError(null); }}
-            className="flex items-center gap-1.5 text-sm font-bold text-white/50 hover:text-white/70 transition-colors"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            {t("play.back")}
-          </button>
-        </div>
-      )}
-
       {mode === "host-join" && (
         <div className="flex w-full flex-col items-center gap-6 animate-fade-in-up">
           <h1 className="text-2xl font-extrabold text-white">{t("play.howWillYouPlay")}</h1>
@@ -272,7 +248,21 @@ function PlayPageInner() {
             </p>
           )}
 
+          {/* Game mode, folded in from what used to be its own screen.
+              Classic / Elimination / Team and big-screen-vs-also-playing are
+              both "how does this game run" questions, so asking them one after
+              the other was two screens doing one job. */}
+          <div className="w-full">
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-white/45">
+              {t("play.pickMode")}
+            </p>
+            <GameModeSelector onSelect={handleGameModeSelect} />
+          </div>
+
           <div className="flex w-full flex-col gap-3">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/45">
+              Presenting
+            </p>
             {/* Option 1: Host on big screen (spectator) */}
             <button
               onClick={() => {
@@ -350,7 +340,7 @@ function PlayPageInner() {
           )}
 
           <button
-            onClick={() => { setMode("pick-mode"); setError(null); setHostPlaying(false); }}
+            onClick={() => { setMode("pick-quiz"); setError(null); setHostPlaying(false); }}
             className="flex items-center gap-1.5 text-sm font-bold text-white/50 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />

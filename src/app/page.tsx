@@ -4,7 +4,7 @@ import { Suspense, useState, useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
-  Play, Plus, LogIn, ArrowLeft, Users, User, Ruler, Palette,
+  Play, Plus, LogIn, ArrowLeft, User, Ruler, Palette, Heart,
   HelpCircle, ToggleLeft, ZoomOut, Calendar, Keyboard, Shuffle, Smartphone,
 } from "lucide-react";
 import TopicPicker, { type SelectedGameType } from "@/components/TopicPicker";
@@ -33,7 +33,7 @@ function HomeInner() {
   const searchParams = useSearchParams();
   const { t } = useTranslation();
   const actionFromUrl = searchParams.get("action");
-  const [mode, setMode] = useState<"menu" | "choose" | "create">(actionFromUrl === "create" ? "choose" : "menu");
+  const [mode, setMode] = useState<"menu" | "create">(actionFromUrl === "create" ? "create" : "menu");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [questionCount, setQuestionCount] = useState(0);
   const [quizMeta, setQuizMeta] = useState<QuizMeta[]>([]);
@@ -91,11 +91,14 @@ function HomeInner() {
             </p>
           </div>
 
-          {/* Two doors. Each blooms in its own colour so the choice reads
-              instantly from across a room. */}
-          <div className="mt-9 grid w-full max-w-3xl grid-cols-1 gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-5">
+          {/* Three doors, each its own colour so the choice reads instantly
+              from across a room.
+              "Create game" used to lead to a screen asking solo-or-friends —
+              a question the cards themselves can answer, so it is asked here
+              and that screen is gone. */}
+          <div className="mt-9 grid w-full max-w-3xl grid-cols-1 gap-4 sm:mt-10 sm:grid-cols-3 sm:gap-4">
             <button
-              onClick={() => setMode("choose")}
+              onClick={() => router.push("/play?create=1")}
               style={{ ["--bloom" as string]: "rgba(255,144,98,0.45)" }}
               className="surface surface-hover group flex items-center gap-5 p-6 text-left sm:flex-col sm:items-start sm:gap-5 sm:p-7"
             >
@@ -103,14 +106,33 @@ function HomeInner() {
                 <Plus className="h-7 w-7 text-background sm:h-8 sm:w-8" strokeWidth={2.75} />
               </div>
               <div className="min-w-0">
-                <p className="font-headline text-2xl font-extrabold tracking-tight text-white sm:text-[1.75rem]">
-                  {t("home.createGame")}
+                <p className="font-headline text-xl font-extrabold tracking-tight text-white sm:text-2xl">
+                  Host a game
                 </p>
                 <p className="mt-1 text-sm leading-snug text-white/55">
-                  Pick a topic, set the pace, share the code
+                  Big screen, everyone joins by code
                 </p>
               </div>
               <Play className="ml-auto h-5 w-5 shrink-0 text-white/25 transition-all duration-300 group-hover:translate-x-1 group-hover:text-primary sm:hidden" />
+            </button>
+
+            <button
+              onClick={() => setMode("create")}
+              style={{ ["--bloom" as string]: "rgba(102,187,106,0.4)" }}
+              className="surface surface-hover group flex items-center gap-5 p-6 text-left sm:flex-col sm:items-start sm:gap-5 sm:p-7"
+            >
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8fdd93] to-answer-green shadow-[0_10px_30px_-8px_rgba(102,187,106,0.6)] transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 sm:h-16 sm:w-16">
+                <User className="h-7 w-7 text-background sm:h-8 sm:w-8" strokeWidth={2.75} />
+              </div>
+              <div className="min-w-0">
+                <p className="font-headline text-xl font-extrabold tracking-tight text-white sm:text-2xl">
+                  Play solo
+                </p>
+                <p className="mt-1 text-sm leading-snug text-white/55">
+                  Just you and a topic, right now
+                </p>
+              </div>
+              <Play className="ml-auto h-5 w-5 shrink-0 text-white/25 transition-all duration-300 group-hover:translate-x-1 group-hover:text-answer-green sm:hidden" />
             </button>
 
             <button
@@ -122,20 +144,23 @@ function HomeInner() {
                 <LogIn className="h-7 w-7 text-background sm:h-8 sm:w-8" strokeWidth={2.75} />
               </div>
               <div className="min-w-0">
-                <p className="font-headline text-2xl font-extrabold tracking-tight text-white sm:text-[1.75rem]">
+                <p className="font-headline text-xl font-extrabold tracking-tight text-white sm:text-2xl">
                   {t("home.joinGame")}
                 </p>
                 <p className="mt-1 text-sm leading-snug text-white/55">
-                  Got a four-letter code? You&apos;re thirty seconds away
+                  Got a four-letter code?
                 </p>
               </div>
               <Play className="ml-auto h-5 w-5 shrink-0 text-white/25 transition-all duration-300 group-hover:translate-x-1 group-hover:text-secondary sm:hidden" />
             </button>
           </div>
 
-          {/* Solo mini-games. Different shape of play from the quiz, so they
-              get their own row rather than being buried in the mode list. */}
-          <div className="mt-8 grid w-full max-w-3xl grid-cols-2 gap-3 sm:mt-9">
+          {/* Solo games, playable in one click — no setup at all. Their own row
+              rather than buried in a mode list.
+              Survival was fully built (3 lives, speeding timer, its own i18n
+              strings and even a BottomNav hide-rule) and **nothing linked to
+              it** — an entire working game unreachable from the app. */}
+          <div className="mt-8 grid w-full max-w-3xl grid-cols-2 gap-3 sm:mt-9 sm:grid-cols-3">
             <Link
               href="/scale"
               style={{ ["--bloom" as string]: "rgba(102,187,106,0.4)" }}
@@ -147,6 +172,18 @@ function HomeInner() {
                 <p className="truncate text-xs text-white/45">How big is it, really?</p>
               </div>
             </Link>
+            <Link
+              href="/survival"
+              style={{ ["--bloom" as string]: "rgba(255,113,108,0.4)" }}
+              className="surface surface-hover group flex items-center gap-3.5 p-4 sm:p-5"
+            >
+              <Heart className="h-5 w-5 shrink-0 text-error transition-transform duration-300 group-hover:scale-110" />
+              <div className="min-w-0">
+                <p className="text-sm font-extrabold text-white">Survival</p>
+                <p className="truncate text-xs text-white/45">Three lives, rising speed</p>
+              </div>
+            </Link>
+
             <Link
               href="/tint"
               style={{ ["--bloom" as string]: "rgba(231,127,255,0.4)" }}
@@ -177,7 +214,11 @@ function HomeInner() {
                   <button
                     key={m.name}
                     type="button"
-                    onClick={() => { setGameType(m.type); setMode("choose"); }}
+                    // Straight into solo with the type applied. This used to
+                    // set the type and then go to a screen whose "with friends"
+                    // branch pushed to /play without it — so the choice you
+                    // just made was thrown away.
+                    onClick={() => { setGameType(m.type); setMode("create"); }}
                     style={{ ["--chip" as string]: m.accent }}
                     className="chip flex min-h-[38px] items-center gap-2 rounded-full px-4 py-2 text-xs font-bold backdrop-blur-md"
                   >
@@ -191,61 +232,18 @@ function HomeInner() {
         </div>
       )}
 
-      {mode === "choose" && (
-        <div className="flex flex-1 flex-col items-center justify-center px-5 py-10 animate-fade-in-up">
-          <h1 className="mb-8 font-headline text-2xl font-extrabold text-white sm:text-3xl">
-            {t("home.createGame")}
-          </h1>
-
-          <div className="flex w-full max-w-md flex-col gap-3">
-            <button
-              onClick={() => setMode("create")}
-              className="glass flex items-center gap-4 rounded-2xl px-5 py-5 text-left transition-all duration-300 active:scale-[0.98]"
-            >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15">
-                <User className="h-6 w-6 text-primary" />
-              </div>
-              <div>
-                <p className="text-base font-extrabold text-white">{t("home.playSolo")}</p>
-                <p className="text-xs text-white/50">{t("home.playSoloDesc")}</p>
-              </div>
-            </button>
-
-            <button
-              onClick={() => router.push("/play?create=1")}
-              className="glass flex items-center gap-4 rounded-2xl px-5 py-5 text-left transition-all duration-300 active:scale-[0.98]"
-            >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-secondary/15">
-                <Users className="h-6 w-6 text-secondary" />
-              </div>
-              <div>
-                <p className="text-base font-extrabold text-white">{t("home.playWithFriends")}</p>
-                <p className="text-xs text-white/50">{t("home.playWithFriendsDesc")}</p>
-              </div>
-            </button>
-          </div>
-
-          <button
-            onClick={() => setMode("menu")}
-            className="mt-6 flex items-center gap-1.5 text-sm font-bold text-white/50 hover:text-white/70 transition-colors"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            {t("nav.home")}
-          </button>
-        </div>
-      )}
-
       {mode === "create" && (
         <main className="relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col px-5 pt-14 pb-8 sm:px-8 sm:pt-8 animate-fade-in-up">
-          {!gameType && (
-            <button
-              onClick={() => { setMode("choose"); setSelectedIds([]); setGameType(null); }}
-              className="mb-6 flex items-center gap-2 text-sm font-bold text-white/50 transition-colors hover:text-white"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back
-            </button>
-          )}
+          {/* Back goes to the home cards now that there is no screen in
+              between. Always shown: the picker has its own internal back for
+              topic → quiz, but leaving the flow entirely needs a way out. */}
+          <button
+            onClick={() => { setMode("menu"); setSelectedIds([]); setGameType(null); }}
+            className="mb-6 flex items-center gap-2 text-sm font-bold text-white/50 transition-colors hover:text-white"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </button>
 
           <TopicPicker onSelect={setSelectedIds} selectedIds={selectedIds} onQuizMetaLoad={handleQuizMetaLoad} onGameTypeChange={setGameType} />
 

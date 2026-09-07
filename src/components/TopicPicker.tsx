@@ -60,9 +60,39 @@ const GAME_TYPES: GameTypeOption[] = [
   { id: "charades" as QuestionType, icon: Smartphone, color: "bg-secondary/15 text-secondary", desc: "Act it out, guess it right" },
 ];
 
+/**
+ * Whether a quiz has enough eligible questions for a given game type.
+ *
+ * Pulled out of the component and parameterised so the chip row can ask the
+ * same question of every type — a chip that leads to an empty topic grid is
+ * worse than no chip.
+ */
+function eligibleFor(q: QuizMeta, mode: string | undefined): boolean {
+  if (!mode || mode === "standard" || mode === "true-false" || mode === "mixed") return true;
+  if (mode === "charades") return true;
+  if (mode === "zoom-out") return (q.imageCount ?? 0) > 0;
+  if (mode === "year-guesser") return (q.yearCount ?? 0) > 0;
+  if (mode === "fastest-finger") return (q.shortAnswerCount ?? 0) >= 3;
+  return true;
+}
+
 export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onGameTypeChange }: TopicPickerProps) {
   const { t, lang } = useTranslation();
-  const [activeGameType, setActiveGameType] = useState<GameTypeOption | null>(null);
+  /**
+   * The game type, defaulting to Classic rather than being asked for.
+   *
+   * This used to start `null`, which made "Choose Game Type" a mandatory first
+   * screen for every single player. The content does not justify it: Classic
+   * and Mixed cover all 54 quizzes, Zoom Out and Year Guesser cover 6 each, and
+   * True/False and Fastest Finger have **one playable quiz each**. So 100% of
+   * users paid a screen to serve options that almost no content supports.
+   *
+   * Now you land on the topics and the specialised types are a chip row —
+   * still one tap away, no longer a toll gate.
+   */
+  const [activeGameType, setActiveGameType] = useState<GameTypeOption>(
+    () => GAME_TYPES.find((g) => g.id === "standard") ?? GAME_TYPES[0]
+  );
   const [activeTopic, setActiveTopic] = useState<Topic | null>(null);
   const [allQuizzes, setAllQuizzes] = useState<QuizMeta[]>([]);
   const [initialLoaded, setInitialLoaded] = useState(false);
@@ -82,16 +112,9 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
     onSelect(next);
   };
 
-  /** Check if a quiz has enough eligible questions for the active game type */
-  const isQuizEligible = (q: QuizMeta): boolean => {
-    const mode = activeGameType?.id as string | undefined;
-    if (!mode || mode === "standard" || mode === "true-false" || mode === "mixed") return true;
-    if (mode === "charades") return true;
-    if (mode === "zoom-out") return (q.imageCount ?? 0) > 0;
-    if (mode === "year-guesser") return (q.yearCount ?? 0) > 0;
-    if (mode === "fastest-finger") return (q.shortAnswerCount ?? 0) >= 3;
-    return true;
-  };
+
+
+  const isQuizEligible = (q: QuizMeta): boolean => eligibleFor(q, activeGameType.id as string);
 
   /**
    * The topics actually offered: the hand-maintained list, plus one synthetic
@@ -211,22 +234,51 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
     );
   }
 
-  // === Level 2: Topics grid ===
-  if (activeGameType) {
+  // === Level 1 (entry): topics, with the game type as a chip row ===
+  {
     return (
       <div className="animate-fade-in-up">
-        <button
-          onClick={() => { setActiveGameType(null); onGameTypeChange?.(null); }}
-          className="mb-2 flex items-center gap-2 text-sm font-bold text-white/50 transition-colors hover:text-white"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          {t("nav.back")}
-        </button>
-
         <h2 className="font-headline text-3xl font-extrabold text-white mb-1 sm:text-4xl">
-          Select <span className="text-secondary">Topic</span>
+          Pick a <span className="text-secondary">topic</span>
         </h2>
-        <p className="text-sm text-white/45 mb-6">Pick a topic to start building your challenge.</p>
+        <p className="text-sm text-white/45 mb-4">Classic questions unless you change the mode below.</p>
+
+        {/* Game type as a refinement, not a gate. Only types with playable
+            content appear, so the row can't offer a dead end. */}
+        <div className="mb-6 flex flex-wrap gap-2">
+          {GAME_TYPES.filter((gt) => {
+            const id = gt.id as string;
+            if (id === "standard") return true;
+            // Charades has its own route and no per-quiz eligibility rule.
+            if (id === "charades") return allQuizzes.length > 0;
+            return allQuizzes.some((q) => eligibleFor(q, id));
+          }).map((gt) => {
+            const Icon = gt.icon;
+            const nameKey = gt.id === "mixed" ? "gameTypes.mixed" : `gameTypes.${gt.id}`;
+            const active = activeGameType.id === gt.id;
+            return (
+              <button
+                key={gt.id}
+                type="button"
+                aria-pressed={active}
+                onClick={() => {
+                  setActiveGameType(gt);
+                  onGameTypeChange?.(gt.id);
+                  // A type change can invalidate the current selection.
+                  setActiveTopic(null);
+                }}
+                className={`flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-bold transition-colors ${
+                  active
+                    ? "bg-primary text-background"
+                    : "bg-white/5 text-white/55 hover:bg-white/10 hover:text-white/85"
+                }`}
+              >
+                <Icon className="h-3.5 w-3.5" />
+                {t(nameKey as never)}
+              </button>
+            );
+          })}
+        </div>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 stagger-children">
           {topics.filter((topic) => {
