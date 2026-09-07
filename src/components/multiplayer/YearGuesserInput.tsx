@@ -5,6 +5,8 @@ import { Check, ChevronUp, ChevronDown, Calendar } from "lucide-react";
 import type { QuestionPayload } from "@/lib/multiplayer/types";
 import Timer from "./Timer";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import StreakBadge from "./StreakBadge";
+import QuizImage from "./QuizImage";
 
 interface YearGuesserInputProps {
   question: QuestionPayload;
@@ -12,6 +14,8 @@ interface YearGuesserInputProps {
   onTimerExpire: () => void;
   timerReduction?: number;
   eliminated?: boolean;
+  /** The player's current streak — see the note in FastestFingerInput. */
+  streak?: number;
 }
 
 export default function YearGuesserInput({
@@ -20,9 +24,10 @@ export default function YearGuesserInput({
   onTimerExpire,
   timerReduction = 0,
   eliminated = false,
+  streak = 0,
 }: YearGuesserInputProps) {
   const { t } = useTranslation();
-  const qText = question.en?.question ?? question.question;
+  const qText = question.question;
   const [year, setYear] = useState(2000);
   const [submitted, setSubmitted] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -74,7 +79,7 @@ export default function YearGuesserInput({
   if (eliminated) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
-        <Calendar className="h-10 w-10 text-white/40" />
+        <Calendar className="h-10 w-10 text-white/50" />
         <p className="text-lg font-extrabold text-white/60">{t("playerQuestion.spectatorMode")}</p>
       </div>
     );
@@ -96,8 +101,9 @@ export default function YearGuesserInput({
   return (
     <div className="flex flex-1 flex-col gap-4">
       {/* Question number */}
-      <div className="text-center text-sm font-bold text-white/50">
-        {question.index + 1} / {question.total}
+      <div className="flex items-center justify-center gap-3 text-sm font-bold text-white/50">
+        <span>{question.index + 1} / {question.total}</span>
+        <StreakBadge streak={streak} />
       </div>
 
       <Timer
@@ -120,11 +126,7 @@ export default function YearGuesserInput({
       {/* Image */}
       {question.image && (
         <div className="overflow-hidden rounded-xl">
-          <img
-            src={question.image}
-            alt=""
-            className="h-32 w-full object-cover"
-          />
+          <QuizImage src={question.image} heightClass="h-32" priority />
         </div>
       )}
 
@@ -136,7 +138,7 @@ export default function YearGuesserInput({
             onPointerDown={() => startHold(10)}
             onPointerUp={stopHold}
             onPointerLeave={stopHold}
-            className="flex h-12 w-14 items-center justify-center rounded-xl bg-[#43a5fc] font-extrabold text-white text-sm active:brightness-90 sm:h-12 sm:w-16"
+            className="flex h-12 w-14 items-center justify-center rounded-xl bg-secondary font-extrabold text-white text-sm active:brightness-90 sm:h-12 sm:w-16"
           >
             +10
           </button>
@@ -144,7 +146,7 @@ export default function YearGuesserInput({
             onPointerDown={() => startHold(1)}
             onPointerUp={stopHold}
             onPointerLeave={stopHold}
-            className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#66bb6a] text-white active:brightness-90 sm:h-14 sm:w-14"
+            className="flex h-12 w-12 items-center justify-center rounded-xl bg-answer-green text-white active:brightness-90 sm:h-14 sm:w-14"
           >
             <ChevronUp className="h-7 w-7" />
           </button>
@@ -161,7 +163,7 @@ export default function YearGuesserInput({
             onPointerDown={() => startHold(-10)}
             onPointerUp={stopHold}
             onPointerLeave={stopHold}
-            className="flex h-12 w-14 items-center justify-center rounded-xl bg-[#c9a825] font-extrabold text-white text-sm active:brightness-90 sm:h-12 sm:w-16"
+            className="flex h-12 w-14 items-center justify-center rounded-xl bg-answer-yellow font-extrabold text-white text-sm active:brightness-90 sm:h-12 sm:w-16"
           >
             -10
           </button>
@@ -169,7 +171,7 @@ export default function YearGuesserInput({
             onPointerDown={() => startHold(-1)}
             onPointerUp={stopHold}
             onPointerLeave={stopHold}
-            className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#ff716c] text-white active:brightness-90 sm:h-14 sm:w-14"
+            className="flex h-12 w-12 items-center justify-center rounded-xl bg-error text-white active:brightness-90 sm:h-14 sm:w-14"
           >
             <ChevronDown className="h-7 w-7" />
           </button>

@@ -8,6 +8,7 @@ import { useRoomActions } from "@/hooks/useRoomActions";
 import Avatar from "@/components/Avatar";
 import HostLobby from "@/components/multiplayer/HostLobby";
 import PlayerLobby from "@/components/multiplayer/PlayerLobby";
+import LiveRegion from "@/components/a11y/LiveRegion";
 import HostQuestion from "@/components/multiplayer/HostQuestion";
 import PlayerQuestion from "@/components/multiplayer/PlayerQuestion";
 import FastestFingerInput from "@/components/multiplayer/FastestFingerInput";
@@ -71,8 +72,11 @@ export default function GamePage({ params }: PageProps) {
   const [verifiedHost, setVerifiedHost] = useState(false);
   useEffect(() => {
     if (!hostId || !hostToken || hostId !== playerId) return;
-    const params = new URLSearchParams({ code, hostId, hostToken });
-    fetch(`${MP_API_URL}/rooms?${params.toString()}`)
+    // Credentials in headers, not the query string — a token in a URL ends up
+    // in proxy logs, browser history and `Referer`.
+    fetch(`${MP_API_URL}/rooms?code=${encodeURIComponent(code)}`, {
+      headers: { "x-host-id": hostId, "x-host-token": hostToken },
+    })
       .then((r) => { if (!r.ok) throw new Error("Not found"); return r.json(); })
       .then((data) => {
         if (data.isHost) {
@@ -128,6 +132,7 @@ export default function GamePage({ params }: PageProps) {
     error: roomError,
     gameMode,
     teamNames,
+    totalQuestions: roomTotalQuestions,
     wager,
     timerReduction,
     eliminatedEvent,
@@ -135,7 +140,7 @@ export default function GamePage({ params }: PageProps) {
     myStreak,
   } = useRoom(code, playerId, playerToken || hostToken);
 
-  const { startGame, submitAnswer, nextQuestion, sendReaction, submitWager } = useRoomActions();
+  const { startGame, submitAnswer, nextQuestion, sendReaction, submitWager, joinRoom } = useRoomActions();
 
   // Toast notification for action errors
   const [toast, setToast] = useState<string | null>(null);
@@ -174,49 +179,96 @@ export default function GamePage({ params }: PageProps) {
   }, [code, hostId, hostToken, startGame]);
 
   const handleAnswer = useCallback(
-    async (index: number) => {
+    async (index: number): Promise<boolean> => {
       try {
         await submitAnswer(code, playerId, playerToken, index);
+        return true;
       } catch (e) {
         console.error("Failed to submit answer", e);
-        showToast("Failed to submit answer");
+        // Show the server's own reason ("Can't answer right now" for a tap
+        // that arrived after the question closed) rather than a generic
+        // failure, and report the refusal so the UI can un-commit the choice.
+        showToast(e instanceof Error ? e.message : "Failed to submit answer");
+        return false;
       }
     },
     [code, playerId, playerToken, submitAnswer]
   );
 
-  const handleYearAnswer = useCallback(
-    async (year: number) => {
-      if (!playerId) return;
-      try {
-        await fetch(`${MP_API_URL}/rooms`, {
+  /**
+   * Posts a room action and reports whether the server accepted it.
+   *
+   * Every one of these used to be a bare `await fetch(...)` inside a
+   * try/catch. `fetch` resolves happily on a 400, so `catch` never ran and a
+   * refusal — a late answer, a power-up already spent, a host action on a dead
+   * room — produced no feedback whatsoever. The player or host simply saw
+   * nothing happen and drew their own conclusion.
+   */
+  const postAction = useCallback(
+    async (body: Record<string, unknown>, fallbackMessage: string): Promise<boolean> => {
+      const send = () =>
+        fetch(`${MP_API_URL}/rooms`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "answer-year", code, playerId, token: playerToken, year }),
+          body: JSON.stringify(body),
         });
+
+      try {
+        let res = await send();
+        if (res.ok) return true;
+        let payload = await res.json().catch(() => null);
+
+        /*
+         * Reclaim the seat and retry, once.
+         *
+         * A player who drops during the lobby is fully removed from the room
+         * after the grace period — deliberately, so the host isn't stuck
+         * waiting on ghosts. But their stored token then refers to a player
+         * who no longer exists, and the *first they hear of it* was
+         * "Invalid session" on their first answer, with no way back. Rejoining
+         * is allowed while the room is still in the lobby, so do it for them.
+         */
+        if (payload?.error === "Invalid session" && playerName && playerId) {
+          const rejoined = await joinRoom(code, playerId, playerName, playerEmoji).catch(() => null);
+          if (rejoined?.playerToken) {
+            sessionStorage.setItem("quiz-player-token", rejoined.playerToken);
+            res = await send();
+            if (res.ok) return true;
+            payload = await res.json().catch(() => null);
+          }
+        }
+
+        showToast(payload?.error ?? fallbackMessage);
+        return false;
       } catch (e) {
-        console.error("Failed to submit answer", e);
-        showToast("Failed to submit answer");
+        console.error(fallbackMessage, e);
+        showToast(fallbackMessage);
+        return false;
       }
     },
-    [code, playerId, playerToken]
+    [showToast, code, playerId, playerName, playerEmoji, joinRoom]
+  );
+
+  const handleYearAnswer = useCallback(
+    async (year: number): Promise<boolean> => {
+      if (!playerId) return false;
+      return postAction(
+        { action: "answer-year", code, playerId, token: playerToken, year },
+        "Failed to submit answer"
+      );
+    },
+    [code, playerId, playerToken, postAction]
   );
 
   const handleTextAnswer = useCallback(
-    async (text: string) => {
-      if (!playerId) return;
-      try {
-        await fetch(`${MP_API_URL}/rooms`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "answer-text", code, playerId, token: playerToken, answer: text }),
-        });
-      } catch (e) {
-        console.error("Failed to submit answer", e);
-        showToast("Failed to submit answer");
-      }
+    async (text: string): Promise<boolean> => {
+      if (!playerId) return false;
+      return postAction(
+        { action: "answer-text", code, playerId, token: playerToken, answer: text },
+        "Failed to submit answer"
+      );
     },
-    [code, playerId, playerToken]
+    [code, playerId, playerToken, postAction]
   );
 
   const handleNext = useCallback(async () => {
@@ -249,37 +301,25 @@ export default function GamePage({ params }: PageProps) {
         showToast("Failed to submit wager");
       }
     },
-    [code, playerId, playerToken, submitWager]
+    [code, playerId, playerToken, submitWager, showToast]
   );
 
   const handleAdvanceFromWager = useCallback(async () => {
-    try {
-      await fetch(`${MP_API_URL}/rooms`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "advance-wager", code, hostId, hostToken }),
-      });
-    } catch (e) {
-      console.error("Failed to advance from wager", e);
-      showToast("Failed to advance from wager");
-    }
-  }, [code, hostId, hostToken]);
+    await postAction(
+      { action: "advance-wager", code, hostId, hostToken },
+      "Failed to advance from wager"
+    );
+  }, [code, hostId, hostToken, postAction]);
 
   const handleChoosePowerUp = useCallback(
     async (powerUp: "freeze" | "shield" | "double") => {
       if (!playerId) return;
-      try {
-        await fetch(`${MP_API_URL}/rooms`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "choose-powerup", code, playerId, token: playerToken, powerUp }),
-        });
-      } catch (e) {
-        console.error("Failed to activate power-up", e);
-        showToast("Failed to activate power-up");
-      }
+      await postAction(
+        { action: "choose-powerup", code, playerId, token: playerToken, powerUp },
+        "Couldn't use that power-up"
+      );
     },
-    [code, playerId, playerToken, showToast]
+    [code, playerId, playerToken, postAction]
   );
 
   const handleExit = useCallback(() => {
@@ -295,17 +335,37 @@ export default function GamePage({ params }: PageProps) {
 
   const handleTimerExpire = useCallback(async () => {
     if (!isHost) return;
-    try {
-      await fetch(`${MP_API_URL}/rooms`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "force-results", code, hostId, hostToken }),
-      });
-    } catch (e) {
-      console.error("Failed to end timer", e);
-      showToast("Failed to end timer");
+    await postAction(
+      { action: "force-results", code, hostId, hostToken },
+      "Failed to end timer"
+    );
+  }, [isHost, code, hostId, hostToken, postAction]);
+
+  /**
+   * What a screen reader should hear about the room right now.
+   *
+   * Ordered by urgency, because one polite region can only say one thing: a
+   * dropped connection matters more than an answer count. These all had
+   * visible banners and no announcement at all before (8.2).
+   */
+  const announcement = useMemo(() => {
+    if (roomError) return roomError;
+    if (!connected && state) return "Connection lost. Reconnecting.";
+    if (eliminatedEvent) {
+      return eliminatedEvent.playerId === playerId
+        ? "You have been eliminated. You can keep watching."
+        : `${eliminatedEvent.playerName} is out.`;
     }
-  }, [isHost, code, hostId, hostToken]);
+    if (playerLeftEvent && playerLeftEvent.playerId !== playerId) {
+      return `${playerLeftEvent.playerName} left the game.`;
+    }
+    if (state === "question" && answerCount && answerCount.total > 0) {
+      return `${answerCount.count} of ${answerCount.total} players have answered.`;
+    }
+    if (state === "results") return "Results are in.";
+    if (state === "finished") return "Game over.";
+    return "";
+  }, [roomError, connected, state, eliminatedEvent, playerLeftEvent, answerCount, playerId]);
 
   const canAnswer = useMemo(() => {
     if (gameMode !== "team" || !question?.currentTeamAnswerers) return true;
@@ -351,7 +411,9 @@ export default function GamePage({ params }: PageProps) {
     );
   }
 
-  const totalQuestions = question?.total ?? lastQuestion?.total ?? 15;
+  // The snapshot's count is authoritative and is the only one that exists in
+  // the lobby; the 15 was a guess that happened to match the default quiz.
+  const totalQuestions = question?.total ?? lastQuestion?.total ?? roomTotalQuestions ?? 15;
   const currentIndex = question?.index ?? lastQuestion?.index ?? 0;
   const isLastQuestion = currentIndex + 1 >= totalQuestions;
 
@@ -360,12 +422,14 @@ export default function GamePage({ params }: PageProps) {
       {/* Toast notification */}
       {toast && (
         <div className="fixed left-1/2 top-4 z-[60] -translate-x-1/2 animate-fade-in-up">
-          <div className="flex items-center gap-2 rounded-xl bg-[#ff716c] px-4 py-2.5 shadow-lg">
+          <div className="flex items-center gap-2 rounded-xl bg-error px-4 py-2.5 shadow-lg">
             <AlertTriangle className="h-4 w-4 text-white" />
             <span className="text-sm font-bold text-white">{toast}</span>
           </div>
         </div>
       )}
+
+      <LiveRegion message={announcement} />
 
       {/* Reconnecting banner */}
       {!connected && state && !roomError && (
@@ -383,8 +447,8 @@ export default function GamePage({ params }: PageProps) {
           mode a player simply stopped being able to play, unannounced. */}
       {eliminatedEvent && connected && (
         <div className="fixed left-1/2 top-16 z-[56] -translate-x-1/2 animate-bounce-in">
-          <div className="flex items-center gap-2.5 rounded-xl border-[1.5px] border-[#ff716c]/40 bg-[#ff716c]/15 px-4 py-2.5 shadow-lg backdrop-blur-md">
-            <Skull className="h-4 w-4 shrink-0 text-[#ff716c]" />
+          <div className="flex items-center gap-2.5 rounded-xl border-[1.5px] border-error/40 bg-error/15 px-4 py-2.5 shadow-lg backdrop-blur-md">
+            <Skull className="h-4 w-4 shrink-0 text-error" />
             <Avatar value={eliminatedEvent.playerEmoji} size={24} />
             <span className="text-sm font-bold text-white">
               {eliminatedEvent.playerId === playerId
@@ -428,7 +492,16 @@ export default function GamePage({ params }: PageProps) {
         )}
 
         {state === "lobby" && !isHost && (
-          <PlayerLobby code={code} players={players} playerName={playerName} playerEmoji={playerEmoji} />
+          <PlayerLobby
+            code={code}
+            players={players}
+            playerName={playerName}
+            playerEmoji={playerEmoji}
+            gameMode={gameMode}
+            totalQuestions={roomTotalQuestions}
+            teamNames={teamNames}
+            myTeamIndex={currentPlayer?.teamIndex ?? null}
+          />
         )}
 
         {state === "wager" && isHost && !isHostPlayer && (
@@ -459,7 +532,11 @@ export default function GamePage({ params }: PageProps) {
             question={question}
             answerCount={answerCount}
             onTimerExpire={handleTimerExpire}
+            // Same server action the timer fires — `force-results` doesn't
+            // require the clock to have run out, it just wasn't reachable.
+            onReveal={handleTimerExpire}
             players={players}
+            teamNames={teamNames}
           />
         )}
 
@@ -470,6 +547,7 @@ export default function GamePage({ params }: PageProps) {
               onAnswer={handleTextAnswer}
               onTimerExpire={handleTimerExpire}
               timerReduction={timerReduction}
+              streak={myStreak}
               eliminated={currentPlayer?.eliminated ?? false}
             />
           ) : question.type === "year-guesser" ? (
@@ -478,6 +556,7 @@ export default function GamePage({ params }: PageProps) {
               onAnswer={handleYearAnswer}
               onTimerExpire={handleTimerExpire}
               timerReduction={timerReduction}
+              streak={myStreak}
               eliminated={currentPlayer?.eliminated ?? false}
             />
           ) : (
@@ -486,6 +565,8 @@ export default function GamePage({ params }: PageProps) {
               onAnswer={handleAnswer}
               onTimerExpire={handleTimerExpire}
               timerReduction={timerReduction}
+              answerCount={answerCount}
+              connected={connected}
               playerId={playerId}
               eliminated={currentPlayer?.eliminated ?? false}
               canAnswer={canAnswer}
@@ -503,6 +584,7 @@ export default function GamePage({ params }: PageProps) {
               onAnswer={handleTextAnswer}
               onTimerExpire={handleTimerExpire}
               timerReduction={timerReduction}
+              streak={myStreak}
               eliminated={currentPlayer?.eliminated ?? false}
             />
           ) : question.type === "year-guesser" ? (
@@ -511,6 +593,7 @@ export default function GamePage({ params }: PageProps) {
               onAnswer={handleYearAnswer}
               onTimerExpire={handleTimerExpire}
               timerReduction={timerReduction}
+              streak={myStreak}
               eliminated={currentPlayer?.eliminated ?? false}
             />
           ) : (
@@ -519,6 +602,8 @@ export default function GamePage({ params }: PageProps) {
               onAnswer={handleAnswer}
               onTimerExpire={handleTimerExpire}
               timerReduction={timerReduction}
+              answerCount={answerCount}
+              connected={connected}
               playerId={playerId}
               eliminated={currentPlayer?.eliminated ?? false}
               canAnswer={canAnswer}
@@ -542,7 +627,7 @@ export default function GamePage({ params }: PageProps) {
         )}
 
         {state === "results" && results && isHost && isHostPlayer && (
-          <PlayerResults playerId={playerId} results={results} question={lastQuestion} onReact={handleReact}>
+          <PlayerResults playerId={playerId} results={results} question={lastQuestion} onReact={handleReact} eliminated={currentPlayer?.eliminated ?? false}>
             <button
               onClick={handleNext}
               className="btn-primary flex items-center justify-center gap-2 w-full text-lg mt-4"
@@ -553,7 +638,7 @@ export default function GamePage({ params }: PageProps) {
         )}
 
         {state === "results" && results && !isHost && (
-          <PlayerResults playerId={playerId} results={results} question={lastQuestion} onReact={handleReact} />
+          <PlayerResults playerId={playerId} results={results} question={lastQuestion} onReact={handleReact} eliminated={currentPlayer?.eliminated ?? false} />
         )}
 
         {state === "finished" && leaderboard && (

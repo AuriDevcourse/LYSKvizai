@@ -1,5 +1,5 @@
-import { Users, Loader2 } from "lucide-react";
-import type { PlayerInfo } from "@/lib/multiplayer/types";
+import { Users, Loader2, Swords, Skull, ListOrdered } from "lucide-react";
+import type { PlayerInfo, GameMode } from "@/lib/multiplayer/types";
 import Avatar from "@/components/Avatar";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
@@ -8,10 +8,37 @@ interface PlayerLobbyProps {
   players: PlayerInfo[];
   playerName: string;
   playerEmoji: string;
+  /** What kind of game is about to start. */
+  gameMode?: GameMode;
+  /** How many questions are coming. */
+  totalQuestions?: number;
+  teamNames?: string[];
+  /** Which team this player has been put on, if any. */
+  myTeamIndex?: number | null;
 }
 
-export default function PlayerLobby({ code, players, playerName, playerEmoji }: PlayerLobbyProps) {
+const MODE_LABEL: Record<GameMode, { label: string; icon: typeof Swords }> = {
+  classic: { label: "Classic", icon: Swords },
+  elimination: { label: "Elimination", icon: Skull },
+  team: { label: "Teams", icon: Users },
+};
+
+export default function PlayerLobby({
+  // Unused: the room code is shown by the parent, not here. Kept in the
+  // props because callers pass it and the shape is shared.
+  code: _code,
+  players,
+  playerName,
+  playerEmoji,
+  gameMode = "classic",
+  totalQuestions = 0,
+  teamNames = [],
+  myTeamIndex = null,
+}: PlayerLobbyProps) {
   const { t } = useTranslation();
+  const mode = MODE_LABEL[gameMode] ?? MODE_LABEL.classic;
+  const ModeIcon = mode.icon;
+  const myTeam = myTeamIndex != null ? teamNames[myTeamIndex] : undefined;
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-8">
       {/* Your avatar + name hero */}
@@ -29,6 +56,28 @@ export default function PlayerLobby({ code, players, playerName, playerEmoji }: 
           <Loader2 className="h-4 w-4 animate-spin" />
           <span className="text-sm font-bold">{t("playerLobby.waitingToStart")}</span>
         </div>
+
+        {/* What you're actually waiting for. The lobby used to say nothing
+            about the game — not the mode, not the length, not your team — so
+            the first thing a player learned was whatever question one was. */}
+        <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
+          <span className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-xs font-bold text-white/70">
+            <ModeIcon className="h-3.5 w-3.5" />
+            {mode.label}
+          </span>
+          {totalQuestions > 0 && (
+            <span className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-xs font-bold text-white/70">
+              <ListOrdered className="h-3.5 w-3.5" />
+              {totalQuestions} questions
+            </span>
+          )}
+          {myTeam && (
+            <span className="flex items-center gap-1.5 rounded-full bg-primary/20 px-3 py-1.5 text-xs font-extrabold text-primary">
+              <Users className="h-3.5 w-3.5" />
+              {myTeam}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Player list */}
@@ -45,7 +94,7 @@ export default function PlayerLobby({ code, players, playerName, playerEmoji }: 
                 p.name === playerName ? "opacity-100" : "opacity-70"
               }`}
             >
-              <div className={`rounded-full p-0.5 ${p.name === playerName ? "outline outline-[1.5px] outline-[#ff9062]" : ""}`}>
+              <div className={`rounded-full p-0.5 ${p.name === playerName ? "outline outline-[1.5px] outline-primary" : ""}`}>
                 <Avatar value={p.emoji} size={40} />
               </div>
               <span className={`w-full text-center font-extrabold text-white leading-tight break-words ${

@@ -15,13 +15,13 @@ const MODES = [
     labelKey: "gameMode.classic" as const,
     icon: Swords,
     color: "border-white/35 bg-white/5",
-    activeColor: "border-white bg-white/20 outline outline-[1.5px] outline-[#ff9062]/30",
+    activeColor: "border-white bg-white/20 outline outline-[1.5px] outline-primary/30",
   },
   {
     id: "elimination" as GameMode,
     labelKey: "gameMode.elimination" as const,
     icon: Skull,
-    color: "border-red-400/50 bg-[#ff716c]/20",
+    color: "border-red-400/50 bg-error/20",
     activeColor: "border-red-400 bg-red-400/20 ring-2 ring-red-400/30",
   },
   {

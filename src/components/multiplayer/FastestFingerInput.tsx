@@ -5,6 +5,8 @@ import { Check, Eye, Zap } from "lucide-react";
 import type { QuestionPayload } from "@/lib/multiplayer/types";
 import Timer from "./Timer";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import StreakBadge from "./StreakBadge";
+import QuizImage from "./QuizImage";
 
 interface FastestFingerInputProps {
   question: QuestionPayload;
@@ -12,6 +14,12 @@ interface FastestFingerInputProps {
   onTimerExpire: () => void;
   timerReduction?: number;
   eliminated?: boolean;
+  /**
+   * The player's current streak. The badge only ever existed on the
+   * multiple-choice screen, so a run built on typed answers was invisible —
+   * the streak itself counted, it just went unshown.
+   */
+  streak?: number;
 }
 
 export default function FastestFingerInput({
@@ -20,9 +28,10 @@ export default function FastestFingerInput({
   onTimerExpire,
   timerReduction = 0,
   eliminated = false,
+  streak = 0,
 }: FastestFingerInputProps) {
   const { t } = useTranslation();
-  const qText = question.en?.question ?? question.question;
+  const qText = question.question;
   const [text, setText] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [lastQuestionIndex, setLastQuestionIndex] = useState(question.index);
@@ -58,7 +67,7 @@ export default function FastestFingerInput({
   if (eliminated) {
     return (
       <div className="flex flex-1 flex-col gap-4">
-        <div className="flex items-center justify-center gap-2 rounded-xl bg-[#ff716c]/20 px-4 py-2 text-sm font-bold text-white">
+        <div className="flex items-center justify-center gap-2 rounded-xl bg-error/20 px-4 py-2 text-sm font-bold text-white">
           <Eye className="h-4 w-4" />
           {t("playerQuestion.spectatorMode")}
         </div>
@@ -68,7 +77,7 @@ export default function FastestFingerInput({
         <div className="glass rounded-2xl px-5 py-4 text-center">
           <h2 className="text-lg font-extrabold text-white">{qText}</h2>
         </div>
-        <div className="flex items-center justify-center gap-2 rounded-xl bg-[#c9a825]/20 px-4 py-2 text-sm font-bold text-[#c9a825]">
+        <div className="flex items-center justify-center gap-2 rounded-xl bg-answer-yellow/20 px-4 py-2 text-sm font-bold text-answer-yellow">
           <Zap className="h-4 w-4" />
           {t("fastestFinger.title")}
         </div>
@@ -91,8 +100,9 @@ export default function FastestFingerInput({
   return (
     <div className="flex flex-1 flex-col gap-4">
       {/* Question counter */}
-      <div className="text-center text-sm font-bold text-white/50">
-        {question.index + 1} / {question.total}
+      <div className="flex items-center justify-center gap-3 text-sm font-bold text-white/50">
+        <span>{question.index + 1} / {question.total}</span>
+        <StreakBadge streak={streak} />
       </div>
 
       <Timer
@@ -102,7 +112,7 @@ export default function FastestFingerInput({
       />
 
       {/* Fastest Finger badge */}
-      <div className="flex items-center justify-center gap-2 rounded-xl bg-[#c9a825]/20 px-4 py-2 text-sm font-extrabold text-[#c9a825]">
+      <div className="flex items-center justify-center gap-2 rounded-xl bg-answer-yellow/20 px-4 py-2 text-sm font-extrabold text-answer-yellow">
         <Zap className="h-4 w-4" />
         {t("fastestFinger.title")}
       </div>
@@ -115,11 +125,7 @@ export default function FastestFingerInput({
       {/* Image */}
       {question.image && (
         <div className="overflow-hidden rounded-xl">
-          <img
-            src={question.image}
-            alt=""
-            className="h-32 w-full object-cover"
-          />
+          <QuizImage src={question.image} heightClass="h-32" priority />
         </div>
       )}
 

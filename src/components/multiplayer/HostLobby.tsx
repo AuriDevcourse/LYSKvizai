@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Users, Play, QrCode, Swords, Skull, Volume2, VolumeX } from "lucide-react";
+import { Users, Play, QrCode, Skull, Volume2, VolumeX } from "lucide-react";
 import type { PlayerInfo, GameMode } from "@/lib/multiplayer/types";
 import { useSound } from "@/hooks/useSound";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
@@ -108,32 +108,56 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
           </div>
 
           {players.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-8 text-white/40">
+            <div className="flex flex-col items-center gap-3 py-8 text-white/50">
               <div className="relative">
                 <Users className="h-8 w-8" />
                 <span className="absolute -right-1 -top-1 flex h-2.5 w-2.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#ff9062] opacity-60" />
-                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#ff9062]" />
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
                 </span>
               </div>
               <p className="font-bold">{t("lobby.waitingForPlayers")}</p>
-              <p className="text-xs text-white/30">Scan the code to join</p>
+              <p className="text-xs text-white/45">Scan the code to join</p>
             </div>
           ) : (
-            <div className="flex flex-wrap gap-2 justify-center">
-              {players.map((p) => (
-                <div
-                  key={p.id}
-                  className="flex flex-col items-center gap-1 animate-bounce-in w-16 sm:w-20"
-                >
-                  <div className="rounded-full bg-white/5 p-1">
-                    <Avatar value={p.emoji} size={40} />
-                  </div>
-                  <span className={`w-full text-center font-extrabold text-white leading-tight break-words ${
-                    p.name.length > 8 ? "text-[10px]" : "text-xs"
-                  }`}>{p.name}</span>
+            /* Capped and scrollable. The list used to grow without limit, so a
+               30-player lobby pushed Start off the bottom of a screen nobody
+               can scroll. Tiles also shrink once the room gets big, which keeps
+               everyone visible rather than making the host scroll a TV. */
+            <div className="flex-1 overflow-y-auto max-h-[42vh] -mr-2 pr-2">
+              {gameMode === "team" && teamNames.length > 0 ? (
+                <div className="flex flex-col gap-3">
+                  {teamNames.map((teamName, teamIndex) => {
+                    const members = players.filter((p) => p.teamIndex === teamIndex);
+                    return (
+                      <div key={teamIndex}>
+                        <p className="mb-1.5 text-center text-[11px] font-extrabold uppercase tracking-[0.16em] text-primary">
+                          {teamName} <span className="text-white/45">{members.length}</span>
+                        </p>
+                        {members.length === 0 ? (
+                          <p className="text-center text-xs text-white/25">empty</p>
+                        ) : (
+                          <PlayerTiles players={members} compact={players.length > 16} />
+                        )}
+                      </div>
+                    );
+                  })}
+                  {/* Anyone the server hasn't assigned yet. */}
+                  {players.some((p) => p.teamIndex == null) && (
+                    <div>
+                      <p className="mb-1.5 text-center text-[11px] font-extrabold uppercase tracking-[0.16em] text-white/35">
+                        Not assigned
+                      </p>
+                      <PlayerTiles
+                        players={players.filter((p) => p.teamIndex == null)}
+                        compact={players.length > 16}
+                      />
+                    </div>
+                  )}
                 </div>
-              ))}
+              ) : (
+                <PlayerTiles players={players} compact={players.length > 16} />
+              )}
             </div>
           )}
 
@@ -151,6 +175,34 @@ export default function HostLobby({ code, players, onStart, gameMode = "classic"
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * The avatar-and-name tiles. Extracted so team mode and classic mode render
+ * identical tiles instead of two copies that drift apart.
+ */
+function PlayerTiles({ players, compact }: { players: PlayerInfo[]; compact: boolean }) {
+  return (
+    <div className="flex flex-wrap justify-center gap-2">
+      {players.map((p) => (
+        <div
+          key={p.id}
+          className={`flex animate-bounce-in flex-col items-center gap-1 ${compact ? "w-12" : "w-16 sm:w-20"}`}
+        >
+          <div className="rounded-full bg-white/5 p-1">
+            <Avatar value={p.emoji} size={compact ? 28 : 40} />
+          </div>
+          <span
+            className={`w-full break-words text-center font-extrabold leading-tight text-white ${
+              compact || p.name.length > 8 ? "text-[10px]" : "text-xs"
+            }`}
+          >
+            {p.name}
+          </span>
+        </div>
+      ))}
     </div>
   );
 }

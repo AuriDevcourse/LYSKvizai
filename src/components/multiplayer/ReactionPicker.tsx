@@ -105,12 +105,12 @@ export default function ReactionPicker({ onReact }: ReactionPickerProps) {
           onChange={(e) => setText(e.target.value)}
           placeholder="Comment..."
           maxLength={40}
-          className="min-w-0 flex-1 rounded-xl border border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/10 focus:outline-none"
+          className="min-w-0 flex-1 rounded-xl border border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/45 focus:border-white/10 focus:outline-none"
         />
         <button
           type="submit"
           disabled={!text.trim()}
-          className="tap-target flex-shrink-0 rounded-xl bg-[#ff9062] text-black transition-colors hover:bg-[#ff793e] disabled:opacity-30"
+          className="tap-target flex-shrink-0 rounded-xl bg-primary text-black transition-colors hover:bg-primary-container disabled:opacity-30"
         >
           <Send className="h-4 w-4" />
         </button>

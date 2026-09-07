@@ -47,7 +47,7 @@ export default function AnswerDistribution({
           <div key={i} className="flex w-14 flex-col items-center gap-2 sm:w-20">
             <span
               className={`text-sm font-extrabold tabular-nums transition-opacity sm:text-base ${
-                isCorrect ? "text-white" : "text-white/40"
+                isCorrect ? "text-white" : "text-white/50"
               }`}
             >
               {count}
@@ -67,7 +67,7 @@ export default function AnswerDistribution({
 
             <div
               className={`flex h-7 w-full items-center justify-center gap-1 rounded-lg text-sm font-bold ${
-                isCorrect ? "text-white" : "text-white/30"
+                isCorrect ? "text-white" : "text-white/45"
               }`}
               style={{ color: isCorrect ? ANSWER_COLORS[i] : undefined }}
             >

@@ -26,12 +26,12 @@ export default function StreakBadge({ streak, className = "" }: StreakBadgeProps
     <div
       className={`animate-streak flex items-center gap-1.5 rounded-full border-[1.5px] px-3 py-1 ${
         hot
-          ? "border-[#ff9062]/50 bg-[#e8590c]/25 text-[#ffb08c]"
+          ? "border-primary/50 bg-primary-dim/25 text-[#ffb08c]"
           : "border-white/10 bg-white/5 text-orange-300"
       } ${className}`}
       title={`${streak} correct in a row`}
     >
-      <Flame size={14} className={hot ? "text-[#ff9062]" : "text-orange-400"} fill="currentColor" />
+      <Flame size={14} className={hot ? "text-primary" : "text-orange-400"} fill="currentColor" />
       <span className="text-sm font-extrabold tabular-nums">{streak}</span>
       <span className="sr-only">correct answers in a row</span>
     </div>

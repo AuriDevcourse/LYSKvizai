@@ -1,5 +1,6 @@
 "use client";
 
+import { maxWagerFor } from "@/lib/multiplayer/scoring";
 import { useState } from "react";
 import { Coins, Flame } from "lucide-react";
 import type { WagerType } from "@/lib/multiplayer/types";
@@ -14,7 +15,9 @@ interface WagerScreenProps {
 export default function WagerScreen({ currentScore, onSubmit, wagerType = "regular" }: WagerScreenProps) {
   const { t } = useTranslation();
   // Match server logic: floor of 500 so low-scorers still participate
-  const maxWager = Math.max(500, Math.floor(currentScore * 0.3));
+  // Same function the server clamps with, so the slider can't offer a stake
+  // that gets silently reduced on submit.
+  const maxWager = maxWagerFor(currentScore);
   const [amount, setAmount] = useState(Math.round(maxWager / 2));
   const [submitted, setSubmitted] = useState(false);
 
@@ -30,7 +33,7 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
         <Coins className="h-12 w-12 text-white" />
         <p className="text-lg font-bold text-white">{t("wager.accepted")}</p>
         <p className="text-white/50">{t("wager.youWagered")} {amount} {t("wager.pts")}</p>
-        <p className="text-sm text-white/40">{t("wager.waitingForOthers")}</p>
+        <p className="text-sm text-white/50">{t("wager.waitingForOthers")}</p>
       </div>
     );
   }
@@ -94,7 +97,7 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-5">
-      <Coins className="h-12 w-12 text-[#c9a825]" />
+      <Coins className="h-12 w-12 text-answer-yellow" />
       <h2 className="text-2xl font-extrabold text-white">{t("wager.roundExclaim")}</h2>
 
       <div className="rounded-xl border-[1.5px] border-white/8 bg-white/5 px-6 py-3 text-center">
@@ -104,10 +107,13 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
 
       {/* Amount display */}
       <div className="text-center">
-        <p className="text-4xl font-black text-[#c9a825] tabular-nums">{amount}</p>
+        <p id="wager-amount" className="text-4xl font-black text-answer-yellow tabular-nums">{amount}</p>
       </div>
 
-      {/* Slider */}
+      {/* Slider. It had no accessible name at all: a screen reader announced
+          "slider" with a bare number and no indication of what was being
+          staked. `aria-valuetext` gives it units, since "450" alone is
+          meaningless. */}
       <div className="w-full max-w-xs px-2">
         <input
           type="range"
@@ -116,7 +122,10 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
           step={Math.max(1, Math.round(maxWager / 100))}
           value={amount}
           onChange={(e) => setAmount(Number(e.target.value))}
-          className="w-full accent-[#c9a825]"
+          aria-label="Points to wager"
+          aria-valuetext={`${amount} of ${maxWager} points`}
+          aria-describedby="wager-amount"
+          className="w-full accent-answer-yellow"
         />
       </div>
 
@@ -128,7 +137,7 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
             onClick={() => setAmount(val)}
             className={`rounded-xl px-3 py-1.5 text-sm font-bold transition-colors ${
               amount === val
-                ? "bg-[#c9a825] text-white"
+                ? "bg-answer-yellow text-white"
                 : "bg-white/5 text-white/60 hover:bg-white/20"
             }`}
           >
@@ -141,7 +150,7 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
       <div className="flex w-full max-w-xs flex-col gap-3">
         <button
           onClick={() => handleSubmit(amount)}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#c9a825] px-6 py-4 text-xl font-extrabold text-white transition-transform active:scale-[0.97]"
+          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-answer-yellow px-6 py-4 text-xl font-extrabold text-white transition-transform active:scale-[0.97]"
         >
           <Coins className="h-5 w-5" />
           {amount > 0 ? `${t("wager.wager")} ${amount}` : t("wager.skip")}

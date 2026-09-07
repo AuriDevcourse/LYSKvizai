@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState, useEffect, useRef } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { CheckCircle, ArrowRight, Trophy, Award, Skull, Users, Zap, Sparkles, Calendar, Flame, TrendingUp } from "lucide-react";
 import type { ResultsPayload, QuestionPayload, GameMode } from "@/lib/multiplayer/types";
 import type { EmojiReactionWithId } from "@/hooks/useRoom";
 import EmojiReactions from "./EmojiReactions";
+import QuizImage from "./QuizImage";
 import Avatar from "@/components/Avatar";
 import AnimatedNumber from "@/components/AnimatedNumber";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
@@ -35,11 +36,9 @@ export default function HostResults({
   const { t } = useTranslation();
   const [phase, setPhase] = useState<"reveal" | "leaderboard">("reveal");
 
-  const correctText = results.correctAnswerText ?? question?.options[results.correctAnswer] ?? "";
-  const tCorrectAnswer = results.en?.correctAnswerText ?? results.en?.options?.[results.correctAnswer] ?? correctText;
-  const tExplanation = results.en?.explanation ?? results.explanation ?? "";
-  const tOptions = results.en?.options ?? question?.options ?? ["", "", "", ""];
-  const qText = question ? (question.en?.question ?? question.question) : "";
+  const tExplanation = results.explanation ?? "";
+  const tOptions = results.options ?? question?.options ?? ["", "", "", ""];
+  const qText = question ? question.question : "";
 
   const sortedPlayers = useMemo(() => {
     return [...results.playerResults].sort((a, b) => b.totalScore - a.totalScore);
@@ -72,7 +71,7 @@ export default function HostResults({
 
           {question?.image && (
             <div className="max-w-md overflow-hidden rounded-xl">
-              <img src={question.image} alt="" className="h-28 w-full object-cover sm:h-52" />
+              <QuizImage src={question.image} heightClass="h-28 sm:h-52" sizes="448px" />
             </div>
           )}
 
@@ -83,7 +82,7 @@ export default function HostResults({
 
           {/* Year Guesser correct year */}
           {isYearGuesser && (
-            <div className="flex items-center gap-3 rounded-2xl bg-[#66bb6a] px-8 py-5 animate-bounce-in">
+            <div className="flex items-center gap-3 rounded-2xl bg-answer-green px-8 py-5 animate-bounce-in">
               <Calendar className="h-8 w-8 text-white" />
               <div>
                 <p className="text-sm font-bold text-white/70">{t("hostResults.correctYear")}</p>
@@ -94,10 +93,10 @@ export default function HostResults({
 
           {/* Bluff answer reveal */}
           {results.bluffAnswer && (
-            <div className="flex flex-col items-center gap-1 rounded-2xl bg-[#e77fff]/20 border-[1.5px] border-[#e77fff]/40 px-6 py-3 animate-bounce-in">
+            <div className="flex flex-col items-center gap-1 rounded-2xl bg-tertiary/20 border-[1.5px] border-tertiary/40 px-6 py-3 animate-bounce-in">
               <div className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-[#e77fff]" />
-                <p className="text-xs font-bold uppercase tracking-wider text-[#e77fff]">Bluff</p>
+                <Sparkles className="h-5 w-5 text-tertiary" />
+                <p className="text-xs font-bold uppercase tracking-wider text-tertiary">Bluff</p>
               </div>
               <p className="text-lg font-extrabold text-white">{results.bluffAnswer}</p>
               {results.bluffVictims && results.bluffVictims.length > 0 && (
@@ -124,7 +123,7 @@ export default function HostResults({
                   key={i}
                   className={`flex items-center gap-3 rounded-2xl px-4 py-2.5 sm:gap-4 sm:px-8 sm:py-5 transition-all ${
                     isCorrect
-                      ? `${OPTION_BG[i]} outline outline-2 outline-[#ff9062]`
+                      ? `${OPTION_BG[i]} outline outline-2 outline-primary`
                       : `${OPTION_BG_DIM[i]} opacity-40`
                   }`}
                 >
@@ -206,7 +205,8 @@ function AnimatedLeaderboardPhase({
   results,
   reactions,
   sortedPlayers,
-  maxScore,
+  // Unused in the body: each row derives its bar width from `topScore`.
+  maxScore: _maxScore,
   isYearGuesser,
   isLast,
   onNext,
@@ -292,8 +292,8 @@ function AnimatedLeaderboardPhase({
 
       {/* Elimination announcement */}
       {results.eliminatedThisRound && results.eliminatedThisRound.length > 0 && (
-        <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#ff716c]/20 px-6 py-4">
-          <Skull className="h-6 w-6 text-[#ff716c]" />
+        <div className="flex items-center justify-center gap-3 rounded-2xl bg-error/20 px-6 py-4">
+          <Skull className="h-6 w-6 text-error" />
           {results.eliminatedThisRound.map((el) => (
             <span key={el.playerId} className="inline-flex items-center gap-2 text-lg font-extrabold text-white">
               <Avatar value={el.playerEmoji} size={24} /> {el.playerName}
@@ -302,20 +302,11 @@ function AnimatedLeaderboardPhase({
         </div>
       )}
 
-      {/* Mystery Multiplier */}
-      {results.mysteryMultiplier && results.mysteryMultiplier > 1 && (
-        <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#c9a825]/20 px-5 py-3 animate-bounce-in">
-          <Sparkles className="h-5 w-5 text-[#c9a825]" />
-          <p className="text-lg font-extrabold text-[#c9a825]">x{results.mysteryMultiplier}!</p>
-          <Sparkles className="h-5 w-5 text-[#c9a825]" />
-        </div>
-      )}
-
       {/* Fastest Finger */}
       {results.fastestFinger && (
-        <div className="flex items-center justify-center gap-3 rounded-2xl bg-[#c9a825]/20 px-5 py-3 animate-bounce-in">
-          <Zap className="h-5 w-5 text-[#c9a825]" />
-          <p className="text-lg font-extrabold text-[#c9a825]">
+        <div className="flex items-center justify-center gap-3 rounded-2xl bg-answer-yellow/20 px-5 py-3 animate-bounce-in">
+          <Zap className="h-5 w-5 text-answer-yellow" />
+          <p className="text-lg font-extrabold text-answer-yellow">
             {t("hostResults.fastestFinger")} {results.fastestFinger.playerName}
           </p>
         </div>
@@ -327,7 +318,7 @@ function AnimatedLeaderboardPhase({
           {results.yearGuesses.map((g) => {
             const diff = g.guessedYear - g.correctYear;
             const absDiff = Math.abs(diff);
-            const color = absDiff === 0 ? "text-[#66bb6a]" : absDiff <= 5 ? "text-[#c9a825]" : absDiff <= 25 ? "text-white" : "text-[#ff716c]";
+            const color = absDiff === 0 ? "text-answer-green" : absDiff <= 5 ? "text-answer-yellow" : absDiff <= 25 ? "text-white" : "text-error";
             return (
               <div key={g.playerId} className="flex items-center justify-between rounded-xl bg-white/5 px-4 py-2.5">
                 <span className="font-bold text-white">{g.playerName}</span>
@@ -346,6 +337,43 @@ function AnimatedLeaderboardPhase({
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* Team scores.
+          These used to be `text-sm` chips *below* the full individual
+          leaderboard — but in team mode the team score is the score that
+          decides the game, so it goes first and it goes big. The individual
+          table stays underneath, because players still want their own line. */}
+      {results.teamScores && results.teamScores.length > 0 && (
+        <div className="flex flex-wrap justify-center gap-3">
+          {[...results.teamScores]
+            .sort((a, b) => b.score - a.score)
+            .map((ts, _i, arr) => {
+              const leading = ts.score === arr[0].score && ts.score > 0;
+              return (
+                <div
+                  key={ts.teamIndex}
+                  className={`surface flex min-w-[150px] flex-col items-center px-6 py-4 ${
+                    leading ? "ring-[1.5px] ring-primary/60" : ""
+                  }`}
+                >
+                  <div className="flex items-center gap-1.5">
+                    <Users className={`h-3.5 w-3.5 ${leading ? "text-primary" : "text-white/50"}`} />
+                    <span className={`text-xs font-extrabold uppercase tracking-[0.14em] ${
+                      leading ? "text-primary" : "text-white/50"
+                    }`}>
+                      {ts.teamName}
+                    </span>
+                  </div>
+                  <AnimatedNumber
+                    value={ts.score}
+                    duration={900}
+                    className="font-headline text-4xl font-black tabular-nums text-white sm:text-5xl"
+                  />
+                </div>
+              );
+            })}
         </div>
       )}
 
@@ -371,7 +399,7 @@ function AnimatedLeaderboardPhase({
                 {/* Score bar */}
                 <div
                   className={`absolute inset-y-0 left-0 transition-all duration-1000 ease-out ${
-                    playerResult?.correct ? "bg-[#66bb6a]/20" : "bg-[#ff716c]/15"
+                    playerResult?.correct ? "bg-answer-green/20" : "bg-error/15"
                   }`}
                   style={{ width: `${barWidth}%` }}
                 />
@@ -383,7 +411,7 @@ function AnimatedLeaderboardPhase({
                       rank === 1 ? "text-yellow-400" : rank === 2 ? "text-gray-300" : "text-amber-700"
                     }`} />
                   ) : (
-                    <span className="text-sm font-extrabold text-white/40 sm:text-lg">{rank}</span>
+                    <span className="text-sm font-extrabold text-white/50 sm:text-lg">{rank}</span>
                   )}
                 </div>
 
@@ -417,7 +445,7 @@ function AnimatedLeaderboardPhase({
                       </span>
                     )}
                     {pointsGained > 0 && (
-                      <span className={`flex items-center gap-0.5 text-xs font-extrabold text-[#66bb6a] ${
+                      <span className={`flex items-center gap-0.5 text-xs font-extrabold text-answer-green ${
                         animationDone ? "animate-bounce-in" : "opacity-0"
                       }`}>
                         <TrendingUp className="h-3.5 w-3.5" />
@@ -425,7 +453,7 @@ function AnimatedLeaderboardPhase({
                       </span>
                     )}
                     {playerResult && !playerResult.correct && (
-                      <span className="text-xs font-bold text-[#ff716c]/70">0</span>
+                      <span className="text-xs font-bold text-error/70">0</span>
                     )}
                   </div>
                 </div>
@@ -442,26 +470,13 @@ function AnimatedLeaderboardPhase({
         </div>
       )}
 
-      {/* Team scores */}
-      {results.teamScores && results.teamScores.length > 0 && (
-        <div className="flex gap-3 justify-center">
-          {results.teamScores.map((ts) => (
-            <div key={ts.teamIndex} className="flex items-center gap-2 rounded-xl glass px-4 py-2">
-              <Users className="h-4 w-4 text-white/50" />
-              <span className="text-sm font-bold text-white">{ts.teamName}</span>
-              <span className="text-sm font-extrabold text-white">{ts.score}</span>
-            </div>
-          ))}
-        </div>
-      )}
-
       {/* Wager results */}
       {results.wagerResults && results.wagerResults.length > 0 && (
         <div className="flex flex-wrap justify-center gap-3">
           {results.wagerResults.map((wr) => (
             <div key={wr.playerId} className="flex items-center gap-2 rounded-xl glass px-4 py-2">
               <span className="text-sm font-bold text-white">{wr.playerName}</span>
-              <span className={`text-lg font-extrabold ${wr.won ? "text-[#66bb6a]" : "text-[#ff716c]"}`}>
+              <span className={`text-lg font-extrabold ${wr.won ? "text-answer-green" : "text-error"}`}>
                 {wr.won ? "+" : ""}{wr.netPoints}
               </span>
             </div>

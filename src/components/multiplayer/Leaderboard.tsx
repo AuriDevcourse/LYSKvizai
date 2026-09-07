@@ -42,7 +42,7 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
   return (
     <div className="flex w-full flex-col items-center gap-6">
       {/* Trophy icon */}
-      <Trophy className="h-12 w-12 text-[#c9a825] animate-bounce-in" />
+      <Trophy className="h-12 w-12 text-answer-yellow animate-bounce-in" />
       <h2 className="text-3xl font-extrabold text-white sm:text-4xl animate-fade-in-up">
         {t("leaderboard.finalResults")}
       </h2>
@@ -80,21 +80,21 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
         >
           {top3[0] && (
             <>
-              <Crown className="animate-bounce-in h-10 w-10 text-[#c9a825] drop-shadow-[0_0_16px_rgba(201,168,37,0.8)] sm:h-12 sm:w-12" />
+              <Crown className="animate-bounce-in h-10 w-10 text-answer-yellow drop-shadow-[0_0_16px_rgba(201,168,37,0.8)] sm:h-12 sm:w-12" />
               <div
                 className={`podium-1 animate-fade-in-up mt-2 flex w-full flex-col items-center rounded-t-2xl px-2 py-7 ${
                   isMe(top3[0].playerId) ? "outline outline-2 outline-white" : ""
                 }`}
                 style={{ minHeight: 150 }}
               >
-                <div className="font-headline mb-1 text-4xl font-extrabold leading-none text-[#c9a825] drop-shadow-[0_0_12px_rgba(201,168,37,0.6)]">
+                <div className="font-headline mb-1 text-4xl font-extrabold leading-none text-answer-yellow drop-shadow-[0_0_12px_rgba(201,168,37,0.6)]">
                   1
                 </div>
                 <Avatar value={top3[0].emoji} size={56} />
                 <p className="mt-2 w-full truncate text-center text-base font-extrabold text-white sm:text-lg">
                   {top3[0].name}
                 </p>
-                <p className="font-headline text-2xl font-extrabold tabular-nums text-[#c9a825]">
+                <p className="font-headline text-2xl font-extrabold tabular-nums text-answer-yellow">
                   {top3[0].score}
                 </p>
               </div>
@@ -125,12 +125,18 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
 
       {/* Rest of leaderboard */}
       {rest.length > 0 && (
-        <div
-          className="flex w-full max-w-lg flex-col gap-1 stagger-children"
+        /* A real ordered list. This was nested divs, so a screen reader read a
+           stream of names and numbers with no indication it was a ranking, how
+           long it was, or where in it you were. `start` continues from the
+           podium above rather than restarting at 1. */
+        <ol
+          aria-label="Remaining places"
+          start={rest[0]?.rank ?? 4}
+          className="flex w-full max-w-lg list-none flex-col gap-1 stagger-children"
           style={{ opacity: revealStep >= 4 ? 1 : 0, transition: "opacity 0.5s" }}
         >
           {rest.map((entry) => (
-            <div
+            <li
               key={entry.playerId}
               className={`flex items-center justify-between rounded-xl px-4 py-2.5 ${
                 isMe(entry.playerId)
@@ -146,9 +152,9 @@ export default function Leaderboard({ leaderboard, currentPlayerId }: Leaderboar
                 <span className="font-bold text-white truncate">{entry.name}</span>
               </div>
               <span className="font-extrabold text-white">{entry.score}</span>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       )}
     </div>
   );

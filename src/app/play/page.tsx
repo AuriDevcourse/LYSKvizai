@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { Suspense, useState, useCallback, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Plus, LogIn, ArrowLeft, Loader2, Smartphone, Monitor, X } from "lucide-react";
@@ -8,8 +9,20 @@ import JoinForm from "@/components/multiplayer/JoinForm";
 import TopicPicker from "@/components/TopicPicker";
 import GameSettings from "@/components/GameSettings";
 import GameModeSelector from "@/components/multiplayer/GameModeSelector";
-import AvatarBuilder from "@/components/AvatarBuilder";
+/**
+ * Loaded on demand.
+ *
+ * The avatar picker pulls in the DiceBear engine, and `/play` used to import it
+ * statically — so anyone tapping "Create game", who never sees a picker at
+ * all, paid for the whole engine up front. `next/dynamic` moves it into its own
+ * chunk fetched when the picker is actually rendered.
+ */
+const AvatarBuilder = dynamic(() => import("@/components/AvatarBuilder"), {
+  ssr: false,
+  loading: () => <div className="h-40 animate-pulse rounded-xl bg-white/5" />,
+});
 import type { GameMode } from "@/lib/multiplayer/types";
+import { MAX_QUESTION_COUNT } from "@/lib/multiplayer/validate";
 import type { QuizMeta } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
@@ -79,7 +92,15 @@ function PlayPageInner() {
       const result = await createRoom(
         hostId,
         selectedQuizIds,
-        questionCount === 0 ? 999 : questionCount,
+        // "All questions" used to be sent as a magic 999, relying on the
+        // server clamping it to however many questions exist. The security
+        // pass then added `validateAction`, which caps questionCount at
+        // MAX_QUESTION_COUNT — so 999 started failing validation and choosing
+        // "All" made the room impossible to create. Send the real number
+        // instead, capped at the same limit the server enforces.
+        questionCount === 0
+          ? Math.max(1, Math.min(totalQuestions || 1, MAX_QUESTION_COUNT))
+          : questionCount,
         timer,
         selectedGameMode,
         gameModeOptions.teamCount,
@@ -135,7 +156,7 @@ function PlayPageInner() {
           </h1>
 
           {error && (
-            <p className="w-full rounded-xl bg-[#ff716c]/20 px-4 py-3 text-center text-sm font-bold text-white">
+            <p className="w-full rounded-xl bg-error/20 px-4 py-3 text-center text-sm font-bold text-white">
               {error}
             </p>
           )}
@@ -159,7 +180,7 @@ function PlayPageInner() {
 
           <button
             onClick={() => router.push("/")}
-            className="mt-2 flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
+            className="mt-2 flex items-center gap-1.5 text-sm font-bold text-white/50 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             {t("nav.home")}
@@ -170,7 +191,7 @@ function PlayPageInner() {
       {mode === "pick-quiz" && (
         <div className="flex w-full flex-col gap-6 animate-fade-in-up self-stretch">
           {error && (
-            <p className="w-full rounded-xl bg-[#ff716c]/15 border border-[#ff716c]/20 px-4 py-3 text-center text-sm font-bold text-white">
+            <p className="w-full rounded-xl bg-error/15 border border-error/20 px-4 py-3 text-center text-sm font-bold text-white">
               {error}
             </p>
           )}
@@ -208,7 +229,7 @@ function PlayPageInner() {
           {pickerAtRoot && (
             <button
               onClick={() => { setMode("menu"); setError(null); setSelectedQuizIds([]); }}
-              className="flex items-center gap-1.5 text-sm font-bold text-white/40 transition-colors hover:text-white/70"
+              className="flex items-center gap-1.5 text-sm font-bold text-white/50 transition-colors hover:text-white/70"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               {t("play.back")}
@@ -222,7 +243,7 @@ function PlayPageInner() {
           <h1 className="text-2xl font-extrabold text-white">{t("play.pickMode")}</h1>
 
           {error && (
-            <p className="w-full rounded-xl bg-[#ff716c]/20 px-4 py-3 text-center text-sm font-bold text-white">
+            <p className="w-full rounded-xl bg-error/20 px-4 py-3 text-center text-sm font-bold text-white">
               {error}
             </p>
           )}
@@ -233,7 +254,7 @@ function PlayPageInner() {
 
           <button
             onClick={() => { setMode("pick-quiz"); setError(null); }}
-            className="flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
+            className="flex items-center gap-1.5 text-sm font-bold text-white/50 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             {t("play.back")}
@@ -246,7 +267,7 @@ function PlayPageInner() {
           <h1 className="text-2xl font-extrabold text-white">{t("play.howWillYouPlay")}</h1>
 
           {error && (
-            <p className="w-full rounded-xl bg-[#ff716c]/20 px-4 py-3 text-center text-sm font-bold text-white">
+            <p className="w-full rounded-xl bg-error/20 px-4 py-3 text-center text-sm font-bold text-white">
               {error}
             </p>
           )}
@@ -276,7 +297,7 @@ function PlayPageInner() {
               }}
               className={`flex items-center gap-4 rounded-2xl px-5 py-4 text-left transition-all ${
                 hostPlaying
-                  ? "bg-white/5 outline outline-[1.5px] outline-[#ff9062]"
+                  ? "bg-white/5 outline outline-[1.5px] outline-primary"
                   : "glass hover:bg-white/5"
               }`}
             >
@@ -330,7 +351,7 @@ function PlayPageInner() {
 
           <button
             onClick={() => { setMode("pick-mode"); setError(null); setHostPlaying(false); }}
-            className="flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
+            className="flex items-center gap-1.5 text-sm font-bold text-white/50 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             {t("play.back")}
@@ -356,7 +377,7 @@ function PlayPageInner() {
 
           <button
             onClick={() => { setMode("menu"); setError(null); }}
-            className="hidden sm:flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
+            className="hidden sm:flex items-center gap-1.5 text-sm font-bold text-white/50 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             {t("play.back")}

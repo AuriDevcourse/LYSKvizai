@@ -10,7 +10,8 @@ export default function ProgressiveImage({ src, blurAmount, className }: Progres
   return (
     <img
       src={src}
-      alt=""
+      // Names the picture without describing it — see the note on QuizImage.
+      alt="Picture that this question is about, revealing gradually"
       className={className}
       style={{
         filter: `blur(${blurAmount}px)`,
