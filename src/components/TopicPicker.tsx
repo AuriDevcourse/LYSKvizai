@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { ArrowLeft, Check, Shuffle, ToggleLeft, Calendar, Keyboard, HelpCircle, ZoomOut, Smartphone, Sparkles } from "lucide-react";
-import { TOPICS, type Topic } from "@/lib/topics";
+import { useState, useEffect, useMemo } from "react";
+import { ArrowLeft, Check, Shuffle, ToggleLeft, Calendar, Keyboard, HelpCircle, ZoomOut, Smartphone, Sparkles, FolderPlus } from "lucide-react";
+import { TOPICS, topicHasQuiz, quizIdsForTopic, unlistedQuizIds, type Topic } from "@/lib/topics";
 import type { QuizMeta } from "@/data/types";
 import type { QuestionType } from "@/data/types";
 import { getQuizTheme } from "@/lib/quiz-theme";
@@ -51,13 +51,13 @@ type GameTypeOption = {
 };
 
 const GAME_TYPES: GameTypeOption[] = [
-  { id: "standard", icon: HelpCircle, color: "bg-[#43a5fc]/15 text-[#43a5fc]", desc: "Four options, one winner" },
-  { id: "true-false", icon: ToggleLeft, color: "bg-[#e77fff]/15 text-[#e77fff]", desc: "Binary decision challenge" },
-  { id: "zoom-out", icon: ZoomOut, color: "bg-[#ff9062]/15 text-[#ff9062]", desc: "Identify the hidden image" },
-  { id: "year-guesser", icon: Calendar, color: "bg-[#66bb6a]/15 text-[#66bb6a]", desc: "Place events on a timeline" },
-  { id: "fastest-finger", icon: Keyboard, color: "bg-[#ff716c]/15 text-[#ff716c]", desc: "Speed is everything" },
-  { id: "mixed", icon: Shuffle, color: "bg-[#e77fff]/15 text-[#e77fff]", desc: "A chaotic variety of all types" },
-  { id: "charades" as QuestionType, icon: Smartphone, color: "bg-[#43a5fc]/15 text-[#43a5fc]", desc: "Act it out, guess it right" },
+  { id: "standard", icon: HelpCircle, color: "bg-secondary/15 text-secondary", desc: "Four options, one winner" },
+  { id: "true-false", icon: ToggleLeft, color: "bg-tertiary/15 text-tertiary", desc: "Binary decision challenge" },
+  { id: "zoom-out", icon: ZoomOut, color: "bg-primary/15 text-primary", desc: "Identify the hidden image" },
+  { id: "year-guesser", icon: Calendar, color: "bg-answer-green/15 text-answer-green", desc: "Place events on a timeline" },
+  { id: "fastest-finger", icon: Keyboard, color: "bg-error/15 text-error", desc: "Speed is everything" },
+  { id: "mixed", icon: Shuffle, color: "bg-tertiary/15 text-tertiary", desc: "A chaotic variety of all types" },
+  { id: "charades" as QuestionType, icon: Smartphone, color: "bg-secondary/15 text-secondary", desc: "Act it out, guess it right" },
 ];
 
 export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onGameTypeChange }: TopicPickerProps) {
@@ -93,17 +93,41 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
     return true;
   };
 
+  /**
+   * The topics actually offered: the hand-maintained list, plus one synthetic
+   * catch-all for quizzes nothing claims.
+   *
+   * Without this, a quiz created in the editor had an id no topic listed and
+   * so could never be selected for a game — you could build it and then never
+   * find it. Same for everything the news cron generated.
+   */
+  const allIds = useMemo(() => allQuizzes.map((q) => q.id), [allQuizzes]);
+  const topics: Topic[] = useMemo(() => {
+    const unlisted = unlistedQuizIds(allIds);
+    if (unlisted.length === 0) return TOPICS;
+    return [
+      ...TOPICS,
+      {
+        id: "__unlisted",
+        labelKey: "topics.more",
+        icon: FolderPlus,
+        bg: "bg-[#64748b]",
+        quizIds: unlisted,
+      },
+    ];
+  }, [allIds]);
+
   // === Level 3: Quizzes inside a category ===
   if (activeGameType && activeTopic) {
     const topicQuizzes = allQuizzes
-      .filter((q) => activeTopic.quizIds.includes(q.id))
+      .filter((q) => topicHasQuiz(activeTopic, q.id))
       .filter(isQuizEligible);
     const Icon = activeTopic.icon;
     return (
       <div className="animate-fade-in-up">
         <button
           onClick={() => setActiveTopic(null)}
-          className="mb-4 flex items-center gap-2 text-sm font-bold text-white/40 transition-colors hover:text-white"
+          className="mb-4 flex items-center gap-2 text-sm font-bold text-white/50 transition-colors hover:text-white"
         >
           <ArrowLeft className="h-4 w-4" />
           {t("nav.back")}
@@ -131,7 +155,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
             ))}
           </div>
         ) : topicQuizzes.length === 0 ? (
-          <p className="py-8 text-center text-sm font-bold text-white/30">
+          <p className="py-8 text-center text-sm font-bold text-white/45">
             {t("quizPicker.noQuizzes")}
           </p>
         ) : (
@@ -146,7 +170,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
                   onClick={() => handleToggleQuiz(quiz.id)}
                   className={`group relative flex items-center gap-4 rounded-xl px-5 py-4 text-left transition-all duration-300 ${
                     isSelected
-                      ? "bg-[#e8590c]/12 border-[1.5px] border-[#ff9062]/40"
+                      ? "bg-primary-dim/12 border-[1.5px] border-primary/40"
                       : "bg-white/4 border-[1.5px] border-white/5 hover:bg-white/8 hover:border-white/10"
                   }`}
                 >
@@ -155,15 +179,15 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1.5">
-                      <h3 className={`text-sm font-extrabold leading-tight truncate ${isSelected ? "text-[#ff9062]" : "text-white group-hover:text-[#ff9062]"} transition-colors`}>{quiz.title}</h3>
+                      <h3 className={`text-sm font-extrabold leading-tight truncate ${isSelected ? "text-primary" : "text-white group-hover:text-primary"} transition-colors`}>{quiz.title}</h3>
                       {isRecentlyAdded(quiz.createdAt) && (
-                        <span className="flex shrink-0 items-center gap-0.5 rounded-full bg-[#ff9062]/20 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-[#ff9062]">
+                        <span className="flex shrink-0 items-center gap-0.5 rounded-full bg-primary/20 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-primary">
                           <Sparkles className="h-2.5 w-2.5" />
                           New
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-white/30 mt-0.5">
+                    <p className="text-xs text-white/45 mt-0.5">
                       {activeGameType?.id === "year-guesser" ? (quiz.yearCount ?? 0)
                         : activeGameType?.id === "zoom-out" ? (quiz.imageCount ?? 0)
                         : activeGameType?.id === "fastest-finger" ? (quiz.shortAnswerCount ?? 0)
@@ -174,7 +198,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
                     </p>
                   </div>
                   <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border transition-all ${
-                    isSelected ? "bg-[#ff9062] border-[#ff9062]" : "border-white/8 bg-white/5"
+                    isSelected ? "bg-primary border-primary" : "border-white/8 bg-white/5"
                   }`}>
                     {isSelected && <Check className="h-3.5 w-3.5 text-black" />}
                   </div>
@@ -193,27 +217,27 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
       <div className="animate-fade-in-up">
         <button
           onClick={() => { setActiveGameType(null); onGameTypeChange?.(null); }}
-          className="mb-2 flex items-center gap-2 text-sm font-bold text-white/40 transition-colors hover:text-white"
+          className="mb-2 flex items-center gap-2 text-sm font-bold text-white/50 transition-colors hover:text-white"
         >
           <ArrowLeft className="h-4 w-4" />
           {t("nav.back")}
         </button>
 
         <h2 className="font-headline text-3xl font-extrabold text-white mb-1 sm:text-4xl">
-          Select <span className="text-[#43a5fc]">Topic</span>
+          Select <span className="text-secondary">Topic</span>
         </h2>
-        <p className="text-sm text-white/30 mb-6">Pick a topic to start building your challenge.</p>
+        <p className="text-sm text-white/45 mb-6">Pick a topic to start building your challenge.</p>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 stagger-children">
-          {TOPICS.filter((topic) => {
+          {topics.filter((topic) => {
             // Hide topics with zero eligible quizzes for this game type
-            return topic.quizIds.some((id) => {
+            return quizIdsForTopic(topic, allIds).some((id) => {
               const meta = allQuizzes.find((q) => q.id === id);
               return meta && isQuizEligible(meta);
             });
           }).map((topic) => {
             const Icon = topic.icon;
-            const topicIds = topic.quizIds;
+            const topicIds = quizIdsForTopic(topic, allIds);
             const selectedCount = topicIds.filter((id) => selectedIds.includes(id)).length;
             return (
               <button
@@ -221,12 +245,12 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
                 onClick={() => setActiveTopic(topic)}
                 className={`group relative flex flex-col items-center gap-3 rounded-xl p-4 sm:items-start sm:p-5 text-center sm:text-left transition-all duration-300 ${
                   selectedCount > 0
-                    ? "bg-[#e8590c]/12 border-[1.5px] border-[#ff9062]/40"
+                    ? "bg-primary-dim/12 border-[1.5px] border-primary/40"
                     : "bg-white/4 border-[1.5px] border-white/5 hover:bg-white/8 hover:border-white/10"
                 }`}
               >
                 {selectedCount > 0 && (
-                  <div className="absolute right-2.5 top-2.5 flex h-5 w-5 items-center justify-center rounded-full bg-[#ff9062] text-[10px] font-extrabold text-black">
+                  <div className="absolute right-2.5 top-2.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-extrabold text-black">
                     {selectedCount}
                   </div>
                 )}
@@ -248,9 +272,9 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
   return (
     <div className="animate-fade-in-up">
       <h2 className="font-headline text-3xl font-extrabold text-white mb-1 sm:text-4xl">
-        Choose Game <span className="text-[#ff9062]">Type</span>
+        Choose Game <span className="text-primary">Type</span>
       </h2>
-      <p className="text-sm text-white/30 mb-6">Select a game mode to start building your quiz experience.</p>
+      <p className="text-sm text-white/45 mb-6">Select a game mode to start building your quiz experience.</p>
 
       <div className="flex flex-col gap-3 stagger-children">
         {GAME_TYPES.map((gt) => {
@@ -269,7 +293,7 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
                 <p className="font-headline text-base font-extrabold text-white">
                   {t(nameKey as never)}
                 </p>
-                <p className="text-xs text-white/30 mt-0.5">{gt.desc}</p>
+                <p className="text-xs text-white/45 mt-0.5">{gt.desc}</p>
               </div>
             </button>
           );

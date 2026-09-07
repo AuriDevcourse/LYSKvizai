@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Plus, Trash2, Pencil, ArrowLeft, Loader2, FileText } from "lucide-react";
+import { Plus, Trash2, Pencil, ArrowLeft, Loader2, FileText, Library as LibraryIcon, Search, Copy } from "lucide-react";
 import type { QuizMeta } from "@/data/types";
 import { getQuizTheme } from "@/lib/quiz-theme";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
@@ -60,6 +60,64 @@ export default function EditorPage() {
     router.push("/editor/new");
   };
 
+  /**
+   * 6.6 — a search box over the quiz list.
+   *
+   * `/library` searches question *text* across every quiz, which is a
+   * different job; finding a quiz by name in a list of 54 still meant
+   * scrolling. Matches title and id, so `bluff` finds all five bluff sets.
+   */
+  const [query, setQuery] = useState("");
+  const visibleQuizzes = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return quizzes;
+    return quizzes.filter(
+      (quiz) => quiz.title.toLowerCase().includes(q) || quiz.id.toLowerCase().includes(q)
+    );
+  }, [quizzes, query]);
+
+  /**
+   * 6.4 — duplicate a quiz.
+   *
+   * Building a 15-question variant of an existing set meant retyping all
+   * fifteen. Copies the questions into a new quiz and opens it for editing.
+   */
+  const [duplicating, setDuplicating] = useState<string | null>(null);
+  const runDuplicate = async (meta: QuizMeta) => {
+    setDuplicating(meta.id);
+    setError(null);
+    try {
+      const source = await fetch(`/api/quizzes/${meta.id}`).then((r) => {
+        if (!r.ok) throw new Error("Could not read that quiz");
+        return r.json();
+      });
+      const res = await editorFetch("/api/quizzes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: `${source.title} (copy)`,
+          description: source.description,
+          icon: source.icon,
+          questions: source.questions,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error ?? "Could not duplicate this quiz");
+      }
+      const created = await res.json();
+      router.push(`/editor/${created.id}`);
+    } catch (e) {
+      if (e instanceof EditorAuthError) setAuthPrompt(e.message);
+      else {
+        console.error("Duplicate failed", e);
+        setError(e instanceof Error ? e.message : "Could not duplicate this quiz");
+      }
+    } finally {
+      setDuplicating(null);
+    }
+  };
+
   return (
     <div className="relative flex min-h-svh flex-col items-center">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -74,14 +132,41 @@ export default function EditorPage() {
             <h1 className="text-2xl font-bold text-white">{t("editor.title")}</h1>
             <p className="text-sm text-white/50">{t("editor.quizLibrary")}</p>
           </div>
-          <button
-            onClick={handleCreate}
-            className="btn-primary flex min-h-[44px] items-center gap-2 !px-5 !py-0 !text-base"
-          >
-            <Plus className="h-4 w-4" />
-            {t("editor.create")}
-          </button>
+          <div className="flex items-center gap-2">
+            {/* The editor lists quizzes but never their contents. The library
+                does, read-only, and needs no editor secret. */}
+            <Link
+              href="/library"
+              className="btn-secondary flex min-h-[44px] items-center gap-2 !px-4 !py-0 !text-base"
+            >
+              <LibraryIcon className="h-4 w-4" />
+              <span className="hidden sm:inline">Library</span>
+            </Link>
+            <button
+              onClick={handleCreate}
+              className="btn-primary flex min-h-[44px] items-center gap-2 !px-5 !py-0 !text-base"
+            >
+              <Plus className="h-4 w-4" />
+              {t("editor.create")}
+            </button>
+          </div>
         </div>
+
+        {/* Search — 54 quizzes is too many to scroll for one name. Hidden
+            while the list is short enough not to need it. */}
+        {quizzes.length > 8 && (
+          <div className="relative mb-4">
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/45" />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={`Search ${quizzes.length} quizzes…`}
+              aria-label="Search quizzes"
+              className="min-h-[44px] w-full appearance-none rounded-xl border-[1.5px] border-white/8 bg-white/5 pl-10 pr-4 text-sm text-white placeholder:text-white/45 focus:border-primary/50 focus:outline-none [&::-webkit-search-cancel-button]:hidden"
+            />
+          </div>
+        )}
 
         {/* Quiz list */}
         {loading ? (
@@ -96,19 +181,21 @@ export default function EditorPage() {
               </div>
             ))}
           </div>
+        ) : visibleQuizzes.length === 0 && query ? (
+          <p className="py-16 text-center text-white/50">No quiz matches that.</p>
         ) : quizzes.length === 0 ? (
           <div className="py-16 text-center">
             <div className="mb-4 flex justify-center">
               <FileText className="h-16 w-16 text-white/25" strokeWidth={1.5} />
             </div>
             <p className="text-lg text-white/50">{t("editor.noQuizzes")}</p>
-            <p className="mt-1 text-sm text-white/30">
+            <p className="mt-1 text-sm text-white/45">
               {t("editor.getStarted")}
             </p>
           </div>
         ) : (
           <div className="space-y-3">
-            {quizzes.map((quiz) => (
+            {visibleQuizzes.map((quiz) => (
               <div
                 key={quiz.id}
                 className="flex items-center gap-4 rounded-2xl border-[1.5px] border-white/8 bg-white/5 px-5 py-4"
@@ -124,11 +211,24 @@ export default function EditorPage() {
                 })()}
                 <div className="min-w-0 flex-1">
                   <h3 className="font-bold text-white">{quizTitles[quizzes.indexOf(quiz)]}</h3>
-                  <p className="text-sm text-white/40">
+                  <p className="text-sm text-white/50">
                     {quiz.questionCount} questions
                   </p>
                 </div>
                 <div className="flex gap-2">
+                  <button
+                    onClick={() => runDuplicate(quiz)}
+                    disabled={duplicating === quiz.id}
+                    aria-label={`Duplicate ${quiz.title}`}
+                    title="Duplicate"
+                    className="tap-target rounded-lg bg-white/5 text-white/60 hover:bg-white/20 hover:text-white/80 disabled:opacity-50"
+                  >
+                    {duplicating === quiz.id ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </button>
                   <Link
                     href={`/editor/${quiz.id}`}
                     aria-label={`Edit ${quiz.title}`}
@@ -140,7 +240,7 @@ export default function EditorPage() {
                     onClick={() => setPendingDelete(quiz)}
                     disabled={deleting === quiz.id}
                     aria-label={`Delete ${quiz.title}`}
-                    className="tap-target rounded-lg bg-white/5 text-red-400/60 hover:bg-[#ff716c]/20 hover:text-red-400 disabled:opacity-50"
+                    className="tap-target rounded-lg bg-white/5 text-red-400/60 hover:bg-error/20 hover:text-red-400 disabled:opacity-50"
                   >
                     {deleting === quiz.id ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -155,7 +255,7 @@ export default function EditorPage() {
         )}
 
         {error && (
-          <p role="alert" className="mt-4 rounded-xl border-[1.5px] border-[#ff716c]/30 bg-[#ff716c]/10 px-4 py-3 text-sm text-[#ff716c]">
+          <p role="alert" className="mt-4 rounded-xl border-[1.5px] border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
             {error}
           </p>
         )}
@@ -181,7 +281,7 @@ export default function EditorPage() {
         {/* Back link */}
         <Link
           href="/"
-          className="mt-8 flex items-center gap-1.5 self-center text-sm text-white/40 hover:text-white/60"
+          className="mt-8 flex items-center gap-1.5 self-center text-sm text-white/50 hover:text-white/60"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           {t("nav.backToHome")}

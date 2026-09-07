@@ -1,10 +1,11 @@
 "use client";
 
-import { use, useState, useEffect, useCallback } from "react";
+import { use, useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Plus, Save, Loader2, AlertTriangle } from "lucide-react";
 import type { Question, Quiz } from "@/data/types";
 import QuestionEditor from "@/components/editor/QuestionEditor";
+import QuestionPreview from "@/components/editor/QuestionPreview";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 import { QUIZ_ICONS, ICON_PICKER_ORDER, type QuizIconName } from "@/lib/quiz-icons";
 import { editorFetch, EditorAuthError } from "@/lib/editor-auth";
@@ -41,6 +42,18 @@ export default function QuizEditorPage({ params }: PageProps) {
   const [saved, setSaved] = useState(false);
 
   // Load existing quiz
+  // A new quiz starts from the empty form, which is its clean baseline —
+  // otherwise `savedFingerprint` stays null and nothing is ever dirty.
+  useEffect(() => {
+    if (!isNew || savedFingerprint.current !== null) return;
+    savedFingerprint.current = JSON.stringify({
+      title: "",
+      description: "",
+      icon: DEFAULT_ICON as QuizIconName,
+      questions: [{ ...EMPTY_QUESTION }],
+    });
+  }, [isNew]);
+
   useEffect(() => {
     if (isNew) return;
     fetch(`/api/quizzes/${id}`)
@@ -54,10 +67,44 @@ export default function QuizEditorPage({ params }: PageProps) {
         setDescription(quiz.description);
         if (quiz.icon && quiz.icon in QUIZ_ICONS) setIcon(quiz.icon as QuizIconName);
         setQuestions(quiz.questions);
+        // Whatever was loaded is the clean baseline.
+        savedFingerprint.current = JSON.stringify({
+          title: quiz.title,
+          description: quiz.description,
+          icon: (quiz.icon && quiz.icon in QUIZ_ICONS ? quiz.icon : DEFAULT_ICON) as QuizIconName,
+          questions: quiz.questions,
+        });
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
   }, [id, isNew]);
+
+  /**
+   * 6.5 — warn before discarding unsaved edits.
+   *
+   * There was nothing: closing the tab, hitting back, or reloading threw away
+   * however many questions you had just typed, silently. A fingerprint of the
+   * editable state is compared against whatever was last loaded or saved, so
+   * the warning only fires when something actually differs — a prompt that
+   * cries wolf gets dismissed reflexively, which is worse than none.
+   */
+  const fingerprint = useMemo(
+    () => JSON.stringify({ title, description, icon, questions }),
+    [title, description, icon, questions]
+  );
+  const savedFingerprint = useRef<string | null>(null);
+  const isDirty = savedFingerprint.current !== null && savedFingerprint.current !== fingerprint;
+
+  useEffect(() => {
+    if (!isDirty) return;
+    const warn = (e: BeforeUnloadEvent) => {
+      // Browsers show their own wording; assigning returnValue is what arms it.
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [isDirty]);
 
   const handleSave = useCallback(async () => {
     // Validation
@@ -116,6 +163,8 @@ export default function QuizEditorPage({ params }: PageProps) {
       }
 
       setSaved(true);
+      // A successful save is the new clean baseline.
+      savedFingerprint.current = JSON.stringify({ title, description, icon, questions });
       setTimeout(() => setSaved(false), 2000);
 
       if (isNew) {
@@ -156,6 +205,9 @@ export default function QuizEditorPage({ params }: PageProps) {
     setQuestions(next);
   };
 
+  /** Which question is being previewed, if any (6.10). */
+  const [previewIndex, setPreviewIndex] = useState<number | null>(null);
+
   if (loading) {
     return (
       <div className="flex min-h-svh items-center justify-center">
@@ -168,11 +220,11 @@ export default function QuizEditorPage({ params }: PageProps) {
     return (
       <div className="flex min-h-svh items-center justify-center">
         <div className="flex flex-col items-center gap-4 text-center">
-          <AlertTriangle className="h-14 w-14 text-[#ff716c]" strokeWidth={1.5} />
+          <AlertTriangle className="h-14 w-14 text-error" strokeWidth={1.5} />
           <p className="text-lg text-white">{error}</p>
           <button
             onClick={() => router.push("/editor")}
-            className="rounded-xl bg-white px-6 py-3 font-semibold text-[#ff9062] hover:bg-white/90"
+            className="rounded-xl bg-white px-6 py-3 font-semibold text-primary hover:bg-white/90"
           >
             {t("nav.back")}
           </button>
@@ -193,7 +245,7 @@ export default function QuizEditorPage({ params }: PageProps) {
         <div className="mb-6 flex items-center justify-between">
           <button
             onClick={() => router.push("/editor")}
-            className="flex items-center gap-1.5 text-sm text-white/40 hover:text-white/60"
+            className="flex items-center gap-1.5 text-sm text-white/50 hover:text-white/60"
           >
             <ArrowLeft className="h-4 w-4" />
             {t("nav.back")}
@@ -201,7 +253,7 @@ export default function QuizEditorPage({ params }: PageProps) {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 font-semibold text-[#ff9062] transition-colors hover:bg-white/90 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 font-semibold text-primary transition-colors hover:bg-white/90 disabled:opacity-50"
           >
             {saving ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -213,7 +265,7 @@ export default function QuizEditorPage({ params }: PageProps) {
         </div>
 
         {error && (
-          <div className="mb-4 rounded-lg bg-[#ff716c]/20 px-4 py-2 text-sm text-white">
+          <div className="mb-4 rounded-lg bg-error/20 px-4 py-2 text-sm text-white">
             {error}
           </div>
         )}
@@ -228,7 +280,7 @@ export default function QuizEditorPage({ params }: PageProps) {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-lg font-bold text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
+              className="w-full rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-lg font-bold text-white placeholder:text-white/45 focus:border-white/40 focus:outline-none"
               placeholder={t("editor.quizTitlePlaceholder")}
             />
           </div>
@@ -241,7 +293,7 @@ export default function QuizEditorPage({ params }: PageProps) {
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
+              className="w-full rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/45 focus:border-white/40 focus:outline-none"
               placeholder={t("editor.descriptionPlaceholder")}
             />
           </div>
@@ -262,11 +314,11 @@ export default function QuizEditorPage({ params }: PageProps) {
                     title={name}
                     className={`flex aspect-square items-center justify-center rounded-lg transition-all ${
                       active
-                        ? "bg-[#ff9062]/20 outline outline-[1.5px] outline-[#ff9062]"
+                        ? "bg-primary/20 outline outline-[1.5px] outline-primary"
                         : "bg-white/5 hover:bg-white/10"
                     }`}
                   >
-                    <Icon className={`h-5 w-5 ${active ? "text-[#ff9062]" : "text-white/70"}`} strokeWidth={1.8} />
+                    <Icon className={`h-5 w-5 ${active ? "text-primary" : "text-white/70"}`} strokeWidth={1.8} />
                   </button>
                 );
               })}
@@ -290,6 +342,7 @@ export default function QuizEditorPage({ params }: PageProps) {
               onDelete={() => deleteQuestion(i)}
               onMoveUp={() => moveQuestion(i, -1)}
               onMoveDown={() => moveQuestion(i, 1)}
+              onPreview={() => setPreviewIndex(i)}
             />
           ))}
         </div>
@@ -328,6 +381,18 @@ export default function QuizEditorPage({ params }: PageProps) {
           }}
           onCancel={() => setAuthPrompt(null)}
         />
+
+        {/* Timing preview (6.10) — reveal and zoom crops can't be judged from
+            the form, because both depend on where the clock is. */}
+        {previewIndex !== null && questions[previewIndex] && (
+          <QuestionPreview
+            question={questions[previewIndex]}
+            index={previewIndex}
+            total={questions.length}
+            open
+            onClose={() => setPreviewIndex(null)}
+          />
+        )}
       </main>
     </div>
   );

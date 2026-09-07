@@ -35,7 +35,7 @@ export default function EditorUnlock({ open, reason, onUnlocked, onCancel }: Edi
     <Modal open={open} onClose={onCancel} title="Editor password">
       <form onSubmit={submit}>
         <p className="mb-5 flex items-start gap-2.5 text-sm leading-relaxed text-white/60">
-          <KeyRound size={16} className="mt-0.5 shrink-0 text-[#ff9062]" />
+          <KeyRound size={16} className="mt-0.5 shrink-0 text-primary" />
           <span>
             {reason && reason !== "Editor password required"
               ? reason
@@ -51,7 +51,7 @@ export default function EditorUnlock({ open, reason, onUnlocked, onCancel }: Edi
           autoComplete="current-password"
           enterKeyHint="go"
           aria-label="Editor password"
-          className="mb-4 min-h-[48px] w-full rounded-2xl border-[1.5px] border-white/10 bg-white/5 px-4 text-base text-white placeholder:text-white/30 focus:border-[#ff9062]/50 focus:outline-none"
+          className="mb-4 min-h-[48px] w-full rounded-2xl border-[1.5px] border-white/10 bg-white/5 px-4 text-base text-white placeholder:text-white/45 focus:border-primary/50 focus:outline-none"
         />
 
         <div className="flex gap-3">

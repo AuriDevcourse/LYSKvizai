@@ -13,6 +13,15 @@ export interface Topic {
   bg: string;
   /** Quiz IDs that belong to this topic */
   quizIds: string[];
+  /**
+   * Any quiz whose id starts with this also belongs here.
+   *
+   * The news topic listed eight fixed ids while the generator writes
+   * `news-<topic>-<date>` — so every quiz that cron produced was unreachable
+   * from the game-creation flow and then deleted itself three days later. A
+   * prefix cannot go stale the way a hand-written list does.
+   */
+  idPrefix?: string;
 }
 
 export const TOPICS: Topic[] = [
@@ -25,6 +34,8 @@ export const TOPICS: Topic[] = [
       "news-2024-q1", "news-2024-q2", "news-2024-q3", "news-2024-q4",
       "news-2025-q1", "news-2025-q2", "news-2025-q3", "news-2025-q4",
     ],
+    // Catches everything `scripts/news-quiz-generator.ts` writes.
+    idPrefix: "news-",
   },
   {
     id: "general",
@@ -118,3 +129,26 @@ export const TOPICS: Topic[] = [
     quizIds: ["video-games", "games-retro", "games-modern"],
   },
 ];
+
+/** Whether a quiz belongs to a topic, by explicit id or by prefix. */
+export function topicHasQuiz(topic: Topic, quizId: string): boolean {
+  if (topic.quizIds.includes(quizId)) return true;
+  return !!topic.idPrefix && quizId.startsWith(topic.idPrefix);
+}
+
+/** The ids in a topic, given everything that exists. */
+export function quizIdsForTopic(topic: Topic, allIds: string[]): string[] {
+  return allIds.filter((id) => topicHasQuiz(topic, id));
+}
+
+/**
+ * Quizzes that no topic claims.
+ *
+ * `TOPICS` is a hand-maintained mapping, so anything created in the editor got
+ * an id nobody had listed and became invisible in the game-creation flow — you
+ * could build a quiz and then never find it to play. These are surfaced under
+ * their own heading instead of disappearing.
+ */
+export function unlistedQuizIds(allIds: string[]): string[] {
+  return allIds.filter((id) => !TOPICS.some((t) => topicHasQuiz(t, id)));
+}

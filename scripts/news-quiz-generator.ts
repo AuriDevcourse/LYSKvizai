@@ -199,7 +199,9 @@ async function fetchAllArticlesByTopic(): Promise<Record<string, Article[]>> {
 // ---------------------------------------------------------------------------
 
 async function generateQuiz(
-  topic: string,
+  // Kept for call-site readability and a likely future topic-specific prompt;
+  // the prompt is currently built from the articles alone.
+  _topic: string,
   articles: Article[]
 ): Promise<{ question: string; options: [string, string, string, string]; correct: number; explanation: string }[] | null> {
   const apiKey = process.env.ANTHROPIC_API_KEY;

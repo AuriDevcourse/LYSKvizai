@@ -71,7 +71,7 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
         <span className="flex-1 truncate text-sm text-white/70">{value}</span>
         <button
           onClick={() => onChange(undefined)}
-          className="rounded-lg p-1.5 text-red-400/60 hover:bg-[#ff716c]/20 hover:text-red-400"
+          className="rounded-lg p-1.5 text-red-400/60 hover:bg-error/20 hover:text-red-400"
         >
           <X className="h-4 w-4" />
         </button>
@@ -119,8 +119,8 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
             <Loader2 className="h-6 w-6 animate-spin text-white" />
           ) : (
             <>
-              <Icon className="h-6 w-6 text-white/40" />
-              <p className="text-xs text-white/40">
+              <Icon className="h-6 w-6 text-white/50" />
+              <p className="text-xs text-white/50">
                 Drop a file or click ({info.hint})
               </p>
             </>
@@ -149,19 +149,19 @@ export default function MediaUpload({ value, onChange, type }: MediaUploadProps)
             spellCheck={false}
             enterKeyHint="done"
             placeholder={type === "video" ? "https://youtube.com/watch?v=..." : "https://example.com/audio.mp3"}
-            className="flex-1 rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
+            className="flex-1 rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/45 focus:border-white/40 focus:outline-none"
           />
           <button
             type="button"
             onClick={handleUrlSubmit}
-            className="min-h-[44px] rounded-lg bg-[#ff9062] px-4 text-sm font-bold text-black transition-colors hover:bg-[#ff793e]"
+            className="min-h-[44px] rounded-lg bg-primary px-4 text-sm font-bold text-black transition-colors hover:bg-primary-container"
           >
             Add
           </button>
         </div>
       )}
       {uploadError && (
-        <p role="alert" className="mt-2 rounded-lg border-[1.5px] border-[#ff716c]/30 bg-[#ff716c]/10 px-3 py-2 text-xs text-[#ff716c]">
+        <p role="alert" className="mt-2 rounded-lg border-[1.5px] border-error/30 bg-error/10 px-3 py-2 text-xs text-error">
           {uploadError}
         </p>
       )}

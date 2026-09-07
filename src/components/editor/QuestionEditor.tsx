@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronUp, ChevronDown, Trash2, AlertTriangle } from "lucide-react";
+import { ChevronUp, ChevronDown, Trash2, AlertTriangle, Eye } from "lucide-react";
 import type { Question, QuestionType } from "@/data/types";
 import ImageUpload from "./ImageUpload";
 import MediaUpload from "./MediaUpload";
@@ -13,6 +13,8 @@ interface QuestionEditorProps {
   onDelete: () => void;
   onMoveUp: () => void;
   onMoveDown: () => void;
+  /** Opens the timing preview — the only way to check reveal and zoom crops. */
+  onPreview?: () => void;
 }
 
 const QUESTION_TYPES: { value: QuestionType; label: string }[] = [
@@ -34,6 +36,7 @@ export default function QuestionEditor({
   onDelete,
   onMoveUp,
   onMoveDown,
+  onPreview,
 }: QuestionEditorProps) {
   const updateField = <K extends keyof Question>(key: K, value: Question[K]) => {
     if (key === "type") {
@@ -77,20 +80,33 @@ export default function QuestionEditor({
           <button
             onClick={onMoveUp}
             disabled={index === 0}
-            className="rounded-lg p-1.5 text-white/40 hover:bg-white/5 hover:text-white/80 disabled:opacity-30"
+            className="rounded-lg p-1.5 text-white/50 hover:bg-white/5 hover:text-white/80 disabled:opacity-30"
           >
             <ChevronUp className="h-4 w-4" />
           </button>
           <button
             onClick={onMoveDown}
             disabled={index === total - 1}
-            className="rounded-lg p-1.5 text-white/40 hover:bg-white/5 hover:text-white/80 disabled:opacity-30"
+            className="rounded-lg p-1.5 text-white/50 hover:bg-white/5 hover:text-white/80 disabled:opacity-30"
           >
             <ChevronDown className="h-4 w-4" />
           </button>
+          {/* Progressive reveal and zoom crops can't be judged from the form —
+              they depend on where the clock is. See QuestionPreview. */}
+          {onPreview && (
+            <button
+              type="button"
+              onClick={onPreview}
+              aria-label={`Preview question ${index + 1}`}
+              title="Preview"
+              className="rounded-lg p-1.5 text-white/50 hover:bg-white/5 hover:text-white/80"
+            >
+              <Eye className="h-4 w-4" />
+            </button>
+          )}
           <button
             onClick={onDelete}
-            className="rounded-lg p-1.5 text-red-400/60 hover:bg-[#ff716c]/20 hover:text-red-400"
+            className="rounded-lg p-1.5 text-red-400/60 hover:bg-error/20 hover:text-red-400"
           >
             <Trash2 className="h-4 w-4" />
           </button>
@@ -108,10 +124,15 @@ export default function QuestionEditor({
               key={qt.value}
               type="button"
               onClick={() => updateField("type", qt.value)}
-              className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+              aria-pressed={questionType === qt.value}
+              // Both branches used to be `bg-white/5`, so the only difference
+              // between selected and unselected was `text-white/80` versus
+              // `/50` — indistinguishable in practice. You could not tell what
+              // type a question was.
+              className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-colors ${
                 questionType === qt.value
-                  ? "bg-white/5 text-white/80"
-                  : "bg-white/5 text-white/50 hover:bg-white/5"
+                  ? "bg-primary text-background"
+                  : "bg-white/5 text-white/55 hover:bg-white/10 hover:text-white/80"
               }`}
             >
               {qt.label}
@@ -129,7 +150,7 @@ export default function QuestionEditor({
           value={question.question}
           onChange={(e) => updateField("question", e.target.value)}
           rows={2}
-          className="w-full rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
+          className="w-full rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/45 focus:border-white/40 focus:outline-none"
           placeholder="Enter question..."
         />
       </div>
@@ -144,7 +165,7 @@ export default function QuestionEditor({
             type="text"
             value={question.bluffAnswer ?? ""}
             onChange={(e) => updateField("bluffAnswer", e.target.value)}
-            className="w-full rounded-lg border-2 border-purple-400/30 bg-purple-400/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-purple-400/50 focus:outline-none"
+            className="w-full rounded-lg border-2 border-purple-400/30 bg-purple-400/5 px-3 py-2 text-sm text-white placeholder:text-white/45 focus:border-purple-400/50 focus:outline-none"
             placeholder="A fake answer that will replace one of the wrong ones..."
           />
         </div>
@@ -188,7 +209,7 @@ export default function QuestionEditor({
             type="number"
             value={question.correctYear ?? 2000}
             onChange={(e) => updateField("correctYear", parseInt(e.target.value) || 0)}
-            className="w-40 rounded-lg border-2 border-amber-400/30 bg-amber-400/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-amber-400/50 focus:outline-none"
+            className="w-40 rounded-lg border-2 border-amber-400/30 bg-amber-400/5 px-3 py-2 text-sm text-white placeholder:text-white/45 focus:border-amber-400/50 focus:outline-none"
             placeholder="e.g. 1990"
           />
         </div>
@@ -209,7 +230,7 @@ export default function QuestionEditor({
               )
             }
             rows={3}
-            className="w-full rounded-lg border-2 border-orange-400/30 bg-orange-400/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-orange-400/50 focus:outline-none"
+            className="w-full rounded-lg border-2 border-orange-400/30 bg-orange-400/5 px-3 py-2 text-sm text-white placeholder:text-white/45 focus:border-orange-400/50 focus:outline-none"
             placeholder={"Vilnius\nvilnius city"}
           />
         </div>
@@ -249,7 +270,7 @@ export default function QuestionEditor({
               type="text"
               value={opt}
               onChange={(e) => updateOption(i, e.target.value)}
-              className="flex-1 rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-1.5 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
+              className="flex-1 rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-1.5 text-sm text-white placeholder:text-white/45 focus:border-white/40 focus:outline-none"
               placeholder={questionType === "true-false" ? (i === 0 ? "True" : "False") : `Answer ${["A", "B", "C", "D"][i]}`}
             />
           </div>
@@ -267,7 +288,7 @@ export default function QuestionEditor({
           value={question.explanation}
           onChange={(e) => updateField("explanation", e.target.value)}
           rows={2}
-          className="w-full rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
+          className="w-full rounded-lg border-[1.5px] border-white/8 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/45 focus:border-white/40 focus:outline-none"
           placeholder="Shown after the answer is revealed..."
         />
       </div>
