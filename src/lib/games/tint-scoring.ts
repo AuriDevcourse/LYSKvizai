@@ -123,3 +123,50 @@ export function randomScramble(
 export function inverseOf(t: TintScramble): TintScramble {
   return { hue: -t.hue, sat: 1 / t.sat, light: -t.light };
 }
+
+
+/**
+ * Score a single colour against its official value.
+ *
+ * The flag game scrambles exactly one region and leaves the rest correct, so
+ * the score is about that one colour rather than a palette average. Same ΔE₀₀
+ * thresholds, same reading of the number.
+ */
+export function scoreSingle(official: string, attempt: string): TintResult {
+  const d = ciede2000(rgbToLab(hexToRgb(official)), rgbToLab(hexToRgb(attempt)));
+  const span = ZERO_DE - PERFECT_DE;
+  const points = Math.round(100 * Math.min(1, Math.max(0, 1 - (d - PERFECT_DE) / span)));
+
+  let verdict: string;
+  if (d <= PERFECT_DE) verdict = "indistinguishable from the official colour";
+  else if (d <= 2) verdict = "only tellable apart side by side";
+  else if (d <= 5) verdict = "close, but visibly off";
+  else if (d <= 12) verdict = "recognisably the wrong shade";
+  else verdict = "a different colour entirely";
+
+  return { meanDeltaE: d, worstDeltaE: d, worstIndex: 0, points, verdict };
+}
+
+/**
+ * Scramble a single colour so it is clearly wrong but still recoverable.
+ *
+ * Same reversibility guarantee as `randomScramble`: propose, apply, invert,
+ * measure, and damp the clamping axes until the round trip comes back inside
+ * the perceptual-match threshold. A round the player cannot win is worse than
+ * no round at all.
+ */
+export function scrambleOne(hex: string, rng: () => number = Math.random): TintScramble {
+  const magnitude = 30 + rng() * 120;
+  const hue = rng() < 0.5 ? -magnitude : magnitude;
+  let sat = 0.55 + rng() * 0.8;
+  let light = (rng() - 0.5) * 24;
+
+  for (let attempt = 0; attempt < 8; attempt++) {
+    const candidate: TintScramble = { hue, sat, light };
+    const roundTrip = applyTint(applyTint([hex], candidate), inverseOf(candidate));
+    if (paletteDelta([hex], roundTrip).mean <= PERFECT_DE) return candidate;
+    sat = 1 + (sat - 1) * 0.5;
+    light *= 0.5;
+  }
+  return { hue, sat: 1, light: 0 };
+}

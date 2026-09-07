@@ -1,8 +1,10 @@
 import { describe, it, expect } from "vitest";
 import {
   scoreTint, paletteDelta, applyTint, randomScramble, inverseOf, PERFECT_DE,
+  scoreSingle, scrambleOne,
 } from "./tint-scoring";
 import { CREATURES } from "./creatures";
+import { FLAGS, playableRegions } from "./flags";
 
 const PALETTE = ["#e8933f", "#f7c98b", "#3a2a20", "#ffffff"];
 
@@ -94,6 +96,66 @@ describe("creature data", () => {
       expect(c.heightM).toBeGreaterThan(0);
       expect(c.measure.length).toBeGreaterThan(0);
       expect(c.source.length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("single-colour scoring (the flag game)", () => {
+  it("is perfect for an exact match", () => {
+    expect(scoreSingle("#009c3b", "#009c3b").points).toBe(100);
+  });
+
+  it("ranks a near miss above a wild miss", () => {
+    const near = scoreSingle("#009c3b", "#0aa244");
+    const wild = scoreSingle("#009c3b", "#8b1fd0");
+    expect(near.points).toBeGreaterThan(wild.points);
+  });
+
+  it("stays inside 0-100 for the worst possible answer", () => {
+    const r = scoreSingle("#000000", "#ffffff");
+    expect(r.points).toBeGreaterThanOrEqual(0);
+    expect(r.points).toBeLessThanOrEqual(100);
+  });
+});
+
+describe("flag data", () => {
+  it("gives every flag at least one playable region", () => {
+    for (const flag of FLAGS) {
+      expect(playableRegions(flag).length).toBeGreaterThan(0);
+    }
+  });
+
+  it("marks pure black and white as unplayable — they have no hue to recover", () => {
+    for (const flag of FLAGS) {
+      for (const r of flag.regions) {
+        if (r.hex.toLowerCase() === "#ffffff" || r.hex.toLowerCase() === "#000000") {
+          expect(r.playable).toBe(false);
+        }
+      }
+    }
+  });
+
+  it("uses valid hex and cites a specification for every colour", () => {
+    for (const flag of FLAGS) {
+      for (const r of flag.regions) {
+        expect(r.hex).toMatch(/^#[0-9a-f]{6}$/i);
+        expect(r.spec.length).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("can always scramble a playable region reversibly", () => {
+    // The property that makes every round winnable.
+    let seed = 4242;
+    const rng = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; };
+    for (const flag of FLAGS) {
+      for (const region of playableRegions(flag)) {
+        for (let i = 0; i < 15; i++) {
+          const sc = scrambleOne(region.hex, rng);
+          const restored = applyTint(applyTint([region.hex], sc), inverseOf(sc));
+          expect(paletteDelta([region.hex], restored).mean).toBeLessThanOrEqual(PERFECT_DE);
+        }
+      }
     }
   });
 });

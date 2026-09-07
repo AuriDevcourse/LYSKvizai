@@ -72,10 +72,19 @@ half too small, and the same ratio scores the same whether the answer is 1 m or
 1000 m. A linear score would have called the large-number mistake ten times
 worse for no reason.
 
-**Tint** (`/tint`) — a character's palette is scrambled by hue rotation,
-saturation scale and lightness offset; three sliders apply the *same* transform,
-so an exact undo always exists. Closeness is the mean ΔE₀₀ across all four
-palette slots, and the reveal names the worst slot.
+**Tint** (`/tint`) — one region of a national flag is shown in the wrong colour
+while every other region stays correct; three sliders (hue, saturation,
+lightness) move that one region, and closeness is ΔE₀₀ against the official
+specification.
+
+Auri's call, and it's a better game than what I first built: the mechanic only
+works if the player *already knows* the answer, which invented creatures can
+never provide. His example was SpongeBob's yellow — right instinct, unusable
+source, since Paramount owns him and this app is deployed publicly. Flags give
+the identical recall test with none of that risk, and one advantage a cartoon
+can't match: the correct answer is a published Pantone or RAL spec rather than
+an eyedropper sample of someone's screenshot. The reveal cites it — "Netherlands
+specifies the red band as Pantone 186 C".
 
 **Three things the work turned up**
 1. A unit test caught that some scrambles were **unwinnable**. HSL clamps at 0

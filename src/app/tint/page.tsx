@@ -3,64 +3,78 @@
 import { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Palette as PaletteIcon, RotateCcw, Check, Trophy, Eye } from "lucide-react";
-import CreatureArt from "@/components/games/CreatureArt";
-import { CREATURES, type Creature } from "@/lib/games/creatures";
-import {
-  applyTint, randomScramble, scoreTint,
-  type TintScramble, type TintResult,
-} from "@/lib/games/tint-scoring";
+import FlagArt from "@/components/games/FlagArt";
+import { FLAGS, officialPalette, playableRegions, type Flag, type FlagRegion } from "@/lib/games/flags";
+import { adjustHex } from "@/lib/color/convert";
+import { scoreSingle, scrambleOne, type TintScramble, type TintResult } from "@/lib/games/tint-scoring";
 
 const ROUNDS = 5;
 
+/**
+ * The game
+ * --------
+ * One region of a flag is shown in the wrong colour; every other region is
+ * correct. Three sliders — hue, saturation, lightness — move that one region.
+ *
+ * The point is recall, not guesswork: you already know roughly what colour the
+ * Brazilian green is, and the question is how precisely. That only works with a
+ * reference the player has seen a thousand times, which is why these are flags
+ * and not invented characters. It's also why the correct answer can be a
+ * published Pantone spec rather than an opinion.
+ */
 interface Round {
-  creature: Creature;
-  scramble: TintScramble;
-  /** The palette the player starts from. */
-  scrambled: string[];
+  flag: Flag;
+  region: FlagRegion;
+  /** Colour the region starts at. */
+  start: string;
 }
 
-function newRound(seen: Set<string>): Round {
-  const pool = CREATURES.filter((c) => !seen.has(c.id));
-  const creature = (pool.length ? pool : CREATURES)[
-    Math.floor(Math.random() * (pool.length ? pool.length : CREATURES.length))
-  ];
-  const scramble = randomScramble(Math.random, creature.palette);
-  return { creature, scramble, scrambled: applyTint(creature.palette, scramble) };
+function newRound(seenFlags: Set<string>): Round {
+  const pool = FLAGS.filter((f) => !seenFlags.has(f.id));
+  const source = pool.length ? pool : FLAGS;
+  const flag = source[Math.floor(Math.random() * source.length)];
+  const options = playableRegions(flag);
+  const region = options[Math.floor(Math.random() * options.length)];
+  const scramble = scrambleOne(region.hex);
+  return { flag, region, start: adjustHex(region.hex, scramble.hue, scramble.sat, scramble.light) };
 }
 
 export default function TintGamePage() {
   const [seen, setSeen] = useState<Set<string>>(new Set());
   const [round, setRound] = useState<Round>(() => newRound(new Set()));
-  const [hue, setHue] = useState(0);
-  const [sat, setSat] = useState(1);
-  const [light, setLight] = useState(0);
+  const [tint, setTint] = useState<TintScramble>({ hue: 0, sat: 1, light: 0 });
   const [result, setResult] = useState<TintResult | null>(null);
   const [roundNo, setRoundNo] = useState(1);
   const [total, setTotal] = useState(0);
   const [done, setDone] = useState(false);
   const [peeking, setPeeking] = useState(false);
 
-  // What the player is currently looking at: the scrambled palette with their
-  // correction applied on top. Same transform the scramble used, so an exact
-  // undo is always reachable.
-  const current = useMemo(
-    () => applyTint(round.scrambled, { hue, sat, light }),
-    [round.scrambled, hue, sat, light]
+  /** The player's current colour for the scrambled region. */
+  const attempt = useMemo(
+    () => adjustHex(round.start, tint.hue, tint.sat, tint.light),
+    [round.start, tint]
   );
+
+  // Every other region stays official — only the target moves.
+  const colors = useMemo(() => {
+    const base = officialPalette(round.flag);
+    const showTruth = (peeking && !result) || result !== null;
+    return { ...base, [round.region.id]: showTruth ? round.region.hex : attempt };
+  }, [round, attempt, peeking, result]);
 
   const lockIn = useCallback(() => {
     if (result) return;
-    const r = scoreTint(round.creature.palette, current);
+    const r = scoreSingle(round.region.hex, attempt);
     setResult(r);
     setTotal((t) => t + r.points);
-  }, [result, round.creature.palette, current]);
+  }, [result, round.region.hex, attempt]);
 
   const next = useCallback(() => {
     if (roundNo >= ROUNDS) { setDone(true); return; }
-    const nextSeen = new Set(seen).add(round.creature.id);
+    const nextSeen = new Set(seen).add(round.flag.id);
     setSeen(nextSeen);
     setRound(newRound(nextSeen));
-    setHue(0); setSat(1); setLight(0);
+    setTint({ hue: 0, sat: 1, light: 0 });
     setResult(null);
     setRoundNo((n) => n + 1);
   }, [roundNo, seen, round]);
@@ -68,7 +82,7 @@ export default function TintGamePage() {
   const restart = useCallback(() => {
     setSeen(new Set());
     setRound(newRound(new Set()));
-    setHue(0); setSat(1); setLight(0);
+    setTint({ hue: 0, sat: 1, light: 0 });
     setResult(null);
     setRoundNo(1); setTotal(0); setDone(false);
   }, []);
@@ -91,8 +105,6 @@ export default function TintGamePage() {
     );
   }
 
-  const shown = peeking && !result ? round.creature.palette : current;
-
   return (
     <div className="flex min-h-svh flex-col px-5 py-6 sm:py-8">
       <div className="mx-auto flex w-full max-w-3xl items-center justify-between">
@@ -106,64 +118,69 @@ export default function TintGamePage() {
         <div className="font-headline text-lg font-extrabold tabular-nums text-white">{total}</div>
       </div>
 
-      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center gap-6">
-        <h1 className="text-center text-lg font-bold text-white/85 sm:text-xl">
-          Put the <span className="text-[#ff9062]">{round.creature.name.toLowerCase()}</span> back to its real colours
-        </h1>
+      <div className="mx-auto flex w-full max-w-xl flex-1 flex-col items-center justify-center gap-4 sm:gap-5">
+        <div className="text-center">
+          <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-white/45">{round.flag.name}</p>
+          <h1 className="mt-1 text-lg font-bold text-white/90 sm:text-xl">
+            Find <span className="text-[#ff9062]">{round.region.label}</span>
+          </h1>
+        </div>
 
-        <div className="surface relative flex w-full items-center justify-center rounded-3xl py-8">
-          <CreatureArt
-            id={round.creature.id}
-            palette={shown}
-            height={200}
-            title={round.creature.name}
-          />
+        {/* The flag. Everything except the target region is already correct, so
+            the eye has the real palette right there to judge against. */}
+        <div className="surface rounded-3xl p-3">
+          <div className="overflow-hidden rounded-xl shadow-[0_16px_40px_-16px_rgba(0,0,0,0.9)]">
+            <FlagArt
+              id={round.flag.id}
+              colors={colors}
+              width={300}
+              title={`Flag of ${round.flag.name}`}
+            />
+          </div>
+        </div>
+
+        {/* Swatch: what the player currently has vs, after locking in, the truth. */}
+        <div className="flex items-center gap-5">
+          <div className="flex flex-col items-center gap-1.5">
+            <div
+              className="h-10 w-14 rounded-xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.25)]"
+              style={{ backgroundColor: attempt }}
+            />
+            <span className="font-headline text-[11px] font-bold uppercase tracking-wider text-white/45">yours</span>
+            <span className="font-mono text-[10px] text-white/35">{attempt}</span>
+          </div>
           {result && (
-            <div className="absolute right-4 top-4 flex flex-col items-end gap-1">
-              <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/40">Original</span>
-              <div className="rounded-xl bg-white/5 p-2">
-                <CreatureArt id={round.creature.id} palette={round.creature.palette} height={70} />
-              </div>
+            <div className="flex flex-col items-center gap-1.5">
+              <div
+                className="h-10 w-14 rounded-xl outline outline-2 outline-[#66bb6a] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.25)]"
+                style={{ backgroundColor: round.region.hex }}
+              />
+              <span className="font-headline text-[11px] font-bold uppercase tracking-wider text-white/45">official</span>
+              <span className="font-mono text-[10px] text-white/35">{round.region.hex}</span>
             </div>
           )}
         </div>
 
-        {/* Palette read-out — the four slots being scored. */}
-        <div className="flex items-center gap-3">
-          {shown.map((hex, i) => (
-            <div key={i} className="flex flex-col items-center gap-1.5">
-              <div
-                className={`h-9 w-9 rounded-xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.25)] ${
-                  result && i === result.worstIndex ? "outline outline-2 outline-[#ff716c]" : ""
-                }`}
-                style={{ backgroundColor: hex }}
-              />
-              {result && (
-                <div className="h-6 w-6 rounded-md opacity-70" style={{ backgroundColor: round.creature.palette[i] }} />
-              )}
-            </div>
-          ))}
-        </div>
-
         {!result ? (
-          <div className="w-full max-w-lg space-y-4">
-            <Slider label="Hue" value={hue} min={-180} max={180} step={1}
-              display={`${hue > 0 ? "+" : ""}${Math.round(hue)}°`} onChange={setHue} />
-            <Slider label="Saturation" value={sat} min={0.2} max={2.2} step={0.01}
-              display={`${sat.toFixed(2)}×`} onChange={setSat} />
-            <Slider label="Lightness" value={light} min={-35} max={35} step={0.5}
-              display={`${light > 0 ? "+" : ""}${light.toFixed(0)}`} onChange={setLight} />
+          <div className="w-full max-w-lg space-y-3">
+            <Slider label="Hue" value={tint.hue} min={-180} max={180} step={1}
+              display={`${tint.hue > 0 ? "+" : ""}${Math.round(tint.hue)}°`}
+              onChange={(hue) => setTint((t) => ({ ...t, hue }))} />
+            <Slider label="Saturation" value={tint.sat} min={0.2} max={2.2} step={0.01}
+              display={`${tint.sat.toFixed(2)}×`}
+              onChange={(sat) => setTint((t) => ({ ...t, sat }))} />
+            <Slider label="Lightness" value={tint.light} min={-35} max={35} step={0.5}
+              display={`${tint.light > 0 ? "+" : ""}${tint.light.toFixed(0)}`}
+              onChange={(light) => setTint((t) => ({ ...t, light }))} />
 
             <div className="flex gap-3 pt-1">
               <button
                 type="button"
-                onMouseDown={() => setPeeking(true)}
-                onMouseUp={() => setPeeking(false)}
-                onMouseLeave={() => setPeeking(false)}
-                onTouchStart={() => setPeeking(true)}
-                onTouchEnd={() => setPeeking(false)}
+                onPointerDown={() => setPeeking(true)}
+                onPointerUp={() => setPeeking(false)}
+                onPointerLeave={() => setPeeking(false)}
                 className="btn-secondary flex min-h-[52px] items-center gap-2 !px-5 !py-0 !text-base"
-                aria-label="Hold to peek at the original colours"
+                aria-label="Hold to see the official colour"
               >
                 <Eye className="h-4 w-4" /> Peek
               </button>
@@ -171,9 +188,6 @@ export default function TintGamePage() {
                 <Check className="h-5 w-5" /> Lock it in
               </button>
             </div>
-            <p className="text-center text-xs text-white/35">
-              Peek shows the real colours while you hold it. Using it costs nothing but time.
-            </p>
           </div>
         ) : (
           <div className="w-full max-w-lg text-center">
@@ -181,12 +195,13 @@ export default function TintGamePage() {
               +{result.points}
             </p>
             <p className="mt-1 text-white/70">{result.verdict}</p>
-            <p className="mt-3 text-sm text-white/45">
-              Average colour difference ΔE{"₀₀"} {result.meanDeltaE.toFixed(1)}
-              {result.meanDeltaE > 2 && <> · furthest off was swatch {result.worstIndex + 1} at {result.worstDeltaE.toFixed(1)}</>}
+            <p className="mt-3 text-sm leading-relaxed text-white/45">
+              {round.flag.name} specifies {round.region.label} as{" "}
+              <span className="font-bold text-white/70">{round.region.spec}</span>. You were
+              ΔE{"₀₀"} {result.meanDeltaE.toFixed(1)} away.
             </p>
             <button onClick={next} className="btn-primary mt-6 flex min-h-[52px] w-full items-center justify-center !text-lg">
-              {roundNo >= ROUNDS ? "See results" : "Next round"}
+              {roundNo >= ROUNDS ? "See results" : "Next flag"}
             </button>
           </div>
         )}
