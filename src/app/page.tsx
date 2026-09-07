@@ -35,7 +35,15 @@ function HomeInner() {
   const actionFromUrl = searchParams.get("action");
   const [mode, setMode] = useState<"menu" | "create">(actionFromUrl === "create" ? "create" : "menu");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [questionCount, setQuestionCount] = useState(0);
+  /**
+   * Default solo length.
+   *
+   * Was 0, meaning "All" — which was fine when you picked a single 15-question
+   * quiz. Now that picking a topic plays the whole topic, "All" means up to 105
+   * questions, so the same default became a forty-minute game you did not ask
+   * for. Ten is a quick game; "All" is one tap away above the topics.
+   */
+  const [questionCount, setQuestionCount] = useState(10);
   const [quizMeta, setQuizMeta] = useState<QuizMeta[]>([]);
   const [gameType, setGameType] = useState<SelectedGameType | null>(null);
 
@@ -51,17 +59,18 @@ function HomeInner() {
     }, 0);
   }, [quizMeta, selectedIds, gameType]);
 
-  const handleStart = () => {
-    if (selectedIds.length === 0) return;
+  const handleStart = (ids: string[] = selectedIds) => {
+    if (ids.length === 0) return;
+    const selectedIdsArg = ids;
     const params = new URLSearchParams();
     if (questionCount > 0) params.set("count", String(questionCount));
-    if (gameType === "charades") { router.push(`/charades?ids=${selectedIds.join(",")}`); return; }
+    if (gameType === "charades") { router.push(`/charades?ids=${selectedIdsArg.join(",")}`); return; }
     if (gameType && gameType !== "standard") params.set("gameType", gameType);
-    if (selectedIds.length === 1) {
+    if (selectedIdsArg.length === 1) {
       const qs = params.toString();
-      router.push(`/quiz/${selectedIds[0]}${qs ? `?${qs}` : ""}`);
+      router.push(`/quiz/${selectedIdsArg[0]}${qs ? `?${qs}` : ""}`);
     } else {
-      params.set("ids", selectedIds.join(","));
+      params.set("ids", selectedIdsArg.join(","));
       router.push(`/quiz/mix?${params.toString()}`);
     }
   };
@@ -245,8 +254,45 @@ function HomeInner() {
             Back
           </button>
 
-          <TopicPicker onSelect={setSelectedIds} selectedIds={selectedIds} onQuizMetaLoad={handleQuizMetaLoad} onGameTypeChange={setGameType} />
+          {/* How long, chosen *before* the topic rather than after.
+              Picking a topic is the action that starts the game, so anything
+              you might want to set has to be reachable beforehand — otherwise
+              the length choice becomes another screen. */}
+          <div className="mb-5 flex items-center gap-2">
+            <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/45">
+              Length
+            </span>
+            {[
+              { n: 5, label: "5" },
+              { n: 10, label: "10" },
+              { n: 0, label: "All" },
+            ].map(({ n, label }) => (
+              <button
+                key={label}
+                type="button"
+                aria-pressed={questionCount === n}
+                onClick={() => setQuestionCount(n)}
+                className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition-colors ${
+                  questionCount === n
+                    ? "bg-primary text-background"
+                    : "bg-white/5 text-white/55 hover:bg-white/10 hover:text-white/85"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
 
+          <TopicPicker
+            onSelect={setSelectedIds}
+            selectedIds={selectedIds}
+            onQuizMetaLoad={handleQuizMetaLoad}
+            onGameTypeChange={setGameType}
+            onCommit={handleStart}
+          />
+
+          {/* Still shown when quizzes were cherry-picked from inside a topic,
+              which is the one path that doesn't start on selection. */}
           {selectedIds.length > 0 && (
             <div className="mt-8 flex flex-col gap-4 animate-slide-up">
               <GameSettings
@@ -258,7 +304,7 @@ function HomeInner() {
                 totalQuestions={totalQuestions}
               />
               <button
-                onClick={handleStart}
+                onClick={() => handleStart()}
                 className="btn-primary flex w-full items-center justify-center gap-2 text-lg py-4"
               >
                 <Play className="h-5 w-5" fill="currentColor" />

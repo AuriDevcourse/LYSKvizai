@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { ArrowLeft, Check, Shuffle, ToggleLeft, Calendar, Keyboard, HelpCircle, ZoomOut, Smartphone, Sparkles, FolderPlus } from "lucide-react";
+import { ArrowLeft, Check, Shuffle, ToggleLeft, Calendar, Keyboard, HelpCircle, ZoomOut, Smartphone, Sparkles, FolderPlus, SlidersHorizontal } from "lucide-react";
 import { TOPICS, topicHasQuiz, quizIdsForTopic, unlistedQuizIds, type Topic } from "@/lib/topics";
 import type { QuizMeta } from "@/data/types";
 import type { QuestionType } from "@/data/types";
@@ -41,6 +41,16 @@ interface TopicPickerProps {
   selectedIds: string[];
   onQuizMetaLoad?: (quizzes: QuizMeta[]) => void;
   onGameTypeChange?: (gameType: SelectedGameType | null) => void;
+  /**
+   * Called when the selection is complete and the game should start.
+   *
+   * Tapping a topic used to open a list of the quizzes inside it and wait for
+   * you to choose — so "Science" meant seven more decisions before a single
+   * question. Picking a topic now means *play that topic*: every eligible quiz
+   * in it, mixed. Cherry-picking is still there, behind the small control on
+   * each tile, for the rare time you want one specific set.
+   */
+  onCommit?: (quizIds: string[]) => void;
 }
 
 type GameTypeOption = {
@@ -67,6 +77,14 @@ const GAME_TYPES: GameTypeOption[] = [
  * same question of every type — a chip that leads to an empty topic grid is
  * worse than no chip.
  */
+/** How many questions a quiz contributes under a given game type. */
+function countFor(q: QuizMeta, mode: string | undefined): number {
+  if (mode === "zoom-out") return q.imageCount ?? 0;
+  if (mode === "year-guesser") return q.yearCount ?? 0;
+  if (mode === "fastest-finger") return q.shortAnswerCount ?? 0;
+  return q.questionCount;
+}
+
 function eligibleFor(q: QuizMeta, mode: string | undefined): boolean {
   if (!mode || mode === "standard" || mode === "true-false" || mode === "mixed") return true;
   if (mode === "charades") return true;
@@ -76,7 +94,7 @@ function eligibleFor(q: QuizMeta, mode: string | undefined): boolean {
   return true;
 }
 
-export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onGameTypeChange }: TopicPickerProps) {
+export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onGameTypeChange, onCommit }: TopicPickerProps) {
   const { t, lang } = useTranslation();
   /**
    * The game type, defaulting to Classic rather than being asked for.
@@ -291,28 +309,57 @@ export default function TopicPicker({ onSelect, selectedIds, onQuizMetaLoad, onG
             const Icon = topic.icon;
             const topicIds = quizIdsForTopic(topic, allIds);
             const selectedCount = topicIds.filter((id) => selectedIds.includes(id)).length;
+            const eligible = topicIds.filter((id) => {
+              const meta = allQuizzes.find((q) => q.id === id);
+              return meta && isQuizEligible(meta);
+            });
+            const questionTotal = eligible.reduce((sum, id) => {
+              const meta = allQuizzes.find((q) => q.id === id);
+              return sum + (meta ? countFor(meta, activeGameType.id as string) : 0);
+            }, 0);
             return (
-              <button
+              <div
                 key={topic.id}
-                onClick={() => setActiveTopic(topic)}
-                className={`group relative flex flex-col items-center gap-3 rounded-xl p-4 sm:items-start sm:p-5 text-center sm:text-left transition-all duration-300 ${
+                className={`group relative rounded-xl transition-all duration-300 ${
                   selectedCount > 0
                     ? "bg-primary-dim/12 border-[1.5px] border-primary/40"
                     : "bg-white/4 border-[1.5px] border-white/5 hover:bg-white/8 hover:border-white/10"
                 }`}
               >
-                {selectedCount > 0 && (
-                  <div className="absolute right-2.5 top-2.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-extrabold text-black">
-                    {selectedCount}
+                {/* The tile plays the topic. Every eligible quiz in it, mixed —
+                    which is the whole point of choosing "Science". */}
+                <button
+                  onClick={() => {
+                    onSelect(eligible);
+                    // The ids are passed explicitly rather than read back from
+                    // state: `onSelect` is a setState, so the parent's
+                    // `selectedIds` has not flushed yet in this same tick.
+                    onCommit?.(eligible);
+                  }}
+                  className="flex w-full flex-col items-center gap-3 p-4 text-center sm:items-start sm:p-5 sm:text-left"
+                >
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${topic.bg}`}>
+                    <Icon className="h-5 w-5 text-white" />
                   </div>
-                )}
-                <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${topic.bg}`}>
-                  <Icon className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-sm font-bold text-white/80 group-hover:text-white transition-colors">
-                  {t(topic.labelKey as never)}
-                </span>
-              </button>
+                  <span className="text-sm font-bold text-white/80 transition-colors group-hover:text-white">
+                    {t(topic.labelKey as never)}
+                  </span>
+                  <span className="text-[11px] font-bold text-white/40">
+                    {questionTotal} questions
+                  </span>
+                </button>
+
+                {/* Secondary: pick specific quizzes from this topic. Rare, so
+                    it is a corner control rather than a mandatory screen. */}
+                <button
+                  onClick={() => setActiveTopic(topic)}
+                  aria-label={`Choose specific quizzes in ${t(topic.labelKey as never)}`}
+                  title="Choose specific quizzes"
+                  className="absolute right-1.5 top-1.5 rounded-lg p-1.5 text-white/30 transition-colors hover:bg-white/10 hover:text-white/70"
+                >
+                  <SlidersHorizontal className="h-3.5 w-3.5" />
+                </button>
+              </div>
             );
           })}
         </div>

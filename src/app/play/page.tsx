@@ -202,6 +202,9 @@ function PlayPageInner() {
               selectedIds={selectedQuizIds}
               onQuizMetaLoad={handleQuizMetaLoad}
               onGameTypeChange={(gt) => setPickerAtRoot(gt === null)}
+              // Tapping a topic is the last decision — straight to how the
+              // game runs, no quiz list and no "Next".
+              onCommit={(ids) => { setSelectedQuizIds(ids); setError(null); setMode("host-join"); }}
             />
           </div>
 
