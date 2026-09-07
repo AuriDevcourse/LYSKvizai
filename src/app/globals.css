@@ -29,8 +29,12 @@
   --color-answer-green: #66bb6a;
   --color-answer-yellow: #c9a825;
   --color-answer-purple: #e77fff;
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Was `var(--font-geist-sans)` / `var(--font-geist-mono)` — Geist was
+     downloaded on every page and applied to nothing, and Geist Mono was never
+     even imported, so `font-mono` resolved to an undefined variable. Point
+     `font-sans` at the real body font and let `font-mono` fall back to
+     Tailwind's own stack. */
+  --font-sans: var(--font-body);
 }
 
 body {
@@ -244,6 +248,23 @@ h1, h2, h3 {
 .year-slider:disabled { opacity: 0.5; }
 
 /* Glass card — primary surface component */
+/*
+ * Corner radius scale
+ * -------------------
+ * Six different radii were in use with nothing saying which meant what, so
+ * the choice was made by whatever the nearest component happened to use.
+ * Four steps plus `full`, in the order things nest:
+ *
+ *   rounded-lg    small controls — icon buttons, chips, swatches, table rows
+ *   rounded-xl    inputs, list rows, media frames          (the default)
+ *   rounded-2xl   cards and panels — anything with its own padding
+ *   rounded-3xl   hero surfaces — the projected question card, big stages
+ *   rounded-full  pills and circles — buttons, avatars, badges, progress bars
+ *
+ * `rounded-md`, `rounded-sm` and `rounded-none` are deliberately unused: three
+ * near-identical small radii is a distinction nobody can see and everybody has
+ * to decide about.
+ */
 .glass {
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(16px);

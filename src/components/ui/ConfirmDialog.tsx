@@ -45,7 +45,7 @@ export default function ConfirmDialog({
           disabled={busy}
           className={`min-h-[44px] flex-1 rounded-full px-4 font-extrabold transition-transform active:scale-97 disabled:opacity-50 ${
             destructive
-              ? "bg-[#ff716c] text-black shadow-[0_12px_30px_rgba(255,113,108,0.25)]"
+              ? "bg-error text-black shadow-[0_12px_30px_rgba(255,113,108,0.25)]"
               : "btn-primary !px-4 !py-0 !text-base"
           }`}
         >

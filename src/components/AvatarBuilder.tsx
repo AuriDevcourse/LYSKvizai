@@ -129,7 +129,7 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
               Re-roll {activeLabel}
             </button>
           ) : (
-            <div className="rounded-xl bg-white/5 px-3 py-2 text-center text-[11px] font-bold text-white/40">
+            <div className="rounded-xl bg-white/5 px-3 py-2 text-center text-[11px] font-bold text-white/50">
               Pick a {activeLabel} tone
             </div>
           )}
@@ -145,7 +145,7 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
             onClick={() => setTab(t.id)}
             className={`shrink-0 rounded-lg px-3 py-1.5 text-[11px] font-bold transition-all ${
               tab === t.id
-                ? "bg-[#ff9062] text-black"
+                ? "bg-primary text-black"
                 : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
             }`}
           >
@@ -165,7 +165,7 @@ export default function AvatarBuilder({ onChange }: AvatarBuilderProps) {
               type="button"
               onClick={() => pickOption(tab, i)}
               className={`relative aspect-square overflow-hidden rounded-xl transition-all ${
-                selected ? "outline outline-2 outline-[#ff9062]" : "outline outline-1 outline-transparent hover:outline-white/15"
+                selected ? "outline outline-2 outline-primary" : "outline outline-1 outline-transparent hover:outline-white/15"
               }`}
               aria-label={`${tab} option ${i + 1}`}
             >

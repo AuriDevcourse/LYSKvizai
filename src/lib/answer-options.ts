@@ -15,18 +15,18 @@ export const ANSWER_COLORS = ["#ff716c", "#43a5fc", "#66bb6a", "#c9a825"] as con
 
 /** Tailwind background classes, same order. */
 export const ANSWER_BG = [
-  "bg-[#ff716c]",
-  "bg-[#43a5fc]",
-  "bg-[#66bb6a]",
-  "bg-[#c9a825]",
+  "bg-error",
+  "bg-secondary",
+  "bg-answer-green",
+  "bg-answer-yellow",
 ] as const;
 
 /** Dimmed variants for options that weren't correct. */
 export const ANSWER_BG_DIM = [
-  "bg-[#ff716c]/30",
-  "bg-[#43a5fc]/30",
-  "bg-[#66bb6a]/30",
-  "bg-[#c9a825]/30",
+  "bg-error/30",
+  "bg-secondary/30",
+  "bg-answer-green/30",
+  "bg-answer-yellow/30",
 ] as const;
 
 /**
@@ -39,7 +39,7 @@ export const ANSWER_BG_DIM = [
  * This also brings the answer chips in line with `btn-primary`, which CLAUDE.md
  * already specifies as black text on the orange gradient.
  */
-export const ANSWER_TEXT = "text-[#0e0e0e]" as const;
+export const ANSWER_TEXT = "text-background" as const;
 
 /** Shape per option — the redundant channel for anyone who can't rely on colour. */
 export const ANSWER_ICONS = [Triangle, Diamond, Circle, Square] as const;

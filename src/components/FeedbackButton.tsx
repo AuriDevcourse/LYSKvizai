@@ -111,14 +111,14 @@ export default function FeedbackButton() {
                 className="w-full resize-none rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-white placeholder-white/30 outline-none focus:border-white/25"
                 disabled={send === "sending" || send === "sent"}
               />
-              <span className="mt-1 block text-right text-[10px] text-white/30">
+              <span className="mt-1 block text-right text-[10px] text-white/45">
                 {message.length}/2000
               </span>
             </label>
 
             <label className="mb-4 block">
               <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-white/50">
-                Name or email <span className="text-white/30">(optional)</span>
+                Name or email <span className="text-white/45">(optional)</span>
               </span>
               <input
                 type="text"
@@ -131,7 +131,7 @@ export default function FeedbackButton() {
             </label>
 
             {errorMsg && send === "error" && (
-              <div className="mb-3 flex items-center gap-2 rounded-lg bg-[#ff716c]/15 px-3 py-2 text-xs text-[#ff716c]">
+              <div className="mb-3 flex items-center gap-2 rounded-lg bg-error/15 px-3 py-2 text-xs text-error">
                 <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
                 <span>{errorMsg}</span>
               </div>

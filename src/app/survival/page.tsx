@@ -225,11 +225,11 @@ function SurvivalInner() {
             <div className="flex gap-6 text-center">
               <div>
                 <p className="text-2xl font-extrabold text-white">{totalAnswered + 1}</p>
-                <p className="text-xs font-bold text-white/40">{t("survival.questions")}</p>
+                <p className="text-xs font-bold text-white/50">{t("survival.questions")}</p>
               </div>
               <div>
                 <p className="text-2xl font-extrabold text-white">{bestStreak}</p>
-                <p className="text-xs font-bold text-white/40">{t("survival.bestStreak")}</p>
+                <p className="text-xs font-bold text-white/50">{t("survival.bestStreak")}</p>
               </div>
             </div>
 
@@ -240,7 +240,7 @@ function SurvivalInner() {
 
             <Link
               href="/"
-              className="text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
+              className="text-sm font-bold text-white/50 hover:text-white/70 transition-colors"
             >
               {t("quiz.home")}
             </Link>
@@ -283,7 +283,7 @@ function SurvivalInner() {
                 style={{ width: `${timerPct}%` }}
               />
             </div>
-            <p className="relative z-10 mb-4 text-center text-xs font-bold text-white/30">
+            <p className="relative z-10 mb-4 text-center text-xs font-bold text-white/45">
               Q{currentIndex + 1} · {timeLeft}s
             </p>
 

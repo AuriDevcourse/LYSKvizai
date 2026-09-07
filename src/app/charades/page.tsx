@@ -273,7 +273,7 @@ function CharadesInner() {
     return (
       <div className="flex min-h-svh flex-col items-center justify-center gap-6 px-6">
         <div className="flex gap-4">
-          <Smartphone className="h-14 w-14 text-white/40" />
+          <Smartphone className="h-14 w-14 text-white/50" />
           <Smartphone className="h-14 w-14 text-white rotate-90" />
         </div>
         <h1 className="text-4xl font-extrabold text-white">
@@ -283,15 +283,15 @@ function CharadesInner() {
           <p className="text-lg font-bold text-white/70">
             {t("charades.holdOnForehead")}
           </p>
-          <p className="text-xs font-bold text-white/40">
+          <p className="text-xs font-bold text-white/50">
             {t("charades.anyOrientation")}
           </p>
           <div className="flex flex-col gap-1 rounded-2xl bg-white/5 px-5 py-3">
             <div className="flex items-center justify-center gap-2">
-              <span className="text-sm font-extrabold text-[#66bb6a]">{t("charades.tiltDown")}</span>
+              <span className="text-sm font-extrabold text-answer-green">{t("charades.tiltDown")}</span>
             </div>
             <div className="flex items-center justify-center gap-2">
-              <span className="text-sm font-extrabold text-[#ff716c]">{t("charades.tiltUp")}</span>
+              <span className="text-sm font-extrabold text-error">{t("charades.tiltUp")}</span>
             </div>
           </div>
         </div>
@@ -333,25 +333,25 @@ function CharadesInner() {
 
         <div className="flex gap-8">
           <div className="flex flex-col items-center">
-            <span className="text-5xl font-black text-[#66bb6a]">{correctWords.length}</span>
+            <span className="text-5xl font-black text-answer-green">{correctWords.length}</span>
             <span className="text-sm font-bold text-white/50">{t("charades.correct")}</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-5xl font-black text-[#ff716c]">{skippedWords.length}</span>
+            <span className="text-5xl font-black text-error">{skippedWords.length}</span>
             <span className="text-sm font-bold text-white/50">{t("charades.skipped")}</span>
           </div>
         </div>
 
         <div className="w-full max-w-sm space-y-1.5 max-h-[40vh] overflow-y-auto">
           {correctWords.map((w, i) => (
-            <div key={`c${i}`} className="flex items-center gap-2 rounded-xl bg-[#66bb6a]/20 px-4 py-2">
-              <Check className="h-4 w-4 text-[#66bb6a] shrink-0" />
+            <div key={`c${i}`} className="flex items-center gap-2 rounded-xl bg-answer-green/20 px-4 py-2">
+              <Check className="h-4 w-4 text-answer-green shrink-0" />
               <span className="text-sm font-bold text-white">{w}</span>
             </div>
           ))}
           {skippedWords.map((w, i) => (
-            <div key={`s${i}`} className="flex items-center gap-2 rounded-xl bg-[#ff716c]/20 px-4 py-2">
-              <X className="h-4 w-4 text-[#ff716c] shrink-0" />
+            <div key={`s${i}`} className="flex items-center gap-2 rounded-xl bg-error/20 px-4 py-2">
+              <X className="h-4 w-4 text-error shrink-0" />
               <span className="text-sm font-bold text-white/60">{w}</span>
             </div>
           ))}
@@ -375,10 +375,10 @@ function CharadesInner() {
   const currentWord = words[currentIndex] ?? "";
   const bgColor =
     flashColor === "green"
-      ? "bg-[#66bb6a]"
+      ? "bg-answer-green"
       : flashColor === "red"
-        ? "bg-[#ff716c]"
-        : "bg-[#0e0e0e]";
+        ? "bg-error"
+        : "bg-background";
 
   return (
     <div
@@ -388,20 +388,20 @@ function CharadesInner() {
       <div className="w-full px-4 pt-4">
         <div className="flex items-center justify-between mb-2">
           <span className="flex items-center gap-1.5 text-sm font-bold text-white/50">
-            <Check className="h-3.5 w-3.5 text-[#66bb6a]" strokeWidth={3} />
+            <Check className="h-3.5 w-3.5 text-answer-green" strokeWidth={3} />
             {correctWords.length}
             <span className="mx-1 text-white/20">·</span>
-            <X className="h-3.5 w-3.5 text-[#ff716c]" strokeWidth={3} />
+            <X className="h-3.5 w-3.5 text-error" strokeWidth={3} />
             {skippedWords.length}
           </span>
-          <span className={`text-2xl font-black ${timeLeft <= 10 ? "text-[#ff716c]" : "text-white"}`}>
+          <span className={`text-2xl font-black ${timeLeft <= 10 ? "text-error" : "text-white"}`}>
             {timeLeft}
           </span>
         </div>
         <div className="h-2 w-full overflow-hidden rounded-full bg-white/5">
           <div
             className={`h-full rounded-full transition-all duration-1000 ease-linear ${
-              timeLeft <= 10 ? "bg-[#ff716c]" : "bg-white/40"
+              timeLeft <= 10 ? "bg-error" : "bg-white/40"
             }`}
             style={{ width: `${(timeLeft / GAME_DURATION) * 100}%` }}
           />
@@ -429,21 +429,21 @@ function CharadesInner() {
       {!flashColor && (
         <div className="w-full">
           {hasGyro && (
-            <div className="pb-2 text-center text-sm font-bold text-white/30">
+            <div className="pb-2 text-center text-sm font-bold text-white/45">
               <ChevronDown className="inline h-4 w-4" /> {t("charades.tiltDown")} &nbsp;·&nbsp; <ChevronUp className="inline h-4 w-4" /> {t("charades.tiltUp")}
             </div>
           )}
           <div className="grid w-full grid-cols-2 gap-0">
             <button
               onClick={() => nextWord(false)}
-              className="flex items-center justify-center gap-2 bg-[#ff716c] py-6 text-xl font-extrabold text-white active:brightness-75"
+              className="flex items-center justify-center gap-2 bg-error py-6 text-xl font-extrabold text-white active:brightness-75"
             >
               <X className="h-6 w-6" />
               {t("charades.skip")}
             </button>
             <button
               onClick={() => nextWord(true)}
-              className="flex items-center justify-center gap-2 bg-[#66bb6a] py-6 text-xl font-extrabold text-white active:brightness-75"
+              className="flex items-center justify-center gap-2 bg-answer-green py-6 text-xl font-extrabold text-white active:brightness-75"
             >
               <Check className="h-6 w-6" />
               {t("charades.correct")}

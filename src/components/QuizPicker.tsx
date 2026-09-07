@@ -80,19 +80,19 @@ export default function QuizPicker({ onSelect, selectedIds = [], multi = true }:
               onClick={() => handleToggle(quiz.id)}
               className={`answer-btn relative flex flex-col items-center gap-2 rounded-2xl px-3 py-4 text-center transition-all ${
                 isSelected
-                  ? "bg-white/20 outline outline-[1.5px] outline-[#ff9062]"
+                  ? "bg-white/20 outline outline-[1.5px] outline-primary"
                   : "glass hover:bg-white/5"
               }`}
             >
               {isSelected && (
                 <div className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-white">
-                  <Check className="h-3.5 w-3.5 text-[#ff9062]" />
+                  <Check className="h-3.5 w-3.5 text-primary" />
                 </div>
               )}
               <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${theme.bg}`}>
                 <Icon className="h-6 w-6 text-white" />
               </div>
-              <span className="text-[11px] font-bold text-white/40">
+              <span className="text-[11px] font-bold text-white/50">
                 {quiz.questionCount} {t("quizPicker.q")}
               </span>
             </button>

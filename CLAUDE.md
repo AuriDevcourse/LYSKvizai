@@ -84,6 +84,23 @@ Use these instead of hand-rolling. They exist so surfaces stay consistent.
 | `.podium-1` / `.spotlight` | Winner plinth and its light cone. |
 | `.tap-target` | 44px minimum hit area. **Sets size only** — never add `position` to it; it is applied to elements that also carry Tailwind `fixed`/`absolute`. |
 
+### Colour and radius
+
+Colours come from the `@theme` tokens in `globals.css` — use `bg-primary`,
+`text-error`, `bg-answer-green` and so on, **not** `bg-[#ff9062]`. 256 arbitrary
+hex utilities were converted to tokens on 2026-09-07; the literals that remain
+are *data* (flag specs, avatar palettes, quiz themes), where a hex is a fact
+rather than a design choice, and those should stay literal.
+
+Corner radii use four steps plus `full`, documented at the top of the `.glass`
+block in `globals.css`: `lg` small controls · `xl` inputs and rows (the
+default) · `2xl` cards · `3xl` hero surfaces · `full` pills. `rounded-md`/`sm`
+are deliberately unused.
+
+Glass has one recipe: `.glass` (or `.surface` for anything card-sized). Don't
+hand-roll `bg-white/4 + backdrop-blur + border-white/8` — that combination *is*
+`.glass`, and two copies of it drifted apart on the home screen.
+
 Easing tokens: `--ease-spring` (overshoot, for interactions), `--ease-out-soft`
 (entrances). Every decorative animation must be disabled under
 `prefers-reduced-motion` — there is a block at the end of `globals.css`.

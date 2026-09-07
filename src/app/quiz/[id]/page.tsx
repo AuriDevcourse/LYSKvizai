@@ -205,7 +205,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
             />
             <Link
               href="/"
-              className="mt-6 flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
+              className="mt-6 flex items-center gap-1.5 text-sm font-bold text-white/50 hover:text-white/70 transition-colors"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               {t("quiz.home")}
@@ -213,7 +213,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
           </div>
         ) : (
           <div className="flex w-full flex-col">
-            <div className="mb-1 text-center text-sm font-bold text-white/40">{quizTitle}</div>
+            <div className="mb-1 text-center text-sm font-bold text-white/50">{quizTitle}</div>
             <ProgressBar
               current={currentIndex + 1}
               total={questions.length}

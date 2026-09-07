@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Triangle, Diamond, Circle, Square, Check, X, Clock, ArrowRight, Trophy } from "lucide-react";
+import { Check, X, Clock, ArrowRight, Trophy } from "lucide-react";
 import type { Question } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 import { fuzzyMatch } from "@/lib/fuzzy-match";
+import { ANSWER_BG, ANSWER_ICONS } from "@/lib/answer-options";
 
 interface QuizCardProps {
   question: Question;
@@ -15,21 +16,30 @@ interface QuizCardProps {
   isLast: boolean;
 }
 
-const COLORS = [
-  { bg: "bg-[#ff716c]", hover: "hover:brightness-110", icon: Triangle },
-  { bg: "bg-[#43a5fc]", hover: "hover:brightness-110", icon: Diamond },
-  { bg: "bg-[#66bb6a]", hover: "hover:brightness-110", icon: Circle },
-  { bg: "bg-[#c9a825]", hover: "hover:brightness-110", icon: Square },
-];
+/*
+ * Solo mode's answer buttons, from the shared palette.
+ *
+ * These used to re-spell all four colours and their icons, which is exactly
+ * the duplication `answer-options.ts` was created to end — the multiplayer
+ * screens had already been consolidated, so solo mode was one edit away from
+ * drifting out of step with them.
+ *
+ * The `hover:brightness-110` that used to live here is also gone: `.answer-btn`
+ * already applies `filter: brightness(1.15)` on hover *and* turns it off under
+ * `prefers-reduced-motion`. The Tailwind copy fought it and skipped the guard.
+ */
+const COLORS = ANSWER_BG.map((bg, i) => ({ bg, icon: ANSWER_ICONS[i] }));
 
+/** True/false reuses green for yes and red for no. */
 const TF_COLORS = [
-  { bg: "bg-[#66bb6a]", hover: "hover:brightness-110", icon: Check },
-  { bg: "bg-[#ff716c]", hover: "hover:brightness-110", icon: X },
+  { bg: ANSWER_BG[2], icon: Check },
+  { bg: ANSWER_BG[0], icon: X },
 ];
 
 export default function QuizCard({
   question,
-  questionNumber,
+  // Unused: the card shows progress from `question`/`total` instead.
+  questionNumber: _questionNumber,
   selectedAnswer,
   onSelect,
   onNext,
@@ -167,7 +177,7 @@ export default function QuizCard({
               disabled={answered}
               className="year-slider w-full"
             />
-            <div className="mt-1 flex justify-between text-xs font-bold text-white/40">
+            <div className="mt-1 flex justify-between text-xs font-bold text-white/50">
               <span>{YEAR_MIN}</span>
               <span>{YEAR_MAX}</span>
             </div>
@@ -194,7 +204,7 @@ export default function QuizCard({
             disabled={answered}
             autoFocus
             placeholder={t("quizCard.typeAnswer")}
-            className="w-full max-w-md rounded-2xl border-[1.5px] border-white/8 bg-white/5 px-5 py-4 text-center text-xl font-bold text-white placeholder:text-white/30 focus:border-white/50 focus:outline-none disabled:opacity-60"
+            className="w-full max-w-md rounded-2xl border-[1.5px] border-white/8 bg-white/5 px-5 py-4 text-center text-xl font-bold text-white placeholder:text-white/45 focus:border-white/50 focus:outline-none disabled:opacity-60"
           />
           {!answered && (
             <button
@@ -213,7 +223,7 @@ export default function QuizCard({
         <div className={`grid gap-3 stagger-children grid-cols-2`}>
           {qOptions.map((option, i) => {
             if (isTrueFalse && !option) return null;
-            const { bg, hover, icon: Icon } = isTrueFalse ? TF_COLORS[i] : COLORS[i];
+            const { bg, icon: Icon } = isTrueFalse ? TF_COLORS[i] : COLORS[i];
             const isThis = i === selectedAnswer;
             const isCorrectAnswer = i === question.correct;
 
@@ -221,14 +231,12 @@ export default function QuizCard({
 
             if (answered) {
               if (isCorrectAnswer) {
-                classes += " outline outline-2 outline-[#ff9062] scale-[1.02]";
+                classes += " outline outline-2 outline-primary scale-[1.02]";
               } else if (isThis) {
                 classes += " opacity-60 grayscale";
               } else {
                 classes += " opacity-30";
               }
-            } else {
-              classes += ` ${hover}`;
             }
 
             return (
@@ -258,10 +266,10 @@ export default function QuizCard({
           <div
             className={`rounded-2xl px-5 py-4 text-center font-bold ${
               isYearGuesser && yearGotPoints && !isYearCorrect
-                ? "bg-[#c9a825] text-white"
+                ? "bg-answer-yellow text-white"
                 : isCorrect
-                  ? "bg-[#66bb6a] text-white"
-                  : "bg-[#ff716c] text-white"
+                  ? "bg-answer-green text-white"
+                  : "bg-error text-white"
             }`}
           >
             <p className="flex items-center justify-center gap-2 text-lg">

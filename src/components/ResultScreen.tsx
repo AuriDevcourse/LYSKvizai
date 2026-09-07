@@ -12,11 +12,11 @@ interface ResultScreenProps {
 
 function getTierIcon(score: number, total: number): { icon: LucideIcon; color: string } {
   const pct = score / total;
-  if (pct === 1) return { icon: Trophy, color: "text-[#ff9062]" };
-  if (pct >= 0.9) return { icon: Flame, color: "text-[#ff793e]" };
-  if (pct >= 0.7) return { icon: Star, color: "text-[#c9a825]" };
-  if (pct >= 0.5) return { icon: ThumbsUp, color: "text-[#66bb6a]" };
-  if (pct >= 0.3) return { icon: Dumbbell, color: "text-[#43a5fc]" };
+  if (pct === 1) return { icon: Trophy, color: "text-primary" };
+  if (pct >= 0.9) return { icon: Flame, color: "text-primary-container" };
+  if (pct >= 0.7) return { icon: Star, color: "text-answer-yellow" };
+  if (pct >= 0.5) return { icon: ThumbsUp, color: "text-answer-green" };
+  if (pct >= 0.3) return { icon: Dumbbell, color: "text-secondary" };
   return { icon: Target, color: "text-white/50" };
 }
 
@@ -88,7 +88,7 @@ export default function ResultScreen({ score, total, onRestart }: ResultScreenPr
         <span className="font-headline text-7xl font-extrabold text-white sm:text-8xl">
           {displayScore}
         </span>
-        <span className="text-3xl font-bold text-white/40 sm:text-4xl">
+        <span className="text-3xl font-bold text-white/50 sm:text-4xl">
           /{total}
         </span>
       </div>
@@ -99,12 +99,12 @@ export default function ResultScreen({ score, total, onRestart }: ResultScreenPr
         style={{ opacity: step >= 3 ? 1 : 0 }}
       >
         <div
-          className="h-full rounded-full bg-gradient-to-r from-[#ff9062] to-[#ff793e] transition-all duration-1000 ease-out"
+          className="h-full rounded-full bg-gradient-to-r from-primary to-primary-container transition-all duration-1000 ease-out"
           style={{ width: step >= 3 ? `${pct}%` : "0%" }}
         />
       </div>
       <p
-        className="mb-6 text-sm font-bold text-white/40 transition-opacity duration-500"
+        className="mb-6 text-sm font-bold text-white/50 transition-opacity duration-500"
         style={{ opacity: step >= 3 ? 1 : 0 }}
       >
         {pct}%

@@ -58,7 +58,7 @@ export default function GameSettings({
                 onClick={() => onTimerChange(sec)}
                 className={`rounded-xl py-2 text-sm font-extrabold transition-all ${
                   timer === sec
-                    ? "bg-white/20 text-white outline outline-[1.5px] outline-[#ff9062]"
+                    ? "bg-white/20 text-white outline outline-[1.5px] outline-primary"
                     : "bg-white/5 text-white/50 hover:bg-white/5"
                 }`}
               >
@@ -74,7 +74,7 @@ export default function GameSettings({
             <Hash className="h-3.5 w-3.5" />
             {t("settings.questionCount")}
             {totalQuestions > 0 && (
-              <span className="text-white/30">({totalQuestions})</span>
+              <span className="text-white/45">({totalQuestions})</span>
             )}
           </div>
           <div className={`grid gap-1.5`} style={{ gridTemplateColumns: `repeat(${countOptions.length}, 1fr)` }}>
@@ -84,7 +84,7 @@ export default function GameSettings({
                 onClick={() => onCountChange(count)}
                 className={`rounded-xl py-2 text-sm font-extrabold transition-all ${
                   questionCount === count
-                    ? "bg-white/20 text-white outline outline-[1.5px] outline-[#ff9062]"
+                    ? "bg-white/20 text-white outline outline-[1.5px] outline-primary"
                     : "bg-white/5 text-white/50 hover:bg-white/5"
                 }`}
               >

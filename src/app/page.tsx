@@ -76,8 +76,8 @@ function HomeInner() {
           <div className="flex flex-col items-center">
             <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/55 backdrop-blur-md">
               <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#ff9062] opacity-70" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#ff9062]" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-70" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
               </span>
               Live quiz night
             </span>
@@ -99,8 +99,8 @@ function HomeInner() {
               style={{ ["--bloom" as string]: "rgba(255,144,98,0.45)" }}
               className="surface surface-hover group flex items-center gap-5 p-6 text-left sm:flex-col sm:items-start sm:gap-5 sm:p-7"
             >
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff9062] to-[#e8590c] shadow-[0_10px_30px_-8px_rgba(232,89,12,0.75)] transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 sm:h-16 sm:w-16">
-                <Plus className="h-7 w-7 text-[#0e0e0e] sm:h-8 sm:w-8" strokeWidth={2.75} />
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-dim shadow-[0_10px_30px_-8px_rgba(232,89,12,0.75)] transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 sm:h-16 sm:w-16">
+                <Plus className="h-7 w-7 text-background sm:h-8 sm:w-8" strokeWidth={2.75} />
               </div>
               <div className="min-w-0">
                 <p className="font-headline text-2xl font-extrabold tracking-tight text-white sm:text-[1.75rem]">
@@ -110,7 +110,7 @@ function HomeInner() {
                   Pick a topic, set the pace, share the code
                 </p>
               </div>
-              <Play className="ml-auto h-5 w-5 shrink-0 text-white/25 transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#ff9062] sm:hidden" />
+              <Play className="ml-auto h-5 w-5 shrink-0 text-white/25 transition-all duration-300 group-hover:translate-x-1 group-hover:text-primary sm:hidden" />
             </button>
 
             <button
@@ -118,8 +118,8 @@ function HomeInner() {
               style={{ ["--bloom" as string]: "rgba(67,165,252,0.45)" }}
               className="surface surface-hover group flex items-center gap-5 p-6 text-left sm:flex-col sm:items-start sm:gap-5 sm:p-7"
             >
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#7cc0ff] to-[#43a5fc] shadow-[0_10px_30px_-8px_rgba(67,165,252,0.7)] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3 sm:h-16 sm:w-16">
-                <LogIn className="h-7 w-7 text-[#0e0e0e] sm:h-8 sm:w-8" strokeWidth={2.75} />
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#7cc0ff] to-secondary shadow-[0_10px_30px_-8px_rgba(67,165,252,0.7)] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3 sm:h-16 sm:w-16">
+                <LogIn className="h-7 w-7 text-background sm:h-8 sm:w-8" strokeWidth={2.75} />
               </div>
               <div className="min-w-0">
                 <p className="font-headline text-2xl font-extrabold tracking-tight text-white sm:text-[1.75rem]">
@@ -129,7 +129,7 @@ function HomeInner() {
                   Got a four-letter code? You&apos;re thirty seconds away
                 </p>
               </div>
-              <Play className="ml-auto h-5 w-5 shrink-0 text-white/25 transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#43a5fc] sm:hidden" />
+              <Play className="ml-auto h-5 w-5 shrink-0 text-white/25 transition-all duration-300 group-hover:translate-x-1 group-hover:text-secondary sm:hidden" />
             </button>
           </div>
 
@@ -141,7 +141,7 @@ function HomeInner() {
               style={{ ["--bloom" as string]: "rgba(102,187,106,0.4)" }}
               className="surface surface-hover group flex items-center gap-3.5 p-4 sm:p-5"
             >
-              <Ruler className="h-5 w-5 shrink-0 text-[#66bb6a] transition-transform duration-300 group-hover:scale-110" />
+              <Ruler className="h-5 w-5 shrink-0 text-answer-green transition-transform duration-300 group-hover:scale-110" />
               <div className="min-w-0">
                 <p className="text-sm font-extrabold text-white">Scale</p>
                 <p className="truncate text-xs text-white/45">How big is it, really?</p>
@@ -152,7 +152,7 @@ function HomeInner() {
               style={{ ["--bloom" as string]: "rgba(231,127,255,0.4)" }}
               className="surface surface-hover group flex items-center gap-3.5 p-4 sm:p-5"
             >
-              <Palette className="h-5 w-5 shrink-0 text-[#e77fff] transition-transform duration-300 group-hover:scale-110" />
+              <Palette className="h-5 w-5 shrink-0 text-tertiary transition-transform duration-300 group-hover:scale-110" />
               <div className="min-w-0">
                 <p className="text-sm font-extrabold text-white">Tint</p>
                 <p className="truncate text-xs text-white/45">Restore the real colours</p>
@@ -200,34 +200,34 @@ function HomeInner() {
           <div className="flex w-full max-w-md flex-col gap-3">
             <button
               onClick={() => setMode("create")}
-              className="flex items-center gap-4 rounded-2xl bg-white/4 px-5 py-5 text-left backdrop-blur-2xl border-[1.5px] border-white/8 transition-all duration-300 hover:bg-white/8 active:scale-[0.98]"
+              className="glass flex items-center gap-4 rounded-2xl px-5 py-5 text-left transition-all duration-300 active:scale-[0.98]"
             >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#ff9062]/15">
-                <User className="h-6 w-6 text-[#ff9062]" />
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15">
+                <User className="h-6 w-6 text-primary" />
               </div>
               <div>
                 <p className="text-base font-extrabold text-white">{t("home.playSolo")}</p>
-                <p className="text-xs text-white/40">{t("home.playSoloDesc")}</p>
+                <p className="text-xs text-white/50">{t("home.playSoloDesc")}</p>
               </div>
             </button>
 
             <button
               onClick={() => router.push("/play?create=1")}
-              className="flex items-center gap-4 rounded-2xl bg-white/4 px-5 py-5 text-left backdrop-blur-2xl border-[1.5px] border-white/8 transition-all duration-300 hover:bg-white/8 active:scale-[0.98]"
+              className="glass flex items-center gap-4 rounded-2xl px-5 py-5 text-left transition-all duration-300 active:scale-[0.98]"
             >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#43a5fc]/15">
-                <Users className="h-6 w-6 text-[#43a5fc]" />
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-secondary/15">
+                <Users className="h-6 w-6 text-secondary" />
               </div>
               <div>
                 <p className="text-base font-extrabold text-white">{t("home.playWithFriends")}</p>
-                <p className="text-xs text-white/40">{t("home.playWithFriendsDesc")}</p>
+                <p className="text-xs text-white/50">{t("home.playWithFriendsDesc")}</p>
               </div>
             </button>
           </div>
 
           <button
             onClick={() => setMode("menu")}
-            className="mt-6 flex items-center gap-1.5 text-sm font-bold text-white/40 hover:text-white/70 transition-colors"
+            className="mt-6 flex items-center gap-1.5 text-sm font-bold text-white/50 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             {t("nav.home")}
@@ -240,7 +240,7 @@ function HomeInner() {
           {!gameType && (
             <button
               onClick={() => { setMode("choose"); setSelectedIds([]); setGameType(null); }}
-              className="mb-6 flex items-center gap-2 text-sm font-bold text-white/40 transition-colors hover:text-white"
+              className="mb-6 flex items-center gap-2 text-sm font-bold text-white/50 transition-colors hover:text-white"
             >
               <ArrowLeft className="h-4 w-4" />
               Back

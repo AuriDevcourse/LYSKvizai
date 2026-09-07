@@ -26,7 +26,7 @@ function BottomNavInner() {
   return (
     <>
     {/* Fade gradient above nav */}
-    <div className="pointer-events-none fixed bottom-0 inset-x-0 z-40 h-28 bg-gradient-to-t from-[#0e0e0e] via-[#0e0e0e]/60 to-transparent sm:hidden" />
+    <div className="pointer-events-none fixed bottom-0 inset-x-0 z-40 h-28 bg-gradient-to-t from-background via-background/60 to-transparent sm:hidden" />
     <nav className="fixed bottom-0 inset-x-0 z-50 sm:hidden">
       <div className="mx-3 mb-3 flex items-stretch justify-around rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10">
         {NAV_ITEMS.map((item) => {
@@ -43,7 +43,7 @@ function BottomNavInner() {
               className={`flex flex-1 flex-col items-center gap-0.5 py-2.5 transition-colors ${
                 isActive
                   ? "text-white"
-                  : "text-white/40 active:text-white/70"
+                  : "text-white/50 active:text-white/70"
               }`}
             >
               <Icon className="h-5 w-5" strokeWidth={isActive ? 2.5 : 2} />
