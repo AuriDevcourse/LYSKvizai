@@ -8,6 +8,66 @@ says so.
 This file is the source of truth for the code and the input for asset
 generation. `CLAUDE.md` holds the implementation rules; this holds the why.
 
+
+---
+
+## Revision 02 assessment (2026-09-07)
+
+Reviewed against the `frontend-design` and `stop-slop` skills. Revision 01
+described the shipped system accurately and never questioned it. Three problems
+survived that pass.
+
+**1. The palette is the generated-design default.** Near-black ground, one warm
+accent, a geometric sans. `frontend-design` names that cluster explicitly:
+"near-black with a lone acid-green or vermilion pop" and "Inter or Space
+Grotesk as the safe face". Quizmo reached it honestly, because a dark room and a
+television demand it, and the result still looks like nobody chose it.
+
+**2. The four answer colours belong to the genre.** Revision 01 called them
+"the closest thing Quizmo has to a mascot". Kahoot ships a red triangle, blue
+diamond, yellow circle and green square. Quizmo ships the same four shapes with
+two colours swapped. They are a functional requirement and must not change.
+They are also the least ownable thing on the screen, and claiming them as
+equity was wrong.
+
+**3. The identity says nothing about the one thing no competitor does.** Quizmo
+grades a colour against its published specification and computes CIEDE2000
+against the real value. Nothing in the visual identity refers to it.
+
+### The direction: Specimen
+
+Build on verification. The visual world of Pantone chip books, calibration
+targets, registration marks, spec sheets and tabular measured values. It
+describes what the product does, no competitor looks like it, it generates
+structure, and it reframes the four answer colours from generic game buttons
+into specimens carrying published values.
+
+### Type proposal
+
+| Role | Now | Proposed | Why |
+|---|---|---|---|
+| Display | Plus Jakarta Sans 800 | **Archivo**, wdth 125, 800 | Industrial and wide. Reads across a room and sits nowhere near the geometric sans every generated page uses. |
+| Body | Be Vietnam Pro | **unchanged** | Already ships, sets small text well, replacing it buys nothing. |
+| Values | (none) | **Martian Mono** | Room codes, hex values, delta-E figures, scores. A four-letter room code is data, and the product sets it in the display face today. |
+
+Cost: a font swap in `layout.tsx` and a pass over the display classes.
+
+### Mark directions, revised
+
+Revision 01 proposed packing the four answer shapes into a 2x2 grid. That
+reproduces Kahoot's grid, which is problem 2. Replaced with: **A** the Pantone
+chip, **B** the printer's registration mark, **C** the four-chip strip with one
+measured. None built.
+
+### Voice
+
+Revision 01 broke its own rule against pull-quote prose 24 times by em dash
+count. Added to the rules: cut adverbs, cut em dashes, cut any sentence that
+reads like a pull quote. Revision 02 of the review page holds to it.
+
+Sections 3 and 4 below still describe the shipped product correctly. Section 4's
+mark proposal is superseded by the directions above.
+
 ---
 
 ## 1. What Quizmo is
