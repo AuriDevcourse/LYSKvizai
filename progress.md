@@ -48,6 +48,377 @@ chart · streak badge on phones · confetti on the podium · 44px tap targets ·
 
 ---
 
+## 2026-09-07 — Join screen (/play?join=1) rebuilt
+
+Auri: "improve this one also accordingly." Typecheck clean, lint 0 errors / 16
+warnings, 139/139 tests, build compiles. Verified in the browser: autofocus,
+paste, sanitising, the disclosure, tap targets and overflow.
+
+**What was wrong, measured.** The page had **zero headings** — no `h1`, `h2` or
+`h3` anywhere. It opened on the word "Room code" with no title and no branding,
+and it is the screen most players actually see, on their own phone. It also
+overflowed the viewport by **42px**, so the Back link was cut off, and the only
+close control was a 36x36 button hidden above `sm` — meaning on a laptop there
+was no visible way out of the screen at all.
+
+- **The code is now four `.code-tile` boxes**, the same ones `RoomCodeDisplay`
+  uses on the host's screen. The thing a player copies now looks like the thing
+  they type it into. One real input sits over them, invisible but focused, so
+  the mobile keyboard, paste, autofill and screen-reader behaviour that four
+  separate inputs would destroy all still work; the tiles are presentation only,
+  with the next empty one showing a caret.
+- **Avatar collapsed behind "Customise".** The option grid is ~450px, which on
+  a 757px viewport was most of the screen and sat above the Join button. Done as
+  a `collapsed` prop on `AvatarBuilder` rather than by unmounting it, because it
+  emits a randomised avatar on mount — a player who never opens it still joins
+  with a face and the button is never blocked. Unmounting would also have
+  defeated the `next/dynamic` split, since `Avatar` pulls the DiceBear engine in
+  through `avatar-dicebear.ts` anyway.
+- **Overflow 42px → 0.** Join is fully visible.
+- **Autofocus on the code**, which is the first required action and previously
+  needed a click.
+- **Header added**: the mark, an `h1` "Join a game", and a line saying where the
+  code comes from.
+- **One close control at 44px on every size**, replacing the hidden 36px one and
+  the cut-off Back link.
+- **Code sanitising**: strips anything non-alphanumeric, so typing "ab-1" no
+  longer fills a four-character field with "AB-1".
+- **Pasting the host's share link works.** `HostLobby` hands out
+  `<origin>/play?code=XXXX`; pasting that now fills the tiles. Verified with the
+  real URL shape.
+- **Focus advances to Name** once the fourth character lands.
+- Labels moved to the display face; the code's label centred over its tiles,
+  where left-aligned it sat 282px from the field it names.
+
+**A claim I had to retract mid-task.** I wrote that stripping non-alphanumerics
+also made pasting a whole message work. It does not: "code: ab12" strips to
+"CODEAB12" and the first four characters are "CODE" — confidently wrong. Prose
+cannot be parsed reliably, so the comment now says so and only the unambiguous
+share-link shape is special-cased.
+
+## 2026-09-07 — Topic grid: 13 improvements
+
+Auri: "Make this more exciting." Typecheck clean, lint 0 errors / 16 warnings,
+139/139 tests, build compiles. Verified in the browser including hover, keyboard
+focus and row alignment.
+
+**The structural one, which the rest depend on.** `Topic.accent` was a string of
+Tailwind classes. The grid needs to style itself *with* the accent (hover bloom,
+gradient wash, chip, focus ring) and that needs a CSS value, not a class, while
+Tailwind cannot build a class name from a runtime string. `accent` is now one
+object carrying `classes` and `css`, defined once in an `ACCENTS` table, so the
+two forms cannot drift.
+
+1. **`.surface` + `.surface-hover`** instead of a hand-rolled
+   `bg-white/4 + border-white/5`. CLAUDE.md warns against duplicating that
+   recipe and this tile had drifted: no gradient hairline, no inner specular
+   highlight, no depth shadow, no lift.
+2. **Per-tile `--bloom`** in the topic's own accent, so fourteen tiles glow
+   fourteen colours on hover rather than all glowing orange. Verified distinct:
+   `#ff9062`, `#43a5fc`, `#66bb6a`.
+3. **Accent gradient wash** across the face, so a tile reads as a coloured
+   object rather than another grey box.
+4. **An oversized watermark of the topic's own icon**, bleeding off the bottom
+   corner, brightening and scaling on hover. Deliberately *not* one of the brand
+   patterns: `.podium-1` is the only panel that carries a pattern and putting
+   one on fourteen tiles is the sprinkling that rule exists to prevent. The
+   topic's own mark also says more — it makes Science identifiable across a room.
+5. **Label in the display face**, full white, larger. It was the body face at
+   80% opacity, which is caption styling on the tile's headline.
+6. **Count as an accent chip** rather than grey 11px micro-text. `.chip` supplies
+   colour and glow only, so the caller adds the pill shape; I missed that first
+   and the chips rendered as boxy blocks.
+7. **Icon springs and rotates on hover** with `--ease-spring`.
+8. **Focus ring in the tile's own accent.** Verified with a real Tab press:
+   `rgb(255,144,98) 0 0 0 2px`. Programmatic `.focus()` does not trigger
+   `:focus-visible`, so this needed a genuine keypress to check.
+9. **Selected state uses the topic's accent** instead of always-orange.
+10. **A "PLAY" cue on hover** in the accent, so the tile reads as a button
+    rather than sitting inert.
+11. **Two label lines reserved.** "Animals & Nature" wraps and the others do
+    not, so its chip sat lower and the row stopped reading as a row. Verified:
+    chip tops now 408px across all five of row one.
+12. **Reduced-motion guards** on every new transform.
+
+Also cleared seven iCloud `" 2"` conflict copies out of `.next/types`, which
+were breaking `tsc` again.
+
+## 2026-09-07 — Solo quiz screen: 13 fixes
+
+All from Auri's page feedback on `/quiz/world-celebrities?count=10`. Typecheck
+clean, lint 0 errors / 16 warnings (the cap), 139/139 tests, build compiles.
+
+**Scoring and logic**
+
+- **Year-guesser was congratulating players and scoring nothing.** The card
+  treated a guess within ~23 years as correct and showed a partial-credit banner
+  ("83% · Off by 4 years"); `handleYearSubmit` only reported success on an
+  *exact* match, and the page scores on that report. So the banner advertised
+  credit the game never gave. Now it reports the same verdict it displays.
+  Verified: three questions guessed at 2000 produced two near-misses and scored
+  **67%**, where before both would have scored zero.
+- **`?count=N` returned fewer questions than asked.** The slice ran before
+  `transformQuestions`, which filters (year-guesser needs `correctYear`).
+  `?count=3&gameType=year-guesser` rendered **"1 / 2"**; it now renders "1 / 3".
+  Transform first, then slice.
+- **The result count-up restarted four times.** Its effect listed `step` as a
+  dependency and `step` changes five times during the reveal, so each change
+  cleared the interval and re-ran from `current = 0`. Now depends on the
+  threshold (`step >= 2`), so it runs once.
+- **The percentage appeared beside a still-climbing score.** First attempt was
+  to retime the steps; that is not enough, because a background tab throttles
+  timers and the count-up needs twenty ticks where the reveal needs one timeout,
+  so the timeout wins. Reproduced exactly that in an unfocused tab. The gate is
+  now `displayScore === score`, which makes it impossible by construction rather
+  than by timing.
+- **"Play again" kept every correct answer in the same position.**
+  `shuffleOptions` ran only at load; `handleRestart` now reshuffles options too.
+- **`?count=abc` and `?count=-5` silently meant "all questions".** One
+  `positiveInt` helper now floors and rejects, so `count=2.5` cannot slice at a
+  fractional index either.
+
+**Accessibility, all measured**
+
+- **Answer text was white on the answer colours: 2.30 / 2.36 / 2.62 / 2.68:1**,
+  below even the 3:1 large-text floor. `answer-options.ts` exports `ANSWER_TEXT`
+  to prevent exactly this and four other components use it, but `QuizCard`
+  imported the backgrounds and icons and left the text behind, so solo drifted
+  while multiplayer was fixed. Now **7.20 / 7.38 / 8.16 / 8.38:1**, verified in
+  the browser.
+- **The feedback banner repeated it** on all three states plus `text-white/80`
+  sub-lines.
+- **No `aria-live`** on the verdict, so a screen-reader user was never told
+  whether they were right.
+- **Close button was 36x36**, under the 44px minimum `.tap-target` enforces.
+
+**Feel**
+
+- **93px layout shift on every answer**, measured: the feedback block mounted
+  into a vertically-centred container, so the button just clicked jumped out
+  from under the cursor. The slot is now always present at `min-h-[172px]`
+  (measured from the real block, with the margin moved off the inner div where
+  it was collapsing outside the reserved height). Re-measured: **0px**.
+- **Keyboard play**: 1-4 pick an answer, Enter/Space advances, with the number
+  shown on each button from `sm` up so the shortcut is discoverable. Verified
+  answering and advancing by key.
+- Timer bar used `bg-red-500`/`bg-green-500`, the last off-palette colours on
+  the screen — my earlier sweep caught hexes but not Tailwind's named colours.
+
+## 2026-09-07 — Made the backgrounds and patterns actually visible
+
+Auri: "where are all the background and patterns I barely can see it around."
+Correct, and my fault. I had shipped patterns in exactly one place at 16%
+opacity, left `bg-celebrate` unused entirely, and drawn the lobby plate in
+`#241f1d` on a `#0e0e0e` ground — a 2% lightness difference, which the vignette
+then dimmed to nothing. The work existed and could not be seen.
+
+- **`.shapes`: a fourth atmosphere layer**, mounted once in `layout.tsx` next to
+  aurora/vignette/grain, putting the brand's shapes on every screen. This is the
+  change that makes the identity present rather than filed in an assets folder,
+  and the atmosphere stack is the right home for it — CLAUDE.md forbids per-page
+  backgrounds precisely so this lives in one place.
+- **Its opacity took three passes**, and the middle one taught me something: at
+  0.16 the shapes read *through* the glass panels on the editor and library,
+  because those are 4% white, so text sat on noise. Settled at 0.10 — visible
+  against bare ground, quiet behind a panel. Checked on a text-dense page, not
+  just the home screen.
+- **Then dialled back again, on Auri's note:** 0.10 flat was still too present.
+  Now **0.06 with a top-to-bottom fade** — two intersected mask layers, the tile
+  plus `linear-gradient(to bottom, #000, transparent 78%)`. This is strictly
+  better than a lower flat value: a flat field has to be quiet enough for its
+  worst case, body text behind a glass panel low on a long page, which forces it
+  toward invisible everywhere. Fading downward lets the top of the viewport carry
+  visible shape while the reading area stays clear. The drift animation moves only
+  the first mask layer; two `mask-position` values are required or the fade slides
+  away. Verified `mask-composite: intersect` resolves in the browser rather than
+  being dropped, and re-checked the editor, which was the page that exposed the
+  0.16 problem.
+- **Lobby plate shapes `#241f1d` → `#4a4340`** and the component no longer
+  halves it to 70%. Now legible.
+- **`bg-celebrate` wired into `Leaderboard`.** I had argued against this on the
+  grounds that Confetti already treats the moment; that was wrong. They do
+  different jobs — Confetti is a two-second burst, the plate is the ground the
+  screen stands on for as long as results are up.
+- **Podium pattern 0.16 → 0.3.**
+- Verified every plate and tile actually decodes as an image, not just returns
+  200: a malformed SVG serves fine and paints nothing.
+
+Turbopack bit me twice here: a CSS edit did not recompile even across a full dev
+server restart, so `.shapes` was absent from the served stylesheet while being
+present in the file. Confirmed by diffing the compiled CSS against the source,
+not by eyeballing the page. Touching the file again forced it.
+
+## 2026-09-07 — Brand rolled out across the whole app
+
+Goal: "implement the styling all over the webapp". Typecheck clean, lint 0
+errors / 16 warnings (the cap), 139/139 tests, production build compiles.
+Verified in the browser: home, editor, library, empty state, podium pattern.
+
+- **`src/` now has zero arbitrary colour hexes**, down from 62.
+  - **47 of them were `quiz-theme.ts`**: a hand-written map of per-quiz tile
+    colours in Tailwind defaults plus a few of Kahoot's. Replaced by deriving
+    each quiz's accent from its topic, which deletes the map entirely and means
+    no second list can fall out of step with `topics.ts`. A new quiz now picks
+    up its topic's accent instead of falling through to a washed-out
+    `bg-white/20`. CLAUDE.md's claim that quiz themes are "data" was wrong and
+    is corrected there.
+  - **Three lit tokens added** (`primary-lit`, `secondary-lit`,
+    `answer-green-lit`) for the six loose hexes that were a palette colour
+    raised to read on the dark ground. They measure 10-12:1 vs 8-9:1 for the
+    base tokens, so they earn names rather than being flattened away.
+  - Five were already palette colours written as raw hex.
+- **Found a real contrast bug.** The Fastest Finger submit button was white on
+  `#5a9e3e`: **3.28:1**, under the 4.5:1 body floor. Now `bg-answer-green` with
+  near-black text at **8.16:1**, which is the rule CLAUDE.md already stated.
+- **24 headings were rendering in the body face** — `<h1>`/`<h2>` without
+  `.font-headline`, across charades, play, editor, survival, tint, scale,
+  QuizCard, Modal, Leaderboard, PlayerLobby, PlayerQuestion, PlayerResults,
+  WagerScreen, FastestFingerInput, HostResults, YearGuesserInput. All moved to
+  Baloo 2; there are now none left, so one without it is a bug.
+- **Empty states** use `<EmptyPile />` (`src/components/BrandArt.tsx`) instead
+  of a bare grey paragraph — library and `quiz/[id]`. Inlined rather than an
+  `<img>`: palette-token fills, no request, and no 17th lint warning breaking
+  the `--max-warnings 16` cap.
+- **One patterned surface:** `.podium-1` carries `pattern-burst` as a mask. The
+  only pattern in the app, deliberately — a pattern everywhere is texture, on
+  one surface it is hierarchy.
+
+Fixed while working: faded shapes drawn as fill-plus-thick-stroke with alpha on
+the *paint* composite two layers where they overlap, so a seam appeared around
+every rounded triangle. Alpha now sits on a group over solid paint, in both
+`BrandArt.tsx` and the three generated plates.
+
+## 2026-09-07 — Brand wired into the app
+
+Auri: "lets use this for our project". Integrated. Typecheck clean, lint 0
+errors / 16 pre-existing warnings, 139/139 tests, production build passes.
+Verified in the browser: home, topic picker, host lobby.
+
+- **Display face is now Baloo 2** (`layout.tsx`, plus both fallback stacks in
+  `globals.css`). Not a preference: the logo's drawn Q is the capital of the
+  typeset word, so the two must belong to one alphabet. Changing the display
+  face from here means redrawing the mark.
+- **`<Logo />` and `<Mark />`** (`src/components/Logo.tsx`). Used on the home
+  hero and the host lobby. `.logo-glow` added to `globals.css`, because `.neon`
+  is `text-shadow` and does nothing to the SVG half of the lockup.
+- **App icons regenerated** from the mark's geometry: `public/icons/*` and
+  `apple-touch-icon` opaque with a maskable safe zone (the manifest declares
+  `any maskable`, and a transparent maskable icon renders as a blob),
+  `favicon.png`/`favicon.ico` transparent, plus `src/app/icon.svg`.
+- **`src/app/opengraph-image.jpg` + `twitter-image.jpg`** — Next picks both up
+  automatically; they appear as routes in the build output.
+- **14 topic icons** replace Lucide (`src/components/icons/TopicIcons.tsx`,
+  generated from `brand-assets/icons/`). Added a 15th, `MoreIcon`, for the
+  synthetic catch-all tile that Lucide's `FolderPlus` was filling.
+- **`Topic.bg` → `Topic.accent`**, six palette tokens at 15% over the dark
+  ground. The old field held fourteen off-palette hexes. Had to drop the
+  hardcoded `text-white` on the icons, which was overriding the accent.
+- **Lobby plate** on `HostLobby` only. The results screen deliberately gets
+  none: `Confetti` and `.spotlight` already treat that moment, and a plate there
+  would break the "max 3 elements per section" rule.
+- Patterns and plates copied to `public/`. Patterns are not used in the app yet.
+- **Home hero stripped to the wordmark** (Auri's page feedback): the "Live quiz
+  night" badge and the "Put the questions on the big screen" tagline both
+  removed. The three cards below say what the app does more plainly than a
+  sentence about it did, which is CLAUDE.md's own rule. Card top margin
+  re-tuned, since it had been measured against a tagline that no longer exists,
+  and the redundant wrapper div dropped. Side effect worth having: the whole
+  home page now fits one viewport including the mode chips, where "Jump into a
+  mode" used to sit below the fold.
+- `CLAUDE.md` updated with the rules, including the one that matters most:
+  **never place the mark beside the word "Quizmo"**.
+
+Fixed while integrating: a module-level counter for the mask id (React Compiler
+rejects mutating outside state, and it desyncs SSR) replaced with `useId`.
+
+**Not pushed.** Still on `improvements-sweep`, now 11 commits plus this work
+uncommitted. `master` auto-deploys.
+
+## 2026-09-07 — Surface kit: icons, patterns, background plates
+
+Review sheet: <https://claude.ai/code/artifact/3ca15700-25e3-4ef4-8969-917940f55c4f>
+
+- **14 topic icons** as SVG (`brand-assets/icons/`), one stroke weight held as a
+  single constant. Replaces Lucide line icons, which are fine icons and wrong
+  beside a mark built from fat rounded forms. Three needed redrawing only once
+  the set was seen together: maths was a clover, gaming was the same cross as
+  maths, science had a notch at the neck.
+- **5 seamless patterns** (`brand-assets/patterns/`), under 2KB each. Colour
+  comes from CSS via `mask-image`; `currentColor` renders black when an SVG is
+  used as `background-image`, since that SVG is its own document. Cost a round to
+  discover.
+- **3 background plates** (`brand-assets/backgrounds/`) as overlays with no
+  ground of their own, because CLAUDE.md forbids per-page backgrounds. `slice`
+  crops to the vertical middle where the room code sits, so the clear zone is a
+  central band; my first version put a shape on the winner's name.
+- **Generation lost here.** One of six generated plates was usable: noodles
+  instead of shapes, pebbles instead of a pile, four matted in unrequested
+  frames. Authoring won on seamlessness, size, scaling, colour and set
+  consistency. The one good plate is kept for share images.
+- **Found while working:** the 14 topic `bg` colours in `src/lib/topics.ts` are
+  all off-palette (Tailwind defaults plus Kahoot's green). Proposed fix on the
+  sheet: tinted glass, accent at 14% over the dark ground.
+- Nothing wired in. `topics.ts` still imports Lucide, `public/` untouched,
+  favicon unchanged, nothing committed.
+
+## 2026-09-07 — Playful logo (run 02)
+
+Auri rejected the Specimen direction as too clinical and pointed out that an
+icon is not a logo. Both fair. BRAND.md revision 03 records the turn; the palette
+survives unchanged, the hairline/crop-mark language does not.
+
+Review sheet: <https://claude.ai/code/artifact/25414c4e-5e45-4f43-8a88-078924c481b8>
+
+- **The logo:** a fat rounded Q, counter knocked out, tilted 6 degrees, beside
+  "Quizmo" in Baloo 2 ExtraBold. Horizontal, stacked and light arrangements.
+  Baloo won on the pairing, not in isolation — its rounded terminals are the
+  same gesture as the mark's tail, where Lilita One's flat ones fight it.
+- **Three rounds to get a letter.** The API gave the idea and could not give the
+  letter; direction B's own second variant came back as a literal magnifying
+  glass. Thin ring + long tail = magnifier. Thick ring + small counter =
+  balloon. Fat ring + large counter + short tail = a Q. Nothing goes in the
+  counter; every variant with a shape in it slid back to the magnifier at 32px.
+- **Correction, same day:** the first lockup put the Q mark *beside* "Quizmo",
+  so the letter appeared twice and it read "Q Quizmo" — Auri caught it. The logo
+  is now the drawn Q *as* the word's capital, followed by "uizmo". One
+  consequence: there is no mark-plus-Quizmo lockup at all; square spaces get the
+  mark alone or a stacked version with the name lowercase. Also settles the face
+  — the drawn Q and the typeset letters must belong to one alphabet, so Baloo 2
+  is no longer a preference and Lilita One is out. Logo now ships as outlined
+  paths (fontTools), so it needs no webfont. On orange the Q must be near-black;
+  my first pass left it orange-on-orange and invisible.
+- **Banners regenerated** in the playful direction, logo composited afterwards.
+  Two of four came back matted inside an unrequested frame and are cropped to
+  their inner card programmatically.
+- **Archivo loses to Baloo 2.** Revision 02 proposed Archivo for an industrial
+  spec-sheet feel, which is precisely what got rejected. The evidence gathered
+  for it in run 01 stands and is now moot.
+- Output in `brand-assets/playful/` (untracked). **`public/` untouched, favicon
+  unchanged, nothing committed.**
+- `scripts/generate-brand-assets.mjs` now holds 14 prompts across both runs.
+
+## 2026-09-07 — Brand assets generated (run 01)
+
+Seven prompts x two variants through `gemini-3-pro-image`, all 14 returned.
+Review sheet: <https://claude.ai/code/artifact/08250701-a03b-4278-9848-9c2b85d79984>
+
+- **Mark chosen: the colour chip** (BRAND.md rev 02 direction A). Decided on the
+  16px test, which reversed the expected answer: the registration mark is the
+  better drawing and illegible as a favicon, because hairlines do not survive
+  that reduction. Redrawn by hand as SVG, since the API only returns JPEG and a
+  favicon with JPEG artefacts is not a favicon. PNG ladder (16-1024), ICO, and
+  the SVG all come off one set of geometry constants.
+- **Five banners**, plates generated with no lettering and the wordmark
+  composited afterwards in the real face at the product's -0.02em tracking.
+- **The Archivo type proposal now has evidence**, not just an argument: the same
+  wordmark set in both faces at the same size. Still a proposal.
+- `scripts/generate-brand-assets.mjs` — the prompts in executable form, with
+  `--list`, `--only`, `--variants`.
+- Output in `brand-assets/` (untracked). **`public/` untouched, favicon
+  unchanged, nothing committed.** Installing it is the open decision.
+- Not generated on purpose: quiz images (evidence, not decoration — the 30 dead
+  ones are still a sourcing job) and player avatars (DiceBear builder stays).
+
 ## 2026-09-07 (final) — All 100 improvements resolved: 99 done, 1 rejected
 
 Ten of ten areas complete. The remaining four areas landed in this pass.
