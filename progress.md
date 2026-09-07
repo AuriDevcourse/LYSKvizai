@@ -48,6 +48,36 @@ chart · streak badge on phones · confetti on the podium · 44px tap targets ·
 
 ---
 
+## 2026-09-07 — Colour game: 51 factual references, fiction removed
+
+Auri's note: everything must be factual, and "the yellow body" on my test image
+was a fictional character with no correct answer. He's right — the game reports
+a correct colour and scores you against it, so a reference with no published
+value makes the score meaningless. That placeholder is gone and the local
+folder's README now says the same thing.
+
+**51 playable colour references across 23 national flags**, every one carrying
+the specification it derives from — Pantone, RAL, or a decree (Spain's colours
+are named in Royal Decree 441/1981). Researched per flag rather than recalled;
+sources are in the commit and the values are cited in-game on the reveal.
+
+Added: Lithuania, Italy, France, Belgium, Ukraine, Norway, Japan, Switzerland,
+Greece, Spain, Portugal, Mexico, Kenya, South Africa, Ethiopia — drawn to real
+construction geometry, including Greece's canton cross, Portugal's armillary
+sphere, South Africa's pall with its gold fimbriation and Ethiopia's pentagram.
+
+Three tests now guard the premise rather than the plumbing: at least 50 playable
+references exist, every flag in the data has a renderer (a missing one would
+crash mid-round), and every playable colour cites something checkable — a spec
+matching Pantone/RAL/TCX/Decree, not the word "white".
+
+`/dev-flags` is an unlinked contact sheet for checking the artwork against the
+real flags at a glance. Returns null in production.
+
+51 tests, typecheck, lint and build all clean.
+
+---
+
 ## 2026-09-06 (night) — Two solo mini-games: Scale and Tint
 
 Both are single-player, no room, no server state — they slot in beside the quiz

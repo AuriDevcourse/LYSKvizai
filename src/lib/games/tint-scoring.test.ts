@@ -5,6 +5,7 @@ import {
 } from "./tint-scoring";
 import { CREATURES } from "./creatures";
 import { FLAGS, playableRegions } from "./flags";
+import { FLAG_RENDERER_IDS } from "@/components/games/FlagArt";
 
 const PALETTE = ["#e8933f", "#f7c98b", "#3a2a20", "#ffffff"];
 
@@ -156,6 +157,45 @@ describe("flag data", () => {
           expect(paletteDelta([region.hex], restored).mean).toBeLessThanOrEqual(PERFECT_DE);
         }
       }
+    }
+  });
+});
+
+describe("reference set", () => {
+  it("carries at least 50 factual colour references", () => {
+    // The whole premise is that the game can state a correct answer. Every
+    // reference is a real published specification, which is why this count is
+    // worth asserting rather than assuming.
+    const total = FLAGS.reduce((n, f) => n + playableRegions(f).length, 0);
+    expect(total).toBeGreaterThanOrEqual(50);
+  });
+
+  it("has a renderer for every flag in the data", () => {
+    // A flag with data but no drawing would crash mid-round.
+    for (const flag of FLAGS) {
+      expect(FLAG_RENDERER_IDS).toContain(flag.id);
+    }
+  });
+
+  it("cites a real specification, not a placeholder, for every playable colour", () => {
+    for (const flag of FLAGS) {
+      for (const r of playableRegions(flag)) {
+        // A playable reference must name something checkable: a Pantone or RAL
+        // number, or a decree. "white" alone is not an answer worth scoring.
+        expect(r.spec).toMatch(/Pantone|RAL|Decree|TCX/i);
+      }
+    }
+  });
+
+  it("uses ids unique across the whole set", () => {
+    const ids = FLAGS.map((f) => f.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("gives every region within a flag a unique id", () => {
+    for (const flag of FLAGS) {
+      const ids = flag.regions.map((r) => r.id);
+      expect(new Set(ids).size).toBe(ids.length);
     }
   });
 });

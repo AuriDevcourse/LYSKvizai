@@ -82,6 +82,108 @@ const India = ({ c }: Props) => (
   </>
 );
 
+/** White field with a centred disc — Japan. */
+const Disc = ({ c, field, disc, r = 21 }: Props & { field: string; disc: string; r?: number }) => (
+  <>
+    <rect width="100" height="70" fill={c[field]} />
+    <circle cx="50" cy="35" r={r} fill={c[disc]} />
+  </>
+);
+
+/** Square-ish field with a centred bold cross — Switzerland. */
+const SwissCross = ({ c }: Props) => (
+  <>
+    <rect width="100" height="70" fill={c.red} />
+    <rect x="42" y="14" width="16" height="42" fill={c.white} />
+    <rect x="29" y="27" width="42" height="16" fill={c.white} />
+  </>
+);
+
+/** Spain: red-yellow-red with the middle band twice the height of the others. */
+const Spain = ({ c }: Props) => (
+  <>
+    <rect width="100" height="17.5" fill={c.red} />
+    <rect y="17.5" width="100" height="35" fill={c.yellow} />
+    <rect y="52.5" width="100" height="17.5" fill={c.red} />
+  </>
+);
+
+/** Greece: nine stripes with a cross in the canton. */
+const Greece = ({ c }: Props) => (
+  <>
+    <rect width="100" height="70" fill={c.white} />
+    {[0, 2, 4, 6, 8].map((i) => (
+      <rect key={i} y={(70 / 9) * i} width="100" height={70 / 9} fill={c.blue} />
+    ))}
+    <rect width={(70 / 9) * 5} height={(70 / 9) * 5} fill={c.blue} />
+    <rect x={(70 / 9) * 2} y="0" width={70 / 9} height={(70 / 9) * 5} fill={c.white} />
+    <rect x="0" y={(70 / 9) * 2} width={(70 / 9) * 5} height={70 / 9} fill={c.white} />
+  </>
+);
+
+/** Portugal: green two-fifths, red three-fifths, arms on the seam. */
+const Portugal = ({ c }: Props) => (
+  <>
+    <rect width="40" height="70" fill={c.green} />
+    <rect x="40" width="60" height="70" fill={c.red} />
+    <circle cx="40" cy="35" r="15" fill="none" stroke={c.yellow} strokeWidth="3" />
+    <ellipse cx="40" cy="35" rx="6" ry="15" fill="none" stroke={c.yellow} strokeWidth="1.6" />
+    <line x1="25" y1="35" x2="55" y2="35" stroke={c.yellow} strokeWidth="1.6" />
+    <path d="M40 24 l7 9 v10 l-7 8 l-7 -8 v-10 Z" fill={c.blue} />
+    <path d="M40 24 l7 9 v10 l-7 8 l-7 -8 v-10 Z" fill="none" stroke={c.white} strokeWidth="1.4" />
+  </>
+);
+
+/** Kenya: black, red and green with white fimbriations and a central shield. */
+const Kenya = ({ c }: Props) => (
+  <>
+    <rect width="100" height="21" fill={c.black} />
+    <rect y="21" width="100" height="28" fill={c.white} />
+    <rect y="24.5" width="100" height="21" fill={c.red} />
+    <rect y="49" width="100" height="21" fill={c.green} />
+    <path d="M50 16 q9 8 9 19 q0 11 -9 19 q-9 -8 -9 -19 q0 -11 9 -19 Z" fill={c.red} />
+    <path d="M50 16 q9 8 9 19 q0 11 -9 19 q-9 -8 -9 -19 q0 -11 9 -19 Z" fill="none" stroke={c.white} strokeWidth="2.2" />
+    <path d="M50 22 v26" stroke={c.black} strokeWidth="3" />
+  </>
+);
+
+/** South Africa: the six-colour Y, with white and gold fimbriations. */
+const SouthAfrica = ({ c }: Props) => (
+  <>
+    <rect width="100" height="35" fill={c.red} />
+    <rect y="35" width="100" height="35" fill={c.blue} />
+    {/* White pall */}
+    <path d="M0 0 L44 35 L0 70 L0 55 L26 35 L0 15 Z" fill={c.white} />
+    <path d="M0 0 L14 0 L58 28 L100 28 L100 42 L58 42 L14 70 L0 70 L44 35 Z" fill={c.white} />
+    {/* Green Y inside it */}
+    <path d="M0 6 L38 35 L0 64 L0 54 L24 35 L0 16 Z" fill={c.green} />
+    <path d="M0 6 L8 6 L52 31 L100 31 L100 39 L52 39 L8 64 L0 64 L38 35 Z" fill={c.green} />
+    {/* Black triangle with its gold fimbriation */}
+    <path d="M0 0 L30 21 L30 49 L0 70 Z" fill={c.yellow} />
+    <path d="M0 4 L24 21 L24 49 L0 66 Z" fill={c.black} />
+  </>
+);
+
+/** Ethiopia: three bands with the emblem disc and pentagram. */
+const Ethiopia = ({ c }: Props) => (
+  <>
+    <rect width="100" height="23.33" fill={c.green} />
+    <rect y="23.33" width="100" height="23.33" fill={c.yellow} />
+    <rect y="46.66" width="100" height="23.34" fill={c.red} />
+    <circle cx="50" cy="35" r="16" fill={c.blue} />
+    {/* Pentagram, drawn as a five-pointed star path */}
+    <path
+      d={Array.from({ length: 5 }, (_, i) => {
+        const a = (i * 144 - 90) * (Math.PI / 180);
+        return `${i === 0 ? "M" : "L"}${50 + Math.cos(a) * 11} ${35 + Math.sin(a) * 11}`;
+      }).join(" ") + " Z"}
+      fill="none"
+      stroke={c.yellow}
+      strokeWidth="1.8"
+    />
+  </>
+);
+
 const RENDERERS: Record<string, (c: P) => React.ReactElement> = {
   brazil: (c) => <Brazil c={c} />,
   sweden: (c) => <Nordic c={c} field="blue" cross="yellow" />,
@@ -91,7 +193,34 @@ const RENDERERS: Record<string, (c: P) => React.ReactElement> = {
   ireland: (c) => <Bands c={c} ids={["green", "white", "orange"]} vertical />,
   netherlands: (c) => <Bands c={c} ids={["red", "white", "blue"]} />,
   india: (c) => <India c={c} />,
+
+  // Added with the expansion to 51 sourced colour references.
+  lithuania: (c) => <Bands c={c} ids={["yellow", "green", "red"]} />,
+  italy: (c) => <Bands c={c} ids={["green", "white", "red"]} vertical />,
+  france: (c) => <Bands c={c} ids={["blue", "white", "red"]} vertical />,
+  belgium: (c) => <Bands c={c} ids={["black", "yellow", "red"]} vertical />,
+  ukraine: (c) => <Bands c={c} ids={["blue", "yellow"]} />,
+  norway: (c) => (
+    <>
+      <Nordic c={c} field="red" cross="white" />
+      {/* The blue cross sits inside the white one, at a third of its width. */}
+      <rect x="0" y="32" width="100" height="6" fill={c.blue} />
+      <rect x="31" y="0" width="6" height="70" fill={c.blue} />
+    </>
+  ),
+  japan: (c) => <Disc c={c} field="white" disc="red" r={21} />,
+  switzerland: (c) => <SwissCross c={c} />,
+  greece: (c) => <Greece c={c} />,
+  spain: (c) => <Spain c={c} />,
+  portugal: (c) => <Portugal c={c} />,
+  mexico: (c) => <Bands c={c} ids={["green", "white", "red"]} vertical />,
+  kenya: (c) => <Kenya c={c} />,
+  southafrica: (c) => <SouthAfrica c={c} />,
+  ethiopia: (c) => <Ethiopia c={c} />,
 };
+
+/** Every flag this component can draw. Asserted against the data in tests. */
+export const FLAG_RENDERER_IDS = Object.keys(RENDERERS);
 
 interface FlagArtProps {
   id: string;
