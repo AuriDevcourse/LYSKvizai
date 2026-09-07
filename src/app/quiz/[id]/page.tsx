@@ -10,6 +10,7 @@ import { transformQuestions } from "@/lib/question-transform";
 import ProgressBar from "@/components/ProgressBar";
 import QuizCard from "@/components/QuizCard";
 import ResultScreen from "@/components/ResultScreen";
+import { EmptyPile } from "@/components/BrandArt";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -43,8 +44,23 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const timerDuration = Number(searchParams.get("timer")) || 0; // 0 = no timer
-  const maxQuestions = Number(searchParams.get("count")) || 0; // 0 = all
+  /**
+   * Read a positive whole number from the query string.
+   *
+   * `Number(x) || 0` treated `?count=abc` and `?count=-5` as "all questions",
+   * silently. A number that cannot be honoured should be ignored the same way,
+   * but deliberately and in one place, and `count=2.5` should not slice at a
+   * fractional index.
+   */
+  const positiveInt = (raw: string | null): number => {
+    if (raw === null) return 0;
+    const n = Number(raw);
+    if (!Number.isFinite(n) || n <= 0) return 0;
+    return Math.floor(n);
+  };
+
+  const timerDuration = positiveInt(searchParams.get("timer")); // 0 = no timer
+  const maxQuestions = positiveInt(searchParams.get("count")); // 0 = all
   const gameType = searchParams.get("gameType") || "";
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -77,7 +93,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
           }
           // Deduplicate questions by text to prevent repeats
           const seen = new Set<string>();
-          let allQuestions: Question[] = shuffleArray(
+          const allQuestions: Question[] = shuffleArray(
             validQuizzes.flatMap((q: { questions: Question[] }) => q.questions)
               .filter((q: Question) => {
                 const key = q.question.toLowerCase().trim();
@@ -86,10 +102,23 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
                 return true;
               })
           );
-          if (maxQuestions > 0 && maxQuestions < allQuestions.length) {
-            allQuestions = allQuestions.slice(0, maxQuestions);
-          }
-          setQuestions((gameType ? transformQuestions(allQuestions, gameType) : allQuestions).map(shuffleOptions));
+          /*
+           * Transform before slicing, not after.
+           *
+           * `transformQuestions` filters: year-guesser keeps only questions
+           * carrying a `correctYear`, zoom-out only those with a usable image.
+           * Slicing to `count` first meant the filter then cut into that
+           * slice, so `?count=3&gameType=year-guesser` delivered two
+           * questions. The requested count is now honoured against the pool
+           * that can actually be played.
+           */
+          const playable = gameType ? transformQuestions(allQuestions, gameType) : allQuestions;
+          setQuestions(
+            (maxQuestions > 0 && maxQuestions < playable.length
+              ? playable.slice(0, maxQuestions)
+              : playable
+            ).map(shuffleOptions)
+          );
           const titles = validQuizzes.map((q: { title: string }) => q.title);
           setQuizTitle(`${t("quiz.mix")} ${titles.join(" + ")}`);
         })
@@ -103,11 +132,15 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
           return res.json();
         })
         .then((quiz) => {
-          let qs: Question[] = shuffleArray(quiz.questions);
-          if (maxQuestions > 0 && maxQuestions < qs.length) {
-            qs = qs.slice(0, maxQuestions);
-          }
-          setQuestions((gameType ? transformQuestions(qs, gameType) : qs).map(shuffleOptions));
+          const shuffled: Question[] = shuffleArray(quiz.questions);
+          // Transform (which filters) before slicing, so `count` is honoured.
+          const playable = gameType ? transformQuestions(shuffled, gameType) : shuffled;
+          setQuestions(
+            (maxQuestions > 0 && maxQuestions < playable.length
+              ? playable.slice(0, maxQuestions)
+              : playable
+            ).map(shuffleOptions)
+          );
           setQuizTitle(quiz.title);
         })
         .catch((e) => setError(e.message))
@@ -159,7 +192,14 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
   }, [currentIndex, questions.length]);
 
   const handleRestart = useCallback(() => {
-    setQuestions((prev) => shuffleArray(prev));
+    /*
+     * Reshuffle the options as well as the question order.
+     *
+     * `shuffleOptions` ran once at load, so replaying kept every correct answer
+     * in the position it had the first time. Remembering "it was the green one"
+     * beat knowing the answer.
+     */
+    setQuestions((prev) => shuffleArray(prev).map(shuffleOptions));
     setCurrentIndex(0);
     setSelectedAnswer(null);
     setScore(0);
@@ -178,7 +218,8 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
     return (
       <div className="flex min-h-svh items-center justify-center">
         <div className="flex flex-col items-center gap-4 text-center">
-          <p className="text-lg font-bold text-white">{error || t("quiz.empty")}</p>
+          <EmptyPile className="pointer-events-none h-[110px] w-[180px] select-none" />
+          <p className="font-headline text-lg font-extrabold text-white">{error || t("quiz.empty")}</p>
           <Link href="/" className="btn-primary">
             {t("quiz.home")}
           </Link>
@@ -191,7 +232,9 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
     <div className="relative flex min-h-svh flex-col items-center">
       <Link
         href="/"
-        className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
+        aria-label={t("quiz.home")}
+        // `.tap-target` for the 44px minimum; this was 36x36.
+        className="tap-target fixed right-4 top-4 z-50 flex items-center justify-center rounded-full bg-white/5 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
       >
         <X className="h-5 w-5" />
       </Link>
@@ -222,7 +265,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
               <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/5">
                 <div
                   className={`h-full rounded-full transition-all duration-1000 ease-linear ${
-                    timeLeft <= 3 ? "bg-red-500" : "bg-green-500"
+                    timeLeft <= 3 ? "bg-error" : "bg-answer-green"
                   }`}
                   style={{ width: `${(timeLeft / timerDuration) * 100}%` }}
                 />

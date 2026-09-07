@@ -30,6 +30,20 @@ function getMessageKey(score: number, total: number): string {
   return "resultScreen.tryAgain";
 }
 
+/**
+ * How long the score spends counting up, and when it starts.
+ *
+ * The percentage must not appear until the count has landed, or the screen
+ * shows two different scores at once and reads as a bug. It did: the count ran
+ * 600-1600ms and the percentage arrived at 1000ms.
+ *
+ * Module scope, not component scope: they are constants, and as locals they
+ * counted as effect dependencies.
+ */
+const COUNT_START_MS = 500;
+const COUNT_DURATION_MS = 800;
+const COUNT_END_MS = COUNT_START_MS + COUNT_DURATION_MS;
+
 export default function ResultScreen({ score, total, onRestart }: ResultScreenProps) {
   const { t } = useTranslation();
   const { icon: TierIcon, color: tierColor } = getTierIcon(score, total);
@@ -37,24 +51,33 @@ export default function ResultScreen({ score, total, onRestart }: ResultScreenPr
   const [displayScore, setDisplayScore] = useState(0);
   const [step, setStep] = useState(0);
 
-  // Staggered reveal: emoji → score → bar → message → button
+  // Staggered reveal: emoji → score counting → bar + percentage → message → button
   useEffect(() => {
     const timers = [
-      setTimeout(() => setStep(1), 200),   // emoji
-      setTimeout(() => setStep(2), 600),   // score
-      setTimeout(() => setStep(3), 1000),  // bar + percentage
-      setTimeout(() => setStep(4), 1600),  // message
-      setTimeout(() => setStep(5), 2000),  // button
+      setTimeout(() => setStep(1), 200),                // emoji
+      setTimeout(() => setStep(2), COUNT_START_MS),     // score starts counting
+      setTimeout(() => setStep(3), COUNT_END_MS + 60),  // bar + percentage, once it has landed
+      setTimeout(() => setStep(4), COUNT_END_MS + 520), // message
+      setTimeout(() => setStep(5), COUNT_END_MS + 880), // button
     ];
     return () => timers.forEach(clearTimeout);
   }, []);
 
-  // Animate score counting up (starts at step 2)
+  /*
+   * Count the score up, once.
+   *
+   * This depended on `step`, which changes five times during the reveal. Every
+   * change tore the interval down and re-ran the effect from `current = 0`, so
+   * the count restarted four times and only finished after the last step
+   * landed — roughly four seconds in, with the final percentage sitting beside
+   * a number still climbing toward it. Depending on the *threshold* rather than
+   * the step means this runs exactly once.
+   */
+  const counting = step >= 2;
   useEffect(() => {
-    if (step < 2 || score === 0) return;
-    const duration = 1000;
-    const steps = 20;
-    const increment = score / steps;
+    if (!counting || score === 0) return;
+    const ticks = 20;
+    const increment = score / ticks;
     let current = 0;
     const interval = setInterval(() => {
       current += increment;
@@ -64,11 +87,26 @@ export default function ResultScreen({ score, total, onRestart }: ResultScreenPr
       } else {
         setDisplayScore(Math.round(current));
       }
-    }, duration / steps);
+    }, COUNT_DURATION_MS / ticks);
     return () => clearInterval(interval);
-  }, [score, step]);
+  }, [score, counting]);
 
   const pct = Math.round((score / total) * 100);
+
+  /**
+   * The percentage and bar wait for the counter to land.
+   *
+   * Timing this with a `setTimeout` is not enough. Background tabs throttle
+   * timers, and the count-up needs twenty interval ticks where the reveal needs
+   * one timeout, so under throttling the timeout wins and the percentage
+   * appears beside a score still reading zero — which is the contradiction this
+   * was meant to remove, and I reproduced it in an unfocused tab.
+   *
+   * Gating on `displayScore` instead makes it impossible by construction: the
+   * final figure cannot appear before the number showing it has arrived.
+   */
+  const scoreHasLanded = displayScore === score;
+  const revealTotals = step >= 3 && scoreHasLanded;
 
   return (
     <div className="flex w-full flex-col items-center text-center">
@@ -96,16 +134,16 @@ export default function ResultScreen({ score, total, onRestart }: ResultScreenPr
       {/* Percentage bar */}
       <div
         className="mb-2 h-3 w-full max-w-xs overflow-hidden rounded-full bg-white/5 transition-opacity duration-500"
-        style={{ opacity: step >= 3 ? 1 : 0 }}
+        style={{ opacity: revealTotals ? 1 : 0 }}
       >
         <div
           className="h-full rounded-full bg-gradient-to-r from-primary to-primary-container transition-all duration-1000 ease-out"
-          style={{ width: step >= 3 ? `${pct}%` : "0%" }}
+          style={{ width: revealTotals ? `${pct}%` : "0%" }}
         />
       </div>
       <p
         className="mb-6 text-sm font-bold text-white/50 transition-opacity duration-500"
-        style={{ opacity: step >= 3 ? 1 : 0 }}
+        style={{ opacity: revealTotals ? 1 : 0 }}
       >
         {pct}%
       </p>

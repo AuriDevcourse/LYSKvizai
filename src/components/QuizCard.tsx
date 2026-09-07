@@ -5,7 +5,7 @@ import { Check, X, Clock, ArrowRight, Trophy } from "lucide-react";
 import type { Question } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 import { fuzzyMatch } from "@/lib/fuzzy-match";
-import { ANSWER_BG, ANSWER_ICONS } from "@/lib/answer-options";
+import { ANSWER_BG, ANSWER_ICONS, ANSWER_TEXT } from "@/lib/answer-options";
 
 interface QuizCardProps {
   question: Question;
@@ -129,9 +129,49 @@ export default function QuizCard({
 
   const handleYearSubmit = () => {
     if (answered) return;
-    // Use 0 as a sentinel; correctness checked via yearGuess state
-    onSelect(isYearCorrect ? question.correct : -1);
+    /*
+     * Report the same verdict the card is about to display.
+     *
+     * This passed `isYearCorrect`, which is an *exact* year match, while the
+     * card showed `yearGotPoints` (within 10% of the range, about 23 years) as
+     * correct. So a near miss got a congratulatory banner quoting a percentage
+     * of points, and scored nothing. The banner was advertising credit the game
+     * never awarded.
+     */
+    onSelect(yearGotPoints ? question.correct : -1);
   };
+
+  /*
+   * Keyboard play: 1-4 pick an answer, Enter or Space advances.
+   *
+   * Solo mode is mostly played on a desktop with a keyboard in front of it, and
+   * there was no key binding anywhere except Enter inside the text input. The
+   * number keys match the on-screen order, so the shape and colour a player
+   * already reads as "the second one" is the one 2 selects.
+   */
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      // Never hijack typing, and leave modified keys to the browser.
+      const el = e.target as HTMLElement | null;
+      if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.isContentEditable)) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+      if (answered) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onNext(); }
+        return;
+      }
+      if (isYearGuesser || isTextInput) return;
+      const n = Number(e.key);
+      if (!Number.isInteger(n) || n < 1 || n > qOptions.length) return;
+      const option = qOptions[n - 1];
+      // True/false renders only the options that exist; skip the empty slots.
+      if (isTrueFalse && !option) return;
+      e.preventDefault();
+      onSelect(n - 1);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [answered, onNext, onSelect, isYearGuesser, isTextInput, isTrueFalse, qOptions]);
 
   const handleTextSubmit = () => {
     if (answered || !textAnswer.trim()) return;
@@ -144,7 +184,7 @@ export default function QuizCard({
       {/* Question — hidden for zoom-out (image IS the question) */}
       {!isZoomOut && (
         <div className="glass mb-4 rounded-2xl px-5 py-4 text-center sm:mb-6 sm:px-6 sm:py-5">
-          <h2 className="text-lg font-extrabold leading-snug text-white sm:text-2xl sm:leading-relaxed">
+          <h2 className="font-headline text-lg font-extrabold leading-snug text-white sm:text-2xl sm:leading-relaxed">
             {qText}
           </h2>
         </div>
@@ -227,7 +267,16 @@ export default function QuizCard({
             const isThis = i === selectedAnswer;
             const isCorrectAnswer = i === question.correct;
 
-            let classes = `answer-btn relative flex items-center gap-3 rounded-2xl px-4 py-5 text-left font-bold text-white transition-all sm:py-6 ${bg}`;
+            /*
+             * `ANSWER_TEXT` (near-black), not white. White measures 2.30 to
+             * 2.68:1 against the four answer colours, under even the 3:1
+             * large-text floor; near-black measures 7.2 to 8.4:1. CLAUDE.md
+             * documents this and `answer-options.ts` exists to stop it, but
+             * this file imported the backgrounds and icons and left the text
+             * behind, so solo mode drifted while the multiplayer screens were
+             * fixed.
+             */
+            let classes = `answer-btn relative flex items-center gap-3 rounded-2xl px-4 py-5 text-left font-bold ${ANSWER_TEXT} transition-all sm:py-6 ${bg}`;
 
             if (answered) {
               if (isCorrectAnswer) {
@@ -248,6 +297,20 @@ export default function QuizCard({
               >
                 <Icon className="h-6 w-6 shrink-0" {...(isTrueFalse ? { strokeWidth: 3 } : { fill: "currentColor" })} />
                 <span className="text-sm leading-tight break-words sm:text-base">{option}</span>
+                {/*
+                  * The key that picks this answer. Shown from `sm` up, where
+                  * there is a keyboard to press it — a shortcut nobody can see
+                  * is half a feature. Hidden once answered, since the row then
+                  * carries a tick or a cross in the same corner.
+                  */}
+                {!answered && (
+                  <span
+                    aria-hidden="true"
+                    className="absolute right-3 top-3 hidden text-xs font-extrabold opacity-45 sm:block"
+                  >
+                    {i + 1}
+                  </span>
+                )}
                 {answered && isCorrectAnswer && (
                   <Check className="absolute right-3 top-3 h-5 w-5 animate-bounce-in" />
                 )}
@@ -260,16 +323,32 @@ export default function QuizCard({
         </div>
       )}
 
-      {/* Feedback + Next */}
+      {/*
+        * Feedback + Next, in a slot that is always present.
+        *
+        * This block used to mount only once answered, and the page centres its
+        * content vertically, so appearing pushed everything up by 93px: the
+        * button you had just clicked jumped out from under the cursor, every
+        * single question. Reserving the height keeps the answers still.
+        *
+        * `min-h` rather than a fixed height, so a two-line banner (year-guesser
+        * and the typed modes add a second row) can still grow rather than clip.
+        */}
+      <div className="mt-6 min-h-[172px]">
       {answered && (
-        <div className="animate-slide-up mt-6">
+        /*
+         * `aria-live` so the verdict is announced. The banner appeared silently
+         * before, which meant a screen-reader user was never told whether the
+         * answer was right — the one thing the screen exists to say.
+         */
+        <div className="animate-slide-up" role="status" aria-live="polite">
           <div
             className={`rounded-2xl px-5 py-4 text-center font-bold ${
               isYearGuesser && yearGotPoints && !isYearCorrect
-                ? "bg-answer-yellow text-white"
+                ? `bg-answer-yellow ${ANSWER_TEXT}`
                 : isCorrect
-                  ? "bg-answer-green text-white"
-                  : "bg-error text-white"
+                  ? `bg-answer-green ${ANSWER_TEXT}`
+                  : `bg-error ${ANSWER_TEXT}`
             }`}
           >
             <p className="flex items-center justify-center gap-2 text-lg">
@@ -284,12 +363,12 @@ export default function QuizCard({
                   : <>{t("quizCard.incorrect")} <X className="h-5 w-5" /></>}
             </p>
             {isYearGuesser && !isYearCorrect && (
-              <p className="mt-1 text-sm font-medium text-white/80">
+              <p className="mt-1 text-sm font-medium opacity-80">
                 {t("quizCard.correctAnswer")}: {correctYear}
               </p>
             )}
             {isTextInput && (
-              <div className="mt-1 flex items-center justify-center gap-3 text-sm font-medium text-white/80">
+              <div className="mt-1 flex items-center justify-center gap-3 text-sm font-medium opacity-80">
                 {ffResponseTime !== null && (
                   <span className="flex items-center gap-1">
                     <Clock className="h-3.5 w-3.5" />
@@ -301,7 +380,7 @@ export default function QuizCard({
                 )}
               </div>
             )}
-            <p className="mt-1 text-sm font-medium text-white/80">
+            <p className="mt-1 text-sm font-medium opacity-80">
               {qExplanation}
             </p>
           </div>
@@ -314,6 +393,7 @@ export default function QuizCard({
           </button>
         </div>
       )}
+      </div>
     </div>
   );
 }
