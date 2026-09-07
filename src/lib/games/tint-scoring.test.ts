@@ -6,6 +6,7 @@ import {
 import { CREATURES } from "./creatures";
 import { FLAGS, playableRegions } from "./flags";
 import { FLAG_RENDERER_IDS } from "@/components/games/FlagArt";
+import { TRANSIT_LINES, playableLines, diagramFor } from "./transit";
 
 const PALETTE = ["#e8933f", "#f7c98b", "#3a2a20", "#ffffff"];
 
@@ -197,5 +198,61 @@ describe("reference set", () => {
       const ids = flag.regions.map((r) => r.id);
       expect(new Set(ids).size).toBe(ids.length);
     }
+  });
+});
+
+
+describe("transit reference set", () => {
+  it("cites a Pantone reference for every line", () => {
+    for (const line of TRANSIT_LINES) {
+      expect(line.spec).toMatch(/Pantone/i);
+      expect(line.hex).toMatch(/^#[0-9a-f]{6}$/i);
+    }
+  });
+
+  it("marks black as unplayable — no hue or saturation to recover", () => {
+    const northern = TRANSIT_LINES.find((l) => l.id === "northern");
+    expect(northern?.hex).toBe("#000000");
+    expect(northern?.playable).toBe(false);
+  });
+
+  it("uses unique ids", () => {
+    const ids = TRANSIT_LINES.map((l) => l.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("always builds a diagram that contains the target exactly once", () => {
+    for (const target of playableLines()) {
+      for (let i = 0; i < 20; i++) {
+        const diagram = diagramFor(target);
+        expect(diagram.filter((l) => l.id === target.id)).toHaveLength(1);
+        // No duplicates — the same line twice in one diagram reads as a bug.
+        expect(new Set(diagram.map((l) => l.id)).size).toBe(diagram.length);
+        // Every companion comes from the target's own part of the network.
+        for (const l of diagram) expect(l.group).toBe(target.group);
+      }
+    }
+  });
+
+  it("can scramble every playable line reversibly", () => {
+    let seed = 777;
+    const rng = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; };
+    for (const line of playableLines()) {
+      for (let i = 0; i < 10; i++) {
+        const sc = scrambleOne(line.hex, rng);
+        const restored = applyTint(applyTint([line.hex], sc), inverseOf(sc));
+        expect(paletteDelta([line.hex], restored).mean).toBeLessThanOrEqual(PERFECT_DE);
+      }
+    }
+  });
+});
+
+describe("total reference count", () => {
+  it("offers well over 50 factual references across more than one category", () => {
+    const flagRefs = FLAGS.reduce((n, f) => n + playableRegions(f).length, 0);
+    const transitRefs = playableLines().length;
+    expect(flagRefs).toBeGreaterThanOrEqual(50);
+    expect(transitRefs).toBeGreaterThan(0);
+    expect(flagRefs + transitRefs).toBeGreaterThanOrEqual(70);
   });
 });

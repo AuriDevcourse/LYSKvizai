@@ -48,6 +48,43 @@ chart · streak badge on phones · confetti on the podium · 44px tap targets ·
 
 ---
 
+## 2026-09-07 (later) — Colour game is no longer only flags
+
+Auri asked whether it's only flags. It was — 51 references, all one category,
+which made the game one-note. Added a second: **Transport for London line
+colours**, 22 more references.
+
+Source is TfL's own "Colour standard", Issue 11 — the document it issues to
+suppliers and contractors, which states that "the colours illustrated for each
+purpose are mandatory and must be matched accurately". The hex values are the
+exact RGB triples printed in that standard with the Pantone reference each
+derives from, extracted from the PDF rather than recalled. Covers all 11
+Underground lines, the six renamed Overground lines, and DLR / Elizabeth /
+Trams / River Services / Cable Car / Coaches.
+
+**73 factual references across two categories.** Rounds alternate, so a session
+isn't all of one kind.
+
+The transit round is a stylised route diagram: several lines in their true
+colours with one scrambled, mirroring the flag round's "everything else is
+correct, so you have real reference points". Deliberately generic rather than a
+reproduction of the Tube map — the roundel and the map are TfL trademarks and
+the map is a copyrighted work, whereas the colour specifications are published
+facts anyone may use.
+
+**Refactor while doing it:** the render layer had a flag branch and an else, and
+adding a third category produced type errors immediately. Now one `Subject`
+component knows how each category draws itself, called from all four places
+that render one. That also fixed the reveal, which was showing only a hex for
+non-flag rounds instead of citing the specification.
+
+Six new tests guard the new category the same way: every line cites a Pantone
+reference, black is unplayable, ids are unique, every diagram contains its
+target exactly once with no duplicates and only companions from the same part of
+the network, and every line scrambles reversibly. 57 tests total.
+
+---
+
 ## 2026-09-07 — Colour game: 51 factual references, fiction removed
 
 Auri's note: everything must be factual, and "the yellow body" on my test image

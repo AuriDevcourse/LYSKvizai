@@ -5,8 +5,10 @@ import Link from "next/link";
 import { ArrowLeft, Palette as PaletteIcon, RotateCcw, Check, Trophy, Eye } from "lucide-react";
 import FlagArt from "@/components/games/FlagArt";
 import ImageTint from "@/components/games/ImageTint";
+import TransitDiagram from "@/components/games/TransitDiagram";
 import { FLAGS, officialPalette, playableRegions, type Flag, type FlagRegion } from "@/lib/games/flags";
 import { loadLocalRounds, type LocalImageRound } from "@/lib/games/local-images";
+import { playableLines, diagramFor, TFL_STANDARD, type TransitLine } from "@/lib/games/transit";
 import { adjustHex } from "@/lib/color/convert";
 import { scoreSingle, scrambleOne, type TintScramble, type TintResult } from "@/lib/games/tint-scoring";
 
@@ -49,6 +51,18 @@ type Round =
       scramble: TintScramble;
     }
   | {
+      kind: "transit";
+      target: TransitLine;
+      /** Lines drawn alongside it, in their true colours. */
+      diagram: TransitLine[];
+      start: string;
+      truth: string;
+      title: string;
+      label: string;
+      spec: string;
+      scramble: TintScramble;
+    }
+  | {
       kind: "image";
       image: LocalImageRound;
       start: string;
@@ -75,6 +89,24 @@ function flagRound(seenFlags: Set<string>): Round {
     title: flag.name,
     label: region.label,
     spec: region.spec,
+    scramble,
+  };
+}
+
+function transitRound(seen: Set<string>): Round {
+  const pool = playableLines().filter((l) => !seen.has(l.id));
+  const source = pool.length ? pool : playableLines();
+  const target = source[Math.floor(Math.random() * source.length)];
+  const scramble = scrambleOne(target.hex);
+  return {
+    kind: "transit",
+    target,
+    diagram: diagramFor(target),
+    start: adjustHex(target.hex, scramble.hue, scramble.sat, scramble.light),
+    truth: target.hex,
+    title: "Transport for London",
+    label: `the ${target.name.replace(/ line$/, "")} line`,
+    spec: `${target.spec} (${TFL_STANDARD})`,
     scramble,
   };
 }
@@ -127,35 +159,21 @@ export default function TintGamePage() {
 
   const showTruth = (peeking && !result) || result !== null;
 
-  // Flags only: every other region stays official, so the real palette is right
-  // there to judge against — only the target moves.
-  const colors = useMemo(() => {
-    if (round.kind !== "flag") return {};
-    const base = officialPalette(round.flag);
-    return { ...base, [round.region.id]: showTruth ? round.truth : attempt };
-  }, [round, attempt, showTruth]);
-
   /**
-   * Canvas transform for image rounds.
+   * The player's total transform, for image rounds.
    *
-   * The canvas always starts from the *original* pixels, so getting to what the
-   * player currently sees means applying the scramble AND their correction on
-   * top of it — the same composition `attempt` performs on a single hex value,
-   * applied to every masked pixel. Returning just the scramble left the canvas
-   * frozen at its starting colour while the swatch moved, which made the
+   * A canvas starts from the *original* pixels, so reaching what the player
+   * currently sees means applying the scramble AND their correction on top of
+   * it — the same composition `attempt` performs on a single hex value, applied
+   * to every masked pixel. An earlier version returned only the scramble, which
+   * froze the image at its starting colour while the swatch moved and made the
    * sliders look broken.
-   *
-   * Showing the truth is the identity transform: no scramble, no correction.
    */
-  const imageTint = useMemo(() => {
-    if (round.kind !== "image") return { hue: 0, sat: 1, light: 0 };
-    if (showTruth) return { hue: 0, sat: 1, light: 0 };
-    return {
-      hue: round.scramble.hue + tint.hue,
-      sat: round.scramble.sat * tint.sat,
-      light: round.scramble.light + tint.light,
-    };
-  }, [round, showTruth, tint]);
+  const playerShift = useMemo<TintScramble>(() => ({
+    hue: round.scramble.hue + tint.hue,
+    sat: round.scramble.sat * tint.sat,
+    light: round.scramble.light + tint.light,
+  }), [round.scramble, tint]);
 
   const lockIn = useCallback(() => {
     if (result) return;
@@ -171,9 +189,13 @@ export default function TintGamePage() {
       setRound(imageRound(locals[localIndex]));
       setLocalIndex((i) => i + 1);
     } else {
-      const nextSeen = round.kind === "flag" ? new Set(seen).add(round.flag.id) : seen;
+      // Alternate categories, so a five-round session isn't all flags or all
+      // transit lines. `seen` is shared: ids don't collide across categories.
+      const nextSeen = new Set(seen);
+      if (round.kind === "flag") nextSeen.add(round.flag.id);
+      if (round.kind === "transit") nextSeen.add(round.target.id);
       setSeen(nextSeen);
-      setRound(flagRound(nextSeen));
+      setRound(round.kind === "flag" ? transitRound(nextSeen) : flagRound(nextSeen));
     }
     setTint({ hue: 0, sat: 1, light: 0 });
     setResult(null);
@@ -241,62 +263,22 @@ export default function TintGamePage() {
         {!result ? (
           <div className="surface rounded-3xl p-3">
             <div className="overflow-hidden rounded-xl shadow-[0_16px_40px_-16px_rgba(0,0,0,0.9)]">
-              {round.kind === "flag" ? (
-                <FlagArt
-                  id={round.flag.id}
-                  colors={colors}
-                  width={300}
-                  title={`Flag of ${round.flag.name}`}
-                />
-              ) : (
-                <ImageTint
-                  src={`/tint-local/${round.image.file}`}
-                  targetHex={round.truth}
-                  tolerance={round.image.tolerance ?? 22}
-                  hueShift={imageTint.hue}
-                  satScale={imageTint.sat}
-                  lightShift={imageTint.light}
-                  width={300}
-                  alt={round.image.name}
-                />
-              )}
+              <Subject
+                round={round}
+                shown={showTruth ? round.truth : attempt}
+                width={300}
+                imageShift={playerShift}
+                withTitle
+              />
             </div>
           </div>
         ) : (
           <div className="flex w-full flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-5">
             <Compare caption="Yours" hex={attempt} tone="text-white/60">
-              {round.kind === "flag" ? (
-                <FlagArt
-                  id={round.flag.id}
-                  colors={{ ...officialPalette(round.flag), [round.region.id]: attempt }}
-                  width={215}
-                />
-              ) : (
-                <ImageTint
-                  src={`/tint-local/${round.image.file}`}
-                  targetHex={round.truth}
-                  tolerance={round.image.tolerance ?? 22}
-                  hueShift={round.scramble.hue + tint.hue}
-                  satScale={round.scramble.sat * tint.sat}
-                  lightShift={round.scramble.light + tint.light}
-                  width={215}
-                />
-              )}
+              <Subject round={round} shown={attempt} width={215} imageShift={playerShift} />
             </Compare>
             <Compare caption="Official" hex={round.truth} tone="text-[#66bb6a]" highlight>
-              {round.kind === "flag" ? (
-                <FlagArt id={round.flag.id} colors={officialPalette(round.flag)} width={215} />
-              ) : (
-                <ImageTint
-                  src={`/tint-local/${round.image.file}`}
-                  targetHex={round.truth}
-                  tolerance={round.image.tolerance ?? 22}
-                  hueShift={0}
-                  satScale={1}
-                  lightShift={0}
-                  width={215}
-                />
-              )}
+              <Subject round={round} shown={round.truth} width={215} imageShift={playerShift} />
             </Compare>
           </div>
         )}
@@ -347,12 +329,20 @@ export default function TintGamePage() {
             </p>
             <p className="mt-1 text-white/70">{result.verdict}</p>
             <p className="mt-3 text-sm leading-relaxed text-white/45">
-              {round.kind === "flag" ? (
+              {round.kind === "flag" && (
                 <>
                   {round.flag.name} specifies {round.label} as{" "}
                   <span className="font-bold text-white/70">{round.spec}</span>.
                 </>
-              ) : (
+              )}
+              {round.kind === "transit" && (
+                <>
+                  TfL specifies {round.label} as{" "}
+                  <span className="font-bold text-white/70">{round.target.spec}</span>{" "}
+                  — {round.truth}, per the {TFL_STANDARD}.
+                </>
+              )}
+              {round.kind === "image" && (
                 <>
                   {round.label} is <span className="font-bold text-white/70">{round.truth}</span>.
                 </>
@@ -366,6 +356,68 @@ export default function TintGamePage() {
         )}
       </div>
     </div>
+  );
+}
+
+/**
+ * Renders whichever kind of subject this round is, with the target colour set
+ * to `shown`. Every other part of the subject stays at its true value, so the
+ * player always has correct neighbours to judge against.
+ *
+ * One component rather than a ternary at each call site: there are three
+ * categories now and four places that draw one, and nesting those was already
+ * producing type errors.
+ */
+function Subject({
+  round, shown, width, imageShift, withTitle = false,
+}: {
+  round: Round;
+  shown: string;
+  width: number;
+  /** Composed hue/sat/light shift for image rounds. Ignored by the others. */
+  imageShift: TintScramble;
+  withTitle?: boolean;
+}) {
+  if (round.kind === "flag") {
+    return (
+      <FlagArt
+        id={round.flag.id}
+        colors={{ ...officialPalette(round.flag), [round.region.id]: shown }}
+        width={width}
+        title={withTitle ? `Flag of ${round.flag.name}` : undefined}
+      />
+    );
+  }
+
+  if (round.kind === "transit") {
+    return (
+      <TransitDiagram
+        lines={round.diagram}
+        colors={{
+          ...Object.fromEntries(round.diagram.map((l) => [l.id, l.hex])),
+          [round.target.id]: shown,
+        }}
+        targetId={round.target.id}
+        width={width}
+        title={withTitle ? `Transit diagram highlighting ${round.target.name}` : undefined}
+      />
+    );
+  }
+
+  // Images recolour pixels rather than swapping a fill, so the transform has to
+  // be expressed as a shift from the original rather than an absolute colour.
+  const atTruth = shown === round.truth;
+  return (
+    <ImageTint
+      src={`/tint-local/${round.image.file}`}
+      targetHex={round.truth}
+      tolerance={round.image.tolerance ?? 22}
+      hueShift={atTruth ? 0 : imageShift.hue}
+      satScale={atTruth ? 1 : imageShift.sat}
+      lightShift={atTruth ? 0 : imageShift.light}
+      width={width}
+      alt={withTitle ? round.image.name : undefined}
+    />
   );
 }
 
