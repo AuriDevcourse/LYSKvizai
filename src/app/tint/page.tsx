@@ -338,8 +338,19 @@ export default function TintGamePage() {
       <div className="mx-auto flex w-full max-w-xl flex-1 flex-col items-center justify-center gap-4 sm:gap-5">
         <div className="text-center">
           <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-white/45">{round.title}</p>
+          {/*
+            * "Restore", not "Find".
+            *
+            * Nothing is being found: the region is already the only wrong
+            * colour on the flag, so it is the obvious odd one out — and
+            * "Find the red cross" is actively misleading, because there is no
+            * red cross on screen yet. That is the thing you are making. The
+            * mechanic is dragging hue, saturation and lightness until it
+            * matches, and "restore" is the verb the rest of the app already
+            * uses for it (the home card reads "Restore the real colours").
+            */}
           <h1 className="font-headline mt-1 text-lg font-bold text-white/90 sm:text-xl">
-            Find <span className="text-primary">{round.label}</span>
+            Restore <span className="text-primary">{round.label}</span>
           </h1>
         </div>
 

@@ -48,6 +48,23 @@ chart · streak badge on phones · confetti on the podium · 44px tap targets ·
 
 ---
 
+## 2026-09-08 — The colour game said "Find" when nothing is being found
+
+Auri: "when it comes to flags, dont say find Red cross. it is just adjusting and
+that is it."
+
+The round heading read `Find the red cross`. Two things wrong with it. The target
+region is the only wrong colour on the flag, so it is the obvious odd one out —
+there is nothing to find. And the phrasing is actively misleading: while you are
+playing there *is* no red cross on screen, because that is the thing you are
+making. Brazil's round says "the yellow diamond" while the diamond is mint
+green.
+
+Now `Restore the yellow diamond`, which is both accurate and the verb the rest
+of the app already uses — the home card reads "Restore the real colours" and the
+module comment says the game "isolates one colour region and asks you to restore
+it". The heading was the only place still saying "find".
+
 ## 2026-09-08 — Accuracy shown to one decimal
 
 Auri: "I want to see the accuracy in percentage with 1 decimal point."
