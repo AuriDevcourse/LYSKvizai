@@ -337,7 +337,9 @@ function TypeChip({
       type="button"
       onClick={onClick}
       style={active ? { backgroundColor: accent, color: "#0e0e0e" } : undefined}
-      className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
+      // min-h-11 for the 44px floor: these were 28px, and a filter row is
+      // exactly the kind of thing you poke at repeatedly on a phone.
+      className={`inline-flex min-h-11 items-center rounded-full px-4 text-xs font-bold transition-colors ${
         active ? "" : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white/80"
       }`}
     >
@@ -368,10 +370,12 @@ function QuestionRow({
         )}
         <Link
           href={`/editor/${item.quizId}`}
-          className="ml-auto flex items-center gap-1 text-white/25 transition-colors hover:text-primary"
+          // Was 49x17. On a phone that is a coin toss, and it sits at the end
+          // of a long scrolling list where it is the only action per row.
+          className="tap-target ml-auto flex items-center gap-1 px-2 text-white/25 transition-colors hover:text-primary"
           aria-label={`Edit ${item.quizTitle} in the editor`}
         >
-          <Pencil className="h-3 w-3" /> Edit
+          <Pencil className="h-3.5 w-3.5" /> Edit
         </Link>
       </div>
 

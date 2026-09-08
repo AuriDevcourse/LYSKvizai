@@ -281,7 +281,7 @@ export default function TintGamePage() {
 
   if (done) {
     return (
-      <div className="rise flex min-h-svh flex-col items-center justify-center gap-7 px-5 py-10">
+      <div className="rise flex min-h-svh flex-col items-center justify-center gap-7 px-5 py-10 pb-28 sm:pb-10">
         <Trophy className="h-14 w-14 text-answer-yellow drop-shadow-[0_0_20px_rgba(201,168,37,0.7)]" />
         <div className="text-center">
           <h1 className="font-headline neon text-5xl font-extrabold tracking-tight sm:text-6xl">{total}</h1>
@@ -298,7 +298,7 @@ export default function TintGamePage() {
   }
 
   return (
-    <div className="flex min-h-svh flex-col px-5 py-6 sm:py-8">
+    <div className="flex min-h-svh flex-col px-5 py-6 pb-28 sm:py-8 sm:pb-8">
       <div className="mx-auto flex w-full max-w-3xl items-center justify-between">
         <Link href="/" aria-label="Back to home" className="tap-target -ml-2 rounded-full text-white/45 transition-colors hover:text-white">
           <ArrowLeft className="h-5 w-5" />
@@ -419,7 +419,7 @@ export default function TintGamePage() {
               <button
                 type="button"
                 onClick={() => setImporting(true)}
-                className="mx-auto flex items-center gap-1.5 pt-1 text-xs font-bold text-white/35 transition-colors hover:text-primary"
+                className="tap-target mx-auto flex items-center gap-1.5 px-3 text-xs font-bold text-white/35 transition-colors hover:text-primary"
               >
                 <Plus className="h-3.5 w-3.5" />
                 Play a cartoon character instead

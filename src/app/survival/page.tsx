@@ -203,9 +203,15 @@ function SurvivalInner() {
 
   return (
     <div className="relative flex min-h-svh flex-col items-center">
+      {/*
+        * 44px, and named. This was a 36x36 link whose only content was an icon,
+        * so it had no accessible name at all: a screen reader announced "link"
+        * and nothing else, and the audit could only identify it by its tag.
+        */}
       <Link
         href="/"
-        className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
+        aria-label={t("quiz.home")}
+        className="tap-target fixed right-4 top-4 z-50 flex items-center justify-center rounded-full bg-white/5 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
       >
         <X className="h-5 w-5" />
       </Link>

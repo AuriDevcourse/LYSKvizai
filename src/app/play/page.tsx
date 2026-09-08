@@ -181,7 +181,7 @@ function PlayPageInner() {
 
           <button
             onClick={() => router.push("/")}
-            className="mt-2 flex items-center gap-1.5 text-sm font-bold text-white/50 hover:text-white/70 transition-colors"
+            className="tap-target px-3 mt-2 flex items-center gap-1.5 text-sm font-bold text-white/50 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             {t("nav.home")}
@@ -236,7 +236,7 @@ function PlayPageInner() {
               // "Play with friends" chooser, which the three home cards
               // replaced — landing on it was going backwards into a dead end.
               onClick={() => router.push("/")}
-              className="flex items-center gap-1.5 text-sm font-bold text-white/50 transition-colors hover:text-white/70"
+              className="tap-target px-3 flex items-center gap-1.5 text-sm font-bold text-white/50 transition-colors hover:text-white/70"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               {t("play.back")}
@@ -348,7 +348,7 @@ function PlayPageInner() {
 
           <button
             onClick={() => { setMode("pick-quiz"); setError(null); setHostPlaying(false); }}
-            className="flex items-center gap-1.5 text-sm font-bold text-white/50 hover:text-white/70 transition-colors"
+            className="tap-target px-3 flex items-center gap-1.5 text-sm font-bold text-white/50 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             {t("play.back")}

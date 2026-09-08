@@ -119,7 +119,7 @@ export default function EditorPage() {
   };
 
   return (
-    <div className="relative flex min-h-svh flex-col items-center">
+    <div className="relative flex min-h-svh flex-col items-center pb-24 sm:pb-0">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-1/3 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-white/[0.07] blur-3xl" />
         <div className="absolute -bottom-1/4 right-0 h-[400px] w-[400px] rounded-full bg-red-500/[0.05] blur-3xl" />
@@ -281,7 +281,7 @@ export default function EditorPage() {
         {/* Back link */}
         <Link
           href="/"
-          className="mt-8 flex items-center gap-1.5 self-center text-sm text-white/50 hover:text-white/60"
+          className="tap-target mt-8 flex items-center gap-1.5 self-center px-3 text-sm text-white/50 hover:text-white/60"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           {t("nav.backToHome")}

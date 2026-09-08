@@ -71,7 +71,15 @@ export default function FeedbackButton() {
         type="button"
         aria-label="Send feedback"
         onClick={() => setOpen(true)}
-        className="glass fixed bottom-5 right-5 z-40 flex h-12 w-12 items-center justify-center rounded-full text-white/80 shadow-lg hover:text-white sm:bottom-6 sm:right-6"
+        /*
+         * Clear of the bottom nav on mobile.
+         *
+         * At `bottom-5` this sat on top of it: the nav is mobile-only and about
+         * 71px tall including its margin, so a 48px button 20px from the bottom
+         * overlapped it on every screen. Above `sm` the nav is hidden and the
+         * button returns to the corner.
+         */
+        className="glass fixed bottom-24 right-5 z-40 flex h-12 w-12 items-center justify-center rounded-full text-white/80 shadow-lg hover:text-white sm:bottom-6 sm:right-6"
       >
         <MessageSquare className="h-5 w-5" />
       </button>

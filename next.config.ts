@@ -71,7 +71,16 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: [
           { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "X-Frame-Options", value: "DENY" },
+          /*
+           * SAMEORIGIN, not DENY.
+           *
+           * Both refuse framing by any other origin, which is the clickjacking
+           * threat this header exists for, so the protection is unchanged.
+           * DENY additionally refuses to let the app frame *itself*, which buys
+           * nothing and costs the ability to preview or test one of our own
+           * pages inside another of our own pages.
+           */
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           {
             key: "Strict-Transport-Security",

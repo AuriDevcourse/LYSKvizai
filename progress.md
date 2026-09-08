@@ -48,6 +48,51 @@ chart · streak badge on phones · confetti on the podium · 44px tap targets ·
 
 ---
 
+## 2026-09-08 — Mobile audit across all ten routes
+
+Auri: "make sure for mobile version everything works well, since this is the
+main device to play on." Audited at 390x844. Typecheck clean, lint 0 errors,
+139/139 tests, build compiles. Desktop re-checked and unaffected.
+
+**Result: 0 tap targets under 44px and 0 horizontal scroll on every route**, and
+nothing interactive left under the bottom nav. Before, eight of ten routes had
+at least one failure.
+
+What was wrong:
+
+- **The `/scale` and `/tint` sliders had a 12px hit area.** `.year-slider` set
+  `height: 12px` on the input; a 32px thumb is painted larger but does not
+  extend the input's hit box. These are the primary control on those screens.
+  Now 44px with the thin track drawn by the track pseudo-elements.
+- **`/play?join=1`: the avatar dice buttons were 32px**, on the screen played
+  from a phone more than any other.
+- **`/library`: filter chips 28px, and the per-row Edit link 49x17.**
+- **`/survival`: the close button was 36px and had no accessible name** — an
+  icon-only link, so a screen reader announced "link" and nothing else.
+- **`/play`, `/editor`, `/tint`: navigation text links at 20px.**
+- **The feedback button sat on top of the bottom nav on every screen.**
+- **Content scrolled under the nav.** The global `pb-24 sm:pb-0` wrapper fixes
+  content-driven pages; `min-h-svh` roots needed their own padding too, because
+  the wrapper pads below a box that is already a full viewport tall.
+
+Two findings that were not tap targets:
+
+- **29 iCloud conflict copies were sitting in `src/`** (`Logo 2.tsx`,
+  `http 3.ts`), untracked but not ignored, so `git add -A` would have committed
+  them — and they break `tsc` with duplicate identifiers, which cost time
+  repeatedly this session. Deleted, and `.gitignore` now blocks the pattern
+  including extensionless copies like `.githooks/pre-commit 2`.
+- **`X-Frame-Options` went from `DENY` to `SAMEORIGIN`.** DENY refuses to let
+  the app frame itself, which blocked auditing a real 390px viewport and buys
+  nothing: both values refuse framing by any other origin, which is the
+  clickjacking threat the header exists for.
+
+**Two false positives worth recording, because they nearly caused wrong fixes:**
+`getBoundingClientRect` reported compliant 44px controls as 42px (a transform in
+the ancestry skews it — `getComputedStyle` is the truth), and checking "under the
+nav?" at scroll-top flags everything below the fold on a long page. Both are now
+noted in CLAUDE.md.
+
 ## 2026-09-07 — Join screen (/play?join=1) rebuilt
 
 Auri: "improve this one also accordingly." Typecheck clean, lint 0 errors / 16

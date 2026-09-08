@@ -301,6 +301,47 @@ to special-case.
 blocked until an avatar exists. Unmounting it strands the player on a dead
 button. Use its `collapsed` prop.
 
+## Mobile is the main device
+
+Every interactive element needs a 44px minimum on both axes. Audited at 390x844
+across all ten routes; these were the failures, and they are the shapes to watch
+for:
+
+- **A styled `input[type=range]` sizes its own hit area.** `.year-slider` set
+  `height: 12px` on the input and painted a 32px thumb, so the draggable area
+  was 12px on the screens whose whole job is dragging it. The input is now 44px
+  and the thin track is drawn by `::-webkit-slider-runnable-track` /
+  `::-moz-range-track`, with the thumb pulled back by `margin-top: -10px` to
+  centre on it.
+- **`px-3 py-2` on a small-text button lands around 32px.** Use `min-h-11`.
+- **Text links used as navigation** ("Home", "Back to home") measured 20px. They
+  take `.tap-target` plus horizontal padding.
+- **An icon-only link with no `aria-label` has no accessible name.** Survival's
+  close button announced only "link".
+
+### Leave room for the bottom nav
+
+`BottomNav` is `fixed` and mobile-only, about 71px tall with its margin. Two
+things follow, and the first is not enough on its own:
+
+1. `layout.tsx` wraps children in `pb-24 sm:pb-0`. This only helps pages whose
+   height is driven by content.
+2. A page whose root is `min-h-svh` also needs its own `pb-24 sm:pb-0`, because
+   the wrapper's padding sits *below* a box that is already a full viewport tall,
+   so bottom content still lands under the nav. `/editor` and `/tint` needed
+   this.
+
+The floating feedback button sits at `bottom-24` on mobile for the same reason;
+at `bottom-5` it was on top of the nav on every screen.
+
+### Auditing this yourself
+
+Framing is `SAMEORIGIN`, so a 390px iframe of the app is a real mobile layout
+viewport and media queries resolve against it. Measure with `getComputedStyle`,
+not `getBoundingClientRect`: a transform anywhere in the ancestry skews the rect
+and reports a compliant 44px control as 42px. And test "is it under the nav?"
+*after* scrolling to the bottom, or every long page reports false positives.
+
 ## Tech Stack
 - Next.js 16 (App Router) + React 19 + TypeScript
 - Tailwind CSS 4

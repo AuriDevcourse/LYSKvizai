@@ -95,7 +95,15 @@ export default function RootLayout({
         <div className="vignette" aria-hidden="true" />
         <div className="grain" aria-hidden="true" />
         <LanguageProvider>
-          {children}
+          {/*
+            * Room for the bottom nav.
+            *
+            * The nav is `fixed` and mobile-only, so content scrolled underneath
+            * it and the last row of a long list was unreachable — the library
+            * and the editor both ended with their per-row actions covered.
+            * Padding here rather than on each page, since the nav is global.
+            */}
+          <div className="pb-24 sm:pb-0">{children}</div>
           <BottomNav />
           <FeedbackButton />
         </LanguageProvider>

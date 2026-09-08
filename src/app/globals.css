@@ -231,15 +231,36 @@ h1, h2, h3 {
   .answer-btn:hover { filter: none; transform: none; }
 }
 
-/* Year slider */
+/* Year slider — used by the year guesser, /scale and /tint.
+ *
+ * The element is 44px tall and the *track* is the thin part, drawn by the
+ * track pseudo-elements. It used to set `height: 12px` on the input itself,
+ * which made the whole draggable area 12px: a 32px thumb is painted larger but
+ * does not extend the input's hit box, so on a phone this was a 12px target on
+ * a screen whose whole job is dragging it. Phones are the main device here.
+ */
 .year-slider {
   -webkit-appearance: none;
   appearance: none;
+  height: 44px;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+
+/* The visible track: thin, centred in the 44px hit area. */
+.year-slider::-webkit-slider-runnable-track {
   height: 12px;
   border-radius: 9999px;
   background: rgba(255, 255, 255, 0.1);
-  outline: none;
 }
+.year-slider::-moz-range-track {
+  height: 12px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
 .year-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -251,6 +272,8 @@ h1, h2, h3 {
   cursor: pointer;
   box-shadow: 0 0 15px rgba(255, 144, 98, 0.5);
   transition: transform 0.15s ease;
+  /* Centre a 32px thumb on a 12px track: (12 - 32) / 2. */
+  margin-top: -10px;
 }
 .year-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
 .year-slider::-moz-range-thumb {
@@ -263,6 +286,11 @@ h1, h2, h3 {
   box-shadow: 0 0 15px rgba(255, 144, 98, 0.5);
 }
 .year-slider:disabled { opacity: 0.5; }
+
+@media (prefers-reduced-motion: reduce) {
+  .year-slider::-webkit-slider-thumb { transition: none; }
+  .year-slider::-webkit-slider-thumb:hover { transform: none; }
+}
 
 /* Glass card — primary surface component */
 /*
@@ -827,6 +855,8 @@ h1, h2, h3 {
   .answer-btn::after, .answer-btn:hover::after { transform: translateX(-120%); }
   .code-tile, .spotlight::before { animation: none; }
 }
+
+
 
 
 

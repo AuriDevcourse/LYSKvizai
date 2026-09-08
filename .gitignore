@@ -58,3 +58,13 @@ next-env.d.ts
 # Regenerate with `node scripts/generate-brand-assets.mjs`.
 brand-assets/**/candidates/
 brand-assets/candidates/
+
+# iCloud conflict copies: "Logo 2.tsx", "http 3.ts".
+#
+# This repo lives under ~/Documents, which iCloud syncs, and it duplicates files
+# under that name when two devices touch one. They break `tsc` (duplicate
+# identifiers) and `git add -A` would otherwise commit them. 29 of them were
+# sitting in src/ when this was added. The pre-commit hook also blocks them; this
+# stops them being staged in the first place.
+* [0-9].*
+* [0-9]

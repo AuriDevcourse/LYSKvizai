@@ -124,7 +124,7 @@ export default function AvatarBuilder({ onChange, collapsed = false }: AvatarBui
           <button
             type="button"
             onClick={randomize}
-            className="flex items-center justify-center gap-1.5 rounded-xl bg-white/8 px-3 py-2 text-xs font-bold text-white transition-all hover:bg-white/15 active:scale-95"
+            className="flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-white/8 px-3 text-xs font-bold text-white transition-all hover:bg-white/15 active:scale-95"
           >
             <Dices className="h-4 w-4" />
             Randomize all
@@ -133,7 +133,7 @@ export default function AvatarBuilder({ onChange, collapsed = false }: AvatarBui
             <button
               type="button"
               onClick={rerollCurrent}
-              className="flex items-center justify-center gap-1.5 rounded-xl bg-white/5 px-3 py-2 text-[11px] font-bold text-white/60 transition-all hover:bg-white/10 hover:text-white active:scale-95"
+              className="flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-white/5 px-3 text-[11px] font-bold text-white/60 transition-all hover:bg-white/10 hover:text-white active:scale-95"
             >
               <Dices className="h-3.5 w-3.5" />
               Re-roll {activeLabel}
