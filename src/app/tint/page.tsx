@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, Palette as PaletteIcon, RotateCcw, Check, Trophy, Eye, Plus } from "lucide-react";
 import FlagArt from "@/components/games/FlagArt";
 import ImageTint from "@/components/games/ImageTint";
-import { FLAGS, officialPalette, playableRegions, type Flag, type FlagRegion } from "@/lib/games/flags";
+import { officialPalette, pickFlagRound, roundKey, type Flag, type FlagRegion } from "@/lib/games/flags";
 import { loadLocalRounds, type LocalImageRound } from "@/lib/games/local-images";
 import { loadMyReferences, type MyReference } from "@/lib/games/my-references";
 import ReferenceImporter from "@/components/games/ReferenceImporter";
@@ -65,12 +65,12 @@ type Round =
       scramble: TintScramble;
     };
 
-function flagRound(seenFlags: Set<string>): Round {
-  const pool = FLAGS.filter((f) => !seenFlags.has(f.id));
-  const source = pool.length ? pool : FLAGS;
-  const flag = source[Math.floor(Math.random() * source.length)];
-  const options = playableRegions(flag);
-  const region = options[Math.floor(Math.random() * options.length)];
+/**
+ * Build a flag round. The choice of flag and region lives in `flags.ts` so it
+ * can be unit-tested; this only turns that choice into a round.
+ */
+function flagRound(asked: Set<string>): Round {
+  const { flag, region } = pickFlagRound(asked);
   const scramble = scrambleOne(region.hex);
   return {
     kind: "flag",
@@ -250,7 +250,8 @@ export default function TintGamePage() {
       setLocalIndex((i) => i + 1);
     } else {
       const nextSeen = new Set(seen);
-      if (round.kind === "flag") nextSeen.add(round.flag.id);
+      // The pair, so this flag can return later for one of its other regions.
+      if (round.kind === "flag") nextSeen.add(roundKey(round.flag.id, round.region.id));
       setSeen(nextSeen);
       setRound(flagRound(nextSeen));
     }
@@ -260,7 +261,16 @@ export default function TintGamePage() {
   }, [roundNo, seen, round, locals, localIndex, mine, playedMine]);
 
   const restart = useCallback(() => {
-    setSeen(new Set());
+    /*
+     * `seen` deliberately survives a replay.
+     *
+     * A game is 5 rounds and there are 23 flags, so "prefer an untouched flag"
+     * alone means you would never see one come back — the other 28 questions
+     * would be unreachable. Carrying the set across replays is what turns 23
+     * flags into 51 rounds: play again and Brazil returns wanting the globe
+     * rather than the diamond. `flagRound` starts over on its own once all 51
+     * have been asked.
+     */
     if (mine.length > 0) {
       setRound(myRound(mine[0]));
       setPlayedMine(new Set([mine[0].id]));
@@ -270,14 +280,14 @@ export default function TintGamePage() {
       setLocalIndex(1);
       setPlayedMine(new Set());
     } else {
-      setRound(flagRound(new Set()));
+      setRound(flagRound(seen));
       setLocalIndex(0);
       setPlayedMine(new Set());
     }
     setTint({ hue: 0, sat: 1, light: 0 });
     setResult(null);
     setRoundNo(1); setTotal(0); setDone(false);
-  }, [locals, mine]);
+  }, [locals, mine, seen]);
 
   if (done) {
     return (

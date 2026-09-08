@@ -302,3 +302,47 @@ export function flagById(id: string): Flag {
   if (!f) throw new Error(`Unknown flag: ${id}`);
   return f;
 }
+
+/** Key for one asked question: this region of this flag. */
+export function roundKey(flagId: string, regionId: string): string {
+  return `${flagId}:${regionId}`;
+}
+
+/**
+ * Choose the next flag and region to ask about.
+ *
+ * `asked` holds `flag:region` keys. This used to retire a whole flag after one
+ * round, which made most of the game unreachable: 23 flags but 51 playable
+ * regions, so two thirds of the questions could never come up. Brazil has a
+ * field, a diamond and a globe; Portugal, South Africa and Ethiopia have four
+ * parts each.
+ *
+ * Flags nobody has been asked about come first, so early rounds stay varied.
+ * Only once every flag has been used does one return wanting a different part.
+ * That order matters: Brazil twice in three rounds reads as a bug, whereas
+ * Brazil coming back later for the globe instead of the diamond reads as the
+ * game going deeper. Once all 51 are done it starts over.
+ */
+export function pickFlagRound(
+  asked: Set<string>,
+  choose: (count: number) => number = (n) => Math.floor(Math.random() * n),
+): { flag: Flag; region: FlagRegion } {
+  const remaining = FLAGS.map((flag) => ({
+    flag,
+    unasked: playableRegions(flag).filter((r) => !asked.has(roundKey(flag.id, r.id))),
+  })).filter((x) => x.unasked.length > 0);
+
+  if (remaining.length === 0) {
+    // Every question has been asked; begin again rather than dead-end.
+    const flag = FLAGS[choose(FLAGS.length)];
+    const options = playableRegions(flag);
+    return { flag, region: options[choose(options.length)] };
+  }
+
+  const untouched = remaining.filter(
+    (x) => x.unasked.length === playableRegions(x.flag).length,
+  );
+  const pool = untouched.length ? untouched : remaining;
+  const pick = pool[choose(pool.length)];
+  return { flag: pick.flag, region: pick.unasked[choose(pick.unasked.length)] };
+}

@@ -4,7 +4,7 @@ import {
   scoreSingle, scrambleOne,
 } from "./tint-scoring";
 import { CREATURES, isScaleCreature } from "./creatures";
-import { FLAGS, playableRegions } from "./flags";
+import { FLAGS, playableRegions, pickFlagRound, roundKey } from "./flags";
 import { FLAG_RENDERER_IDS } from "@/components/games/FlagArt";
 import { TRANSIT_LINES, playableLines, diagramFor } from "./transit";
 
@@ -161,6 +161,16 @@ describe("flag region labels", () => {
     }
   });
 
+  it("offers far more rounds than flags, because each flag has several parts", () => {
+    // The selector used to retire a whole flag after one round, which made most
+    // of these unreachable. Brazil alone has three; Portugal, South Africa and
+    // Ethiopia have four each.
+    const flags = FLAGS.length;
+    const rounds = FLAGS.reduce((n, f) => n + playableRegions(f).length, 0);
+    expect(flags).toBeGreaterThanOrEqual(20);
+    expect(rounds).toBeGreaterThan(flags * 2);
+  });
+
   it("gives every playable region a distinct label within its flag", () => {
     // Two regions on one flag reading "the band" would leave the player unsure
     // which one is being asked for.
@@ -176,6 +186,54 @@ describe("flag region labels", () => {
         expect(region.label, `${flag.name} / ${region.id}`).toMatch(/^the /);
       }
     }
+  });
+});
+
+describe("pickFlagRound", () => {
+  const allPairs = FLAGS.flatMap((f) => playableRegions(f).map((r) => roundKey(f.id, r.id)));
+
+  it("asks about every flag before repeating one", () => {
+    // Brazil twice in three rounds reads as a bug. Every flag first, then depth.
+    const asked = new Set<string>();
+    const flagsSeen: string[] = [];
+    for (let i = 0; i < FLAGS.length; i++) {
+      const { flag, region } = pickFlagRound(asked, () => 0);
+      flagsSeen.push(flag.id);
+      asked.add(roundKey(flag.id, region.id));
+    }
+    expect(new Set(flagsSeen).size).toBe(FLAGS.length);
+  });
+
+  it("then brings a flag back for a part it has not asked about", () => {
+    // Ask one region of every flag, then keep going: the next pick must be a
+    // returning flag, and must not repeat a question already asked.
+    const asked = new Set<string>();
+    for (let i = 0; i < FLAGS.length; i++) {
+      const { flag, region } = pickFlagRound(asked, () => 0);
+      asked.add(roundKey(flag.id, region.id));
+    }
+    const { flag, region } = pickFlagRound(asked, () => 0);
+    expect(asked.has(roundKey(flag.id, region.id))).toBe(false);
+    // It is a flag we have already used, asking about a different part.
+    expect([...asked].some((k) => k.startsWith(`${flag.id}:`))).toBe(true);
+  });
+
+  it("reaches every one of the playable regions", () => {
+    const asked = new Set<string>();
+    for (let i = 0; i < allPairs.length; i++) {
+      const { flag, region } = pickFlagRound(asked, () => 0);
+      asked.add(roundKey(flag.id, region.id));
+    }
+    expect(asked.size).toBe(allPairs.length);
+    for (const pair of allPairs) expect(asked.has(pair)).toBe(true);
+  });
+
+  it("starts over instead of dead-ending once everything is asked", () => {
+    const asked = new Set(allPairs);
+    const { flag, region } = pickFlagRound(asked, () => 0);
+    expect(flag).toBeTruthy();
+    expect(region).toBeTruthy();
+    expect(playableRegions(flag).map((r) => r.id)).toContain(region.id);
   });
 });
 
