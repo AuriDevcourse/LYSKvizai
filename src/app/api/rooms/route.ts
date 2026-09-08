@@ -38,8 +38,20 @@ function json(data: unknown, status = 200) {
  * the store is in memory) was told they lacked permission for their own game.
  * That sends you looking for an auth bug instead of a missing room.
  */
+/**
+ * Map a store error to a status.
+ *
+ * Everything that was not "not found" used to be 403, which told the host they
+ * were not allowed to do something they *are* allowed to do. "Can't continue
+ * yet" means the room is not on the results screen, and "No wager phase" means
+ * the round already advanced: both are timing, not authorisation, and 409
+ * Conflict says so. A client that treats 403 as "I have lost host rights" would
+ * be wrong to, and the distinction matters for anything retrying.
+ */
 function statusFor(error: string): number {
-  return /not found/i.test(error) ? 404 : 403;
+  if (/not found/i.test(error)) return 404;
+  if (/can't continue|no wager phase|already started|not in progress/i.test(error)) return 409;
+  return 403;
 }
 
 export async function POST(req: NextRequest) {

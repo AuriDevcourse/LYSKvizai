@@ -20,6 +20,14 @@ BASE=http://localhost:3005 node scripts/stress/abuse.mjs
   same instant, emoji flying, two players dropping and reconnecting mid-game,
   a wager round, and the host driving the rounds. Reports problems found, not
   just timings.
+- `edge.mjs` — the things people actually do: two players typing the same name,
+  someone taking another's seat, a player trying to drive the game, a double tap
+  on an answer, a late arrival, a lowercase code, a pasted 500-character name.
+  Asserts each is handled, rather than measuring anything.
+- `hostcrash.mjs` — the host refreshes or their laptop sleeps mid-game with 20
+  people playing. Checks the host recovers, that a host action without a token
+  is refused, that `isHost` does not leak, that players can keep answering
+  while the host is away, and that the game can still be driven to the end.
 - `abuse.mjs` — one player opening 25 streams. Must still be cut off; this is
   what proves a rate-limit fix made the limit *precise* rather than absent.
 

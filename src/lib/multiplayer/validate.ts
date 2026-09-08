@@ -83,7 +83,14 @@ export function validateAction(
 
     case "join":
       if (!isStr(b.playerId, 100)) return { error: "Invalid playerId" };
-      if (!isStr(b.name, 100)) return { error: "Name is required" };
+      /*
+       * Split from one `isStr` check so the message matches the problem. It
+       * reported "Name is required" for a name that was merely too long, which
+       * is what a player sees after pasting something by accident: told their
+       * name is missing while looking at it in the field.
+       */
+      if (typeof b.name !== "string" || !b.name.trim()) return { error: "Name is required" };
+      if (b.name.length > 100) return { error: "Name is too long" };
       if (typeof b.emoji !== "string" || b.emoji.length > 200) return { error: "Invalid avatar" };
       if (b.token !== undefined && !isStr(b.token, 100)) return { error: "Invalid token" };
       break;

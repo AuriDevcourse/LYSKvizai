@@ -89,6 +89,31 @@ dropping and reconnecting mid-game, a wager round played, host driving rounds.
 
 **20 players has 2.5x headroom.**
 
+### Then hunted the cases the full-game test could not see
+
+Three more harnesses, all committed. `edge.mjs` and `hostcrash.mjs` found the
+app already solid where it matters:
+
+- Two players typing the same name is refused, accent-insensitively.
+- Taking another player's seat is refused, with a wrong token *and* with none.
+- A player cannot start or advance the game with their own token (403).
+- Answering twice is refused; late joins are refused; lowercase room codes work.
+- Blank and markup names are refused.
+- **The host survives a refresh** and drives the game to completion with all 20
+  players still in. A host action with no token is refused, and `GET` does not
+  leak `isHost` to an uncredentialed caller. Players keep answering while the
+  host is away.
+
+Two small real fixes fell out of it:
+
+- **"Name is required" was shown for a name that was merely too long.** One
+  `isStr(name, 100)` check conflated missing with oversized, so a player who
+  pasted something was told their name was missing while looking at it in the
+  field. Split into two messages.
+- **State conflicts returned 403.** "Can't continue yet" and "No wager phase"
+  are timing, not authorisation — the host *is* allowed. A client treating 403
+  as "I have lost host rights" would be wrong to. They are 409 now.
+
 ### Two false alarms I nearly "fixed"
 
 - Chaining the 20, 35 and 50-player runs made the 50 run look like a host
