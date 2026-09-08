@@ -48,6 +48,28 @@ chart · streak badge on phones · confetti on the podium · 44px tap targets ·
 
 ---
 
+## 2026-09-08 — iCloud corrupted `.git`, and a backgrounded commit ran twice
+
+Two process failures, both recovered, both worth recording because they will
+recur.
+
+**iCloud duplicated files inside `.git`.** The repo sits under `~/Documents`,
+and iCloud had created `.git/index 2`, `.git/index 3`,
+`.git/refs/remotes/origin/HEAD 2` and its reflog. The duplicated ref broke
+`git fetch` outright: `fatal: bad object refs/remotes/origin/HEAD 2`. Deleted
+the four duplicates, confirmed the real refs were intact and identical, and
+`git fsck` came back clean. `.gitignore` already blocks the pattern in `src/`
+and `.next/`, but it cannot protect `.git` — the only real fix is moving the
+repo off iCloud.
+
+**A backgrounded commit ran twice.** A command chaining
+`progress.md` edit → `git add -A && git commit` → `vitest` → `lint` exceeded its
+timeout and was backgrounded. I redid the work by hand and pushed `8f3829f`;
+the background job then completed, re-inserted the changelog entry and committed
+it again as `4398a5a`. Verified the stray commit contained only the duplicated
+53 lines and was unpushed, then reset to `origin/master`. Lesson: never put a
+commit in the same command as a test run.
+
 ## 2026-09-08 — The scale game was scoring players against an invented number
 
 Auri: "how do we know what is the size of the robot?" It could not be known,

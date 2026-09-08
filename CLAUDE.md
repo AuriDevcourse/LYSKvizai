@@ -395,6 +395,50 @@ left safety resting on every future consumer staying careful. Anything
 unrecognised now returns empty and the caller falls back to the default avatar.
 Do not loosen it to "fix" an avatar that will not render; add its shape.
 
+## iCloud is corrupting this repository, including `.git`
+
+The repo lives under `~/Documents`, which iCloud syncs, and iCloud resolves a
+two-device conflict by duplicating the file as `Name 2.ext`. That has now
+happened three ways:
+
+1. **In `src/`** — 29 copies like `Logo 2.tsx`, which break `tsc` with duplicate
+   identifiers. `.gitignore` blocks the pattern so they cannot be committed.
+2. **In `.next/`** — repeatedly broke builds mid-session.
+3. **Inside `.git/` itself**, which `.gitignore` cannot help with. Found
+   `.git/index 2`, `.git/index 3`, `.git/refs/remotes/origin/HEAD 2` and its
+   reflog. The duplicated ref made `git fetch` fail outright:
+
+   ```
+   fatal: bad object refs/remotes/origin/HEAD 2
+   error: ... did not send all necessary objects
+   ```
+
+   `git fsck` was clean once the four duplicates were deleted, and the real refs
+   were untouched, so nothing was lost — but a duplicated `.git/index` is how a
+   working tree gets silently mangled.
+
+**If git starts failing on a "bad object" whose name ends in a space and a
+digit, that is this.** Delete the duplicates, do not try to repair them:
+
+```bash
+find .git -name "* [0-9]" -o -name "* [0-9].*"   # inspect first
+git fsck --no-progress                            # confirm no real damage
+```
+
+The durable fix is to move the repo out of an iCloud-synced folder, or exclude
+it in System Settings. Until then this will keep recurring.
+
+## Do not background a long shell command that commits
+
+A `git add -A && git commit` was backgrounded after hitting a timeout, and it
+ran again *after* the same work had been redone by hand: the changelog entry was
+inserted twice and a second identical commit was created. It was recoverable
+(the stray commit touched only the duplicated text and was not pushed) but it
+briefly put the branch in a state that looked like a bad merge.
+
+Keep verification (`vitest`, `lint`, `build`) out of the same command as a
+commit, so a slow test run cannot strand a write operation.
+
 ## Tech Stack
 - Next.js 16 (App Router) + React 19 + TypeScript
 - Tailwind CSS 4
