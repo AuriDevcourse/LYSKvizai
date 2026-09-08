@@ -48,6 +48,36 @@ chart · streak badge on phones · confetti on the podium · 44px tap targets ·
 
 ---
 
+## 2026-09-08 — The flag prompt was giving away the answer
+
+Auri: "it should not say the colour."
+
+Every region label named its own colour: "the green field", "the yellow
+diamond", "the red cross". Told the diamond is yellow, you drag hue to yellow —
+so the colour recall the game exists to test never happened. The file's own
+header says the mechanic is "recalling a colour rather than guessing one", and
+the label was handing it over.
+
+All 69 region labels are now named by shape or position and never by colour.
+Shape where it is unique ("the diamond", "the saltire", "the Ashoka Chakra",
+"the armillary sphere"), position where the shape repeats. Ukraine now reads
+"Restore the bottom band" over a band that is currently purple — you have to
+know it is yellow.
+
+Orientation came from the renderers in `FlagArt.tsx`, not from memory:
+horizontal tricolours are top/middle/bottom, vertical ones hoist/middle/fly
+with hoist being the mast side. Checked the custom renderers individually —
+Portugal is a vertical 40/60 split so it is hoist field and fly field; South
+Africa's red is the upper half and blue the lower; Spain's single red region
+covers both outer bands, hence "the top and bottom bands"; Norway has two
+crosses, so outer and inner.
+
+Three tests pin it: no label may contain a colour word, playable labels must be
+distinct within a flag (or you cannot tell which band is meant), and every label
+must start with "the" so it reads after "Restore". The first is the one that
+matters; it also caught "the pale stripes", which I had written for Greece and
+which is still a colour hint.
+
 ## 2026-09-08 — The colour game said "Find" when nothing is being found
 
 Auri: "when it comes to flags, dont say find Red cross. it is just adjusting and

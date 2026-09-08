@@ -138,6 +138,47 @@ describe("creature data", () => {
   });
 });
 
+describe("flag region labels", () => {
+  /*
+   * The prompt must not contain the answer.
+   *
+   * Labels used to read "the green field", "the yellow diamond", "the red
+   * cross". Told the diamond is yellow, a player drags hue to yellow and the
+   * colour recall this game exists to test never happens. Recognising the flag
+   * is supposed to be what tells you roughly what belongs there.
+   */
+  const COLOUR_WORDS =
+    /\b(red|green|blue|yellow|gold|golden|orange|black|white|navy|saffron|purple|pink|brown|grey|gray|pale|dark|light|crimson|azure)\b/i;
+
+  it("never names a colour", () => {
+    for (const flag of FLAGS) {
+      for (const region of flag.regions) {
+        expect(
+          COLOUR_WORDS.test(region.label),
+          `${flag.name} / ${region.id}: label "${region.label}" gives away the answer`,
+        ).toBe(false);
+      }
+    }
+  });
+
+  it("gives every playable region a distinct label within its flag", () => {
+    // Two regions on one flag reading "the band" would leave the player unsure
+    // which one is being asked for.
+    for (const flag of FLAGS) {
+      const labels = flag.regions.filter((r) => r.playable).map((r) => r.label);
+      expect(new Set(labels).size, `${flag.name} has duplicate labels`).toBe(labels.length);
+    }
+  });
+
+  it("phrases every label so it reads after \"Restore\"", () => {
+    for (const flag of FLAGS) {
+      for (const region of flag.regions) {
+        expect(region.label, `${flag.name} / ${region.id}`).toMatch(/^the /);
+      }
+    }
+  });
+});
+
 describe("single-colour scoring (the flag game)", () => {
   it("is perfect for an exact match", () => {
     expect(scoreSingle("#009c3b", "#009c3b").points).toBe(100);
