@@ -26,8 +26,20 @@ export interface ScaleResult {
   actualM: number;
   /** guessed / actual. 1 is perfect, 2 is twice too big, 0.5 is half. */
   ratio: number;
-  /** 0-100. */
+  /**
+   * 0-100, rounded. This is the score, and it is summed across rounds, so it
+   * stays a whole number.
+   */
   points: number;
+  /**
+   * The same 0-100 measure, unrounded, for display as a percentage.
+   *
+   * Kept separate from `points` rather than making `points` a float: the score
+   * accumulates across a game and a running total of 268.7000000000003 is not a
+   * score. This is the precise figure behind the round's points, so a player who
+   * was very slightly out can see it instead of being shown a bare "99".
+   */
+  accuracy: number;
   /** True when within 10% either way — worth celebrating. */
   isBullseye: boolean;
   /** "2.4× too big" / "3.1× too small" / "spot on". */
@@ -43,6 +55,7 @@ export function scoreScale(guessedM: number, actualM: number): ScaleResult {
       actualM,
       ratio: 0,
       points: 0,
+      accuracy: 0,
       isBullseye: false,
       verdict: "no guess",
     };
@@ -50,7 +63,8 @@ export function scoreScale(guessedM: number, actualM: number): ScaleResult {
 
   const ratio = guessedM / actualM;
   const logError = Math.abs(Math.log(ratio));
-  const points = Math.round(100 * Math.max(0, 1 - logError / Math.log(TOLERANCE)));
+  const accuracy = 100 * Math.max(0, 1 - logError / Math.log(TOLERANCE));
+  const points = Math.round(accuracy);
   const isBullseye = ratio >= 0.9 && ratio <= 1.1;
 
   let verdict: string;
@@ -62,7 +76,7 @@ export function scoreScale(guessedM: number, actualM: number): ScaleResult {
     verdict = `${(1 / ratio).toFixed(1)}× too small`;
   }
 
-  return { guessedM, actualM, ratio, points, isBullseye, verdict };
+  return { guessedM, actualM, ratio, points, accuracy, isBullseye, verdict };
 }
 
 /** Human-readable size. Sub-metre reads better in centimetres. */

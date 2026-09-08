@@ -48,6 +48,37 @@ chart · streak badge on phones · confetti on the podium · 44px tap targets ·
 
 ---
 
+## 2026-09-08 — Accuracy shown to one decimal
+
+Auri: "I want to see the accuracy in percentage with 1 decimal point."
+
+`scoreScale` already produced a 0-100 measure, but it was rounded on the way out
+and doubled as the score. So a near-perfect guess read as a flat "98" with the
+interesting part discarded.
+
+Added `accuracy` to `ScaleResult` as the unrounded value and left `points` as
+its rounding. Two views of one number rather than one lossy number: `points`
+still sums into a whole-number score, because a running total of
+268.7000000000003 is not a score.
+
+The round reveal now shows "94.3% accurate" under the points. The end-of-game
+line was already a percentage but at zero decimals *and* computed as
+`total / ROUNDS` — an average of already-rounded values. Printing a decimal from
+that would claim precision it did not have, so the page now accumulates the
+precise per-round accuracies and averages those.
+
+Also brought the year guesser's "83% · Off by 4 years" to one decimal, since it
+is the only other accuracy percentage a player sees and mismatched precision
+across two games reads as an oversight.
+
+Three tests pin that `points === Math.round(accuracy)`, that a 1% overshoot no
+longer displays as 100.0%, and that a zero or negative guess gives 0 rather than
+NaN. Verified in the browser: 98.1% -> +98, 94.3% -> +94, 14.8% -> +15.
+
+Cleared six more iCloud duplicates during this, including two duplicated *route
+directories* under `src/app/api/library/`. They were empty, so no phantom API
+routes, and `.gitignore`'s `* [0-9]` pattern does cover a duplicated directory.
+
 ## 2026-09-08 — iCloud corrupted `.git`, and a backgrounded commit ran twice
 
 Two process failures, both recovered, both worth recording because they will

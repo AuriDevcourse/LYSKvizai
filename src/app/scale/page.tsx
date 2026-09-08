@@ -73,6 +73,15 @@ export default function ScaleGamePage() {
   const [result, setResult] = useState<ScaleResult | null>(null);
   const [roundNo, setRoundNo] = useState(1);
   const [total, setTotal] = useState(0);
+  /*
+   * Sum of the unrounded per-round accuracies, kept apart from `total`.
+   *
+   * The average used to be `total / ROUNDS`, which averages numbers that were
+   * already rounded — fine at 0 decimals, but reporting one decimal from that
+   * claims precision the figure does not have. Summing the precise values makes
+   * the displayed average actually correct to the digit shown.
+   */
+  const [accuracySum, setAccuracySum] = useState(0);
   const [done, setDone] = useState(false);
 
   // Deferred a microtask rather than set during render: this is the point where
@@ -105,6 +114,7 @@ export default function ScaleGamePage() {
     const r = scoreScale(guessedM, round.target.heightM);
     setResult(r);
     setTotal((t) => t + r.points);
+    setAccuracySum((a) => a + r.accuracy);
   }, [result, guessedM, round.target.heightM]);
 
   const next = useCallback(() => {
@@ -124,17 +134,18 @@ export default function ScaleGamePage() {
     setResult(null);
     setRoundNo(1);
     setTotal(0);
+    setAccuracySum(0);
     setDone(false);
   }, []);
 
   if (done) {
-    const avg = Math.round(total / ROUNDS);
+    const avg = accuracySum / ROUNDS;
     return (
       <div className="rise flex min-h-svh flex-col items-center justify-center gap-7 px-5 py-10">
         <Trophy className="h-14 w-14 text-answer-yellow drop-shadow-[0_0_20px_rgba(201,168,37,0.7)]" />
         <div className="text-center">
           <h1 className="font-headline neon text-5xl font-extrabold tracking-tight sm:text-6xl">{total}</h1>
-          <p className="mt-2 text-white/55">out of {ROUNDS * 100} · {avg}% average accuracy</p>
+          <p className="mt-2 text-white/55">out of {ROUNDS * 100} · {avg.toFixed(1)}% average accuracy</p>
         </div>
         <div className="flex gap-3">
           <button onClick={restart} className="btn-primary flex min-h-[48px] items-center gap-2 !px-7 !py-0 !text-base">
@@ -256,6 +267,12 @@ export default function ScaleGamePage() {
           <div className="w-full max-w-lg text-center">
             <p className={`font-headline text-4xl font-extrabold ${result.isBullseye ? "text-answer-green" : "text-white"}`}>
               +{result.points}
+            </p>
+            {/* The precise figure behind the points. `points` is rounded because
+                it is summed into the score; this is the same measure to one
+                decimal, so a near-miss reads as 99.4% rather than a flat 99. */}
+            <p className="mt-1 font-headline text-lg font-extrabold tabular-nums text-primary">
+              {result.accuracy.toFixed(1)}% accurate
             </p>
             <p className="mt-1 text-white/70">
               {result.isBullseye ? "Spot on." : `You were ${result.verdict}.`}

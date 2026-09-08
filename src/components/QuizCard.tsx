@@ -356,7 +356,8 @@ export default function QuizCard({
                 ? isYearCorrect
                   ? <>{t("quizCard.correct")} {correctYear} <Check className="h-5 w-5" /></>
                   : yearGotPoints
-                    ? `${Math.round(yearAccuracy * 100)}% · Off by ${yearDiff} ${yearDiff === 1 ? "year" : "years"}`
+                    // One decimal, matching the scale game's accuracy readout.
+                    ? `${(yearAccuracy * 100).toFixed(1)}% · Off by ${yearDiff} ${yearDiff === 1 ? "year" : "years"}`
                     : <>{t("quizCard.incorrect")} <X className="h-5 w-5" /></>
                 : isCorrect
                   ? <>{t("quizCard.correct")} <Check className="h-5 w-5" /></>

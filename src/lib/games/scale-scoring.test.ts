@@ -48,6 +48,36 @@ describe("scoreScale", () => {
   });
 });
 
+  /*
+   * `accuracy` is what the reveal shows to one decimal; `points` is what the
+   * score sums. They must stay two views of one number, or the screen and the
+   * scoreboard start disagreeing.
+   */
+  it("reports accuracy as the unrounded form of points", () => {
+    for (const [guess, actual] of [[1, 1], [1.05, 1], [2, 1], [1, 3], [7, 1]]) {
+      const r = scoreScale(guess, actual);
+      expect(r.points).toBe(Math.round(r.accuracy));
+      expect(r.accuracy).toBeGreaterThanOrEqual(0);
+      expect(r.accuracy).toBeLessThanOrEqual(100);
+    }
+  });
+
+  it("keeps a decimal that rounding would hide", () => {
+    // A slight overshoot: points alone would show a flat number, and the point
+    // of the decimal is that the player can see they were not quite exact.
+    const r = scoreScale(1.01, 1);
+    expect(r.accuracy).toBeLessThan(100);
+    expect(r.accuracy.toFixed(1)).not.toBe("100.0");
+  });
+
+  it("gives a zero guess zero accuracy, not NaN", () => {
+    for (const bad of [0, -1]) {
+      const r = scoreScale(bad, 2);
+      expect(Number.isFinite(r.accuracy)).toBe(true);
+      expect(r.accuracy).toBe(0);
+    }
+  });
+
 describe("formatHeight", () => {
   it("uses centimetres below a metre", () => {
     expect(formatHeight(0.24)).toBe("24 cm");
