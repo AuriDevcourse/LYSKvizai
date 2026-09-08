@@ -4,10 +4,15 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, RotateCcw, Ruler, Check, Trophy } from "lucide-react";
 import CreatureArt from "@/components/games/CreatureArt";
-import { CREATURES, type Creature } from "@/lib/games/creatures";
+import { CREATURES, isScaleCreature, type ScaleCreature } from "@/lib/games/creatures";
 
 /** Only entries measured by height — see `inScaleGame` for why the whale is out. */
-const SCALE_POOL = CREATURES.filter((c) => c.inScaleGame);
+/*
+ * Narrowed, not just filtered. `isScaleCreature` proves each entry has a real
+ * cited size, so everything downstream reads `heightM` without a guard — and a
+ * creature with no knowable size cannot reach this game at all.
+ */
+const SCALE_POOL: ScaleCreature[] = CREATURES.filter(isScaleCreature);
 import { scoreScale, formatHeight, pickPair, type ScaleResult } from "@/lib/games/scale-scoring";
 
 const ROUNDS = 6;
@@ -44,8 +49,8 @@ function ratioFromSlider(t: number): number {
 }
 
 interface Round {
-  reference: Creature;
-  target: Creature;
+  reference: ScaleCreature;
+  target: ScaleCreature;
 }
 
 function newRound(seen: Set<string>, choose?: (count: number) => number): Round {

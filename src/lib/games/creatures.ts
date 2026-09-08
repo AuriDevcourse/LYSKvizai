@@ -1,5 +1,11 @@
 /**
- * The cast for both mini-games.
+ * The cast for the scale game.
+ *
+ * Only the scale game reads this. The colour game draws from `flags.ts`, from
+ * images you drop in `public/tint-local/`, and from your own imported
+ * references — its "cartoon characters" are those local images, not these
+ * drawings. The header used to say "both mini-games", which stopped being true
+ * and made it look as though a sizeless entry still had a job here.
  *
  * Every character here is drawn from scratch for this project. That is a
  * deliberate constraint, not an aesthetic one: a "guess the cartoon character"
@@ -13,17 +19,33 @@
  * says which measurement it is (shoulder height and total height are very
  * different numbers for an elephant, and picking the wrong one makes the game
  * lie to the player).
+ *
+ * Which is why **a size is optional, and a creature without one cannot enter
+ * the scale game.** The robot used to carry `heightM: 3.2` with the source
+ * "Fictional — sized deliberately between an ostrich and a T. rex", and it was
+ * in the scale pool. Nobody can know that number. A player reasoning perfectly
+ * was scored against something invented, and the reveal then told them so.
+ *
+ * The type enforces it rather than trusting a flag: `pickPair` needs a definite
+ * `heightM`, so a pool that has not been narrowed by `isScaleCreature` will not
+ * compile. Archetypes with no real size still work fine in the tint game, which
+ * only ever reads the palette.
  */
 
 export interface Creature {
   id: string;
   name: string;
-  /** Real-world size in metres. See `measure` for what is being measured. */
-  heightM: number;
+  /**
+   * Real-world size in metres, with what it measures and where it came from.
+   *
+   * All three or none. Absent means "this thing has no knowable size", which is
+   * true of an invented archetype and disqualifies it from the scale game.
+   */
+  heightM?: number;
   /** What the number actually measures — shown to the player on reveal. */
-  measure: string;
-  /** Where the figure comes from. */
-  source: string;
+  measure?: string;
+  /** Where the figure comes from. Must be a citation, not an assertion. */
+  source?: string;
   /** Palette slots consumed by the SVG. Order is stable; the tint game scores
    *  every one of these. */
   palette: string[];
@@ -46,6 +68,30 @@ export interface Creature {
    * measurement is irrelevant.
    */
   inScaleGame: boolean;
+}
+
+/**
+ * A creature that can appear in the scale game: one whose size is a cited fact.
+ *
+ * `pickPair` requires a definite `heightM`, so handing it a raw `Creature[]`
+ * does not compile. Narrowing through `isScaleCreature` is the only way in,
+ * which is what stops an invented size ever being scored again.
+ */
+export type ScaleCreature = Creature & {
+  heightM: number;
+  measure: string;
+  source: string;
+};
+
+/** Type guard: opted in to the scale game *and* carrying a real measurement. */
+export function isScaleCreature(c: Creature): c is ScaleCreature {
+  return (
+    c.inScaleGame &&
+    typeof c.heightM === "number" &&
+    c.heightM > 0 &&
+    !!c.measure &&
+    !!c.source
+  );
 }
 
 export const CREATURES: Creature[] = [
@@ -92,12 +138,24 @@ export const CREATURES: Creature[] = [
   {
     id: "robot",
     name: "Service robot",
-    heightM: 3.2,
-    measure: "standing height",
-    source: "Fictional — sized deliberately between an ostrich and a T. rex",
+    /*
+     * No size, deliberately, which also means no game uses this entry today.
+     *
+     * A robot has no standing height anyone could know. It cannot be a fair
+     * answer, and it cannot be the reference either: the reference's real size
+     * is printed on screen, so a fictional one would hand the player an
+     * invented fact to reason from and quietly corrupt every guess made against
+     * it.
+     *
+     * Kept rather than deleted because the drawing is original work and the
+     * archetype is fine — it only lacks a measurement. Give it a real, cited
+     * height (a specific production robot, say) and flip `inScaleGame`, and
+     * `isScaleCreature` will let it back in. Until then it is inert by
+     * construction, not by convention.
+     */
     palette: ["#b9c4cf", "#6d7b8a", "#3ec9d6", "#f5a623"],
     artFraction: 1.0,
-    inScaleGame: true,
+    inScaleGame: false,
   },
   {
     id: "elephant",

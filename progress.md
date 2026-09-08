@@ -48,6 +48,51 @@ chart · streak badge on phones · confetti on the podium · 44px tap targets ·
 
 ---
 
+## 2026-09-08 — The scale game was scoring players against an invented number
+
+Auri: "how do we know what is the size of the robot?" It could not be known,
+and that was the bug.
+
+`creatures.ts` opens by saying the scale game's answer "is a fact rather than a
+vibe". One entry broke it: `heightM: 3.2` with the source "Fictional — sized
+deliberately between an ostrich and a T. rex", and `inScaleGame: true`. The
+number was invented, the data said so in its own source field, and the creature
+was in the pool anyway. A player reasoning perfectly was marked against it, and
+the reveal then told them the figure was made up.
+
+Worse as a reference than as a target: the reference's size is printed on
+screen, so it would hand the player a fictional fact to reason from and corrupt
+the guess. It also added nothing — 3.2 m is exactly the African elephant's
+height, so it was a duplicate slot that happened to be unknowable.
+
+**Fixed so it cannot come back.** The size fields are optional now, and
+`pickPair` requires a definite `heightM`, so a pool not narrowed through the new
+`isScaleCreature` guard will not compile. Being unknowable is a type error, not
+a convention. Three tests pin the rule: every scale target has a height, a
+measure and a source; anything without a size must not be opted in; and no
+scale target's source may read as invented. That last test is the one that
+would have caught this.
+
+Pool is 8 creatures, 0.24 m to 5.2 m, 21 valid pairs at the 1.5x-25x ratio the
+layout needs, for a 6-round game. Verified in the browser: 25 rounds played,
+robot 0 appearances, 0 reveals mentioning an invented source.
+
+### Two stale comments, one of them mine
+
+`creatures.ts` was headed "The cast for both mini-games". Only the scale game
+reads it — the colour game draws from `flags.ts`, `public/tint-local/` and
+imported references, so its "cartoon characters" are those local images, not
+these drawings. I then wrote a comment claiming the robot "stays in the tint
+game", wrong for the same reason. Both corrected; the robot is kept as a
+sizeless entry with a note on exactly what to add to let it back in.
+
+### Found while looking: dead transit code
+
+`components/games/TransitDiagram.tsx` (98 lines) has no references at all, and
+`lib/games/transit.ts` (105 lines) is referenced only by tests — leftovers from
+removing the transit category from the colour game. So tests cover code no game
+runs. Left in place rather than widening this change; worth a decision.
+
 ## 2026-09-08 — 20-player target: found the game freezing, fixed, verified to 50
 
 Auri: "this has to be something we can play with many people. up to 20."

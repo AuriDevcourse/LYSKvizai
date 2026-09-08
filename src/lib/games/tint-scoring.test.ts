@@ -3,7 +3,7 @@ import {
   scoreTint, paletteDelta, applyTint, randomScramble, inverseOf, PERFECT_DE,
   scoreSingle, scrambleOne,
 } from "./tint-scoring";
-import { CREATURES } from "./creatures";
+import { CREATURES, isScaleCreature } from "./creatures";
 import { FLAGS, playableRegions } from "./flags";
 import { FLAG_RENDERER_IDS } from "@/components/games/FlagArt";
 import { TRANSIT_LINES, playableLines, diagramFor } from "./transit";
@@ -93,12 +93,48 @@ describe("creature data", () => {
     }
   });
 
-  it("has a real, positive height and a source for every entry", () => {
-    for (const c of CREATURES) {
+  /*
+   * The scale game's promise is that the answer is a checkable fact. These pin
+   * that promise to the data.
+   *
+   * The robot shipped with `heightM: 3.2` and the source "Fictional — sized
+   * deliberately between an ostrich and a T. rex", and it was in the scale
+   * pool. A player who reasoned perfectly was scored against a number someone
+   * made up, and the reveal then admitted it. The third test below is the one
+   * that would have caught it.
+   */
+  it("gives every scale-game creature a positive height, a measure and a source", () => {
+    for (const c of CREATURES.filter(isScaleCreature)) {
       expect(c.heightM).toBeGreaterThan(0);
       expect(c.measure.length).toBeGreaterThan(0);
       expect(c.source.length).toBeGreaterThan(0);
     }
+  });
+
+  it("keeps creatures with no knowable size out of the scale game", () => {
+    for (const c of CREATURES) {
+      if (c.heightM === undefined) {
+        expect(c.inScaleGame, `${c.id} has no size and must not be a scale target`).toBe(false);
+      }
+    }
+  });
+
+  it("never scores a player against an invented figure", () => {
+    // A source is a citation, not an admission. If it reads like one of these,
+    // the number is not a fact and the creature does not belong in the game.
+    const invented = /fiction|invent|made ?up|deliberate|arbitrar|guess/i;
+    for (const c of CREATURES.filter(isScaleCreature)) {
+      expect(
+        invented.test(c.source),
+        `${c.id} is a scale target but its source reads as invented: "${c.source}"`,
+      ).toBe(false);
+    }
+  });
+
+  it("still has enough scale targets to make varied pairs", () => {
+    // pickPair needs pairs whose ratio lands between 1.5x and 25x; too small a
+    // pool and the game repeats itself.
+    expect(CREATURES.filter(isScaleCreature).length).toBeGreaterThanOrEqual(6);
   });
 });
 
