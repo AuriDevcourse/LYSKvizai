@@ -189,7 +189,7 @@ export default function HostQuestion({
         {/* Answer count. The denominator matters: "7" tells the host nothing,
             "7/8" tells them to wait and "7/30" tells them not to. */}
         <div className="flex shrink-0 flex-col items-center">
-          <span className="text-3xl font-black text-white sm:text-4xl">
+          <span className="font-headline text-3xl font-black text-white sm:text-4xl">
             {count}
             {answerCount != null && answerCount.total > 0 && (
               <span className="text-white/35">/{answerCount.total}</span>

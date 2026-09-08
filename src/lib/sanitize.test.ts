@@ -68,7 +68,35 @@ describe("sanitizeEmoji", () => {
     expect(sanitizeEmoji("x".repeat(200)).length).toBeLessThanOrEqual(120);
   });
 
-  it("strips tags", () => {
-    expect(sanitizeEmoji("<img src=x>🤖")).toBe("🤖");
+  /*
+   * The contract changed deliberately: markup no longer gets laundered out of a
+   * value that is then kept. Anything unrecognised is rejected whole and the
+   * caller falls back to the default avatar.
+   *
+   * Laundering was the weaker guarantee. This value arrives from whoever is
+   * joining and ends up in `dangerouslySetInnerHTML` and an `<img src>`, so
+   * "strip the bits I know about and keep the rest" only holds while every
+   * consumer stays careful. An allowlist holds regardless.
+   */
+  it("rejects anything containing markup rather than laundering it", () => {
+    expect(sanitizeEmoji("<img src=x>🤖")).toBe("");
+    expect(sanitizeEmoji("<script>alert(1)</script>")).toBe("");
+    expect(sanitizeEmoji('" onerror="alert(1)')).toBe("");
+  });
+
+  it("keeps the shapes the app actually produces", () => {
+    // The avatar builder's DiceBear config, including the -1 "not shown" slots.
+    expect(sanitizeEmoji("d2:1:2:3:4:-1:-1:-1:5:0:0")).toBe("d2:1:2:3:4:-1:-1:-1:5:0:0");
+    // A bare portrait file, and the prefixed form with a background colour.
+    expect(sanitizeEmoji("punk-asian-female.svg")).toBe("punk-asian-female.svg");
+    expect(sanitizeEmoji("svg:punk-asian-female.svg:#e8590c")).toBe("svg:punk-asian-female.svg:#e8590c");
+    // A plain emoji.
+    expect(sanitizeEmoji("🤖")).toBe("🤖");
+  });
+
+  it("refuses anything that could be read as a path", () => {
+    expect(sanitizeEmoji("svg:../../etc/passwd")).toBe("");
+    expect(sanitizeEmoji("../../../secret.svg")).toBe("");
+    expect(sanitizeEmoji("svg:/absolute.svg")).toBe("");
   });
 });

@@ -462,7 +462,7 @@ function AnimatedLeaderboardPhase({
                 <AnimatedNumber
                   value={displayScore}
                   duration={900}
-                  className="relative z-10 text-base font-black text-white tabular-nums sm:text-2xl"
+                  className="relative z-10 font-headline text-base font-black text-white tabular-nums sm:text-2xl"
                 />
               </div>
             );

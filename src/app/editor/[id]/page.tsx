@@ -224,7 +224,7 @@ export default function QuizEditorPage({ params }: PageProps) {
           <p className="text-lg text-white">{error}</p>
           <button
             onClick={() => router.push("/editor")}
-            className="rounded-xl bg-white px-6 py-3 font-semibold text-primary hover:bg-white/90"
+            className="rounded-xl bg-white px-6 py-3 font-bold text-primary hover:bg-white/90"
           >
             {t("nav.back")}
           </button>
@@ -253,7 +253,7 @@ export default function QuizEditorPage({ params }: PageProps) {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 font-semibold text-primary transition-colors hover:bg-white/90 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 font-bold text-primary transition-colors hover:bg-white/90 disabled:opacity-50"
           >
             {saving ? (
               <Loader2 className="h-4 w-4 animate-spin" />

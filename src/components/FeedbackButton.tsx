@@ -108,7 +108,7 @@ export default function FeedbackButton() {
             </div>
 
             <label className="mb-3 block">
-              <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-white/50">
+              <span className="mb-1.5 block text-xs font-bold uppercase tracking-wide text-white/50">
                 What&apos;s on your mind?
               </span>
               <textarea
@@ -125,7 +125,7 @@ export default function FeedbackButton() {
             </label>
 
             <label className="mb-4 block">
-              <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-white/50">
+              <span className="mb-1.5 block text-xs font-bold uppercase tracking-wide text-white/50">
                 Name or email <span className="text-white/45">(optional)</span>
               </span>
               <input

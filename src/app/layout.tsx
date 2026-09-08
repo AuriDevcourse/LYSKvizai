@@ -29,18 +29,26 @@ const baloo2 = Baloo_2({
 });
 
 /**
- * Be Vietnam Pro has no variable version, so the weights are explicit — but
- * they now match what the code actually asks for, which the old list didn't:
+ * Be Vietnam Pro has no variable version, so every weight is a separate file
+ * per subset — about 20KB each. The list is therefore exactly what the code
+ * renders, no more:
  *
  *   - `300` is gone: `font-light` appears nowhere.
- *   - `800` and `900` are new. `font-extrabold` is used 137 times and
- *     `font-black` 13, mostly on body-font elements, and neither weight was
- *     being loaded — the browser was synthesising both.
+ *   - `800` stays. `font-extrabold` is used on body text ~90 times.
+ *   - `600` and `900` were dropped, saving roughly 40KB on every page load.
+ *     `font-semibold` had four uses and became `font-bold`. `font-black` was
+ *     mostly big impact numerals — countdowns, scores, the wager, the year
+ *     guess — which belong in the display face anyway: Baloo 2 is variable, so
+ *     900 there is free, and moving them was better typography as well as
+ *     lighter. Verified by tallying computed (family, weight) pairs in the
+ *     rendered DOM, not by grepping class names.
+ *
+ * Fonts were 179KB of a 412KB page, the single largest category, ahead of JS.
  */
 const beVietnamPro = Be_Vietnam_Pro({
   variable: "--font-body",
   subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "700", "800"],
 });
 
 export const metadata: Metadata = {

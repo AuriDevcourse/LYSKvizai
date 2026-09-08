@@ -342,6 +342,42 @@ not `getBoundingClientRect`: a transform anywhere in the ancestry skews the rect
 and reports a compliant 44px control as 42px. And test "is it under the nav?"
 *after* scrolling to the bottom, or every long page reports false positives.
 
+## Rate limits: everyone in a room shares one IP
+
+This is the single easiest way to break Quizmo. Every player in a quiz room is
+on the same Wi-Fi, so they all present **one public IP**, and a room holds up to
+50 players. A per-IP limit that looks generous for one person is divided by fifty
+in the real case.
+
+Two shipped limits made the core product impossible, both found by
+`scripts/stress/`:
+
+| limit | was | measured effect | now |
+|---|---|---|---|
+| SSE per IP | 30 / 60s | 50 players from one IP: **50 x 429** | 300 / 60s |
+| `GET /api/rooms` per IP | 30 / 10s | 50 players: 30 ok, **20 rejected** | 300 / 10s |
+
+**Any per-IP ceiling must clear a full room plus reconnections.** Where identity
+is already verified, throttle the *player* instead: the SSE route now allows 10
+reconnects per minute per player, which catches a reconnect loop precisely while
+fifty distinct players connect freely. `MAX_ROOM_CONNECTIONS` bounds total
+fan-out per room and scales with it.
+
+Run `scripts/stress/` when touching any of this, including `abuse.mjs`, which
+proves the limit still stops one client rather than having been removed.
+
+## Avatar strings are attacker-controlled
+
+The avatar arrives from whoever is joining and is rendered on the host's screen
+and every other phone, reaching `dangerouslySetInnerHTML` in `Avatar` for the
+DiceBear case and an `<img src>` for the file case.
+
+`sanitizeEmoji` is an **allowlist** of the shapes the app produces, not a tag
+stripper. It used to accept any 120-character string with `<...>` removed, which
+left safety resting on every future consumer staying careful. Anything
+unrecognised now returns empty and the caller falls back to the default avatar.
+Do not loosen it to "fix" an avatar that will not render; add its shape.
+
 ## Tech Stack
 - Next.js 16 (App Router) + React 19 + TypeScript
 - Tailwind CSS 4

@@ -316,7 +316,7 @@ function CharadesInner() {
   if (phase === "countdown") {
     return (
       <div className="flex min-h-svh items-center justify-center">
-        <span className="text-9xl font-black text-white animate-bounce-in">
+        <span className="font-headline text-9xl font-black text-white animate-bounce-in">
           {countdown || "GO!"}
         </span>
       </div>
@@ -333,11 +333,11 @@ function CharadesInner() {
 
         <div className="flex gap-8">
           <div className="flex flex-col items-center">
-            <span className="text-5xl font-black text-answer-green">{correctWords.length}</span>
+            <span className="font-headline text-5xl font-black text-answer-green">{correctWords.length}</span>
             <span className="text-sm font-bold text-white/50">{t("charades.correct")}</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-5xl font-black text-error">{skippedWords.length}</span>
+            <span className="font-headline text-5xl font-black text-error">{skippedWords.length}</span>
             <span className="text-sm font-bold text-white/50">{t("charades.skipped")}</span>
           </div>
         </div>
@@ -394,7 +394,7 @@ function CharadesInner() {
             <X className="h-3.5 w-3.5 text-error" strokeWidth={3} />
             {skippedWords.length}
           </span>
-          <span className={`text-2xl font-black ${timeLeft <= 10 ? "text-error" : "text-white"}`}>
+          <span className={`font-headline text-2xl font-black ${timeLeft <= 10 ? "text-error" : "text-white"}`}>
             {timeLeft}
           </span>
         </div>

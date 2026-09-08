@@ -48,6 +48,75 @@ chart · streak badge on phones · confetti on the podium · 44px tap targets ·
 
 ---
 
+## 2026-09-08 — Performance, security review and stress test
+
+Typecheck clean, lint 0 errors, 141/141 tests, build compiles. Stress tests run
+against a local production build only; production got read-only health checks.
+
+### Two rate limits made the core product impossible
+
+Everyone in a quiz room is on the same Wi-Fi, so they share one public IP, and a
+room holds 50 players. Both shipped limits sat below that:
+
+- **SSE: 30 connections per IP per minute.** 50 players from one IP produced
+  **50 x 429** — measured, `{"429": 50}`. On a full room the 31st player onward
+  could never open their live feed, and every phone that slept and reconnected
+  spent more of the budget. Now 300/min per IP, plus a per-player limit of 10/min
+  applied *after* the membership check, which is the precise control.
+- **`GET /api/rooms`: 30 per 10s per IP.** 50 concurrent polls gave 30 ok and
+  **20 rejected**. Now 300/10s.
+
+Verified the fix did not just remove the protection: one player opening 25
+streams still gets **10 x 200 then 15 x 429**, while 50 distinct players all
+connect. `scripts/stress/` is committed so this is re-runnable.
+
+### Performance: fonts were the biggest cost, ahead of JS
+
+179KB of a 412KB page. Be Vietnam Pro has no variable cut, so each weight is a
+separate file per subset, and six were loaded. Tallying computed (family, weight)
+pairs in the rendered DOM showed 600 used four times and 900 mostly on big impact
+numerals — countdowns, scores, the wager, the year guess — which belong in the
+display face anyway. Baloo 2 is variable, so 900 there is free.
+
+Moved nine numerals to `.font-headline`, `font-semibold` to `font-bold`, and
+dropped 600 and 900: **179KB to 139KB, a 22% font reduction**, verified with
+cache-bypassed fetches. Better typography as well as lighter.
+
+### Security: strong, with one hardening item
+
+Good as found: the upload route is exemplary (MIME allowlist, magic-byte
+verification, server-decided extension, buffer-verified size, path containment);
+feedback HTML-escapes every interpolation; write routes have fail-closed editor
+auth with a timing-safe compare and throttling; player tokens prevent seat
+hijack; SSE verifies membership. 0 production dependency vulnerabilities, no
+secrets in the repo, no `eval`. The one `dangerouslySetInnerHTML` is safe because
+DiceBear decoding keeps only integers and clamps them into fixed arrays.
+
+Hardened: **`sanitizeEmoji` accepted any 120-character string** with only
+`<...>` stripped. Not exploitable today, but the avatar is attacker-controlled
+and reaches `dangerouslySetInnerHTML` and an `<img src>`, so safety rested on
+every future consumer staying careful. Now an allowlist of the shapes the app
+produces; anything else returns empty and falls back to the default avatar. The
+existing test pinned the old laundering behaviour and was updated to the stronger
+contract, plus cases for path-shaped input.
+
+Noted, not changed: `/api/network-url` is unauthenticated and unthrottled and
+returns the host's LAN IP, which is what the QR join flow is built on. One low
+dev-only advisory (esbuild); nothing in the production tree.
+
+### Load, measured
+
+50 players, production build: join p95 36ms, SSE connect p95 22ms, simultaneous
+answer p95 43ms, zero failures at any phase. Memory plateaued at 131 to 159MB
+across three full cycles and stayed flat; rooms are retained on purpose (2h idle,
+12h hard TTL).
+
+### One process trap worth remembering
+
+`pkill -f "next start"` does not match the running server, which is named
+`next-server`. Three rounds of "the fix isn't working" were all the old process
+still holding the port. Check `lsof -iTCP:PORT -sTCP:LISTEN` and kill by PID.
+
 ## 2026-09-08 — Mobile audit across all ten routes
 
 Auri: "make sure for mobile version everything works well, since this is the

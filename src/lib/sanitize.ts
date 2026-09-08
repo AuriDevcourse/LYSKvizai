@@ -28,8 +28,39 @@ export function sanitizeName(name: string): string {
 
 /** Sanitize emoji/avatar string — allow encoded avatar configs and emoji sequences */
 export function sanitizeEmoji(input: string): string {
-  // Allow up to 120 chars for encoded avatar strings. DiceBear config format
-  // "d1:H:E:L:N:B:Bd:Bd:G:BG" with 2-digit indices fits in ~35; leave headroom
-  // for future style toggles / longer encodings.
-  return input.slice(0, 120).replace(/<[^>]*>/g, "");
+  /*
+   * Avatars arrive from whoever is joining, so this is attacker-controlled, and
+   * the value is rendered on the host's big screen and on every other player's
+   * phone. It reaches `dangerouslySetInnerHTML` in `Avatar` for the DiceBear
+   * case and an `<img src>` for the file case.
+   *
+   * Neither is exploitable today: DiceBear decoding keeps only integers and
+   * clamps them into fixed variant arrays, and the file case is always prefixed
+   * with `/avatars/`. But this used to accept *any* 120-character string with
+   * only `<...>` stripped, which meant that safety rested entirely on every
+   * future consumer staying careful. One `href`, one style string, one template
+   * literal without the prefix, and it becomes injection.
+   *
+   * So allow only the shapes actually supported, and fall back to the default
+   * avatar for anything else:
+   *   - "d2:1:2:3:..."   the DiceBear config: digits, colons, minus signs
+   *   - "name.svg"       a bare file name from /public/avatars
+   *   - "svg:name.svg:#rrggbb"
+   *   - a short run of emoji characters
+   */
+  const raw = input.slice(0, 120);
+
+  // DiceBear config — the only form the avatar builder emits.
+  if (/^d[12](:-?\d{1,3}){8,10}$/.test(raw)) return raw;
+
+  // A file name, optionally with the "svg:" prefix and a hex background. No
+  // slashes and no dots beyond the extension, so no path can be built from it.
+  if (/^(svg:)?[a-z0-9-]{1,60}\.svg(:#[0-9a-fA-F]{3,8})?$/i.test(raw)) return raw;
+
+  // Anything short with no markup or path characters: an emoji, a letter.
+  const plain = raw.replace(/[<>"'`\\/]/g, "");
+  if (plain.length <= 16 && plain === raw) return plain;
+
+  // Unrecognised. Empty means "use the default", which `Avatar` already handles.
+  return "";
 }

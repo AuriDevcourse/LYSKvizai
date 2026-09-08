@@ -23,11 +23,27 @@ export async function GET(
   const playerId = req.nextUrl.searchParams.get("playerId") ?? "unknown";
   const token = req.nextUrl.searchParams.get("token") ?? "";
 
-  // This was the one route with no throttle at all. Each stream is a long-lived
-  // connection holding a heartbeat timer, so without a limit a single caller
-  // could open them until the box ran out of memory or file descriptors.
+  /*
+   * Coarse per-IP guard, before any work is done for an unverified caller.
+   * Each stream is a long-lived connection holding a heartbeat timer, so an
+   * unthrottled route could be opened until the box ran out of memory or file
+   * descriptors.
+   *
+   * This was 30 per minute, which broke the product's own core case. Everyone
+   * in a quiz room is on the same Wi-Fi, so all of them share one public IP —
+   * and a room holds up to 50 players. The limit sat *below* the supported room
+   * size, so on a full room the 31st player onward could never open their live
+   * feed, and every phone that slept and reconnected spent more of the budget.
+   * A stress test of 50 players from one IP returned 429 fifty times out of
+   * fifty.
+   *
+   * It is now well above a full room plus reconnections. The precise control is
+   * the per-player limit below, which can be tight because it applies to a
+   * verified member, plus `MAX_ROOM_CONNECTIONS`, which already scales with the
+   * room and bounds total fan-out.
+   */
   const ip = getClientIp(req);
-  if (!checkRateLimit(`sse:${ip}`, 30, 60_000)) {
+  if (!checkRateLimit(`sse-ip:${ip}`, 300, 60_000)) {
     return new Response("Too many connections", { status: 429 });
   }
 
@@ -44,6 +60,19 @@ export async function GET(
   const isRoomHost = isHostOf(code, playerId, token);
   if (!isRoomHost && (!player || player.token !== token)) {
     return new Response("Forbidden", { status: 403 });
+  }
+
+  /*
+   * Per-player throttle, applied only once membership is proven.
+   *
+   * This is where a reconnect loop is actually caught: one identified client
+   * opening streams over and over. Ten a minute is generous for a phone on bad
+   * Wi-Fi and useless to anything looping. Keying on the player rather than the
+   * IP is what lets fifty people share one network without competing for the
+   * same allowance.
+   */
+  if (!checkRateLimit(`sse-player:${upperCode}:${playerId}`, 10, 60_000)) {
+    return new Response("Too many reconnections", { status: 429 });
   }
 
   // Cap fan-out per room. A client stuck in a reconnect loop could otherwise

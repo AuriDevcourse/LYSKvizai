@@ -206,7 +206,7 @@ export default function QuizCard({
       {/* Year Guesser — Slider */}
       {isYearGuesser && (
         <div className="flex flex-col items-center gap-5">
-          <span className="text-6xl font-black text-white">{yearGuess}</span>
+          <span className="font-headline text-6xl font-black text-white">{yearGuess}</span>
           <div className="w-full max-w-md px-2">
             <input
               type="range"

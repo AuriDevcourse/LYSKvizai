@@ -378,7 +378,7 @@ export default function PlayerQuestion({
             {/* Only worth showing where there's a keyboard to press. */}
             <span
               aria-hidden="true"
-              className="absolute left-2 top-1.5 hidden text-[11px] font-black opacity-40 sm:block"
+              className="absolute left-2 top-1.5 hidden text-[11px] font-extrabold opacity-40 sm:block"
             >
               {n + 1}
             </span>

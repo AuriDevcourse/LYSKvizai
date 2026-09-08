@@ -55,7 +55,7 @@ export function TimerCircle({
     <div
       role="timer"
       aria-label="Time remaining"
-      className={`flex h-18 w-18 shrink-0 items-center justify-center rounded-full text-3xl font-black sm:h-22 sm:w-22 sm:text-4xl ${
+      className={`flex h-18 w-18 shrink-0 items-center justify-center rounded-full font-headline text-3xl font-black sm:h-22 sm:w-22 sm:text-4xl ${
         isCritical
           ? "timer-critical bg-error text-background shadow-[0_0_38px_-6px_rgba(255,113,108,0.85)]"
           : fraction > 0.5

@@ -107,7 +107,7 @@ export default function WagerScreen({ currentScore, onSubmit, wagerType = "regul
 
       {/* Amount display */}
       <div className="text-center">
-        <p id="wager-amount" className="text-4xl font-black text-answer-yellow tabular-nums">{amount}</p>
+        <p id="wager-amount" className="font-headline text-4xl font-black text-answer-yellow tabular-nums">{amount}</p>
       </div>
 
       {/* Slider. It had no accessible name at all: a screen reader announced

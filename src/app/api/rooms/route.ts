@@ -201,8 +201,18 @@ export async function POST(req: NextRequest) {
  * Never leaks the server-side hostId or hostToken.
  */
 export async function GET(req: NextRequest) {
+  /*
+   * 300 per 10s, not 30.
+   *
+   * Every player in a room is on the same Wi-Fi and therefore the same public
+   * IP, and a room holds 50. At 30 per 10s, fifty players opening the join
+   * screen together produced thirty 200s and twenty 429s — measured. The
+   * ceiling has to clear a full room comfortably; this is 30 requests a second
+   * per IP, which still stops a flood but stops punishing a group for sharing
+   * a network.
+   */
   const ip = getClientIp(req);
-  if (!checkRateLimit(`get:${ip}`, 30, 10_000)) {
+  if (!checkRateLimit(`get:${ip}`, 300, 10_000)) {
     return json({ error: "Too many requests" }, 429);
   }
 
