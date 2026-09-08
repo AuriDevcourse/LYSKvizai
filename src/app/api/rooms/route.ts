@@ -45,15 +45,20 @@ function statusFor(error: string): number {
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
 
-  // Rate limit on the IP, which the client cannot choose.
-  //
-  // This used to key on `body.playerId ?? body.hostId ?? ip` so that friends
-  // behind one NAT didn't share a bucket. But the client picks its own playerId,
-  // so a fresh random id per request bought a fresh window — the limiter was a
-  // no-op against anyone who wanted around it, and every made-up id also leaked
-  // a Map entry. The NAT ceiling is raised instead: 240 requests per 10s is far
-  // above what a full room of real players generates.
-  if (!checkRateLimit(`post:${ip}`, 240, 10_000)) {
+  /*
+   * Coarse per-IP ceiling, checked before any parsing so an unverified flood is
+   * cheap to refuse.
+   *
+   * This is only a flood guard, not the real budget. It was 240 per 10s and
+   * that broke a real game: every player *and the host* are on one Wi-Fi, so
+   * they share this bucket. A 20-player game answering and reacting exhausted
+   * it by question eight, and once it was gone the host's own `next` action was
+   * refused too — the quiz froze with no way to advance. Measured, not
+   * theorised: `scripts/stress/fullgame.mjs`.
+   *
+   * The per-identity limits below are the actual control.
+   */
+  if (!checkRateLimit(`post-ip:${ip}`, 1200, 10_000)) {
     return json({ error: "Too many requests" }, 429);
   }
 
@@ -68,6 +73,39 @@ export async function POST(req: NextRequest) {
   const validated = validateAction(parsed);
   if ("error" in validated) return json({ error: validated.error }, 400);
   const body: ClientAction = validated.action;
+
+  /*
+   * The real budget, keyed on a token the server issued.
+   *
+   * An earlier version keyed on `playerId`, which the client picks, so a fresh
+   * random id bought a fresh window and the limit was a no-op. Tokens are
+   * different: `joinRoom` mints the player token and `createRoom` the host
+   * token, and an action carrying a token that matches no one is rejected by
+   * the store regardless. So this cannot be sidestepped by inventing an id, and
+   * it stops twenty people on one router competing for a single allowance.
+   *
+   * Three separate buckets, because they must not starve each other:
+   *
+   *   - the host drives the game. If player traffic could exhaust the host's
+   *     budget the game would lock up, which is exactly what happened.
+   *   - reactions are cosmetic and the spammiest thing in the room: tapping an
+   *     emoji is free and instant. They get the tightest bucket so that emoji
+   *     spam can never cost anyone their answer.
+   *   - everything else a player does, answers included.
+   */
+  const actorToken =
+    ("token" in body && typeof body.token === "string" && body.token) ||
+    ("hostToken" in body && typeof body.hostToken === "string" && body.hostToken) ||
+    null;
+
+  if (actorToken) {
+    const isHostAction = !("token" in body && body.token) && "hostToken" in body;
+    const bucket = body.action === "react" ? "react" : isHostAction ? "host" : "player";
+    const limits = { react: 10, host: 60, player: 30 } as const;
+    if (!checkRateLimit(`post-${bucket}:${actorToken}`, limits[bucket], 10_000)) {
+      return json({ error: "Too many requests" }, 429);
+    }
+  }
 
   switch (body.action) {
     case "create": {

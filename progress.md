@@ -48,6 +48,58 @@ chart · streak badge on phones · confetti on the podium · 44px tap targets ·
 
 ---
 
+## 2026-09-08 — 20-player target: found the game freezing, fixed, verified to 50
+
+Auri: "this has to be something we can play with many people. up to 20."
+Deployed the previous work, then wrote a full-game harness and found a bug the
+single-question test could not see.
+
+### The game froze at question eight with 20 players
+
+`POST /api/rooms` was limited to 240 per 10s **per IP**, and every player *and
+the host* are on the same Wi-Fi, so they shared one bucket. Twenty players
+answering and reacting drained it, and then the host's own `next` action was
+refused: **the quiz locked up with no way to advance.** 49 of 200 answers
+rejected, 24 reactions rejected, host stuck from q8 on.
+
+Fixed by keying the real budget on the **server-issued token** rather than the
+IP. The earlier code had deliberately moved to IP because keying on `playerId`
+was forgeable — the client picks it, so a random id bought a fresh window. A
+token is different: `joinRoom` mints it, and an action carrying an unknown token
+is rejected by the store regardless. So the anti-forgery property is kept and
+the shared-IP starvation goes away.
+
+Three buckets per 10s, deliberately separate: **host 60** (player traffic must
+never be able to lock the host out), **react 10** (the spammiest action, and it
+must never cost anyone their answer), **player 30**. The per-IP ceiling stays as
+a pure flood guard at 1200/10s.
+
+### Verified headroom, full 10-question games
+
+| players | answer p50 | answer p95 | host `next` p95 | problems |
+|---|---|---|---|---|
+| 20 | 7ms | 12ms | 1ms | **0** |
+| 35 | 12ms | 21ms | 1ms | **0** |
+| 50 (room cap) | 20ms | 33ms | 1ms | **0** |
+
+Each run is a real quiz night: every player joined, a stream held open per
+player, everyone answering in the same instant, emoji flying, two players
+dropping and reconnecting mid-game, a wager round played, host driving rounds.
+`scripts/stress/fullgame.mjs` is committed.
+
+**20 players has 2.5x headroom.**
+
+### Two false alarms I nearly "fixed"
+
+- Chaining the 20, 35 and 50-player runs made the 50 run look like a host
+  lockup. The per-IP window is 10 seconds, so the earlier runs had spent it. In
+  isolation, 50 players passed with zero problems. The README now says to wait
+  out the window.
+- The harness reported 20 answer failures and an `advance-wager` 403 that were
+  both its own sequencing: it answered during a wager round, where refusing an
+  answer is correct, and all 20 stakes complete the phase before the host's
+  explicit advance. Fixed the harness, not the app.
+
 ## 2026-09-08 — Performance, security review and stress test
 
 Typecheck clean, lint 0 errors, 141/141 tests, build compiles. Stress tests run

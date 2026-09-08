@@ -357,11 +357,28 @@ Two shipped limits made the core product impossible, both found by
 | SSE per IP | 30 / 60s | 50 players from one IP: **50 x 429** | 300 / 60s |
 | `GET /api/rooms` per IP | 30 / 10s | 50 players: 30 ok, **20 rejected** | 300 / 10s |
 
-**Any per-IP ceiling must clear a full room plus reconnections.** Where identity
-is already verified, throttle the *player* instead: the SSE route now allows 10
-reconnects per minute per player, which catches a reconnect loop precisely while
-fifty distinct players connect freely. `MAX_ROOM_CONNECTIONS` bounds total
-fan-out per room and scales with it.
+A third one did the same to `POST /api/rooms`: 240 per 10s, shared by every
+player *and the host*, since the host is on the same Wi-Fi. A 20-player game
+exhausted it by question eight, and once it was gone **the host's own `next` was
+refused and the quiz froze with no way to advance.**
+
+**Any per-IP ceiling must clear a full room plus reconnections**, and it is only
+a flood guard. The real budget is keyed on the **server-issued token** — a
+player token from `joinRoom`, a host token from `createRoom`. Keying on
+`playerId` does not work, because the client picks it and a fresh random id buys
+a fresh window; a token cannot be invented, and an action carrying an unknown
+one is rejected by the store anyway.
+
+POST now has three separate per-token buckets, and they are separate for a
+reason:
+
+| bucket | limit / 10s | why |
+|---|---|---|
+| host | 60 | the host drives the game. If player traffic can drain this, the game locks up. It did. |
+| react | 10 | tapping an emoji is free and instant, so it is the spammiest action in the room. It must never cost anyone their answer. |
+| player | 30 | answers and everything else |
+
+`MAX_ROOM_CONNECTIONS` bounds total SSE fan-out per room and scales with it.
 
 Run `scripts/stress/` when touching any of this, including `abuse.mjs`, which
 proves the limit still stops one client rather than having been removed.
