@@ -8,6 +8,20 @@ Session-by-session record of what shipped and what's next. Most recent session o
 
 ---
 
+## 2026-09-12 — Security re-audit against current code + picture-quiz dedup fix
+
+**Context:** ran a full vulnerability sweep, but the initial pass was against a local checkout that was 34 commits behind `origin/master`. After syncing, most findings were already fixed upstream (the earlier "API and security" pass). Verified against current `origin/master`:
+- Server-crash via `answerIndex` — ALREADY FIXED (`validate.ts` `isInt(answerIndex,0,3)` + distribution bounds check). This is the crash seen while playing: it was a LOCAL 34-behind copy without the guard; production already had it.
+- Editor auth — ALREADY EXISTS (`src/lib/auth.ts`, `EDITOR_SECRET` via `Authorization: Bearer`, fails closed).
+- Wager NaN, teamCount/timer bloat, rate-limit id-rotation bypass, upload MIME-extension XSS, quiz input caps — ALL already fixed upstream (`validate.ts`, `quiz-validate.ts`, per-token rate buckets, MIME-derived upload ext).
+
+**Only genuine remaining bug — fixed this branch (`fix/picture-quiz-dedup`):**
+- Cross-quiz dedup in `createRoom` keyed on prompt text alone, so `zoom-out-pictures` (15 questions, all prompted "What landmark is this?") collapsed to 1 question. Now keys on prompt+image+correctAnswer. Verified: requesting 15 now yields 15. `tsc` clean, all 155 vitest tests pass.
+
+**Note:** local `master` was 34 behind — always `git fetch` at session start here (see also the upstream commit `iCloud is corrupting .git`). Ran `npm install` after sync (new dep: vitest). Local `.env.local` has `EDITOR_SECRET` (dev value) matching current auth.
+
+---
+
 ## Backlog (pick from here next session)
 
 ### 🔴 High — decide before the next deploy

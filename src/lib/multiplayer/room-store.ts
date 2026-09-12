@@ -592,10 +592,17 @@ export async function createRoom(
   }
   if (allQuestions.length === 0) throw new Error("Quizzes have no questions");
 
-  // Deduplicate questions by their text to prevent repeats across quizzes
+  // Deduplicate questions across quizzes. Key on prompt + image + correct answer,
+  // not the prompt alone: picture rounds share one prompt ("What landmark is
+  // this?") for every question, so a prompt-only key collapsed a 15-question
+  // quiz down to a single question.
   const seen = new Set<string>();
   const questions = allQuestions.filter((q) => {
-    const key = q.question.toLowerCase().trim();
+    const key = [
+      q.question.toLowerCase().trim(),
+      (q.image ?? "").trim(),
+      (q.options?.[q.correct] ?? "").toLowerCase().trim(),
+    ].join("|");
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
