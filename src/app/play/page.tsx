@@ -26,10 +26,7 @@ import { MAX_QUESTION_COUNT } from "@/lib/multiplayer/validate";
 import type { QuizMeta } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 import { Mark } from "@/components/Logo";
-
-function generateId() {
-  return Math.random().toString(36).slice(2, 10);
-}
+import { getDeviceId, saveRoomSession } from "@/lib/session-store";
 
 function PlayPageInner() {
   const router = useRouter();
@@ -63,14 +60,7 @@ function PlayPageInner() {
 
   const { createRoom, joinRoom } = useRoomActions();
 
-  const [playerId] = useState(() => {
-    if (typeof window === "undefined") return generateId();
-    const stored = sessionStorage.getItem("quiz-player-id");
-    if (stored) return stored;
-    const id = generateId();
-    sessionStorage.setItem("quiz-player-id", id);
-    return id;
-  });
+  const [playerId] = useState(() => getDeviceId());
 
   const handleQuizNext = () => {
     if (selectedQuizIds.length === 0) return;
@@ -107,19 +97,25 @@ function PlayPageInner() {
         gameModeOptions.teamCount,
         gameModeOptions.eliminationInterval
       );
-      sessionStorage.setItem("quiz-host-id", hostId);
-      sessionStorage.setItem("quiz-host-token", result.hostToken);
-
       // If host wants to play, also join as a player
       if (hostPlaying && hostName.trim()) {
         const joinResult = await joinRoom(result.code, hostId, hostName.trim(), hostAvatar);
-        sessionStorage.setItem("quiz-player-name", hostName.trim());
-        sessionStorage.setItem("quiz-player-emoji", hostAvatar);
-        sessionStorage.setItem("quiz-player-token", joinResult.playerToken);
-        sessionStorage.setItem("quiz-host-playing", "true");
+        saveRoomSession(result.code, {
+          playerId: hostId,
+          hostId,
+          hostToken: result.hostToken,
+          hostPlaying: true,
+          name: hostName.trim(),
+          emoji: hostAvatar,
+          playerToken: joinResult.playerToken,
+        });
       } else {
-        sessionStorage.removeItem("quiz-host-playing");
-        sessionStorage.removeItem("quiz-player-token");
+        saveRoomSession(result.code, {
+          playerId: hostId,
+          hostId,
+          hostToken: result.hostToken,
+          hostPlaying: false,
+        });
       }
 
       router.push(`/play/${result.code}`);
@@ -134,12 +130,12 @@ function PlayPageInner() {
     setError(null);
     try {
       const joinResult = await joinRoom(code, playerId, name, emoji);
-      sessionStorage.setItem("quiz-player-name", name);
-      sessionStorage.setItem("quiz-player-emoji", emoji);
-      sessionStorage.setItem("quiz-player-token", joinResult.playerToken);
-      sessionStorage.removeItem("quiz-host-id");
-      sessionStorage.removeItem("quiz-host-token");
-      sessionStorage.removeItem("quiz-host-playing");
+      saveRoomSession(code, {
+        playerId,
+        playerToken: joinResult.playerToken,
+        name,
+        emoji,
+      });
       router.push(`/play/${code}`);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Error joining");

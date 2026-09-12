@@ -8,6 +8,22 @@ Session-by-session record of what shipped and what's next. Most recent session o
 
 ---
 
+## 2026-09-12 — Mobile resilience: identity in room-scoped localStorage
+
+**Why:** games are played in a pub on mobile data — phones lock, apps get switched, the OS discards backgrounded tabs. Identity (player/host tokens) lived in `sessionStorage`, which dies on tab close/eviction, stranding a player (or the host, which freezes the whole table) with no way back into their seat.
+
+**Change (branch `fix/mobile-resilience-localstorage`):** new `src/lib/session-store.ts` — `getDeviceId()` (stable id in localStorage) + `getRoomSession/saveRoomSession/clearHostFromSession` keyed by room code (`quiz-room:<CODE>`), so a stale token from a past game never bleeds into a new one. `play/page.tsx` writes the session on create/join; `play/[code]/page.tsx` reads it. Also fixed a latent bug: the in-game "reclaim seat" retry now uses the fresh token (it was re-sending the stale one in `body`).
+
+**Verified in a real browser (Playwright, local dev):**
+- Write: a real UI join stores identity in localStorage (`quiz-room:57RJ` with token), sessionStorage holds no quiz keys.
+- Cross-tab restore (the point): a brand-new tab with NO sessionStorage restored the player in-seat from localStorage — the exact closed/evicted-tab case that used to lose you.
+- Control: clearing localStorage → seat lost ("Connecting…"), proving localStorage is the mechanism.
+- tsc clean, all 155 vitest tests pass.
+
+**Reconnection (brief signal loss) was already solid upstream** (SSE backoff+jitter, eager reconnect on visibilitychange/pageshow/online, token re-sent each reconnect, 120s server grace) — verified, not rebuilt. NOT fixed: a server restart/redeploy still wipes in-progress games (in-memory store) — don't deploy mid-game.
+
+---
+
 ## 2026-09-12 — ROOT CAUSE of the "game crashed": Vercel deployment + redirect fix
 
 **The actual crash cause (proven).** The game was played on the **Vercel** deployment `lys-kvizai.vercel.app` (the app auto-deploys from this repo to BOTH Hetzner and Vercel), NOT on Hetzner and NOT locally — my earlier "played locally" guess was wrong. Multiplayer state (rooms/players/scores) is an in-memory Map in one process. That works on Hetzner (single long-lived process) but breaks on Vercel serverless: each request can hit a different instance whose memory has no such room. Proof against `lys-kvizai.vercel.app`: 50 concurrent GETs for one room → 7 found, **43 got 404**; 20 concurrent joins → 3 ok, **17 "Room not found"**. So under real concurrent play the room vanishes for most phones at once = "the game suddenly crashed for everyone". SSE held 150s+, so it was not an SSE-timeout issue. Hetzner survived 50 players + 8 concurrent games + 30 reconnects with zero room-not-found.

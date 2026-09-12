@@ -22,6 +22,7 @@ import HostWager from "@/components/multiplayer/HostWager";
 import { MP_API_URL } from "@/lib/multiplayer/config";
 import type { QuestionPayload } from "@/lib/multiplayer/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { getRoomSession, getDeviceId, clearHostFromSession, saveRoomSession } from "@/lib/session-store";
 
 interface PageProps {
   params: Promise<{ code: string }>;
@@ -32,40 +33,17 @@ export default function GamePage({ params }: PageProps) {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const [playerId] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return sessionStorage.getItem("quiz-player-id") ?? "";
-  });
-
-  const [hostId] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return sessionStorage.getItem("quiz-host-id") ?? "";
-  });
-
-  const [hostToken] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return sessionStorage.getItem("quiz-host-token") ?? "";
-  });
-
-  const [playerToken] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return sessionStorage.getItem("quiz-player-token") ?? "";
-  });
-
-  const [playerName] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return sessionStorage.getItem("quiz-player-name") ?? "";
-  });
-
-  const [playerEmoji] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return sessionStorage.getItem("quiz-player-emoji") ?? "";
-  });
-
-  const [hostPlaying] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return sessionStorage.getItem("quiz-host-playing") === "true";
-  });
+  // Identity is read once, from the room-scoped localStorage session so it
+  // survives a closed or OS-evicted tab (common on mobile in a pub). Falls back
+  // to the stable device id so a returning player keeps the same seat.
+  const [session] = useState(() => getRoomSession(code));
+  const [playerId] = useState(() => session?.playerId || getDeviceId());
+  const [hostId] = useState(() => session?.hostId ?? "");
+  const [hostToken] = useState(() => session?.hostToken ?? "");
+  const [playerToken] = useState(() => session?.playerToken ?? "");
+  const [playerName] = useState(() => session?.name ?? "");
+  const [playerEmoji] = useState(() => session?.emoji ?? "");
+  const [hostPlaying] = useState(() => session?.hostPlaying === true);
 
   // Verify host status against server on mount. Server returns { isHost: boolean }
   // and never exposes the stored hostId/hostToken.
@@ -82,9 +60,7 @@ export default function GamePage({ params }: PageProps) {
         if (data.isHost) {
           setVerifiedHost(true);
         } else {
-          sessionStorage.removeItem("quiz-host-id");
-          sessionStorage.removeItem("quiz-host-token");
-          sessionStorage.removeItem("quiz-host-playing");
+          clearHostFromSession(code);
         }
       })
       .catch(() => {});
@@ -231,7 +207,15 @@ export default function GamePage({ params }: PageProps) {
         if (payload?.error === "Invalid session" && playerName && playerId) {
           const rejoined = await joinRoom(code, playerId, playerName, playerEmoji).catch(() => null);
           if (rejoined?.playerToken) {
-            sessionStorage.setItem("quiz-player-token", rejoined.playerToken);
+            saveRoomSession(code, {
+              ...(getRoomSession(code) ?? { playerId }),
+              playerId,
+              playerToken: rejoined.playerToken,
+              name: playerName,
+              emoji: playerEmoji,
+            });
+            // Retry with the fresh token, not the stale one in `body`.
+            if ("token" in body) body.token = rejoined.playerToken;
             res = await send();
             if (res.ok) return true;
             payload = await res.json().catch(() => null);
