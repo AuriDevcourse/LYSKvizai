@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { CheckCircle, XCircle, Clock, Flame, Skull, Zap, TrendingDown, Eye, ChevronUp, ChevronDown } from "lucide-react";
+import { CheckCircle, XCircle, Clock, Flame, Skull, Zap, TrendingDown, Eye, ChevronUp, ChevronDown, Check } from "lucide-react";
 import type { ResultsPayload, QuestionPayload } from "@/lib/multiplayer/types";
 import ReactionPicker from "./ReactionPicker";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
@@ -23,9 +23,16 @@ interface PlayerResultsProps {
    * in time.
    */
   eliminated?: boolean;
+  /** Tap handler for "I'm ready"; when set, the ready control replaces the plain
+   * "waiting" footer. */
+  onReady?: () => void;
+  /** Whether this player has already tapped ready this round. */
+  iReadied?: boolean;
+  /** Live "x of n players ready" for the results screen. */
+  readyProgress?: { count: number; total: number } | null;
 }
 
-export default function PlayerResults({ playerId, results, question, onReact, children, eliminated = false }: PlayerResultsProps) {
+export default function PlayerResults({ playerId, results, question, onReact, children, eliminated = false, onReady, iReadied = false, readyProgress = null }: PlayerResultsProps) {
   const { t } = useTranslation();
   const myResult = results.playerResults.find((r) => r.playerId === playerId);
   const wasEliminated = results.eliminatedThisRound?.some((el) => el.playerId === playerId);
@@ -187,13 +194,52 @@ export default function PlayerResults({ playerId, results, question, onReact, ch
 
       {onReact && <ReactionPicker onReact={onReact} />}
 
-      {children}
-
-      {!children && (
-        <div className="flex items-center gap-2 text-sm text-white/50">
-          <Clock className="h-3.5 w-3.5" />
-          <span>{t("playerResults.waitingForNext")}</span>
-        </div>
+      {/* Ready-to-advance. Every connected player must tap this before the next
+          question starts, so nobody is dropped onto a fresh question mid-tap. */}
+      {onReady ? (
+        eliminated ? (
+          <div className="flex items-center gap-2 text-sm text-white/50">
+            <Clock className="h-3.5 w-3.5" />
+            <span>{t("playerResults.waitingForNext")}</span>
+          </div>
+        ) : iReadied ? (
+          <div className="flex w-full flex-col items-center gap-1.5">
+            <div className="flex items-center gap-2 text-sm font-bold text-emerald-300">
+              <Check className="h-4 w-4" />
+              <span>You&apos;re ready</span>
+            </div>
+            {readyProgress && (
+              <p className="text-xs font-bold text-white/45">
+                Waiting for others · {readyProgress.count}/{readyProgress.total} ready
+              </p>
+            )}
+          </div>
+        ) : (
+          <div className="flex w-full flex-col items-center gap-2">
+            <button
+              onClick={onReady}
+              className="btn-primary flex min-h-[52px] w-full items-center justify-center gap-2 text-lg"
+            >
+              <Check className="h-5 w-5" />
+              I&apos;m ready
+            </button>
+            {readyProgress && readyProgress.count > 0 && (
+              <p className="text-xs font-bold text-white/45">
+                {readyProgress.count}/{readyProgress.total} ready
+              </p>
+            )}
+          </div>
+        )
+      ) : (
+        <>
+          {children}
+          {!children && (
+            <div className="flex items-center gap-2 text-sm text-white/50">
+              <Clock className="h-3.5 w-3.5" />
+              <span>{t("playerResults.waitingForNext")}</span>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

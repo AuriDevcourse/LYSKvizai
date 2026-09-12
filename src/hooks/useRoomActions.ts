@@ -98,8 +98,15 @@ export function useRoomActions() {
     []
   );
 
+  const markReady = useCallback(
+    async (code: string, playerId: string, token: string) => {
+      return postAction({ action: "ready", code, playerId, token });
+    },
+    []
+  );
+
   return {
     createRoom, joinRoom, startGame, submitAnswer, nextQuestion,
-    forceResults, sendReaction, submitWager,
+    forceResults, sendReaction, submitWager, markReady,
   };
 }

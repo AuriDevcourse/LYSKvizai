@@ -496,6 +496,8 @@ export function getRoomSnapshot(room: Room): RoomSnapshot {
     // Safe to recompute now that `getResultsPayload` writes nothing. Before
     // the split, an empty cache here re-awarded the fastest bonus.
     snapshot.results = room.cachedResults ?? getResultsPayload(room);
+    // So a client that loads or reconnects mid-results sees the live ready count.
+    snapshot.readyProgress = readyProgress(room);
   } else if (room.state === "finished") {
     snapshot.leaderboard = getLeaderboard(room);
   } else if (room.state === "wager") {
@@ -669,6 +671,7 @@ export async function createRoom(
 
     previousLeaderboard: [],
     cachedResults: null,
+    readyPlayers: new Set(),
   };
 
   rooms.set(code, room);
@@ -1143,6 +1146,8 @@ function showResults(room: Room): void {
   applyFastestBonus(room, results);
   room.cachedResults = results;
   room.state = "results";
+  // Fresh results: nobody has readied for the next question yet.
+  room.readyPlayers.clear();
 
   // Elimination mode: check if it's time to eliminate
   if (room.gameMode === "elimination") {
@@ -1188,16 +1193,26 @@ function showResults(room: Room): void {
   bcast(room, { type: "results", data: results });
 }
 
-export function nextQuestion(code: string, hostId: string, hostToken: string): { error?: string } {
-  const verified = verifyHost(code, hostId, hostToken);
-  if ("error" in verified) return verified;
-  const room = verified;
-  if (room.state !== "results") return { error: "Can't continue yet" };
+/** The players who must tap "I'm ready" before the round advances: connected
+ * and not eliminated. A dropped phone (past its grace period) is excluded so it
+ * can't freeze the table. */
+function readyRequired(room: Room): Player[] {
+  return [...room.players.values()].filter((p) => p.connected && !p.eliminated);
+}
 
+function readyProgress(room: Room): { count: number; total: number } {
+  const required = readyRequired(room);
+  const count = required.filter((p) => room.readyPlayers.has(p.id)).length;
+  return { count, total: required.length };
+}
+
+/** Move on from the results screen: finish the game, run the pre-final wager, or
+ * start the next question. Shared by the ready-gate. */
+function advanceAfterResults(room: Room): void {
   if (room.currentQuestionIndex + 1 >= room.questionIndices.length) {
     room.state = "finished";
     bcast(room, { type: "finished", data: { leaderboard: getLeaderboard(room) } });
-    return {};
+    return;
   }
 
   room.currentQuestionIndex++;
@@ -1218,11 +1233,44 @@ export function nextQuestion(code: string, hostId: string, hostToken: string): {
     room.state = "wager";
     bcast(room, { type: "wager-start", data: getWagerPayload(room) });
     scheduleWagerTimer(room);
-    return {};
+    return;
   }
 
   // Normal question flow
   startQuestionRound(room);
+}
+
+/**
+ * A player taps "I'm ready" on the results screen. The round advances only once
+ * every connected, non-eliminated player has — no host override, by design, so
+ * nobody is dropped onto the next question mid-tap. A player whose connection
+ * dropped is not counted, so one dead phone can't wedge the room.
+ */
+export function markReady(code: string, playerId: string, token: string): { error?: string } {
+  const verified = verifyPlayer(code, playerId, token);
+  if ("error" in verified) return verified;
+  const { room, player } = verified;
+  if (room.state !== "results") return { error: "Can't ready right now" };
+  if (player.eliminated) return { error: "You are eliminated" };
+
+  room.readyPlayers.add(playerId);
+
+  const progress = readyProgress(room);
+  bcast(room, { type: "ready-progress", data: progress });
+
+  // Advance once everyone who must ready up has (and there is someone to wait on).
+  if (progress.total > 0 && progress.count >= progress.total) {
+    advanceAfterResults(room);
+  }
+  return {};
+}
+
+export function nextQuestion(code: string, hostId: string, hostToken: string): { error?: string } {
+  const verified = verifyHost(code, hostId, hostToken);
+  if ("error" in verified) return verified;
+  const room = verified;
+  if (room.state !== "results") return { error: "Can't continue yet" };
+  advanceAfterResults(room);
   return {};
 }
 
@@ -1270,6 +1318,7 @@ function startQuestionRound(room: Room): void {
 
   // Clear cached results from previous round
   room.cachedResults = null;
+  room.readyPlayers.clear();
 
   room.questionStartTime = Date.now();
   room.state = "question";

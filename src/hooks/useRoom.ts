@@ -25,6 +25,8 @@ interface UseRoomReturn {
   results: ResultsPayload | null;
   leaderboard: LeaderboardEntry[] | null;
   answerCount: { count: number; total: number } | null;
+  /** On the results screen: how many required players have tapped "I'm ready". */
+  readyProgress: { count: number; total: number } | null;
   reactions: EmojiReactionWithId[];
   connected: boolean;
   error: string | null;
@@ -79,6 +81,7 @@ export function useRoom(code: string | null, playerId: string | null, token = ""
   const [myStreak, setMyStreak] = useState(0);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[] | null>(null);
   const [answerCount, setAnswerCount] = useState<{ count: number; total: number } | null>(null);
+  const [readyProgress, setReadyProgress] = useState<{ count: number; total: number } | null>(null);
   const [reactions, setReactions] = useState<EmojiReactionWithId[]>([]);
   const [connected, setConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -127,6 +130,7 @@ export function useRoom(code: string | null, playerId: string | null, token = ""
       // Rebuild the freeze from state, not from the event we may have missed.
       setTimerReduction(snapshot.timerReduction ?? 0);
       setWager(snapshot.wager ?? null);
+      setReadyProgress(snapshot.readyProgress ?? null);
       setConnected(true);
       setError(null);
       retriesRef.current = 0;
@@ -170,11 +174,16 @@ export function useRoom(code: string | null, playerId: string | null, token = ""
       setQuestion(adjustQuestion(payload));
       setResults(null);
       setAnswerCount(null);
+      setReadyProgress(null);
       setTimerReduction(0);
     });
 
     es.addEventListener("answer-count", (e) => {
       setAnswerCount(JSON.parse(e.data));
+    });
+
+    es.addEventListener("ready-progress", (e) => {
+      setReadyProgress(JSON.parse(e.data));
     });
 
     es.addEventListener("results", (e) => {
@@ -355,7 +364,7 @@ export function useRoom(code: string | null, playerId: string | null, token = ""
   }, [code, playerId, token]);
 
   return {
-    state, players, question, results, leaderboard, answerCount, reactions,
+    state, players, question, results, leaderboard, answerCount, readyProgress, reactions,
     connected, error, gameMode, teamNames, totalQuestions, wager, timerReduction,
     powerUpEvent, eliminatedEvent, playerLeftEvent, myStreak,
   };

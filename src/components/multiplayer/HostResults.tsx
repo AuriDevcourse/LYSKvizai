@@ -21,7 +21,10 @@ interface HostResultsProps {
   results: ResultsPayload;
   reactions: EmojiReactionWithId[];
   isLast: boolean;
-  onNext: () => void;
+  /** Optional: only when the host can advance directly. With the ready-gate the
+   * big screen shows ready progress instead and the server advances itself. */
+  onNext?: () => void;
+  readyProgress?: { count: number; total: number } | null;
   gameMode?: GameMode;
 }
 
@@ -31,6 +34,7 @@ export default function HostResults({
   reactions,
   isLast,
   onNext,
+  readyProgress = null,
   gameMode = "classic",
 }: HostResultsProps) {
   const { t } = useTranslation();
@@ -181,6 +185,7 @@ export default function HostResults({
       isYearGuesser={!!isYearGuesser}
       isLast={isLast}
       onNext={onNext}
+      readyProgress={readyProgress}
       gameMode={gameMode}
       t={t}
     />
@@ -196,7 +201,8 @@ interface AnimatedLeaderboardPhaseProps {
   maxScore: number;
   isYearGuesser: boolean;
   isLast: boolean;
-  onNext: () => void;
+  onNext?: () => void;
+  readyProgress?: { count: number; total: number } | null;
   gameMode: GameMode;
   t: ReturnType<typeof useTranslation>["t"];
 }
@@ -210,6 +216,7 @@ function AnimatedLeaderboardPhase({
   isYearGuesser,
   isLast,
   onNext,
+  readyProgress,
   t,
 }: AnimatedLeaderboardPhaseProps) {
   // Build leaderboard entries with previous positions
@@ -496,23 +503,41 @@ function AnimatedLeaderboardPhase({
         </div>
       )}
 
-      {/* Next question / Final results button */}
-      <button
-        onClick={onNext}
-        className="btn-primary flex items-center justify-center gap-2 w-full text-lg"
-      >
-        {isLast ? (
-          <>
-            <Trophy className="h-5 w-5" />
-            {t("game.results")}
-          </>
-        ) : (
-          <>
-            {t("hostResults.nextQuestion")}
-            <ArrowRight className="h-5 w-5" />
-          </>
-        )}
-      </button>
+      {/* With the ready-gate the players advance the game, so the big screen
+          shows how many are ready rather than a button. onNext is kept only for
+          the legacy host-advance path. */}
+      {onNext ? (
+        <button
+          onClick={onNext}
+          className="btn-primary flex items-center justify-center gap-2 w-full text-lg"
+        >
+          {isLast ? (
+            <>
+              <Trophy className="h-5 w-5" />
+              {t("game.results")}
+            </>
+          ) : (
+            <>
+              {t("hostResults.nextQuestion")}
+              <ArrowRight className="h-5 w-5" />
+            </>
+          )}
+        </button>
+      ) : (
+        <div className="flex w-full flex-col items-center gap-2 rounded-2xl glass px-5 py-4">
+          <p className="font-headline text-lg font-extrabold text-white">
+            {readyProgress && readyProgress.total > 0 && readyProgress.count >= readyProgress.total
+              ? "Everyone's ready…"
+              : "Waiting for players to be ready"}
+          </p>
+          <p className="text-3xl font-extrabold text-primary">
+            {readyProgress ? `${readyProgress.count}/${readyProgress.total}` : "0/0"}
+          </p>
+          <p className="text-xs font-bold text-white/45">
+            {isLast ? "Then the final results" : "The next question starts automatically"}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

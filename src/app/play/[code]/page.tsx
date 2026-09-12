@@ -2,7 +2,7 @@
 
 import { use, useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, X, AlertTriangle, WifiOff, ArrowRight, Trophy, Skull } from "lucide-react";
+import { Loader2, X, AlertTriangle, WifiOff, Skull } from "lucide-react";
 import { useRoom } from "@/hooks/useRoom";
 import { useRoomActions } from "@/hooks/useRoomActions";
 import Avatar from "@/components/Avatar";
@@ -103,6 +103,7 @@ export default function GamePage({ params }: PageProps) {
     results,
     leaderboard,
     answerCount,
+    readyProgress,
     reactions,
     connected,
     error: roomError,
@@ -116,7 +117,7 @@ export default function GamePage({ params }: PageProps) {
     myStreak,
   } = useRoom(code, playerId, playerToken || hostToken);
 
-  const { startGame, submitAnswer, nextQuestion, sendReaction, submitWager, joinRoom } = useRoomActions();
+  const { startGame, submitAnswer, sendReaction, submitWager, joinRoom, markReady } = useRoomActions();
 
   // Toast notification for action errors
   const [toast, setToast] = useState<string | null>(null);
@@ -255,14 +256,27 @@ export default function GamePage({ params }: PageProps) {
     [code, playerId, playerToken, postAction]
   );
 
-  const handleNext = useCallback(async () => {
+  // Ready-to-advance: the round only moves on once every connected player taps
+  // this. Local flag flips the button to a waiting state; reset in render (the
+  // pattern used for lastQuestion) whenever we leave the results screen, so the
+  // next round starts fresh — an effect here trips set-state-in-effect.
+  const [iReadied, setIReadied] = useState(false);
+  const [readyPhase, setReadyPhase] = useState(state);
+  if (state !== readyPhase) {
+    setReadyPhase(state);
+    if (state !== "results") setIReadied(false);
+  }
+
+  const handleReady = useCallback(async () => {
+    setIReadied(true);
     try {
-      await nextQuestion(code, hostId, hostToken);
+      await markReady(code, playerId, playerToken);
     } catch (e) {
-      console.error("Failed to advance", e);
-      showToast("Failed to advance");
+      console.error("Failed to mark ready", e);
+      setIReadied(false); // let them try again
+      showToast("Failed to mark ready");
     }
-  }, [code, hostId, hostToken, nextQuestion]);
+  }, [code, playerId, playerToken, markReady, showToast]);
 
   const handleReact = useCallback(
     async (emoji: string) => {
@@ -605,24 +619,35 @@ export default function GamePage({ params }: PageProps) {
             results={results}
             reactions={reactions}
             isLast={isLastQuestion}
-            onNext={handleNext}
+            readyProgress={readyProgress}
             gameMode={gameMode}
           />
         )}
 
         {state === "results" && results && isHost && isHostPlayer && (
-          <PlayerResults playerId={playerId} results={results} question={lastQuestion} onReact={handleReact} eliminated={currentPlayer?.eliminated ?? false}>
-            <button
-              onClick={handleNext}
-              className="btn-primary flex items-center justify-center gap-2 w-full text-lg mt-4"
-            >
-              {isLastQuestion ? <>{t("game.results")} <Trophy className="h-5 w-5" /></> : <>{t("game.nextQuestion")} <ArrowRight className="h-5 w-5" /></>}
-            </button>
-          </PlayerResults>
+          <PlayerResults
+            playerId={playerId}
+            results={results}
+            question={lastQuestion}
+            onReact={handleReact}
+            eliminated={currentPlayer?.eliminated ?? false}
+            onReady={handleReady}
+            iReadied={iReadied}
+            readyProgress={readyProgress}
+          />
         )}
 
         {state === "results" && results && !isHost && (
-          <PlayerResults playerId={playerId} results={results} question={lastQuestion} onReact={handleReact} eliminated={currentPlayer?.eliminated ?? false} />
+          <PlayerResults
+            playerId={playerId}
+            results={results}
+            question={lastQuestion}
+            onReact={handleReact}
+            eliminated={currentPlayer?.eliminated ?? false}
+            onReady={handleReady}
+            iReadied={iReadied}
+            readyProgress={readyProgress}
+          />
         )}
 
         {state === "finished" && leaderboard && (

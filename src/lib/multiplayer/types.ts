@@ -95,6 +95,11 @@ export interface Room {
   // Cached results payload — computed once per round in showResults, read by getRoomSnapshot.
   // Prevents score inflation from getResultsPayload being called on every snapshot fetch.
   cachedResults: ResultsPayload | null;
+
+  // Ready-to-advance: on the results screen every connected, non-eliminated
+  // player must tap "I'm ready" before the next question starts. Ids of players
+  // who have. Cleared when a new question begins.
+  readyPlayers: Set<string>;
 }
 
 // --- Server → Client Events (SSE) ---
@@ -112,6 +117,7 @@ export type ServerEvent =
   | { type: "player-left"; data: { playerId: string } }
   | { type: "question-start"; data: QuestionPayload }
   | { type: "answer-count"; data: { count: number; total: number } }
+  | { type: "ready-progress"; data: { count: number; total: number } }
   | { type: "results"; data: ResultsPayload }
   | { type: "finished"; data: { leaderboard: LeaderboardEntry[] } }
   | { type: "emoji-reaction"; data: EmojiReaction }
@@ -174,6 +180,8 @@ export interface RoomSnapshot {
    */
   timerReduction?: number;
   results?: ResultsPayload;
+  /** During the results screen: how many of the players who must ready up have. */
+  readyProgress?: { count: number; total: number };
   leaderboard?: LeaderboardEntry[];
   wager?: WagerPayload;
 }
@@ -303,4 +311,5 @@ export type ClientAction =
   | { action: "advance-wager"; code: string; hostId: string; hostToken: string }
   | { action: "answer-text"; code: string; playerId: string; token: string; answer: string }
   | { action: "answer-year"; code: string; playerId: string; token: string; year: number }
-  | { action: "choose-powerup"; code: string; playerId: string; token: string; powerUp: PowerUpType };
+  | { action: "choose-powerup"; code: string; playerId: string; token: string; powerUp: PowerUpType }
+  | { action: "ready"; code: string; playerId: string; token: string };

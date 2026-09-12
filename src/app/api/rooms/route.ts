@@ -14,6 +14,7 @@ import {
   submitTextAnswer,
   submitYearAnswer,
   nextQuestion,
+  markReady,
   disconnectPlayer,
   getRoomSnapshot,
   forceShowResults,
@@ -171,6 +172,12 @@ export async function POST(req: NextRequest) {
     case "next": {
       const result = nextQuestion(body.code, body.hostId, body.hostToken);
       if (result.error) return json({ error: result.error }, statusFor(result.error));
+      return json({ ok: true });
+    }
+
+    case "ready": {
+      const result = markReady(body.code, body.playerId, body.token);
+      if (result.error) return json({ error: result.error }, 400);
       return json({ ok: true });
     }
 

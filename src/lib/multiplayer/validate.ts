@@ -26,7 +26,7 @@ const POWER_UPS = new Set(["freeze", "shield", "double"]);
 const KNOWN_ACTIONS = new Set([
   "create", "join", "start", "next", "force-results", "advance-wager",
   "answer", "answer-text", "answer-year", "submit-wager", "react",
-  "choose-powerup", "disconnect",
+  "choose-powerup", "disconnect", "ready",
 ]);
 
 function isStr(v: unknown, max = 200): v is string {
@@ -145,6 +145,11 @@ export function validateAction(
       break;
 
     case "disconnect":
+      if (!isStr(b.playerId, 100)) return { error: "Invalid playerId" };
+      if (!isStr(b.token, 100)) return { error: "Invalid token" };
+      break;
+
+    case "ready":
       if (!isStr(b.playerId, 100)) return { error: "Invalid playerId" };
       if (!isStr(b.token, 100)) return { error: "Invalid token" };
       break;

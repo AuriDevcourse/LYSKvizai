@@ -8,6 +8,21 @@ Session-by-session record of what shipped and what's next. Most recent session o
 
 ---
 
+## 2026-09-12 — "I'm ready" gate between questions
+
+**Why (Auri):** the host advancing instantly meant a player mid-tap fat-fingered an answer on the freshly-shown question. Now every connected player leaves the results screen on their own terms.
+
+**Behaviour (Auri chose "all ready, no override"):** on the results screen each player taps "I'm ready"; the next question starts automatically only once every **connected, non-eliminated** player has. No host override. A player whose connection has dropped is excluded from the count, so one dead phone can't freeze the table (the one guard I added over strict "everyone").
+
+**Change (branch `feat/ready-to-advance`):**
+- Server (`room-store.ts`): `Room.readyPlayers` set; `markReady()` records a tap, broadcasts `ready-progress {count,total}`, and calls the new shared `advanceAfterResults()` when all required are ready. `nextQuestion` (host) kept but now unused by the UI. Cleared on each new round + when results appear. Snapshot carries `readyProgress` for reconnects.
+- Types/validate/route: new `ready` action (playerId+token) and `ready-progress` event.
+- Client: `useRoom` exposes `readyProgress`; `useRoomActions.markReady`; `PlayerResults` shows the "I'm ready" button → "You're ready · waiting for others · x/n"; `HostResults` big-screen shows "Waiting for players · x/n" instead of a Next button; page tracks local `iReadied` (reset in render on leaving results).
+
+**Verified (server harness + real browser):** progress 1/3→2/3→3/3 advancing only at 3/3; readying rejected outside results; reconnect snapshot carries the count; a dropped player drops the total so 2 connected can still advance; browser: "I'm ready" button appears on results, single player 1/1 advances to Game Over, and in a 2-player room tapping ready shows "You're ready · waiting 1/2" and the game holds. tsc clean, 155 tests pass.
+
+---
+
 ## 2026-09-12 — Mobile resilience: identity in room-scoped localStorage
 
 **Why:** games are played in a pub on mobile data — phones lock, apps get switched, the OS discards backgrounded tabs. Identity (player/host tokens) lived in `sessionStorage`, which dies on tab close/eviction, stranding a player (or the host, which freezes the whole table) with no way back into their seat.
