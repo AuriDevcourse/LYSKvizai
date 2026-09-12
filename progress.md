@@ -8,6 +8,22 @@ Session-by-session record of what shipped and what's next. Most recent session o
 
 ---
 
+## 2026-09-12 — DEPLOYED (all of today's work is live)
+
+Everything below from 2026-09-12 is merged to `master` and **live on production** (`quizmo.auridev.com`, commit `2efac3c`). Deploy verified: homepage/tint 200, `ready` action returns 200 (ready-gate live), Vercel link still 307-redirects to Hetzner. Shipped this session:
+1. Picture-quiz dedup fix (zoom-out no longer collapses to 1 question)
+2. Vercel deployment redirects to Hetzner (fixes the "game crashed" root cause — in-memory multiplayer can't run on serverless)
+3. Player/host identity in room-scoped localStorage (survives closed/evicted tabs on mobile)
+4. "I'm ready" gate between questions (all connected players must ready; dropped players excluded)
+5. Mobile: `html { overflow-x: clip }` (no sideways scroll)
+6. Consistent page-enter animation on all 11 pages
+7. Tint game names the country ("Flag of {country}")
+
+**Known limitation (unchanged):** in-memory room store — a deploy or server restart wipes any in-progress game. Don't push while people are mid-game.
+**Open ideas (not done):** promote Scale/Tint/Survival into the main game-type picker (discussed, not built); `/library` is the only non-game utility page (kept).
+
+---
+
 ## 2026-09-12 — Tint game names the country
 
 The Tint (flag-colour) game showed the country only as a faint eyebrow that read as a generic label. Now flag rounds show "Flag of {country}" (e.g. "FLAG OF BRAZIL") above "Restore the field", so the player knows which flag they're correcting. `src/app/tint/page.tsx`. Image rounds unchanged.
