@@ -8,6 +8,12 @@ Session-by-session record of what shipped and what's next. Most recent session o
 
 ---
 
+## 2026-09-12 — Tint game names the country
+
+The Tint (flag-colour) game showed the country only as a faint eyebrow that read as a generic label. Now flag rounds show "Flag of {country}" (e.g. "FLAG OF BRAZIL") above "Restore the field", so the player knows which flag they're correcting. `src/app/tint/page.tsx`. Image rounds unchanged.
+
+---
+
 ## 2026-09-12 — Consistent page-enter animation on every page
 
 Animation review found the ambient background + logo animate everywhere, but the content page-enter flourish was missing on some pages. `home` uses `rise`; `play`/`survival`/`charades`/`play/[code]` use `animate-fade-in-up`; `scale`/`tint` use `rise`. Missing on: `editor`, `library`, `editor/[id]`, `quiz/[id]`. Added `animate-fade-in-up` to each of those four's outer container. Verified live (editor `main` now reports animationName `fade-in-up`). Now all 11 pages have a content entrance animation. tsc clean.

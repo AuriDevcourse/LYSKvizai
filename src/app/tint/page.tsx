@@ -347,7 +347,9 @@ export default function TintGamePage() {
       ) : (
       <div className="mx-auto flex w-full max-w-xl flex-1 flex-col items-center justify-center gap-4 sm:gap-5">
         <div className="text-center">
-          <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-white/45">{round.title}</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-white/45">
+            {round.kind === "flag" ? `Flag of ${round.flag.name}` : round.title}
+          </p>
           {/*
             * "Restore", not "Find".
             *
