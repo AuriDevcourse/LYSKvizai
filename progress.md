@@ -8,6 +8,12 @@ Session-by-session record of what shipped and what's next. Most recent session o
 
 ---
 
+## 2026-09-12 — Consistent page-enter animation on every page
+
+Animation review found the ambient background + logo animate everywhere, but the content page-enter flourish was missing on some pages. `home` uses `rise`; `play`/`survival`/`charades`/`play/[code]` use `animate-fade-in-up`; `scale`/`tint` use `rise`. Missing on: `editor`, `library`, `editor/[id]`, `quiz/[id]`. Added `animate-fade-in-up` to each of those four's outer container. Verified live (editor `main` now reports animationName `fade-in-up`). Now all 11 pages have a content entrance animation. tsc clean.
+
+---
+
 ## 2026-09-12 — Mobile fit pass (390 + 360 px)
 
 Walked every screen at iPhone (390) and Android (360) widths in a real browser, flagging any element past the viewport edge + screenshots. **All clean** — home, /play menu, join form, pick-quiz (topic grid + mode chips), question (standard/true-false/year-guesser/zoom-out), results + the new "I'm ready" button and "waiting for others" state, host big-screen results (ready progress), wager screen, finished/leaderboard. Answers, power-ups, inputs and buttons all fit; long names ("Aurimas-The-Longest-Name") stay on one line.

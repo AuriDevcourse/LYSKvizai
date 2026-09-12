@@ -61,7 +61,7 @@ export default function LibraryPage() {
   const [tab, setTab] = useState<Tab>("questions");
 
   return (
-    <div className="flex min-h-svh flex-col px-4 py-6 sm:px-6 sm:py-8">
+    <div className="flex min-h-svh flex-col px-4 py-6 sm:px-6 sm:py-8 animate-fade-in-up">
       <header className="mx-auto w-full max-w-5xl">
         <div className="flex items-center gap-3">
           <Link

@@ -229,7 +229,7 @@ export default function SinglePlayerQuiz({ params }: PageProps) {
   }
 
   return (
-    <div className="relative flex min-h-svh flex-col items-center">
+    <div className="relative flex min-h-svh flex-col items-center animate-fade-in-up">
       <Link
         href="/"
         aria-label={t("quiz.home")}
