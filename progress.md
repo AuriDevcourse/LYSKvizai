@@ -8,10 +8,20 @@ Session-by-session record of what shipped and what's next. Most recent session o
 
 ---
 
+## 2026-09-12 — ROOT CAUSE of the "game crashed": Vercel deployment + redirect fix
+
+**The actual crash cause (proven).** The game was played on the **Vercel** deployment `lys-kvizai.vercel.app` (the app auto-deploys from this repo to BOTH Hetzner and Vercel), NOT on Hetzner and NOT locally — my earlier "played locally" guess was wrong. Multiplayer state (rooms/players/scores) is an in-memory Map in one process. That works on Hetzner (single long-lived process) but breaks on Vercel serverless: each request can hit a different instance whose memory has no such room. Proof against `lys-kvizai.vercel.app`: 50 concurrent GETs for one room → 7 found, **43 got 404**; 20 concurrent joins → 3 ok, **17 "Room not found"**. So under real concurrent play the room vanishes for most phones at once = "the game suddenly crashed for everyone". SSE held 150s+, so it was not an SSE-timeout issue. Hetzner survived 50 players + 8 concurrent games + 30 reconnects with zero room-not-found.
+
+**Fix (branch `fix/vercel-redirect-to-hetzner`):** `next.config.ts` `redirects()` sends every request to `https://quizmo.auridev.com/:path*` **only when `process.env.VERCEL === "1"`** (Vercel sets it at build; Hetzner never does, so no self-redirect loop). Path preserved, `permanent:false` (307, reversible). So anyone opening the vercel.app link is bounced to the working Hetzner instance. tsc clean.
+
+**Play rule:** always host from `quizmo.auridev.com`. The join link/QR is built from `/api/network-url` = whatever host the HOST opened, so if the host opens the vercel URL, players get broken vercel links. The redirect neutralizes that trap.
+
+---
+
 ## 2026-09-12 — Security re-audit against current code + picture-quiz dedup fix
 
 **Context:** ran a full vulnerability sweep, but the initial pass was against a local checkout that was 34 commits behind `origin/master`. After syncing, most findings were already fixed upstream (the earlier "API and security" pass). Verified against current `origin/master`:
-- Server-crash via `answerIndex` — ALREADY FIXED (`validate.ts` `isInt(answerIndex,0,3)` + distribution bounds check). This is the crash seen while playing: it was a LOCAL 34-behind copy without the guard; production already had it.
+- Server-crash via `answerIndex` — ALREADY FIXED (`validate.ts` `isInt(answerIndex,0,3)` + distribution bounds check). NOTE: this was NOT the crash the user hit while playing — see the Vercel entry above for the real cause. This is a genuine bug that was already fixed upstream regardless.
 - Editor auth — ALREADY EXISTS (`src/lib/auth.ts`, `EDITOR_SECRET` via `Authorization: Bearer`, fails closed).
 - Wager NaN, teamCount/timer bloat, rate-limit id-rotation bypass, upload MIME-extension XSS, quiz input caps — ALL already fixed upstream (`validate.ts`, `quiz-validate.ts`, per-token rate buckets, MIME-derived upload ext).
 

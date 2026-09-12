@@ -91,6 +91,30 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  /**
+   * The Vercel deployment cannot host this app's multiplayer. Rooms, players and
+   * scores live in one process's memory; Vercel runs many short-lived serverless
+   * instances, so under concurrent play each phone can hit a different instance
+   * that has never heard of the room and returns "room not found" — the game
+   * collapses for everyone at once. Hetzner (quizmo.auridev.com) is a single
+   * long-lived process and holds the state correctly.
+   *
+   * So on Vercel, redirect every request to Hetzner, preserving the path (a
+   * shared room link keeps working). Guarded by `process.env.VERCEL`, which
+   * Vercel sets to "1" at build time and Hetzner never sets — without the guard
+   * the Hetzner build would redirect to itself in a loop.
+   */
+  async redirects() {
+    if (process.env.VERCEL !== "1") return [];
+    return [
+      {
+        source: "/:path*",
+        destination: "https://quizmo.auridev.com/:path*",
+        permanent: false,
+      },
+    ];
+  },
+
   async rewrites() {
     if (!MP_SERVER) return [];
     return [
