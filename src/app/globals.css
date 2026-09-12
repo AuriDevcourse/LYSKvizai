@@ -71,6 +71,15 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
+/* No sideways scroll, ever. `body { overflow-x: hidden }` alone doesn't clip
+   the root, so a drifting fixed background (.aurora) or a decorative glow that
+   bleeds past the edge (e.g. the finished screen's -inset-x-16 plate) left the
+   page scrollable ~30px sideways on a phone. `clip` stops that without making a
+   scroll container, so sticky/fixed positioning still work. */
+html {
+  overflow-x: clip;
+}
+
 /* Respect the notch / home indicator on every full-bleed surface. */
 .safe-area {
   padding-left: env(safe-area-inset-left);

@@ -8,6 +8,14 @@ Session-by-session record of what shipped and what's next. Most recent session o
 
 ---
 
+## 2026-09-12 — Mobile fit pass (390 + 360 px)
+
+Walked every screen at iPhone (390) and Android (360) widths in a real browser, flagging any element past the viewport edge + screenshots. **All clean** — home, /play menu, join form, pick-quiz (topic grid + mode chips), question (standard/true-false/year-guesser/zoom-out), results + the new "I'm ready" button and "waiting for others" state, host big-screen results (ready progress), wager screen, finished/leaderboard. Answers, power-ups, inputs and buttons all fit; long names ("Aurimas-The-Longest-Name") stay on one line.
+
+**One real bug found + fixed:** the finished/leaderboard screen scrolled sideways ~27px on a phone — a decorative glow (`Leaderboard.tsx` `-inset-x-16`) and the drifting `.aurora` fixed background leaked past the edge, and `body { overflow-x: hidden }` doesn't clip the root. Fix: `html { overflow-x: clip }` in `globals.css` (clip, not hidden, so vertical scroll and sticky/fixed still work). Verified: sideways scroll gone (`scrollLeft` pinned at 0), vertical scroll still works on tall screens. `.impeccable` note: zoom-out's 960px image is the zoom mechanic (clipped, intentional); its empty frame in one shot was the external Wikipedia image still loading, not a layout fault.
+
+---
+
 ## 2026-09-12 — "I'm ready" gate between questions
 
 **Why (Auri):** the host advancing instantly meant a player mid-tap fat-fingered an answer on the freshly-shown question. Now every connected player leaves the results screen on their own terms.
