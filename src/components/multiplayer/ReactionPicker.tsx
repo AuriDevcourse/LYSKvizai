@@ -1,89 +1,43 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback } from "react";
 import { Send } from "lucide-react";
 
 const REACTIONS = ["🔥", "😂", "😭", "🎉", "😱", "👏"] as const;
-
-function isSingleEmoji(str: string) {
-  return [...str].length <= 2;
-}
-
-interface FloatingItem {
-  id: number;
-  content: string;
-  x: number;
-}
 
 interface ReactionPickerProps {
   onReact: (emoji: string) => void;
 }
 
+/**
+ * The input half of reactions only. Rendering is `EmojiReactions`, fed by the
+ * server broadcast.
+ *
+ * This component used to spawn its own floating copy the moment you tapped, on
+ * top of sending. The server echoes every reaction back to the whole room, the
+ * sender included, so the sender alone saw two of everything: two emoji, two
+ * comment bubbles, in two slightly different sizes. One render path costs a
+ * round trip of latency and is worth it: what you send is now what the room
+ * sees, and a reaction that never reached the server no longer looks like it did.
+ */
 export default function ReactionPicker({ onReact }: ReactionPickerProps) {
-  const [floats, setFloats] = useState<FloatingItem[]>([]);
   const [text, setText] = useState("");
-  const idRef = useRef(0);
-
-  const spawnFloat = useCallback((content: string) => {
-    const id = ++idRef.current;
-    const x = 15 + Math.random() * 70;
-    setFloats((prev) => [...prev, { id, content, x }]);
-    setTimeout(() => {
-      setFloats((prev) => prev.filter((f) => f.id !== id));
-    }, 3000);
-  }, []);
-
-  const handleReact = useCallback(
-    (emoji: string) => {
-      onReact(emoji);
-      spawnFloat(emoji);
-    },
-    [onReact, spawnFloat]
-  );
 
   const handleSubmitText = useCallback(() => {
     const trimmed = text.trim();
     if (!trimmed) return;
     onReact(trimmed);
-    spawnFloat(trimmed);
     setText("");
-  }, [text, onReact, spawnFloat]);
+  }, [text, onReact]);
 
   return (
-    <div className="w-full max-w-sm mx-auto">
-      {/* Floating items — fixed overlay */}
-      {floats.length > 0 && (
-        <div className="pointer-events-none fixed inset-x-0 top-0 bottom-1/3 z-50 overflow-hidden">
-          {floats.map((f) =>
-            isSingleEmoji(f.content) ? (
-              <div
-                key={f.id}
-                className="absolute bottom-0 animate-float-up text-3xl"
-                style={{ left: `${f.x}%` }}
-              >
-                {f.content}
-              </div>
-            ) : (
-              <div
-                key={f.id}
-                className="absolute bottom-0 animate-float-up"
-                style={{ left: `${f.x}%`, transform: "translateX(-50%)" }}
-              >
-                <div className="max-w-[280px] truncate rounded-full bg-white/20 px-6 py-3 text-xl font-extrabold text-white backdrop-blur-sm">
-                  {f.content}
-                </div>
-              </div>
-            )
-          )}
-        </div>
-      )}
-
+    <div className="mx-auto w-full max-w-sm">
       {/* Emoji buttons */}
       <div className="flex items-center justify-center gap-2 py-1 sm:gap-3">
         {REACTIONS.map((emoji) => (
           <button
             key={emoji}
-            onClick={() => handleReact(emoji)}
+            onClick={() => onReact(emoji)}
             className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/5 text-xl transition-transform hover:scale-110 hover:bg-white/10 active:scale-95 sm:h-11 sm:w-11 sm:text-2xl"
           >
             {emoji}

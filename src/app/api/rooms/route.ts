@@ -13,6 +13,7 @@ import {
   submitAnswer,
   submitTextAnswer,
   submitYearAnswer,
+  submitScaleAnswer,
   nextQuestion,
   markReady,
   disconnectPlayer,
@@ -132,7 +133,8 @@ export async function POST(req: NextRequest) {
           body.timerDuration,
           body.gameMode,
           body.teamCount,
-          body.eliminationInterval
+          body.eliminationInterval,
+          body.roundType
         );
         return json({
           code: room.code,
@@ -208,6 +210,12 @@ export async function POST(req: NextRequest) {
 
     case "answer-year": {
       const result = submitYearAnswer(body.code, body.playerId, body.token, body.year);
+      if (result.error) return json({ error: result.error }, 400);
+      return json({ ok: true });
+    }
+
+    case "answer-scale": {
+      const result = submitScaleAnswer(body.code, body.playerId, body.token, body.metres);
       if (result.error) return json({ error: result.error }, 400);
       return json({ ok: true });
     }

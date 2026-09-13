@@ -8,6 +8,156 @@ Session-by-session record of what shipped and what's next. Most recent session o
 
 ---
 
+## 2026-09-13 — NOT DEPLOYED: ready-gate wedge, double emoji, scale rounds in multiplayer
+
+On branch `fix/ready-gate-and-reactions`, **not merged, not live**. Four things, all from a real 7-player session.
+
+### 1. The ready gate wedged when someone left (the bug that ended the game)
+
+Six of seven tapped "I'm ready", the seventh closed their tab, and the room sat on the results
+screen forever. `readyRequired()` excluded the leaver correctly, so the count really was 6/6 —
+but the only place that compared count to total was `markReady` itself, and nobody was left to
+tap anything. Fix: `recheckReadyGate(room)` in `room-store.ts`, called from **both** paths that
+can remove a player, `disconnectPlayer` (exit button and the `pagehide` beacon) and the
+120s grace timeout in `handleConnectionLost`.
+
+`scripts/stress/readygate.mjs` replays it: six of seven ready, the seventh leaves, the room must
+advance. Prints `WEDGED` with the fix reverted, passes with it. Also covers a shrinking counter,
+a room everybody leaves (must NOT advance into an empty room), and the ordinary path.
+
+### 2. Double emoji and double comments
+
+`ReactionPicker` spawned its own floating copy AND sent to the server, which broadcasts back to
+everyone *including the sender* — so the sender alone saw two of everything. The picker is now
+input-only and `EmojiReactions` is the one render path. Measured in a browser: before, 1 float at
+0ms then 2 at 300ms; after, 1 float at 300ms. The 300ms is the round trip everyone else already had.
+
+### 3. The picker was crowding the ready button
+
+It sat between the answer reveal and "I'm ready", so a text input was directly above the one
+button everybody has to tap. Moved below the button, behind a hairline rule.
+
+### 4. Scale rounds now work in multiplayer (new)
+
+`/scale` was solo-only. A host can now pick **Scale round** on `/play` and skip the topic picker
+entirely, because a scale room ignores the quiz selection: its rounds are pairings generated from
+the creature pool, not questions anybody wrote.
+
+- `RoundType` (`"quiz" | "scale"`) is deliberately **not** a `GameMode`. Game modes change how
+  people compete over the same questions; this changes where questions come from. Any game mode
+  can sit on top of either.
+- `src/lib/games/scale-rounds.ts` — the generator, and now the one `SCALE_POOL`. The solo page
+  imports it instead of filtering its own copy.
+- `src/components/games/ScaleStage.tsx` — the two-creatures-on-a-baseline stage, shared by the
+  solo page, the player's round and the host reveal.
+- Scoring reuses `scoreScale` (log-space, 0-100) multiplied by 15, so a scale round pays up to
+  1500 like every other round instead of a fifteenth of one.
+- **The target's real height is never sent before the reveal.** The payload carries the two
+  creature ids plus the *reference* height only; the target's height is the answer.
+
+**Two bugs found while building it, both fixed:**
+- The host's type chip was a ternary chain whose final `else` was "VIDEO", so a scale round
+  announced itself as a video round. Replaced with an explicit `TYPE_LABELS` table: an unknown
+  type now shows no chip rather than the wrong one.
+- `applyFastestBonus` paid a 150-point speed bonus on scale rounds. A scale guess sets
+  `currentAnswer = 0` purely as a has-answered flag and generated questions carry `correct: 0`,
+  so every scoring guess read as a correct answer. Scale is now excluded alongside fastest-finger
+  and year-guesser. Nothing about a scale round rewards dragging a slider quickly.
+
+### What the completion-auditor caught (all fixed)
+
+It returned BLOCK. Five real findings, every one a case of two screens showing different numbers
+or an answer reaching a phone early:
+
+1. **The wager paid nothing on a scale round while the screen announced the swing.** `wagerResults`
+   is emitted for any question type and the host screen renders a green +500, but the wager was
+   only ever applied inside `submitAnswer`. The same hole was open on **year and text rounds**, so
+   the fix is a shared `wagerSwing()` helper applied to all three. A wagered year round has been
+   lying about points for as long as wagers have existed.
+2. **The Double power-up made the guess row disagree with the leaderboard beside it** (+180 next to
+   360). The guess row recomputed the raw figure instead of reporting `player.lastPointsAwarded`,
+   which is the only number the score actually moved by.
+3. **Reactions still double-rendered on the host screen.** Two `EmojiReactions` overlays mounted at
+   once, one at page level and one inside `HostResults`. My fix had only addressed the sender's own
+   duplicate. The `HostResults` copy is gone and its now-dead `reactions` prop with it.
+4. **The creature table, sizes included, shipped in the multiplayer bundle.** The payload withheld
+   the target's height, but the client looked the creature up in its own bundled copy, so
+   `creatureById(targetId).heightM` was one console line from the answer. The payload now carries
+   *art only* (`ScaleArt`: id, name, palette, artFraction) and the size table never leaves the
+   server. Verified against the production build in a browser: across the 20 scripts the play route
+   loads there is no `inScaleGame`, no creature name and no `heightM: <number>` literal.
+   **Caveat:** the solo `/scale` route still ships the table, because that game scores in the
+   browser, and any same-origin URL can be fetched by someone who goes looking. These are public
+   facts about giraffes, so that is where this stops being worth chasing.
+5. **Nothing in `npm test` covered any of it.** Added `src/lib/games/scale-rounds.test.ts` (7 cases).
+   Writing it found a sixth bug: `pickPair` gives up quietly rather than throwing, returning "any two
+   distinct entries" with no ratio check, so near the end of every cycle through the pool
+   `buildScaleQuestions` emitted a **1.19x round** where the honest answer is "about the same size".
+   The generator now clears its exclusion set when it has painted itself into that corner.
+
+It also reported progress.md had no entry for the branch. It did — the auditor read the file before
+this entry was written.
+
+Two minor findings, both taken: a player reconnecting *during* results now re-broadcasts the ready
+count, and `ScaleStage` no longer prints the reference height from one source while the maths uses
+another. The solo page now draws its stage from `ScaleStage` too, so there is genuinely one copy.
+
+### Verification
+
+`typecheck` clean · `lint` 0 errors (15 warnings, budget 16) · `test` **162/162** · `build` compiled.
+`scalemodes.mjs` 0 problems (team, elimination, speed-bonus consistency).
+
+Everything below ran against a **production build** (`npm start`), not the dev server:
+`scaleround.mjs` 21 checks 0 problems (now including the wager round and the Double power-up),
+`readygate.mjs` 0 problems, `fullgame.mjs` 20 players / 10 questions / wager at q10 / answer p95
+53ms / 0 failures, `edge.mjs` 0 problems, `abuse.mjs` still cuts off a reconnect loop at 10.
+
+### Second round, after the audit (Auri picked all four)
+
+1. **White text on the answer colours is gone.** `PlayerResults.tsx` now uses `ANSWER_TEXT`.
+   Measured in a browser on the real results screen: **7.20 / 7.38 / 8.16 / 8.38:1**, the exact
+   figures CLAUDE.md predicts. It was 2.30-2.68:1. The wrong answers still recede, but by fading
+   the whole tile to 40% rather than painting the text a fainter white.
+2. **Scale tested under team and elimination mode.** New `scripts/stress/scalemodes.mjs`. Team mode
+   correctly refuses a non-designated answerer with "Another team member answers this round" (the
+   check has to run *before* the designated players guess, or the round has already ended and every
+   refusal reads "Can't answer right now"). Elimination knocks out the worst guesser, refuses them
+   the next guess, drops them from the ready gate, and the room advances. Team scores appear.
+3. **The wager fix is scoped back to scale only.** `submitYearAnswer` and `submitTextAnswer` keep
+   their existing behaviour, so this branch changes nothing about shipped game types. The hole is
+   still there and is now documented in `wagerSwing`'s own doc comment, naming both functions, so
+   whoever goes looking for it lands on the fix.
+4. **The leaderboard no longer lags the speed bonus.** `showResults` rebuilds `results.leaderboard`
+   after `applyFastestBonus` instead of before. Proven both ways: with the line reverted,
+   `scalemodes.mjs` reports `bonus mismatch: result row 1450, leaderboard 1300 (150 lost on the
+   way)`; with it in place, 150 appears in both and the ranking matches the scores beside it.
+
+### Next steps
+
+1. Review the diff and merge to `master` (auto-deploys to Hetzner in ~60s).
+2. Play a scale round with real people. Team mode, elimination and the pre-final wager are all
+   covered by scripts now, but nobody has played a scale round with a room full of humans.
+3. Tint is the other half of the ask and is **not** built. It needs a new answer payload shape,
+   because a tint guess is an array of hex values rather than one number. Scale rode the
+   year-guesser plumbing; tint cannot.
+
+### Gotchas found, not fixed
+
+- `wagerResults` reports the **uncapped** wager while the score moves by `min(wager, score)`, so a
+  player who wagers more than they hold sees a bigger loss announced than actually happens (seen
+  live: screen -250, score -180). Possible because `WAGER_FLOOR` lets a low-scoring player bet more
+  than they have. Pre-existing on every game type, same family as the leaderboard bug above.
+- `applyFastestBonus` mutates `player.score` and `playerResults` **after** `getResultsPayload`
+  has already built `results.leaderboard`, so on any round that pays the bonus the leaderboard in
+  that payload is 150 behind the player's own row. Self-corrects next round. Pre-existing, affects
+  every game type, one line to fix but it changes ranking behaviour everywhere, so it is Auri's call.
+  (Scale rounds no longer pay this bonus at all, so they are not exposed to it.)
+- The host results screen rendered an empty 66x50 glass pill at the top of every reveal, because
+  `useRoom` nulls the question payload when results arrive (`useRoom.ts:195`). Now hidden when
+  there is no question text. Pre-existing for all types, fixed because it landed on the new screen.
+
+---
+
 ## 2026-09-12 — DEPLOYED (all of today's work is live)
 
 Everything below from 2026-09-12 is merged to `master` and **live on production** (`quizmo.auridev.com`, commit `2efac3c`). Deploy verified: homepage/tint 200, `ready` action returns 200 (ready-gate live), Vercel link still 307-redirects to Hetzner. Shipped this session:

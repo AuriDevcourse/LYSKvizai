@@ -13,6 +13,7 @@ import type {
   WagerPayload,
   WagerType,
   ServerEvent,
+  RoundType,
 } from "./types";
 import { generateRoomCode } from "./room-code";
 import { randomBytes } from "crypto";
@@ -30,6 +31,8 @@ import { sanitizeName, sanitizeEmoji } from "../sanitize";
 import { broadcast, removeRoomConnections, setPrunedHandler } from "./sse-manager";
 import { getQuiz } from "@/lib/quiz-store";
 import type { Question } from "@/data/types";
+import { buildScaleQuestions, creatureById, toScaleArt } from "@/lib/games/scale-rounds";
+import { scoreScale, formatHeight } from "@/lib/games/scale-scoring";
 
 /** Broadcast wrapper that also marks the room as active. Use this for every
  * state-changing event so the idle reaper leaves live games alone. */
@@ -79,6 +82,11 @@ export function cancelPendingDisconnect(code: string, playerId: string) {
 
   player.connected = true;
   bcast(room, { type: "player-joined", data: { player: playerToInfo(player) } });
+
+  // Coming back during the results screen puts them back into `readyRequired`,
+  // so the live counter has to be told. The snapshot already carried the right
+  // figure, but the on-screen count sat stale until somebody else tapped.
+  recheckReadyGate(room);
 }
 
 /**
@@ -108,6 +116,7 @@ export function handleConnectionLost(code: string, playerId: string, hasOtherCon
     // If they already reconnected via a fresh SSE stream, connected stays true in broadcast
     player.connected = false;
     bcast(room, { type: "player-left", data: { playerId } });
+    recheckReadyGate(room);
 
     // During lobby, fully remove the player so the host isn't stuck waiting on ghosts.
     if (room.state === "lobby") {
@@ -239,6 +248,22 @@ function getQuestionPayload(room: Room): QuestionPayload {
     isWagerRound: room.isWagerRound || undefined,
   };
 
+  // A scale round sends the pair, not the answer. The reference's height is
+  // safe to send (it is printed on the screen and is what the guess is measured
+  // against); the target's height is the answer and stays on the server until
+  // results.
+  if (q.type === "scale" && q.scaleReferenceId && q.scaleTargetId) {
+    const reference = creatureById(q.scaleReferenceId);
+    const target = creatureById(q.scaleTargetId);
+    if (reference && target) {
+      payload.scale = {
+        reference: toScaleArt(reference),
+        referenceHeightM: reference.heightM,
+        target: toScaleArt(target),
+      };
+    }
+  }
+
   // Team mode: include who can answer
   if (room.gameMode === "team") {
     payload.currentTeamAnswerers = [...room.currentTeamAnswerer.values()];
@@ -287,7 +312,8 @@ function getResultsPayload(room: Room): ResultsPayload {
   // Text and year questions reuse `currentAnswer` as a 0/-1 "has answered" flag,
   // so counting it here piled every correct text answer onto option A. Only
   // multiple-choice rounds have a distribution at all.
-  const hasChoices = q.type !== "fastest-finger" && q.type !== "year-guesser";
+  const hasChoices =
+    q.type !== "fastest-finger" && q.type !== "year-guesser" && q.type !== "scale";
 
   for (const player of room.players.values()) {
     if (hasChoices && player.currentAnswer !== null
@@ -310,6 +336,16 @@ function getResultsPayload(room: Room): ResultsPayload {
       } else {
         const guessed = parseInt(player.currentTextAnswer, 10);
         correct = !isNaN(guessed) && scoreYearGuess(guessed, q.correctYear) > 0;
+      }
+    } else if (q.type === "scale") {
+      // "Correct" on a scale round means the guess scored at all: inside the
+      // 4x tolerance either way. There is no right answer to match, so this is
+      // what a streak and the results tick can honestly be based on.
+      const target = scaleTargetOf(q);
+      if (!player.currentTextAnswer || !target) {
+        correct = false;
+      } else {
+        correct = scoreScale(parseFloat(player.currentTextAnswer), target.heightM).points > 0;
       }
     } else {
       const originalAnswer = player.currentAnswer !== null
@@ -411,6 +447,51 @@ function getResultsPayload(room: Room): ResultsPayload {
     result.correctAnswerText = q.acceptedAnswers?.[0] ?? q.options[q.correct];
   }
 
+  // Scale round data: everyone's guess beside the truth.
+  if (q.type === "scale") {
+    const target = scaleTargetOf(q);
+    if (target && q.scaleReferenceId) {
+      const scaleGuesses: ResultsPayload["scaleGuesses"] = [];
+      for (const player of room.players.values()) {
+        if (player.currentTextAnswer === null) continue;
+        const guessedM = parseFloat(player.currentTextAnswer);
+        if (!Number.isFinite(guessedM)) continue;
+        const scored = scoreScale(guessedM, target.heightM);
+        scaleGuesses.push({
+          playerId: player.id,
+          playerName: player.name,
+          guessedM: scored.guessedM,
+          actualM: scored.actualM,
+          accuracy: scored.accuracy,
+          verdict: scored.verdict,
+          /*
+           * What was actually awarded, not a fresh recompute.
+           *
+           * This used to re-derive the raw figure from the guess, which ignores
+           * the Double power-up and the wager swing: the guess row read +180
+           * while the leaderboard beside it animated to 360. `lastPointsAwarded`
+           * is the one value the score actually moved by, which is the whole
+           * reason it exists.
+           */
+          points: player.lastPointsAwarded,
+        });
+      }
+      // Closest first, so the host screen reads as a ranking.
+      scaleGuesses.sort((a, b) => b.accuracy - a.accuracy);
+      result.scaleGuesses = scaleGuesses;
+      const reference = creatureById(q.scaleReferenceId);
+      if (reference) {
+        result.scale = {
+          reference: toScaleArt(reference),
+          referenceHeightM: reference.heightM,
+          target: toScaleArt(target),
+          targetHeightM: target.heightM,
+        };
+      }
+      result.correctAnswerText = formatHeight(target.heightM);
+    }
+  }
+
   // Year guesser data
   if (q.type === "year-guesser" && q.correctYear != null) {
     const yearGuesses: ResultsPayload["yearGuesses"] = [];
@@ -481,6 +562,7 @@ export function getRoomSnapshot(room: Room): RoomSnapshot {
     currentQuestionIndex: room.currentQuestionIndex,
     totalQuestions: room.questionIndices.length,
     gameMode: room.gameMode,
+    roundType: room.roundType,
   };
 
   if (room.gameMode === "team") {
@@ -579,37 +661,53 @@ export async function createRoom(
   timerDuration?: number,
   gameMode?: GameMode,
   teamCount?: number,
-  eliminationInterval?: number
+  eliminationInterval?: number,
+  roundType: RoundType = "quiz"
 ): Promise<Room> {
-  // Support both single ID and array of IDs
-  const ids = Array.isArray(quizIds) ? quizIds : [quizIds];
-  if (ids.length === 0) throw new Error("No quiz selected");
+  let questions: Question[];
 
-  // Load all quizzes and merge questions
-  const allQuestions: Question[] = [];
-  for (const qid of ids) {
-    const quiz = await getQuiz(qid);
-    if (!quiz) throw new Error(`Quiz "${qid}" not found`);
-    allQuestions.push(...quiz.questions);
+  if (roundType === "scale") {
+    /*
+     * A scale room ignores the quiz selection.
+     *
+     * Its rounds are pairings drawn from the creature pool, not questions
+     * somebody wrote, so there is nothing to read from a file and no reason to
+     * make the host pick a topic first. Generate exactly as many as were asked
+     * for; the shuffle below then runs over them unchanged, which keeps one
+     * code path for question order.
+     */
+    questions = buildScaleQuestions(Math.max(1, questionCount ?? 6));
+  } else {
+    // Support both single ID and array of IDs
+    const ids = Array.isArray(quizIds) ? quizIds : [quizIds];
+    if (ids.length === 0) throw new Error("No quiz selected");
+
+    // Load all quizzes and merge questions
+    const allQuestions: Question[] = [];
+    for (const qid of ids) {
+      const quiz = await getQuiz(qid);
+      if (!quiz) throw new Error(`Quiz "${qid}" not found`);
+      allQuestions.push(...quiz.questions);
+    }
+    if (allQuestions.length === 0) throw new Error("Quizzes have no questions");
+
+    // Deduplicate questions across quizzes. Key on prompt + image + correct answer,
+    // not the prompt alone: picture rounds share one prompt ("What landmark is
+    // this?") for every question, so a prompt-only key collapsed a 15-question
+    // quiz down to a single question.
+    const seen = new Set<string>();
+    questions = allQuestions.filter((q) => {
+      const key = [
+        q.question.toLowerCase().trim(),
+        (q.image ?? "").trim(),
+        (q.options?.[q.correct] ?? "").toLowerCase().trim(),
+      ].join("|");
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    if (questions.length === 0) throw new Error("No unique questions found");
   }
-  if (allQuestions.length === 0) throw new Error("Quizzes have no questions");
-
-  // Deduplicate questions across quizzes. Key on prompt + image + correct answer,
-  // not the prompt alone: picture rounds share one prompt ("What landmark is
-  // this?") for every question, so a prompt-only key collapsed a 15-question
-  // quiz down to a single question.
-  const seen = new Set<string>();
-  const questions = allQuestions.filter((q) => {
-    const key = [
-      q.question.toLowerCase().trim(),
-      (q.image ?? "").trim(),
-      (q.options?.[q.correct] ?? "").toLowerCase().trim(),
-    ].join("|");
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-  if (questions.length === 0) throw new Error("No unique questions found");
 
   let code: string;
   do {
@@ -647,6 +745,7 @@ export async function createRoom(
     lastActivityAt: Date.now(),
 
     gameMode: gameMode ?? "classic",
+    roundType,
     eliminatedPlayers: new Set(),
     eliminationInterval: eliminationInterval ?? 3,
 
@@ -1014,6 +1113,108 @@ export function submitTextAnswer(
   return {};
 }
 
+/** The target creature of a scale question, or undefined if the id is unknown. */
+function scaleTargetOf(q: Question) {
+  return q.type === "scale" && q.scaleTargetId ? creatureById(q.scaleTargetId) : undefined;
+}
+
+/**
+ * `scoreScale` returns 0-100. Every other round in this app pays up to 1500, so
+ * a scale round scored on its own scale would be worth a fifteenth of a normal
+ * question and the leaderboard would barely move all game. Multiply into the
+ * same band rather than rescaling the solo game, which shows the 0-100 figure
+ * to the player and should keep doing so.
+ */
+const SCALE_POINTS_PER_ACCURACY = 15;
+function scalePoints(points: number): number {
+  return Math.round(points * SCALE_POINTS_PER_ACCURACY);
+}
+
+/**
+ * A player locks in a size on a scale round.
+ *
+ * `metres` is what their slider implied, computed on their phone from the
+ * reference height the server sent. The server re-scores it rather than
+ * accepting a points figure, so a modified client can send an absurd size and
+ * simply score zero for it.
+ */
+export function submitScaleAnswer(
+  code: string,
+  playerId: string,
+  token: string,
+  metres: number
+): { error?: string } {
+  const verified = verifyPlayer(code, playerId, token);
+  if ("error" in verified) return verified;
+  const { room, player } = verified;
+  if (room.state !== "question") return { error: "Can't answer right now" };
+  if (player.currentTextAnswer !== null) return { error: "Already answered" };
+  if (player.eliminated) return { error: "You are eliminated" };
+
+  if (room.gameMode === "team") {
+    const isDesignated = [...room.currentTeamAnswerer.values()].includes(playerId);
+    if (!isDesignated) return { error: "Another team member answers this round" };
+  }
+
+  const qIndex = room.questionIndices[room.currentQuestionIndex];
+  const q = room.questions[qIndex];
+  const target = scaleTargetOf(q);
+  if (!target) return { error: "Not a scale question" };
+
+  player.currentTextAnswer = String(metres);
+  player.answerTime = Date.now();
+
+  const scored = scoreScale(metres, target.heightM);
+  const points = scalePoints(scored.points);
+  const activePU = room.activePowerUps.get(playerId);
+
+  let finalPoints = points;
+  if (activePU === "double" && points > 0) {
+    const { cap } = getQuestionValues(room.currentQuestionIndex);
+    finalPoints = Math.min(points * 2, cap * 2);
+  }
+
+  const awarded = finalPoints + wagerSwing(room, player, points > 0);
+  player.score += awarded;
+  player.lastPointsAwarded = awarded;
+
+  if (points > 0) {
+    player.streak += 1;
+  } else if (activePU !== "shield") {
+    player.streak = 0;
+  }
+
+  // Mark as answered for the answer count, same convention as the year round.
+  player.currentAnswer = points > 0 ? 0 : -1;
+
+  countAndMaybeAdvance(room, (p) => p.currentTextAnswer !== null);
+
+  return {};
+}
+
+/**
+ * The wager swing for one player on a wager round.
+ *
+ * `submitAnswer` applies the wager inline; the non-multiple-choice submit paths
+ * did not, so a wager was announced on the results screen and never paid.
+ * `wagerResults` is emitted for any question type, and the host screen renders a
+ * green +500 next to a score that moved by the round points alone.
+ *
+ * **This is only wired into `submitScaleAnswer`.** The identical hole is still
+ * open in `submitYearAnswer` and `submitTextAnswer`: calling this from both is
+ * a two-line change, deliberately not made, because it alters scoring on two
+ * shipped game types and that is a separate decision from adding scale rounds.
+ * If you are here to fix a wagered year round, this is the function you want.
+ *
+ * A loss is capped at what the player actually has, so a wager cannot push
+ * anyone below zero. Returns 0 when this is not a wager round or they sat it out.
+ */
+function wagerSwing(room: Room, player: Player, won: boolean): number {
+  if (!room.isWagerRound || !room.wagers.has(player.id)) return 0;
+  const wager = room.wagers.get(player.id)!;
+  return won ? wager : -Math.min(wager, player.score);
+}
+
 function scoreYearGuess(guessedYear: number, correctYear: number): number {
   const diff = Math.abs(guessedYear - correctYear);
   if (diff === 0) return 1500;
@@ -1104,7 +1305,16 @@ function applyFastestBonus(room: Room, results: ResultsPayload): void {
   const qIndex = room.questionIndices[room.currentQuestionIndex];
   const q = room.questions[qIndex];
   if (!q) return;
-  if (q.type === "fastest-finger" || q.type === "year-guesser") return;
+  /*
+   * Rounds where speed is not what is being measured.
+   *
+   * Scale joined this list after paying a bonus it had no business paying: a
+   * scale guess sets `currentAnswer` to 0 purely as a has-answered flag, and
+   * generated scale questions carry `correct: 0`, so the test below read every
+   * scoring guess as a correct answer and tipped 150 points to whoever dragged
+   * the slider fastest. Nothing about a scale round rewards being quick.
+   */
+  if (q.type === "fastest-finger" || q.type === "year-guesser" || q.type === "scale") return;
 
   const correctAnswerers = [...room.players.values()]
     .filter((p) => !p.eliminated && p.currentAnswer !== null && p.answerTime !== null)
@@ -1144,6 +1354,17 @@ function showResults(room: Room): void {
   // The one place the bonus is paid. Ordered before the cache is set so the
   // cached payload is the one that includes it.
   applyFastestBonus(room, results);
+  /*
+   * Rebuild the leaderboard after the bonus, not before.
+   *
+   * `getResultsPayload` builds it from `player.score`, and `applyFastestBonus`
+   * then moves that score by 150 without touching the array it already built.
+   * So on every round that paid the bonus, the results screen showed the
+   * player's own row 150 ahead of their line on the leaderboard beside it, and
+   * a rank that ignored the points that had just decided it. It self-corrected
+   * next round, which is what kept it invisible.
+   */
+  results.leaderboard = getLeaderboard(room);
   room.cachedResults = results;
   room.state = "results";
   // Fresh results: nobody has readied for the next question yet.
@@ -1204,6 +1425,30 @@ function readyProgress(room: Room): { count: number; total: number } {
   const required = readyRequired(room);
   const count = required.filter((p) => room.readyPlayers.has(p.id)).length;
   return { count, total: required.length };
+}
+
+/**
+ * Re-run the ready gate after the set of required players shrinks.
+ *
+ * `markReady` is not the only thing that can satisfy the gate. A player leaving
+ * drops out of `readyRequired`, which can complete a count that was one tap
+ * short, and nothing used to notice. Six players who had all tapped ready sat
+ * on the results screen indefinitely because the seventh closed their tab.
+ *
+ * Re-broadcasting the progress also keeps the on-screen counter honest: it read
+ * "6/7" after the seventh was already gone.
+ */
+function recheckReadyGate(room: Room): void {
+  if (room.state !== "results") return;
+
+  const progress = readyProgress(room);
+  bcast(room, { type: "ready-progress", data: progress });
+
+  // total === 0 means nobody is left to wait on; leave the room for the reaper
+  // rather than advancing a game with no players in it.
+  if (progress.total > 0 && progress.count >= progress.total) {
+    advanceAfterResults(room);
+  }
 }
 
 /** Move on from the results screen: finish the game, run the pre-final wager, or
@@ -1406,6 +1651,7 @@ export function disconnectPlayer(code: string, playerId: string, token: string):
 
   player.connected = false;
   bcast(room, { type: "player-left", data: { playerId } });
+  recheckReadyGate(room);
 }
 
 export function forceShowResults(code: string, hostId: string, hostToken: string): { error?: string } {

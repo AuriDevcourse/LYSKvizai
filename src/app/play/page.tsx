@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { Suspense, useState, useCallback, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Plus, LogIn, ArrowLeft, Loader2, Smartphone, Monitor, X } from "lucide-react";
+import { Plus, LogIn, ArrowLeft, Loader2, Smartphone, Monitor, X, Ruler } from "lucide-react";
 import { useRoomActions } from "@/hooks/useRoomActions";
 import JoinForm from "@/components/multiplayer/JoinForm";
 import TopicPicker from "@/components/TopicPicker";
@@ -21,8 +21,11 @@ const AvatarBuilder = dynamic(() => import("@/components/AvatarBuilder"), {
   ssr: false,
   loading: () => <div className="h-40 animate-pulse rounded-xl bg-white/5" />,
 });
-import type { GameMode } from "@/lib/multiplayer/types";
+import type { GameMode, RoundType } from "@/lib/multiplayer/types";
 import { MAX_QUESTION_COUNT } from "@/lib/multiplayer/validate";
+/** Rounds in a scale game. Six is the solo game's length and it is the right
+ *  size for a party: long enough to build a score, short enough to stay sharp. */
+const SCALE_ROUNDS = 6;
 import type { QuizMeta } from "@/data/types";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 import { Mark } from "@/components/Logo";
@@ -40,6 +43,14 @@ function PlayPageInner() {
     codeFromUrl || joinFromUrl ? "join" : createFromUrl ? "pick-quiz" : "menu"
   );
   const [selectedQuizIds, setSelectedQuizIds] = useState<string[]>([]);
+  /**
+   * Quiz rounds or scale rounds.
+   *
+   * A scale room draws its rounds from the creature pool and never reads a
+   * quiz, so picking it skips the topic screen entirely rather than asking for
+   * a selection that would be thrown away.
+   */
+  const [roundType, setRoundType] = useState<RoundType>("quiz");
   /** True while TopicPicker is showing its top-level game-type grid. */
   const [pickerAtRoot, setPickerAtRoot] = useState(true);
   const [selectedGameMode, setSelectedGameMode] = useState<GameMode>("classic");
@@ -75,7 +86,7 @@ function PlayPageInner() {
   };
 
   const handleCreateRoom = async () => {
-    if (selectedQuizIds.length === 0) return;
+    if (roundType === "quiz" && selectedQuizIds.length === 0) return;
     setMode("creating");
     setError(null);
     try {
@@ -89,13 +100,16 @@ function PlayPageInner() {
         // MAX_QUESTION_COUNT — so 999 started failing validation and choosing
         // "All" made the room impossible to create. Send the real number
         // instead, capped at the same limit the server enforces.
-        questionCount === 0
-          ? Math.max(1, Math.min(totalQuestions || 1, MAX_QUESTION_COUNT))
-          : questionCount,
+        roundType === "scale"
+          ? SCALE_ROUNDS
+          : questionCount === 0
+            ? Math.max(1, Math.min(totalQuestions || 1, MAX_QUESTION_COUNT))
+            : questionCount,
         timer,
         selectedGameMode,
         gameModeOptions.teamCount,
-        gameModeOptions.eliminationInterval
+        gameModeOptions.eliminationInterval,
+        roundType
       );
       // If host wants to play, also join as a player
       if (hostPlaying && hostName.trim()) {
@@ -160,11 +174,18 @@ function PlayPageInner() {
 
           <div className="flex w-full flex-col gap-3">
             <button
-              onClick={() => setMode("pick-quiz")}
+              onClick={() => { setRoundType("quiz"); setMode("pick-quiz"); }}
               className="btn-primary flex items-center justify-center gap-2 w-full"
             >
               <Plus className="h-5 w-5" />
               {t("play.createGame")}
+            </button>
+            <button
+              onClick={() => { setRoundType("scale"); setMode("host-join"); }}
+              className="btn-secondary flex items-center justify-center gap-2 w-full"
+            >
+              <Ruler className="h-5 w-5" />
+              Scale round
             </button>
             <button
               onClick={() => setMode("join")}
@@ -343,7 +364,11 @@ function PlayPageInner() {
           )}
 
           <button
-            onClick={() => { setMode("pick-quiz"); setError(null); setHostPlaying(false); }}
+            onClick={() => {
+              setMode(roundType === "scale" ? "menu" : "pick-quiz");
+              setError(null);
+              setHostPlaying(false);
+            }}
             className="tap-target px-3 flex items-center gap-1.5 text-sm font-bold text-white/50 hover:text-white/70 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />

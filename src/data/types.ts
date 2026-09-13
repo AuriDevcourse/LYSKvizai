@@ -1,4 +1,4 @@
-export type QuestionType = "standard" | "bluff" | "audio" | "video" | "fastest-finger" | "year-guesser" | "true-false" | "zoom-out";
+export type QuestionType = "standard" | "bluff" | "audio" | "video" | "fastest-finger" | "year-guesser" | "true-false" | "zoom-out" | "scale";
 
 export interface Question {
   question: string;
@@ -15,6 +15,17 @@ export interface Question {
   acceptedAnswers?: string[];
   /** Correct year for year-guesser questions */
   correctYear?: number;
+  /**
+   * The two creatures in a scale round, by `Creature.id`.
+   *
+   * Ids rather than the creatures themselves: `creatures.ts` is a static module
+   * that both the server and every phone already import, so shipping the
+   * palettes and art fractions through SSE would send data the client is
+   * holding a copy of. A scale question is generated, never authored, so these
+   * are written by `buildScaleQuestions` and never by the editor.
+   */
+  scaleReferenceId?: string;
+  scaleTargetId?: string;
 }
 
 export interface Quiz {

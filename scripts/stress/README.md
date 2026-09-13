@@ -8,6 +8,9 @@ npm run build && npm start -- -p 3005
 BASE=http://localhost:3005 PLAYERS=50 node scripts/stress/stress.mjs
 BASE=http://localhost:3005 node scripts/stress/getpoll.mjs
 BASE=http://localhost:3005 node scripts/stress/abuse.mjs
+BASE=http://localhost:3005 node scripts/stress/readygate.mjs
+BASE=http://localhost:3005 node scripts/stress/scaleround.mjs
+BASE=http://localhost:3005 node scripts/stress/scalemodes.mjs
 ```
 
 - `stress.mjs` — a full quiz night at once: a room, every player joining
@@ -28,6 +31,17 @@ BASE=http://localhost:3005 node scripts/stress/abuse.mjs
   people playing. Checks the host recovers, that a host action without a token
   is refused, that `isHost` does not leak, that players can keep answering
   while the host is away, and that the game can still be driven to the end.
+- `readygate.mjs` — the ready-gate when the room changes shape underneath it:
+  six of seven ready and the seventh leaves, one of four leaving mid-count, a
+  room everybody leaves, and the ordinary everybody-taps path. Asserts the room
+  advances (or deliberately does not) in each.
+- `scaleround.mjs` — a whole scale room: created with no quiz selected, the
+  creature pair reaching the players while the answer stays on the server, a
+  guess scored in log space, a wild guess scoring zero, and the guess row,
+  result row and leaderboard all reporting the same number.
+- `scalemodes.mjs` — scale rounds under team mode and elimination, which the type system allowed
+  and nobody had played, plus a check that the fastest-answer bonus reaches the leaderboard and not
+  only the player's own row.
 - `abuse.mjs` — one player opening 25 streams. Must still be cut off; this is
   what proves a rate-limit fix made the limit *precise* rather than absent.
 

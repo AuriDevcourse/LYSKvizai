@@ -10,6 +10,7 @@ import HostLobby from "@/components/multiplayer/HostLobby";
 import PlayerLobby from "@/components/multiplayer/PlayerLobby";
 import LiveRegion from "@/components/a11y/LiveRegion";
 import HostQuestion from "@/components/multiplayer/HostQuestion";
+import ScaleGuessInput from "@/components/multiplayer/ScaleGuessInput";
 import PlayerQuestion from "@/components/multiplayer/PlayerQuestion";
 import FastestFingerInput from "@/components/multiplayer/FastestFingerInput";
 import YearGuesserInput from "@/components/multiplayer/YearGuesserInput";
@@ -239,6 +240,17 @@ export default function GamePage({ params }: PageProps) {
       if (!playerId) return false;
       return postAction(
         { action: "answer-year", code, playerId, token: playerToken, year },
+        "Failed to submit answer"
+      );
+    },
+    [code, playerId, playerToken, postAction]
+  );
+
+  const handleScaleAnswer = useCallback(
+    async (metres: number): Promise<boolean> => {
+      if (!playerId) return false;
+      return postAction(
+        { action: "answer-scale", code, playerId, token: playerToken, metres },
         "Failed to submit answer"
       );
     },
@@ -557,6 +569,15 @@ export default function GamePage({ params }: PageProps) {
               streak={myStreak}
               eliminated={currentPlayer?.eliminated ?? false}
             />
+          ) : question.type === "scale" ? (
+            <ScaleGuessInput
+              question={question}
+              onAnswer={handleScaleAnswer}
+              onTimerExpire={handleTimerExpire}
+              timerReduction={timerReduction}
+              streak={myStreak}
+              eliminated={currentPlayer?.eliminated ?? false}
+            />
           ) : (
             <PlayerQuestion
               question={enrichedQuestion!}
@@ -594,6 +615,15 @@ export default function GamePage({ params }: PageProps) {
               streak={myStreak}
               eliminated={currentPlayer?.eliminated ?? false}
             />
+          ) : question.type === "scale" ? (
+            <ScaleGuessInput
+              question={question}
+              onAnswer={handleScaleAnswer}
+              onTimerExpire={handleTimerExpire}
+              timerReduction={timerReduction}
+              streak={myStreak}
+              eliminated={currentPlayer?.eliminated ?? false}
+            />
           ) : (
             <PlayerQuestion
               question={enrichedQuestion!}
@@ -617,7 +647,6 @@ export default function GamePage({ params }: PageProps) {
             key={currentIndex}
             question={lastQuestion}
             results={results}
-            reactions={reactions}
             isLast={isLastQuestion}
             readyProgress={readyProgress}
             gameMode={gameMode}

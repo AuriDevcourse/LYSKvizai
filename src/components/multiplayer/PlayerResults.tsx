@@ -5,7 +5,8 @@ import { CheckCircle, XCircle, Clock, Flame, Skull, Zap, TrendingDown, Eye, Chev
 import type { ResultsPayload, QuestionPayload } from "@/lib/multiplayer/types";
 import ReactionPicker from "./ReactionPicker";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
-import { ANSWER_BG } from "@/lib/answer-options";
+import { ANSWER_BG, ANSWER_TEXT } from "@/lib/answer-options";
+import { formatHeight } from "@/lib/games/scale-scoring";
 import { haptic } from "@/lib/haptics";
 
 const ANSWER_COLORS = ANSWER_BG;
@@ -58,6 +59,8 @@ export default function PlayerResults({ playerId, results, question, onReact, ch
   const options = question
     ? question.options
     : (results.options ?? null);
+
+  const myScaleGuess = results.scaleGuesses?.find((g) => g.playerId === playerId);
 
   const correctIndex = results.correctAnswer;
 
@@ -168,8 +171,30 @@ export default function PlayerResults({ playerId, results, question, onReact, ch
         </div>
       )}
 
+      {/* Scale reveal: your size against the real one. The host screen draws
+          the pair; this is the number you personally landed on, which is the
+          part a player wants on their own phone. */}
+      {results.scale && (
+        <div className="w-full rounded-2xl bg-white/5 px-4 py-3 text-center">
+          <p className="text-xs font-bold uppercase tracking-wider text-white/45">You said</p>
+          <p className="font-headline text-3xl font-extrabold tabular-nums text-primary">
+            {myScaleGuess ? formatHeight(myScaleGuess.guessedM) : "no guess"}
+          </p>
+          {myScaleGuess && (
+            <>
+              <p className="mt-1 text-sm font-bold text-white/70">
+                Really {formatHeight(myScaleGuess.actualM)} · {myScaleGuess.verdict}
+              </p>
+              <p className="mt-0.5 text-xs font-bold tabular-nums text-white/45">
+                {myScaleGuess.accuracy.toFixed(1)}% accurate
+              </p>
+            </>
+          )}
+        </div>
+      )}
+
       {/* Correct answer reveal */}
-      {options && (
+      {options && !results.scale && (
         <div className="w-full">
           <div className={`grid gap-2 ${options.filter(o => o !== "").length <= 2 ? "grid-cols-2 max-w-xs mx-auto" : "grid-cols-2"}`}>
             {options.map((option, i) => {
@@ -178,10 +203,15 @@ export default function PlayerResults({ playerId, results, question, onReact, ch
               return (
                 <div
                   key={i}
+                  /* Near-black on the answer colours, never white. White
+                     measures 2.30-2.68:1 against the four of them and
+                     `ANSWER_TEXT` measures 7.20-8.38:1. The wrong answers still
+                     recede: the whole tile drops to 40% rather than the text
+                     being painted a fainter white. */
                   className={`rounded-xl px-3 py-2.5 text-center text-sm font-bold transition-all ${
                     isCorrect
-                      ? `${ANSWER_COLORS[i]} text-white outline outline-[1.5px] outline-primary`
-                      : `${ANSWER_COLORS[i]} text-white/45 opacity-40`
+                      ? `${ANSWER_COLORS[i]} ${ANSWER_TEXT} outline outline-[1.5px] outline-primary`
+                      : `${ANSWER_COLORS[i]} ${ANSWER_TEXT} opacity-40`
                   }`}
                 >
                   {option}
@@ -191,8 +221,6 @@ export default function PlayerResults({ playerId, results, question, onReact, ch
           </div>
         </div>
       )}
-
-      {onReact && <ReactionPicker onReact={onReact} />}
 
       {/* Ready-to-advance. Every connected player must tap this before the next
           question starts, so nobody is dropped onto a fresh question mid-tap. */}
@@ -240,6 +268,18 @@ export default function PlayerResults({ playerId, results, question, onReact, ch
             </div>
           )}
         </>
+      )}
+
+      {/* Reactions sit below the ready button, not above it.
+          Wedged between the answer reveal and the CTA, the comment field was a
+          text input directly above the one button everybody needs to tap, on a
+          390px screen, with a keyboard opening over the rest of the screen when
+          it took focus. Reacting is optional and the ready tap is not, so the
+          optional thing goes last and gets a rule to sit behind. */}
+      {onReact && (
+        <div className="w-full border-t border-white/8 pt-4">
+          <ReactionPicker onReact={onReact} />
+        </div>
       )}
     </div>
   );
