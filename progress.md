@@ -8,6 +8,33 @@ Session-by-session record of what shipped and what's next. Most recent session o
 
 ---
 
+## 2026-09-13 — DEPLOYED (two pushes, all of today's work is live)
+
+Everything below from 2026-09-13 is merged to `master` and live on `quizmo.auridev.com`. Two
+deploys, both CI-green:
+
+- `73b6098` — ready-gate wedge, duplicate reactions, picker placement, multiplayer scale rounds
+- `1632672` — scale scoring exploit, the two UI lies, and game types in multiplayer
+
+Verified against production, not only locally:
+
+```
+exploit (plain answer on a scale round): 400 This round is answered with the slider
+exploit (typed answer):                  400 This round is answered with the slider
+live mixed mode served: fastest-finger, true-false, fastest-finger, standard,
+                        standard, fastest-finger, fastest-finger
+live scale round: cat vs trex, target height absent from the payload, guess scored
+```
+
+**Untested with real people:** a scale round with a room full of humans, and the three game types
+that are newly reachable in multiplayer (rapid fire, year guesser, zoom out). The scripts prove
+the right question types are served and answered; nobody has played them at a table.
+
+**Known limitation (unchanged):** in-memory room store, so a deploy wipes any game in progress.
+Today had two deploys. Don't push while people are mid-game.
+
+---
+
 ## 2026-09-13 (later still) — no game type ever worked in multiplayer
 
 Auri: "when I select mixed mode it is not mixed actually." He was right, and it was worse than
@@ -55,9 +82,9 @@ mixed mode still shows two "different" types and passes a naive check.
 
 ---
 
-## 2026-09-13 (later) — flaw hunt on the shipped scale rounds, branch `fix/scale-submit-guards`
+## 2026-09-13 (later) — flaw hunt on the shipped scale rounds (shipped in `1632672`)
 
-Deliberate hunt for what the first round missed. Three real flaws, all fixed, none deployed yet.
+Deliberate hunt for what the first round missed. Three real flaws, all fixed and live.
 
 ### 1. Scoring exploit: a scale round could be answered without the slider
 
@@ -104,9 +131,9 @@ and `readygate.mjs` all 0 problems with the guards in place, 162 tests, build co
 
 ---
 
-## 2026-09-13 — NOT DEPLOYED: ready-gate wedge, double emoji, scale rounds in multiplayer
+## 2026-09-13 — ready-gate wedge, double emoji, scale rounds in multiplayer
 
-On branch `fix/ready-gate-and-reactions`, **not merged, not live**. Four things, all from a real 7-player session.
+Shipped in `73b6098`. Four things, all from a real 7-player session.
 
 ### 1. The ready gate wedged when someone left (the bug that ended the game)
 
@@ -230,7 +257,7 @@ Everything below ran against a **production build** (`npm start`), not the dev s
 
 ### Next steps
 
-1. Review the diff and merge to `master` (auto-deploys to Hetzner in ~60s).
+1. ~~Review the diff and merge to `master`.~~ Done, `73b6098`.
 2. Play a scale round with real people. Team mode, elimination and the pre-final wager are all
    covered by scripts now, but nobody has played a scale round with a room full of humans.
 3. Tint is the other half of the ask and is **not** built. It needs a new answer payload shape,
@@ -353,6 +380,25 @@ Walked every screen at iPhone (390) and Android (360) widths in a real browser, 
 - **Live quiz edits are reverted by every deploy.** 54 quiz files are git-tracked,
   the live editor writes to that directory, deploy runs `git reset --hard`. Pick one:
   move quiz data out of the repo, or take the editor off prod. See `audit.md` I1.
+
+### 🟡 Medium — left open by the 2026-09-13 flaw hunt
+- **A reload forgets that you answered.** The answered state is client-only, so reloading mid-round
+  brings the question back as if you had never answered; tapping is refused honestly, but the
+  screen still invites it. Fix: a `hasAnswered` on `PlayerInfo`, mirroring the `hasWagered` that
+  already exists for exactly this reason during a wager round. Affects every question type.
+- **`YearGuesserInput` and `FastestFingerInput` ignore the team gate** and flip to "locked in"
+  before the server answers, which is what `ScaleGuessInput` was doing. In team mode a benched
+  player is shown a working control the server will refuse. Both are two small edits, mirroring
+  what `ScaleGuessInput` does now. More urgent since 2026-09-13: those two types are newly
+  reachable in multiplayer, so the bug is newly reachable too.
+- **`wagerResults` reports the uncapped wager** while the score moves by `min(wager, score)`, so a
+  player who bets more than they hold sees a bigger loss announced than actually happens (seen
+  live: screen -250, score -180). `WAGER_FLOOR` is what lets a low scorer over-bet.
+- **The wager is still never paid on year and text rounds.** `wagerSwing()` exists and is wired
+  into `submitScaleAnswer` only; its doc comment names the two functions that still need it.
+  Deliberately scoped out on 2026-09-13 because it changes scoring on shipped game types.
+- **Tint in multiplayer.** The other half of the original ask. Needs a new answer payload: a tint
+  guess is an array of hex values, so it cannot ride the year-guesser plumbing the way scale did.
 
 ### 🟡 Medium — from competitor research (Kahoot-style patterns)
 - Kahoot two-screen split: host screen keeps colored shapes, phone shows shapes only (no answer text)
