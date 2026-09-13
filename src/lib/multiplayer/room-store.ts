@@ -14,6 +14,7 @@ import type {
   WagerType,
   ServerEvent,
   RoundType,
+  QuestionGameType,
 } from "./types";
 import { generateRoomCode } from "./room-code";
 import { randomBytes } from "crypto";
@@ -30,6 +31,7 @@ import { fuzzyMatch } from "../fuzzy-match";
 import { sanitizeName, sanitizeEmoji } from "../sanitize";
 import { broadcast, removeRoomConnections, setPrunedHandler } from "./sse-manager";
 import { getQuiz } from "@/lib/quiz-store";
+import { transformQuestions } from "@/lib/question-transform";
 import type { Question } from "@/data/types";
 import { buildScaleQuestions, creatureById, toScaleArt } from "@/lib/games/scale-rounds";
 import { scoreScale, formatHeight } from "@/lib/games/scale-scoring";
@@ -662,7 +664,8 @@ export async function createRoom(
   gameMode?: GameMode,
   teamCount?: number,
   eliminationInterval?: number,
-  roundType: RoundType = "quiz"
+  roundType: RoundType = "quiz",
+  questionGameType: QuestionGameType = "standard"
 ): Promise<Room> {
   let questions: Question[];
 
@@ -707,6 +710,17 @@ export async function createRoom(
       return true;
     });
     if (questions.length === 0) throw new Error("No unique questions found");
+
+    /*
+     * Rewrite the questions into the style the host picked, the same way the
+     * solo route does. Applied here, after dedupe and before the slice below,
+     * because `transformQuestions` also *filters*: a zoom-out game keeps only
+     * questions with a usable image. Slicing first would hand the filter a
+     * short list and the room would get fewer questions than were asked for.
+     */
+    if (questionGameType !== "standard") {
+      questions = transformQuestions(questions, questionGameType);
+    }
   }
 
   let code: string;
@@ -746,6 +760,7 @@ export async function createRoom(
 
     gameMode: gameMode ?? "classic",
     roundType,
+    questionGameType,
     eliminatedPlayers: new Set(),
     eliminationInterval: eliminationInterval ?? 3,
 

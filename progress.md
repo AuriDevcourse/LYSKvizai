@@ -8,6 +8,53 @@ Session-by-session record of what shipped and what's next. Most recent session o
 
 ---
 
+## 2026-09-13 (later still) — no game type ever worked in multiplayer
+
+Auri: "when I select mixed mode it is not mixed actually." He was right, and it was worse than
+mixed: **every** game-type chip was inert in a multiplayer room.
+
+`transformQuestions` is what turns a standard question into a true/false statement, a typed answer,
+a year guess or a zoom-out, and it was called from exactly one place: the solo `/quiz` route.
+`createRoom` had no game-type parameter at all. So the host screen showed six chips, the choice
+filtered which topics appeared (which is what made it look like it had taken), and then the room
+served every question exactly as authored.
+
+Measured with the fix reverted, which is what a real game looked like:
+
+```
+true-false     -> bluff, standard, standard, standard, standard
+fastest-finger -> standard, standard, bluff, standard, bluff
+year-guesser   -> standard, bluff, standard, bluff, standard
+mixed          -> standard, bluff, standard, bluff, bluff, bluff, standard, standard, standard
+```
+
+With the fix:
+
+```
+true-false     -> every round true-false
+fastest-finger -> every round fastest-finger
+year-guesser   -> every round year-guesser
+mixed          -> year-guesser, bluff, true-false, bluff, fastest-finger, fastest-finger,
+                  bluff, true-false, true-false   (4 types, 6 of them derived)
+```
+
+**Solo was never broken.** Measured across all 771 questions in the library, solo mixed emits
+33.5% true-false, 26.5% fastest-finger, 25.3% standard, 10.3% year-guesser, 3.4% bluff, 1.0%
+zoom-out, and a 10-question game gets 3-4 distinct types. The multiplayer side simply never
+called it.
+
+`QuestionGameType` is threaded from the chip through `createRoom`, and the transform runs **after
+dedupe and before the slice**, because it also filters: a zoom-out game keeps only questions with
+a usable image, and slicing first would hand the filter a short list. `bluff`, `audio` and `video`
+are excluded from the type because they are authored into a quiz rather than derived from one, and
+`charades` has its own route. A scale room ignores the setting: it has no quiz to restyle.
+
+New `scripts/stress/gametypes.mjs` plays a room per type and reports what was actually served.
+Note its mixed check counts **derived** types, not distinct ones: `bluff` is authored, so a broken
+mixed mode still shows two "different" types and passes a naive check.
+
+---
+
 ## 2026-09-13 (later) — flaw hunt on the shipped scale rounds, branch `fix/scale-submit-guards`
 
 Deliberate hunt for what the first round missed. Three real flaws, all fixed, none deployed yet.

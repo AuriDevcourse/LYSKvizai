@@ -11,6 +11,7 @@ BASE=http://localhost:3005 node scripts/stress/abuse.mjs
 BASE=http://localhost:3005 node scripts/stress/readygate.mjs
 BASE=http://localhost:3005 node scripts/stress/scaleround.mjs
 BASE=http://localhost:3005 node scripts/stress/scalemodes.mjs
+BASE=http://localhost:3005 node scripts/stress/gametypes.mjs
 ```
 
 - `stress.mjs` — a full quiz night at once: a room, every player joining
@@ -42,6 +43,9 @@ BASE=http://localhost:3005 node scripts/stress/scalemodes.mjs
 - `scalemodes.mjs` — scale rounds under team mode and elimination, which the type system allowed
   and nobody had played, plus a check that the fastest-answer bonus reaches the leaderboard and not
   only the player's own row.
+- `gametypes.mjs` — does a room honour the game type the host picked? It did not: the chips were
+  inert in multiplayer and every question came through as authored. Plays a room per type and
+  reports what was served.
 - `abuse.mjs` — one player opening 25 streams. Must still be cut off; this is
   what proves a rate-limit fix made the limit *precise* rather than absent.
 

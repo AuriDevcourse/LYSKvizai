@@ -21,7 +21,7 @@ const AvatarBuilder = dynamic(() => import("@/components/AvatarBuilder"), {
   ssr: false,
   loading: () => <div className="h-40 animate-pulse rounded-xl bg-white/5" />,
 });
-import type { GameMode, RoundType } from "@/lib/multiplayer/types";
+import type { GameMode, RoundType, QuestionGameType } from "@/lib/multiplayer/types";
 import { MAX_QUESTION_COUNT } from "@/lib/multiplayer/validate";
 /** Rounds in a scale game. Six is the solo game's length and it is the right
  *  size for a party: long enough to build a score, short enough to stay sharp. */
@@ -51,6 +51,15 @@ function PlayPageInner() {
    * a selection that would be thrown away.
    */
   const [roundType, setRoundType] = useState<RoundType>("quiz");
+  /**
+   * The question style the host picked from the chips in the topic picker.
+   *
+   * The picker has always shown those chips on this screen and the choice went
+   * nowhere: the room served every question exactly as authored, so "Mixed
+   * Mode" produced a straight classic quiz. It is passed to `createRoom` now.
+   * `charades` has its own route and can never reach a room.
+   */
+  const [questionGameType, setQuestionGameType] = useState<QuestionGameType>("standard");
   /** True while TopicPicker is showing its top-level game-type grid. */
   const [pickerAtRoot, setPickerAtRoot] = useState(true);
   const [selectedGameMode, setSelectedGameMode] = useState<GameMode>("classic");
@@ -109,7 +118,9 @@ function PlayPageInner() {
         selectedGameMode,
         gameModeOptions.teamCount,
         gameModeOptions.eliminationInterval,
-        roundType
+        roundType,
+        // A scale room generates its own rounds and has no quiz to restyle.
+        roundType === "scale" ? "standard" : questionGameType
       );
       // If host wants to play, also join as a player
       if (hostPlaying && hostName.trim()) {
@@ -219,6 +230,10 @@ function PlayPageInner() {
               onSelect={setSelectedQuizIds}
               selectedIds={selectedQuizIds}
               onQuizMetaLoad={handleQuizMetaLoad}
+              onGameTypeChange={(gt) => {
+                // "charades" leaves for its own route and never reaches a room.
+                setQuestionGameType(gt && gt !== "charades" ? (gt as QuestionGameType) : "standard");
+              }}
               onAtRootChange={setPickerAtRoot}
               // Tapping a topic is the last decision — straight to how the
               // game runs, no quiz list and no "Next".

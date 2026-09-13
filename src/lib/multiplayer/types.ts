@@ -20,6 +20,29 @@ export type GameMode = "classic" | "elimination" | "team";
 export type RoundType = "quiz" | "scale";
 
 /**
+ * The question style a quiz room is played in.
+ *
+ * Solo has had this since the beginning: `/quiz` runs the selected questions
+ * through `transformQuestions`, which rewrites a standard question into a
+ * true/false statement, a typed answer, a year guess or a zoom-out, and
+ * "mixed" picks per question. Multiplayer never received it, so the host screen
+ * offered all six as chips, filtered the topic list by the choice (which made
+ * it look like it had taken), and then served every question exactly as
+ * authored. Picking "Mixed Mode" for a room full of people produced a straight
+ * classic quiz.
+ *
+ * Excluded on purpose: `bluff`, `audio` and `video` are authored into a quiz
+ * rather than derived from one, and `charades` has its own route.
+ */
+export type QuestionGameType =
+  | "standard"
+  | "true-false"
+  | "zoom-out"
+  | "year-guesser"
+  | "fastest-finger"
+  | "mixed";
+
+/**
  * A creature as the client is allowed to know it: enough to draw and label it,
  * with no measurement attached. `CreatureArt` keys its drawings by `id`, so the
  * id has to travel; the size does not.
@@ -85,6 +108,7 @@ export interface Room {
 
   gameMode: GameMode;
   roundType: RoundType;
+  questionGameType: QuestionGameType;
 
   // Elimination
   eliminatedPlayers: Set<string>;
@@ -364,7 +388,7 @@ export interface PowerUpEffect {
 // --- Client → Server Actions (POST) ---
 
 export type ClientAction =
-  | { action: "create"; hostId: string; quizId?: string; quizIds?: string[]; questionCount?: number; timerDuration?: number; gameMode?: GameMode; teamCount?: number; eliminationInterval?: number; roundType?: RoundType }
+  | { action: "create"; hostId: string; quizId?: string; quizIds?: string[]; questionCount?: number; timerDuration?: number; gameMode?: GameMode; teamCount?: number; eliminationInterval?: number; roundType?: RoundType; gameType?: QuestionGameType }
   | { action: "join"; code: string; playerId: string; name: string; emoji: string; token?: string }
   | { action: "start"; code: string; hostId: string; hostToken: string }
   | { action: "answer"; code: string; playerId: string; token: string; answerIndex: number }
