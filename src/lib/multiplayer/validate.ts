@@ -23,6 +23,11 @@ export const MAX_TIMER = 300;
 
 const GAME_MODES = new Set(["classic", "elimination", "team"]);
 const ROUND_TYPES = new Set(["quiz", "scale"]);
+// Mirrors QuestionGameType. bluff/audio/video are authored, not derived, and
+// charades is its own route, so none of them can be asked for here.
+const QUESTION_GAME_TYPES = new Set([
+  "standard", "true-false", "zoom-out", "year-guesser", "fastest-finger", "mixed",
+]);
 const POWER_UPS = new Set(["freeze", "shield", "double"]);
 const KNOWN_ACTIONS = new Set([
   "create", "join", "start", "next", "force-results", "advance-wager",
@@ -91,6 +96,9 @@ export function validateAction(
       if (!isOptInt(b.eliminationInterval, 1, 50)) return { error: "Invalid eliminationInterval" };
       if (b.roundType !== undefined && !(typeof b.roundType === "string" && ROUND_TYPES.has(b.roundType))) {
         return { error: "Invalid roundType" };
+      }
+      if (b.gameType !== undefined && !(typeof b.gameType === "string" && QUESTION_GAME_TYPES.has(b.gameType))) {
+        return { error: "Invalid gameType" };
       }
       if (b.gameMode !== undefined && !(typeof b.gameMode === "string" && GAME_MODES.has(b.gameMode))) {
         return { error: "Invalid gameMode" };

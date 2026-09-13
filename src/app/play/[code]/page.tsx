@@ -577,6 +577,8 @@ export default function GamePage({ params }: PageProps) {
               timerReduction={timerReduction}
               streak={myStreak}
               eliminated={currentPlayer?.eliminated ?? false}
+              canAnswer={canAnswer}
+              waitingPlayerName={waitingPlayerName}
             />
           ) : (
             <PlayerQuestion
@@ -623,6 +625,8 @@ export default function GamePage({ params }: PageProps) {
               timerReduction={timerReduction}
               streak={myStreak}
               eliminated={currentPlayer?.eliminated ?? false}
+              canAnswer={canAnswer}
+              waitingPlayerName={waitingPlayerName}
             />
           ) : (
             <PlayerQuestion

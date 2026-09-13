@@ -219,6 +219,54 @@ const questionOf = async (room, p) => {
   return snap.snapshot.question;
 };
 
+// The submit paths that do not belong to a scale round.
+//
+// A scale question is still a Question with four empty option slots and
+// `correct: 0`, so the multiple-choice path read display-index 0 as the right
+// answer and paid full speed points for it. Measured before the guard: 1300
+// points without touching the slider, while the honest guesser scored 0.
+console.log(`
+  Wrong submit paths on a scale round
+`);
+{
+  const room = await scaleRoom(3);
+  const [cheat, honest] = room.players;
+  const q = await questionOf(room, honest);
+
+  await post({ action: "answer-scale", code: room.code, playerId: honest.playerId, token: honest.token, metres: q.scale.referenceHeightM * 1.4 });
+
+  let accepted = null;
+  for (let i = 0; i < 4; i++) {
+    const r = await post({ action: "answer", code: room.code, playerId: cheat.playerId, token: cheat.token, answerIndex: i });
+    if (r.status === 200) { accepted = i; break; }
+  }
+  if (accepted !== null) flag(`a plain multiple-choice answer was accepted on a scale round (index ${accepted})`);
+  else ok("a plain multiple-choice answer is refused on a scale round");
+
+  const t = await post({ action: "answer-text", code: room.code, playerId: cheat.playerId, token: cheat.token, answer: "4.4" });
+  if (t.status === 200) flag("a typed answer was accepted on a scale round and lands in the guess list");
+  else ok(`a typed answer is refused on a scale round: ${t.json?.error}`);
+
+  await post({ action: "force-results", code: room.code, hostId: room.hostId, hostToken: room.hostToken });
+  const res = (await asHost(room.code, room.hostId, room.hostToken)).snapshot.results;
+  /*
+   * Acceptance above is the real gate. This is a weaker secondary check: the
+   * options are shuffled per round, so display-index 0 lands on the placeholder
+   * `correct: 0` about one round in four. A cheat cannot retry, because the
+   * first submit marks them as answered either way.
+   */
+  const cheatRow = res.playerResults.find((r) => r.playerName === cheat.name);
+  if (cheatRow && cheatRow.points > 0) {
+    flag(`a player who never used the slider scored ${cheatRow.points} on a scale round`);
+  } else {
+    ok("a player who never used the slider scored nothing");
+  }
+  const listed = res.scaleGuesses?.some((g) => g.playerName === cheat.name);
+  if (listed) flag("a player who never used the slider appears in the guess list");
+  else ok("only real guesses appear in the guess list");
+}
+
+
 // A. The wager round.
 console.log(`\n  Wager on a scale round\n`);
 {

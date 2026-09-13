@@ -134,7 +134,8 @@ export async function POST(req: NextRequest) {
           body.gameMode,
           body.teamCount,
           body.eliminationInterval,
-          body.roundType
+          body.roundType,
+          body.gameType
         );
         return json({
           code: room.code,

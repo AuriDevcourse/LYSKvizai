@@ -8,6 +8,102 @@ Session-by-session record of what shipped and what's next. Most recent session o
 
 ---
 
+## 2026-09-13 (later still) — no game type ever worked in multiplayer
+
+Auri: "when I select mixed mode it is not mixed actually." He was right, and it was worse than
+mixed: **every** game-type chip was inert in a multiplayer room.
+
+`transformQuestions` is what turns a standard question into a true/false statement, a typed answer,
+a year guess or a zoom-out, and it was called from exactly one place: the solo `/quiz` route.
+`createRoom` had no game-type parameter at all. So the host screen showed six chips, the choice
+filtered which topics appeared (which is what made it look like it had taken), and then the room
+served every question exactly as authored.
+
+Measured with the fix reverted, which is what a real game looked like:
+
+```
+true-false     -> bluff, standard, standard, standard, standard
+fastest-finger -> standard, standard, bluff, standard, bluff
+year-guesser   -> standard, bluff, standard, bluff, standard
+mixed          -> standard, bluff, standard, bluff, bluff, bluff, standard, standard, standard
+```
+
+With the fix:
+
+```
+true-false     -> every round true-false
+fastest-finger -> every round fastest-finger
+year-guesser   -> every round year-guesser
+mixed          -> year-guesser, bluff, true-false, bluff, fastest-finger, fastest-finger,
+                  bluff, true-false, true-false   (4 types, 6 of them derived)
+```
+
+**Solo was never broken.** Measured across all 771 questions in the library, solo mixed emits
+33.5% true-false, 26.5% fastest-finger, 25.3% standard, 10.3% year-guesser, 3.4% bluff, 1.0%
+zoom-out, and a 10-question game gets 3-4 distinct types. The multiplayer side simply never
+called it.
+
+`QuestionGameType` is threaded from the chip through `createRoom`, and the transform runs **after
+dedupe and before the slice**, because it also filters: a zoom-out game keeps only questions with
+a usable image, and slicing first would hand the filter a short list. `bluff`, `audio` and `video`
+are excluded from the type because they are authored into a quiz rather than derived from one, and
+`charades` has its own route. A scale room ignores the setting: it has no quiz to restyle.
+
+New `scripts/stress/gametypes.mjs` plays a room per type and reports what was actually served.
+Note its mixed check counts **derived** types, not distinct ones: `bluff` is authored, so a broken
+mixed mode still shows two "different" types and passes a naive check.
+
+---
+
+## 2026-09-13 (later) — flaw hunt on the shipped scale rounds, branch `fix/scale-submit-guards`
+
+Deliberate hunt for what the first round missed. Three real flaws, all fixed, none deployed yet.
+
+### 1. Scoring exploit: a scale round could be answered without the slider
+
+A scale question is still a `Question` with four empty option slots and `correct: 0`, and
+`submitAnswer` never checked the question type. So a crafted `answer` request read display-index 0
+as the right answer and paid full speed points.
+
+Measured on a live room: the cheat scored **1300 points** without touching the slider while the
+player who actually guessed scored 0, and the cheat never appeared in the guess list the host
+screen shows. `answer-text` was the same hole one step quieter: it wrote `currentTextAnswer`, which
+the results builder reads as a guess, so a typed number showed up as a 77%-accurate guess worth
+nothing.
+
+Fixed with `wrongSubmitPath()`, called from both paths. Neither is reachable by tapping; both are
+two lines of fetch, and the room code is four characters.
+
+Caught by a new case in `scaleround.mjs`. Note the *acceptance* check is the deterministic gate:
+options are shuffled, so index 0 only lands on the placeholder about one round in four.
+
+### 2. Team mode showed a slider the server would refuse
+
+`ScaleGuessInput` never took `canAnswer`, so in team mode a benched player saw a working slider
+and an enabled "Lock it in". Tapping produced the error toast **and** a "Locked in · 37 cm" screen
+at the same time: they believed they had answered, and had not. Half the room, every round.
+
+Two bugs in one. The component now takes `canAnswer`/`waitingPlayerName` and shows "Waiting for
+Bob · They are guessing for your team", and it only flips to "Locked in" once the server says yes.
+
+`YearGuesserInput` and `FastestFingerInput` have the same missing `canAnswer` and the same
+optimistic lock-in. Untouched: pre-existing, and a separate call.
+
+### 3. Answered state is client-only, so a reload forgets it
+
+Reload mid-round and the slider comes back as if you had never guessed. Tapping now says "Already
+answered" honestly instead of claiming a second lock-in, but the screen still invites the tap. The
+real fix is a `hasAnswered` on `PlayerInfo`, mirroring the `hasWagered` field that already exists
+for exactly this reason during a wager round. Affects every question type, so it is Auri's call.
+
+### Checked and clean
+
+A scale game played to the finish (2 rounds, wager phase, correct final leaderboard). Mobile at
+360px: no horizontal scroll, slider 44px, button 60px. `fullgame.mjs`, `edge.mjs`, `scalemodes.mjs`
+and `readygate.mjs` all 0 problems with the guards in place, 162 tests, build compiles.
+
+---
+
 ## 2026-09-13 — NOT DEPLOYED: ready-gate wedge, double emoji, scale rounds in multiplayer
 
 On branch `fix/ready-gate-and-reactions`, **not merged, not live**. Four things, all from a real 7-player session.

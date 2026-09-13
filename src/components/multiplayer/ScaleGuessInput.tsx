@@ -24,11 +24,23 @@ function ratioFromSlider(t: number): number {
 
 interface ScaleGuessInputProps {
   question: QuestionPayload;
-  onAnswer: (metres: number) => void;
+  /**
+   * Resolves true when the server took the guess.
+   *
+   * The return value is not decoration: this component used to flip itself to
+   * "Locked in" the moment the button was pressed, so a player the server
+   * refused saw an error toast and a screen telling them their guess was in.
+   * In team mode that happened to half the room on every round.
+   */
+  onAnswer: (metres: number) => Promise<boolean>;
   onTimerExpire: () => void;
   timerReduction?: number;
   eliminated?: boolean;
   streak?: number;
+  /** False when a team-mate is the designated answerer this round. */
+  canAnswer?: boolean;
+  /** Who the room is waiting on, when it is not this player. */
+  waitingPlayerName?: string;
 }
 
 export default function ScaleGuessInput({
@@ -38,6 +50,8 @@ export default function ScaleGuessInput({
   timerReduction = 0,
   eliminated = false,
   streak = 0,
+  canAnswer = true,
+  waitingPlayerName,
 }: ScaleGuessInputProps) {
   const [slider, setSlider] = useState(0.5);
   const [submitted, setSubmitted] = useState(false);
@@ -74,10 +88,15 @@ export default function ScaleGuessInput({
 
   const effectiveDuration = Math.max(5, question.timerDuration - timerReduction);
 
-  const handleSubmit = () => {
-    if (submitted || eliminated) return;
-    setSubmitted(true);
-    onAnswer(guessedM);
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = async () => {
+    if (submitted || sending || eliminated || !canAnswer) return;
+    setSending(true);
+    const accepted = await onAnswer(guessedM);
+    setSending(false);
+    // Only the server gets to say the guess is in.
+    if (accepted) setSubmitted(true);
   };
 
   if (eliminated) {
@@ -85,6 +104,18 @@ export default function ScaleGuessInput({
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
         <Ruler className="h-10 w-10 text-white/50" />
         <p className="text-lg font-extrabold text-white/60">Spectator mode</p>
+      </div>
+    );
+  }
+
+  // Team mode: a player who is not the designated answerer is shown who the
+  // room is waiting on, rather than a working slider the server will refuse.
+  if (!canAnswer && waitingPlayerName) {
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center gap-4">
+        <Ruler className="h-10 w-10 text-white/50" />
+        <p className="text-lg font-extrabold text-white">Waiting for {waitingPlayerName}</p>
+        <p className="text-sm font-bold text-white/50">They are guessing for your team</p>
       </div>
     );
   }
@@ -169,9 +200,10 @@ export default function ScaleGuessInput({
         </div>
         <button
           onClick={handleSubmit}
-          className="btn-primary mt-4 flex min-h-[52px] w-full items-center justify-center gap-2 !text-lg"
+          disabled={sending}
+          className="btn-primary mt-4 flex min-h-[52px] w-full items-center justify-center gap-2 !text-lg disabled:opacity-60"
         >
-          <Check className="h-5 w-5" /> Lock it in
+          <Check className="h-5 w-5" /> {sending ? "Sending..." : "Lock it in"}
         </button>
       </div>
     </div>
