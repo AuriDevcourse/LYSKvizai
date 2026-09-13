@@ -1,0 +1,38 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "bounce-easing",
+        "value": "animate-bounce",
+        "createdAt": "2026-09-12T10:22:15.783Z",
+        "reason": "project design convention: CLAUDE.md lists animate-bounce-in as the success-state animation; pre-existing one-shot entrance pop on the eliminated toast, not modified this session"
+      },
+      {
+        "rule": "bounce-easing",
+        "value": "bounce-in",
+        "createdAt": "2026-09-12T11:08:24.666Z",
+        "reason": "documented Electric Glass convention (CLAUDE.md: animate-bounce-in for success states); pre-existing, not modified this session"
+      },
+      {
+        "rule": "bounce-easing",
+        "value": "var(--ease-spring)",
+        "createdAt": "2026-09-12T11:08:24.878Z",
+        "reason": "project spring-easing token; pre-existing animation system, not modified this session"
+      },
+      {
+        "rule": "bounce-easing",
+        "value": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+        "createdAt": "2026-09-12T11:08:25.084Z",
+        "reason": "documented Electric Glass spring curve (CLAUDE.md: answer-button spring hover); pre-existing"
+      },
+      {
+        "rule": "bounce-easing",
+        "value": "cubic-bezier(0.34, 1.4, 0.5, 1)",
+        "createdAt": "2026-09-12T11:08:25.290Z",
+        "reason": "project spring curve, same family as the documented one; pre-existing"
+      }
+    ]
+  }
+}
