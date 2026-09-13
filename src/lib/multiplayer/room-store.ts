@@ -919,6 +919,28 @@ export async function startGame(code: string, hostId: string, hostToken: string)
   return {};
 }
 
+/**
+ * Refuse a submit that does not belong to the round being played.
+ *
+ * A scale round is scored from a slider, but it is still a `Question` with four
+ * (empty) option slots and `correct: 0`, so the ordinary multiple-choice path
+ * accepted `answerIndex` on it and read display-index 0 as the right answer.
+ * Measured: a crafted `answer` request scored **1300 points** on a scale round
+ * without touching the slider, while the player who actually guessed scored 0,
+ * and the cheat never appeared in the guess list that the host screen shows.
+ *
+ * `answer-text` was the same shape one step quieter: it wrote `currentTextAnswer`,
+ * which the results builder reads as a guess, so a typed number appeared in the
+ * guess list as a 77%-accurate answer worth no points.
+ *
+ * Neither is something a player reaches by tapping. Both are two lines of fetch.
+ */
+function wrongSubmitPath(room: Room): { error: string } | null {
+  const q = room.questions[room.questionIndices[room.currentQuestionIndex]];
+  if (q?.type === "scale") return { error: "This round is answered with the slider" };
+  return null;
+}
+
 export function submitAnswer(
   code: string,
   playerId: string,
@@ -930,6 +952,9 @@ export function submitAnswer(
   const { room, player } = verified;
   if (room.state !== "question") return { error: "Can't answer right now" };
   if (player.currentAnswer !== null) return { error: "Already answered" };
+
+  const wrongPath = wrongSubmitPath(room);
+  if (wrongPath) return wrongPath;
 
   // Elimination: eliminated players can't answer
   if (player.eliminated) return { error: "You are eliminated" };
@@ -1051,6 +1076,9 @@ export function submitTextAnswer(
   const { room, player } = verified;
   if (room.state !== "question") return { error: "Can't answer right now" };
   if (player.currentTextAnswer !== null) return { error: "Already answered" };
+
+  const wrongPath = wrongSubmitPath(room);
+  if (wrongPath) return wrongPath;
   if (player.eliminated) return { error: "You are eliminated" };
 
   if (room.gameMode === "team") {
