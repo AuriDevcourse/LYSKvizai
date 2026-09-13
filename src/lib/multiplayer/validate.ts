@@ -22,10 +22,11 @@ export const MIN_TIMER = 5;
 export const MAX_TIMER = 300;
 
 const GAME_MODES = new Set(["classic", "elimination", "team"]);
+const ROUND_TYPES = new Set(["quiz", "scale"]);
 const POWER_UPS = new Set(["freeze", "shield", "double"]);
 const KNOWN_ACTIONS = new Set([
   "create", "join", "start", "next", "force-results", "advance-wager",
-  "answer", "answer-text", "answer-year", "submit-wager", "react",
+  "answer", "answer-text", "answer-year", "answer-scale", "submit-wager", "react",
   "choose-powerup", "disconnect", "ready",
 ]);
 
@@ -40,6 +41,18 @@ function isInt(v: unknown, min: number, max: number): v is number {
 
 function isOptInt(v: unknown, min: number, max: number): boolean {
   return v === undefined || isInt(v, min, max);
+}
+
+/**
+ * Finite number within [min, max], floats included.
+ *
+ * A scale guess is a size in metres, so `isInt` would reject every realistic
+ * answer (a cat is 0.25 m). NaN and Infinity are still rejected: both survive a
+ * `typeof v === "number"` check and both poison the log-space scoring, which
+ * would put NaN in the room's cached results and on every phone in it.
+ */
+function isNum(v: unknown, min: number, max: number): v is number {
+  return typeof v === "number" && Number.isFinite(v) && v >= min && v <= max;
 }
 
 /**
@@ -76,6 +89,9 @@ export function validateAction(
       if (!isOptInt(b.timerDuration, MIN_TIMER, MAX_TIMER)) return { error: "Invalid timerDuration" };
       if (!isOptInt(b.teamCount, 2, 10)) return { error: "Invalid teamCount" };
       if (!isOptInt(b.eliminationInterval, 1, 50)) return { error: "Invalid eliminationInterval" };
+      if (b.roundType !== undefined && !(typeof b.roundType === "string" && ROUND_TYPES.has(b.roundType))) {
+        return { error: "Invalid roundType" };
+      }
       if (b.gameMode !== undefined && !(typeof b.gameMode === "string" && GAME_MODES.has(b.gameMode))) {
         return { error: "Invalid gameMode" };
       }
@@ -116,6 +132,14 @@ export function validateAction(
       if (typeof b.answer !== "string" || b.answer.length > MAX_ANSWER_LEN) {
         return { error: "Invalid answer" };
       }
+      break;
+
+    case "answer-scale":
+      if (!isStr(b.playerId, 100)) return { error: "Invalid playerId" };
+      if (!isStr(b.token, 100)) return { error: "Invalid token" };
+      // 1 mm to 100 km. The slider cannot reach either end; this only stops a
+      // hand-written request putting a nonsense size into the room.
+      if (!isNum(b.metres, 0.001, 100_000)) return { error: "Invalid metres" };
       break;
 
     case "answer-year":

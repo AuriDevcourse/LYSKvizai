@@ -3,26 +3,14 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, RotateCcw, Ruler, Check, Trophy } from "lucide-react";
-import CreatureArt from "@/components/games/CreatureArt";
-import { CREATURES, isScaleCreature, type ScaleCreature } from "@/lib/games/creatures";
-
-/** Only entries measured by height — see `inScaleGame` for why the whale is out. */
-/*
- * Narrowed, not just filtered. `isScaleCreature` proves each entry has a real
- * cited size, so everything downstream reads `heightM` without a guard — and a
- * creature with no knowable size cannot reach this game at all.
- */
-const SCALE_POOL: ScaleCreature[] = CREATURES.filter(isScaleCreature);
+import ScaleStage from "@/components/games/ScaleStage";
+import { type ScaleCreature } from "@/lib/games/creatures";
+// The pool moved to `scale-rounds.ts` when multiplayer started drawing from it
+// too. One list, so the two games cannot disagree about the cast.
+import { SCALE_POOL } from "@/lib/games/scale-rounds";
 import { scoreScale, formatHeight, pickPair, type ScaleResult } from "@/lib/games/scale-scoring";
 
 const ROUNDS = 6;
-
-/** Reference art is always drawn this tall, and everything else is judged against it. */
-const REF_PX = 120;
-/** Stage height, including room for the labels pinned under the baseline. */
-const STAGE_H = 320;
-/** Usable drawing height above the baseline. */
-const STAGE_DRAW_H = STAGE_H - 80;
 
 /**
  * How the guess works
@@ -93,21 +81,10 @@ export default function ScaleGamePage() {
   }, []);
 
   const ratio = useMemo(() => ratioFromSlider(slider), [slider]);
-  const targetPx = REF_PX * ratio;
   const guessedM = round.reference.heightM * ratio;
 
   // Where the target *should* be, for the reveal.
   const trueRatio = round.target.heightM / round.reference.heightM;
-  const truePx = REF_PX * trueRatio;
-
-  // One shared shrink factor so the tallest thing on the stage — the reference,
-  // the player's current guess, or (after lock-in) the true answer — still fits.
-  const tallest = Math.max(
-    REF_PX / round.reference.artFraction,
-    targetPx / round.target.artFraction,
-    result ? truePx / round.target.artFraction : 0
-  );
-  const fit = Math.min(1, STAGE_DRAW_H / Math.max(1, tallest));
 
   const lockIn = useCallback(() => {
     if (result) return;
@@ -180,65 +157,16 @@ export default function ScaleGamePage() {
           next to the {round.reference.name.toLowerCase()}?
         </h1>
 
-        {/* The stage.
-            Both creatures stand on one baseline, because the only thing being
-            judged is height — anything else in the layout is noise. Everything
-            is then scaled by a single `fit` factor so that whatever the player
-            drags to, and the true answer, both stay inside the frame. Without
-            that, dragging to the top of the slider pushes the creature off
-            screen and the player loses the very feedback they're using. */}
-        <div className="surface relative w-full overflow-hidden rounded-3xl" style={{ height: STAGE_H }}>
-          <div className="absolute inset-x-0 bottom-14 h-px bg-white/10" />
-          <div className="absolute inset-x-0 bottom-14 flex items-end justify-center gap-10 px-6 sm:gap-20">
-            <div className="flex flex-col items-center">
-              <CreatureArt
-                id={round.reference.id}
-                palette={round.reference.palette}
-                height={REF_PX * fit}
-                artFraction={round.reference.artFraction}
-                title={round.reference.name}
-              />
-            </div>
-
-            <div className="relative flex items-end">
-              {/* Ghost of the true size, revealed on lock-in — the fastest way
-                  to see how far off you were. */}
-              {result && (
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 opacity-25">
-                  <CreatureArt
-                    id={round.target.id}
-                    palette={["#ffffff", "#ffffff", "#ffffff", "#ffffff"]}
-                    height={truePx * fit}
-                    artFraction={round.target.artFraction}
-                  />
-                </div>
-              )}
-              <CreatureArt
-                id={round.target.id}
-                palette={round.target.palette}
-                height={targetPx * fit}
-                artFraction={round.target.artFraction}
-                title={round.target.name}
-              />
-            </div>
-          </div>
-
-          {/* Labels pinned below the baseline so they never move as things scale. */}
-          <div className="absolute inset-x-0 bottom-3 flex justify-center gap-10 px-6 text-center sm:gap-20">
-            <div className="w-28">
-              <p className="truncate text-xs font-extrabold text-white">{round.reference.name}</p>
-              <p className="font-headline text-base font-extrabold text-secondary">
-                {formatHeight(round.reference.heightM)}
-              </p>
-            </div>
-            <div className="w-28">
-              <p className="truncate text-xs font-extrabold text-white">{round.target.name}</p>
-              <p className="font-headline text-base font-extrabold tabular-nums text-primary">
-                {result ? formatHeight(result.actualM) : formatHeight(guessedM)}
-              </p>
-            </div>
-          </div>
-        </div>
+        {/* The stage. Shared with the multiplayer scale round so the two games
+            cannot drift apart on what the player is actually judging. */}
+        <ScaleStage
+          reference={round.reference}
+          target={round.target}
+          ratio={ratio}
+          revealRatio={result ? trueRatio : undefined}
+          referenceLabel={formatHeight(round.reference.heightM)}
+          targetLabel={result ? formatHeight(result.actualM) : formatHeight(guessedM)}
+        />
 
         {/* Control */}
         {!result ? (

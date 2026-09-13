@@ -4,6 +4,32 @@ import type { Question, QuestionType } from "@/data/types";
 
 export type RoomState = "lobby" | "question" | "results" | "wager" | "finished";
 export type GameMode = "classic" | "elimination" | "team";
+
+/**
+ * Where a room's questions come from.
+ *
+ * "quiz" is every room that has ever existed: questions are read from the
+ * selected quiz files. "scale" generates its rounds from the creature pool
+ * instead and ignores the quiz selection entirely, because a scale round is a
+ * pairing rather than a written question.
+ *
+ * This is deliberately not a `GameMode`. Game modes (classic, elimination,
+ * team) change how players compete over the same questions, and any of them can
+ * be played on top of either round type.
+ */
+export type RoundType = "quiz" | "scale";
+
+/**
+ * A creature as the client is allowed to know it: enough to draw and label it,
+ * with no measurement attached. `CreatureArt` keys its drawings by `id`, so the
+ * id has to travel; the size does not.
+ */
+export interface ScaleArt {
+  id: string;
+  name: string;
+  palette: string[];
+  artFraction: number;
+}
 export type PowerUpType = "freeze" | "shield" | "double";
 
 export const ALL_POWER_UPS: PowerUpType[] = ["freeze", "shield", "double"];
@@ -58,6 +84,7 @@ export interface Room {
   lastActivityAt: number;
 
   gameMode: GameMode;
+  roundType: RoundType;
 
   // Elimination
   eliminatedPlayers: Set<string>;
@@ -168,6 +195,7 @@ export interface RoomSnapshot {
   currentQuestionIndex: number;
   totalQuestions: number;
   gameMode: GameMode;
+  roundType: RoundType;
   teamNames?: string[];
   question?: QuestionPayload;
   /**
@@ -208,6 +236,20 @@ export interface QuestionPayload {
   powerUpUsesLeft?: number;
   /** Power-up types already used by requesting player */
   usedPowerUpTypes?: PowerUpType[];
+  /**
+   * Everything a phone needs to draw a scale round, and nothing more.
+   *
+   * This used to send two creature ids and let the client look the rest up in
+   * its own copy of `creatures.ts`. That copy carries `heightM` for every
+   * entry, so the answer was sitting in the bundle: `creatureById(targetId)
+   * .heightM` in a console, before anyone had guessed. Shipping the art
+   * instead keeps the size table on the server, where the scoring happens.
+   *
+   * The reference height is sent because it is printed on the screen and is
+   * what the guess is measured against. The target's is not: it is the answer,
+   * and it arrives with the results.
+   */
+  scale?: { reference: ScaleArt; referenceHeightM: number; target: ScaleArt };
 }
 
 export interface AnswerResult {
@@ -243,6 +285,29 @@ export interface ResultsPayload {
   fastestFinger?: { playerId: string; playerName: string; bonusPoints: number };
   correctAnswerText?: string;
   yearGuesses?: { playerId: string; playerName: string; guessedYear: number; correctYear: number; points: number }[];
+  /**
+   * Every player's guess for a scale round, with the truth.
+   *
+   * `guessedM` is what their slider implied, `actualM` is the target's real
+   * height, and `accuracy` is the unrounded 0-100 measure behind `points` so a
+   * near-miss can read as 99.4% rather than a flat 99.
+   */
+  scaleGuesses?: {
+    playerId: string;
+    playerName: string;
+    guessedM: number;
+    actualM: number;
+    accuracy: number;
+    verdict: string;
+    points: number;
+  }[];
+  /** The pair that was played and the truth, for the reveal. */
+  scale?: {
+    reference: ScaleArt;
+    referenceHeightM: number;
+    target: ScaleArt;
+    targetHeightM: number;
+  };
   /**
    * The options in the order they were shown, so the results screen doesn't
    * have to still be holding the question payload.
@@ -299,7 +364,7 @@ export interface PowerUpEffect {
 // --- Client → Server Actions (POST) ---
 
 export type ClientAction =
-  | { action: "create"; hostId: string; quizId?: string; quizIds?: string[]; questionCount?: number; timerDuration?: number; gameMode?: GameMode; teamCount?: number; eliminationInterval?: number }
+  | { action: "create"; hostId: string; quizId?: string; quizIds?: string[]; questionCount?: number; timerDuration?: number; gameMode?: GameMode; teamCount?: number; eliminationInterval?: number; roundType?: RoundType }
   | { action: "join"; code: string; playerId: string; name: string; emoji: string; token?: string }
   | { action: "start"; code: string; hostId: string; hostToken: string }
   | { action: "answer"; code: string; playerId: string; token: string; answerIndex: number }
@@ -311,5 +376,6 @@ export type ClientAction =
   | { action: "advance-wager"; code: string; hostId: string; hostToken: string }
   | { action: "answer-text"; code: string; playerId: string; token: string; answer: string }
   | { action: "answer-year"; code: string; playerId: string; token: string; year: number }
+  | { action: "answer-scale"; code: string; playerId: string; token: string; metres: number }
   | { action: "choose-powerup"; code: string; playerId: string; token: string; powerUp: PowerUpType }
   | { action: "ready"; code: string; playerId: string; token: string };

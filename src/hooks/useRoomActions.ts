@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import type { GameMode } from "@/lib/multiplayer/types";
+import type { GameMode, RoundType } from "@/lib/multiplayer/types";
 import { MP_API_URL } from "@/lib/multiplayer/config";
 
 /** A stuck request is worse than a failed one — the UI has nothing to react to. */
@@ -39,7 +39,8 @@ export function useRoomActions() {
       timerDuration?: number,
       gameMode?: GameMode,
       teamCount?: number,
-      eliminationInterval?: number
+      eliminationInterval?: number,
+      roundType?: RoundType
     ) => {
       const ids = Array.isArray(quizIds) ? quizIds : [quizIds];
       return postAction({
@@ -51,6 +52,7 @@ export function useRoomActions() {
         gameMode,
         teamCount,
         eliminationInterval,
+        roundType,
       }) as Promise<{ code: string; hostToken: string }>;
     },
     []

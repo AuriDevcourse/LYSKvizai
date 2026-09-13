@@ -11,6 +11,8 @@ import AudioPlayer from "./AudioPlayer";
 import VideoPlayer from "./VideoPlayer";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 import { ANSWER_BG, ANSWER_ICONS, ANSWER_TEXT } from "@/lib/answer-options";
+import CreatureArt from "@/components/games/CreatureArt";
+import { formatHeight } from "@/lib/games/scale-scoring";
 
 const OPTION_BG = ANSWER_BG;
 const OPTION_ICONS = ANSWER_ICONS;
@@ -35,6 +37,24 @@ interface HostQuestionProps {
   teamNames?: string[];
 }
 
+/**
+ * What each question type is called on the big screen.
+ *
+ * Types absent from this table get no chip. "standard" is deliberately absent:
+ * a normal question needs no label. The three `__`-prefixed values are looked
+ * up in the translation table by the component; the rest are literal.
+ */
+const TYPE_LABELS: Partial<Record<NonNullable<QuestionPayload["type"]>, string>> = {
+  bluff: "__bluff",
+  audio: "__audio",
+  video: "__video",
+  "true-false": "TRUE / FALSE",
+  "zoom-out": "ZOOM OUT",
+  "year-guesser": "YEAR",
+  "fastest-finger": "RAPID FIRE",
+  scale: "SCALE",
+};
+
 export default function HostQuestion({
   question,
   answerCount,
@@ -46,6 +66,8 @@ export default function HostQuestion({
   const { t } = useTranslation();
   const qText = question.question;
   const qOptions = question.options;
+  const isScale = question.type === "scale";
+  const reference = question.scale?.reference;
   const count = answerCount?.count ?? 0;
   const isProgressive = question.progressiveReveal ?? false;
   const words = qText.split(/\s+/);
@@ -80,9 +102,17 @@ export default function HostQuestion({
               {t("hostQuestion.wager")}
             </span>
           )}
-          {question.type && question.type !== "standard" && (
+          {/* The chip used to be a ternary chain whose final `else` was "VIDEO",
+              so every type it did not know about announced itself as a video
+              round. Adding the scale round put "VIDEO" above a giraffe. A table
+              with an explicit entry per type cannot do that: an unlabelled type
+              now shows no chip rather than the wrong one. */}
+          {question.type && TYPE_LABELS[question.type] && (
             <span className="rounded-lg bg-purple-500/20 px-2 py-1 text-xs font-extrabold text-purple-300">
-              {question.type === "bluff" ? t("hostQuestion.bluff") : question.type === "audio" ? t("hostQuestion.audio") : question.type === "true-false" ? "TRUE / FALSE" : question.type === "zoom-out" ? "ZOOM OUT" : t("hostQuestion.video")}
+              {TYPE_LABELS[question.type] === "__bluff" ? t("hostQuestion.bluff")
+                : TYPE_LABELS[question.type] === "__audio" ? t("hostQuestion.audio")
+                : TYPE_LABELS[question.type] === "__video" ? t("hostQuestion.video")
+                : TYPE_LABELS[question.type]}
             </span>
           )}
         </div>
@@ -212,7 +242,29 @@ export default function HostQuestion({
         </div>
       </div>
 
-      {/* BOTTOM: answer blocks (2×2 grid) */}
+      {/* BOTTOM: the reference creature, for a scale round.
+          A scale round has no options, and the empty 2x2 grid rendered four
+          blank coloured blocks under the question. What the room actually wants
+          on the big screen is the thing everyone is measuring against, at the
+          size the phones are drawing it, with its real height printed. The
+          target is not shown: that is the answer. */}
+      {isScale && reference ? (
+        <div className="flex min-h-[38vh] flex-col items-center justify-center gap-4 pt-4">
+          <CreatureArt
+            id={reference.id}
+            palette={reference.palette}
+            height={200}
+            artFraction={reference.artFraction}
+            title={reference.name}
+          />
+          <div className="text-center">
+            <p className="font-headline text-xl font-extrabold text-white">{reference.name}</p>
+            <p className="font-headline text-3xl font-extrabold text-secondary">
+              {formatHeight(question.scale!.referenceHeightM)}
+            </p>
+          </div>
+        </div>
+      ) : (
       <div className={`grid min-h-[38vh] grid-cols-2 gap-2.5 pt-4 sm:gap-3.5 ${
         qOptions.filter(Boolean).length <= 2 ? "grid-rows-1" : "grid-rows-2"
       } stagger-children`}>
@@ -232,6 +284,7 @@ export default function HostQuestion({
           );
         })}
       </div>
+      )}
     </div>
   );
 }

@@ -1,16 +1,16 @@
 "use client";
 
 import { useMemo, useState, useEffect } from "react";
-import { CheckCircle, ArrowRight, Trophy, Award, Skull, Users, Zap, Sparkles, Calendar, Flame, TrendingUp } from "lucide-react";
+import { CheckCircle, ArrowRight, Trophy, Award, Skull, Users, Zap, Sparkles, Calendar, Flame, TrendingUp, Ruler } from "lucide-react";
 import type { ResultsPayload, QuestionPayload, GameMode } from "@/lib/multiplayer/types";
-import type { EmojiReactionWithId } from "@/hooks/useRoom";
-import EmojiReactions from "./EmojiReactions";
 import QuizImage from "./QuizImage";
 import Avatar from "@/components/Avatar";
 import AnimatedNumber from "@/components/AnimatedNumber";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 import AnswerDistribution from "./AnswerDistribution";
 import { ANSWER_BG, ANSWER_BG_DIM, ANSWER_ICONS, ANSWER_TEXT } from "@/lib/answer-options";
+import ScaleStage from "@/components/games/ScaleStage";
+import { formatHeight } from "@/lib/games/scale-scoring";
 
 const OPTION_BG = ANSWER_BG;
 const OPTION_BG_DIM = ANSWER_BG_DIM;
@@ -19,7 +19,6 @@ const OPTION_ICONS = ANSWER_ICONS;
 interface HostResultsProps {
   question: QuestionPayload | null;
   results: ResultsPayload;
-  reactions: EmojiReactionWithId[];
   isLast: boolean;
   /** Optional: only when the host can advance directly. With the ready-gate the
    * big screen shows ready progress instead and the server advances itself. */
@@ -31,7 +30,6 @@ interface HostResultsProps {
 export default function HostResults({
   question,
   results,
-  reactions,
   isLast,
   onNext,
   readyProgress = null,
@@ -50,6 +48,14 @@ export default function HostResults({
 
   const maxScore = sortedPlayers[0]?.totalScore || 1;
   const isYearGuesser = results.yearGuesses && results.yearGuesses.length > 0;
+  /*
+   * Keyed on the round having been a scale round, not on anyone having
+   * guessed. With `scaleGuesses.length` as the test, a round nobody answered
+   * fell through to the options grid and drew four blank coloured blocks.
+   */
+  const isScale = !!results.scale;
+  const scaleReference = results.scale?.reference;
+  const scaleTarget = results.scale?.target;
 
   // ===== PHASE 1: FROZEN QUESTION WITH HIGHLIGHTED ANSWER =====
   if (phase === "reveal") {
@@ -67,11 +73,17 @@ export default function HostResults({
 
         {/* Question text */}
         <div className="flex flex-1 flex-col items-center justify-center gap-2 sm:gap-4">
-          <div className="glass max-w-3xl rounded-2xl px-5 py-3 sm:px-8 sm:py-6">
-            <h2 className="font-headline text-center text-lg font-extrabold leading-snug text-white sm:text-3xl lg:text-4xl">
-              {qText}
-            </h2>
-          </div>
+          {/* Only when there is a question to show. `useRoom` clears the
+              question payload the moment results arrive (useRoom.ts:195), so
+              this panel was rendering as an empty 66x50 glass pill on the big
+              screen at the top of every reveal, on every question type. */}
+          {qText && (
+            <div className="glass max-w-3xl rounded-2xl px-5 py-3 sm:px-8 sm:py-6">
+              <h2 className="font-headline text-center text-lg font-extrabold leading-snug text-white sm:text-3xl lg:text-4xl">
+                {qText}
+              </h2>
+            </div>
+          )}
 
           {question?.image && (
             <div className="max-w-md overflow-hidden rounded-xl">
@@ -95,6 +107,34 @@ export default function HostResults({
             </div>
           )}
 
+          {/* Scale reveal: the true size, drawn rather than only stated. A
+              number in metres means little; the target standing at its real
+              height next to the reference is the answer everyone can read at a
+              glance from across the room. */}
+          {isScale && scaleReference && scaleTarget && (
+            <div className="flex w-full max-w-xl flex-col items-center gap-3">
+              <ScaleStage
+                reference={scaleReference}
+                target={scaleTarget}
+                ratio={results.scale!.targetHeightM / results.scale!.referenceHeightM}
+                referenceLabel={formatHeight(results.scale!.referenceHeightM)}
+                targetLabel={formatHeight(results.scale!.targetHeightM)}
+                height={300}
+              />
+              <div className="flex animate-bounce-in items-center gap-3 rounded-2xl bg-answer-green px-8 py-4">
+                <Ruler className={`h-7 w-7 ${ANSWER_TEXT}`} />
+                <div>
+                  <p className={`text-sm font-bold ${ANSWER_TEXT} opacity-70`}>
+                    {scaleTarget.name}
+                  </p>
+                  <p className={`text-3xl font-extrabold ${ANSWER_TEXT}`}>
+                    {formatHeight(results.scale!.targetHeightM)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Bluff answer reveal */}
           {results.bluffAnswer && (
             <div className="flex flex-col items-center gap-1 rounded-2xl bg-tertiary/20 border-[1.5px] border-tertiary/40 px-6 py-3 animate-bounce-in">
@@ -112,8 +152,9 @@ export default function HostResults({
           )}
         </div>
 
-        {/* Answer options — frozen with correct highlighted (skip for year guesser) */}
-        {!isYearGuesser && (
+        {/* Answer options — frozen with correct highlighted. A year or scale
+            round has none. */}
+        {!isYearGuesser && !isScale && (
           <div className={`grid grid-cols-2 gap-1.5 pt-2 sm:gap-3 sm:pt-4 ${
             tOptions.filter(Boolean).length <= 2 ? "grid-rows-1" : "grid-rows-2"
           }`}>
@@ -179,7 +220,6 @@ export default function HostResults({
   return (
     <AnimatedLeaderboardPhase
       results={results}
-      reactions={reactions}
       sortedPlayers={sortedPlayers}
       maxScore={maxScore}
       isYearGuesser={!!isYearGuesser}
@@ -196,7 +236,6 @@ export default function HostResults({
 
 interface AnimatedLeaderboardPhaseProps {
   results: ResultsPayload;
-  reactions: EmojiReactionWithId[];
   sortedPlayers: ResultsPayload["playerResults"];
   maxScore: number;
   isYearGuesser: boolean;
@@ -209,7 +248,6 @@ interface AnimatedLeaderboardPhaseProps {
 
 function AnimatedLeaderboardPhase({
   results,
-  reactions,
   sortedPlayers,
   // Unused in the body: each row derives its bar width from `topScore`.
   maxScore: _maxScore,
@@ -295,7 +333,10 @@ function AnimatedLeaderboardPhase({
 
   return (
     <div className="flex flex-1 flex-col gap-3 sm:gap-5 animate-fade-in-up">
-      <EmojiReactions reactions={reactions} />
+      {/* No EmojiReactions here. The play page mounts one at page level for
+          every state (play/[code]/page.tsx), and a second full-screen fixed
+          overlay fed by the same array floated every emoji twice on the big
+          screen. */}
 
       {/* Elimination announcement */}
       {results.eliminatedThisRound && results.eliminatedThisRound.length > 0 && (
@@ -316,6 +357,42 @@ function AnimatedLeaderboardPhase({
           <p className="text-lg font-extrabold text-answer-yellow">
             {t("hostResults.fastestFinger")} {results.fastestFinger.playerName}
           </p>
+        </div>
+      )}
+
+      {/* Scale guesses, closest first. The server sorts them, so the row order
+          is the ranking for this round. */}
+      {results.scaleGuesses && results.scaleGuesses.length > 0 && (
+        <div className="flex flex-col gap-1.5">
+          {results.scaleGuesses.map((g) => {
+            const color = g.accuracy >= 90
+              ? "text-answer-green"
+              : g.accuracy >= 60
+                ? "text-answer-yellow"
+                : g.accuracy > 0
+                  ? "text-white"
+                  : "text-error";
+            return (
+              <div
+                key={g.playerId}
+                className="flex items-center justify-between rounded-xl bg-white/5 px-4 py-2.5"
+              >
+                <span className="font-bold text-white">{g.playerName}</span>
+                <div className="flex items-center gap-3">
+                  <span className={`text-lg font-extrabold tabular-nums ${color}`}>
+                    {formatHeight(g.guessedM)}
+                  </span>
+                  <span className="text-sm font-bold text-white/50">{g.verdict}</span>
+                  <AnimatedNumber
+                    value={g.points}
+                    duration={700}
+                    prefix="+"
+                    className="min-w-[3.5rem] text-right text-base font-extrabold text-emerald-300 tabular-nums"
+                  />
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
 
